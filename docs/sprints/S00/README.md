@@ -3,7 +3,7 @@
 Estado: DONE — consolidação documental validada; relatório, encerramento e commit aprovados pelo «sim» do utilizador em 2026-10-20, após apresentação de TEST_REPORT/REVIEW. Tarefas S00-T002 a T007 DONE.
 S00-T001 permanece DONE com evidência histórica; não autoriza implementação de S01.
 
-Commit principal: a registar após gravação; registo definitivo no contexto operacional. Push/merge e início de S01 não autorizados.
+Commit principal: `74d8b6ca685cc99271c803d931c2ac371d99e0a9` — `chore(sprint-00): establish backend governance`. Hash registado posteriormente em documentação/MegaBrain, sem autorreferência. Push/merge e início de S01 não autorizados.
 Dependências: antecedente DOC-0001 e aprovação do plano; nenhuma sprint anterior.
 Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; execução sequencial.
 [PLAN](PLAN.md) · [TASKS](TASKS.md) · [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md) · [TEST_REPORT](TEST_REPORT.md) · [REVIEW](REVIEW.md).

@@ -2,7 +2,7 @@
 
 ## Estado atual de encerramento — 2026-10-20
 STATUS ATUAL: DONE. Relatório, encerramento documental e commit aprovados pelo «sim» do utilizador, em resposta ao pedido final de aprovação após a apresentação do relatório.
-Commit principal: a registar após gravação. Branch feat/biblia-backend. S01, push e merge continuam sem autorização.
+Commit principal: `74d8b6ca685cc99271c803d931c2ac371d99e0a9` — `chore(sprint-00): establish backend governance`, 134 documentos, 2585 inserções e 1818 remoções. Branch feat/biblia-backend. S01, push e merge continuam sem autorização.
 A validação de 194 documentos/799 links foi repetida antes desta atualização e passou sem erros. Abaixo preserva-se o relatório apresentado em REVIEW, incluindo os campos PENDING e as condições específicas do seu verificador pré-encerramento. Esses campos são o retrato aprovado, não o estado atual acima.
 Após a aprovação, apenas estados de encerramento e registo de Git/MegaBrain mudam; não há nova funcionalidade ou execução de S01. A verificação específica do encerramento consta no fim deste documento.
 
@@ -394,6 +394,27 @@ Resultado antes do commit principal:
   "relative_links_checked": 798,
   "protected_hashes_verified": 9,
   "primary_commit": null,
+  "branch": "feat/biblia-backend",
+  "errors": []
+}
+```
+
+## Registo posterior do commit principal
+
+Após aprovação, executados `rtk git add -- AGENTS.md GEMINI.md README.md docs`, `rtk git diff --cached --check` e verificação do manifesto de 134 ficheiros exclusivamente Markdown do escopo: exit 0. Executado `git -c pack.readReverseIndex=false commit -m "chore(sprint-00): establish backend governance"`: exit 0, hash principal indicado acima. `rtk git status --short --branch` confirmou árvore limpa imediatamente após esse commit.
+A configuração temporária de leitura do índice reverso preserva o contorno operacional já documentado, sem mudar configuração global. Main local/remota preservadas; nenhum merge/push executado.
+Esta atualização adicional só regista o hash no PLAN/README/REVIEW/TEST_REPORT e MegaBrain; sem execução da S01. O hash do commit deste registo constará no histórico Git, evitando autorreferência infinita. Verificação pelo último bloco Python do documento, com o mesmo comando de encerramento acima:
+
+```json
+{
+  "date": "2026-10-20",
+  "closure_approved": true,
+  "s00_state": "DONE",
+  "s01_state": "BACKLOG",
+  "markdown_files": 194,
+  "relative_links_checked": 798,
+  "protected_hashes_verified": 9,
+  "primary_commit": "74d8b6ca685cc99271c803d931c2ac371d99e0a9",
   "branch": "feat/biblia-backend",
   "errors": []
 }

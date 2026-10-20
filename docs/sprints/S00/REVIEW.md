@@ -1,6 +1,6 @@
 # S00 — Revisão técnica
 
-Data: 2026-10-20. Estado: DONE. Revisão executada pelo agente; relatório, encerramento e commit aprovados pelo «sim» do utilizador após a apresentação desta revisão. Commit principal a registar após gravação, sem hash autorreferente.
+Data: 2026-10-20. Estado: DONE. Revisão executada pelo agente; relatório, encerramento e commit aprovados pelo «sim» do utilizador após a apresentação desta revisão. Commit principal: `74d8b6ca685cc99271c803d931c2ac371d99e0a9`, registado posteriormente para evitar hash autorreferente.
 
 ## Resultado e escopo
 Consolidação documental entregue conforme PLAN aprovado. Atualizados governança/gates, arquitetura modular/ADR-0003, roadmap/rastreabilidade, ações externas, plano S01 e contexto operacional. Não existe backend implementado.

@@ -2,7 +2,7 @@
 
 Data: 2026-10-20. Estado do plano: APROVADO pelo «ok» do utilizador após a apresentação deste plano.
 Branch: `feat/biblia-backend`. Base: `origin/main`, commit `d1d25b7f509ee7b887d53f945550d3f8c2a957d3`.
-Encerramento/commit: aprovados pelo «sim» do utilizador em 2026-10-20, após TEST_REPORT/REVIEW. Commit principal a registar após gravação no contexto operacional. Responsável: agente executor; aprovador: utilizador.
+Encerramento/commit: aprovados pelo «sim» do utilizador em 2026-10-20, após TEST_REPORT/REVIEW. Commit principal: `74d8b6ca685cc99271c803d931c2ac371d99e0a9`, registado posteriormente na documentação e no contexto operacional. Responsável: agente executor; aprovador: utilizador.
 Identidade: continuação documental de S00; tarefas propostas S00-T002 a S00-T007, sem reutilizar S00-T001.
 
 As previsões e notas de preparação abaixo preservam o plano apresentado. O estado efetivo pertence a [TASKS](TASKS.md), e a validação realizada a [TEST_REPORT](TEST_REPORT.md); o «ok» aprova a consolidação, não o encerramento/commit ou S01.
