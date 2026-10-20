@@ -1,30 +1,23 @@
 # Bíblia App
 
-Plataforma planeada de estudo bíblico histórico, contextual e comparativo, assistida por IA. A IA apoia a investigação; as respostas devem distinguir factos documentados, inferências, tradições interpretativas e hipóteses.
+Plataforma de estudo bíblico histórico, contextual e comparativo, com fontes verificáveis, divergências e incertezas explícitas. Uso inicial privado/pessoal; cobertura canónica completa pretendida e biblioteca de fontes progressiva.
 
-## Estado real
-Em 2026-10-17, a inicialização documental está concluída e validada. Existem documentação, propostas e regras de governança; não existe backend, frontend, base de dados configurada ou funcionalidade implementada. Não há comandos de instalação ou execução da aplicação definidos.
+## Estado real — 2026-10-20
+Somente documentação e governança. Sem backend/frontend implementados, package.json, schema Prisma, migrações, corpus aprovado, integrações ou ambientes provisionados.
+A consolidação documental S00 foi autorizada pelo «ok» ao plano e validada. S00 DONE: relatório, encerramento e commit aprovados pelo «sim» do utilizador em 2026-10-20. S01 não iniciada. Nenhum teste de aplicação ou métrica de cobertura/mutação medido.
 
-O utilizador confirmou a inicialização e o plano de atualização documental para gestão por sprints. Specs de funcionalidades e contratos continuam em rascunho ou pendentes de aprovação. A atualização não autoriza implementação nem encerra sprints automaticamente.
+## Entrada
+Ler [índice](docs/README.md), [AGENTS](AGENTS.md), [GEMINI](GEMINI.md), [governança](docs/documentation-governance.md), [sprints](docs/sprints/README.md) e [contexto operacional](docs/megabrain/agent-context/project-state.md).
+Entrega atual: [PLAN S00](docs/sprints/S00/PLAN.md), [tarefas](docs/sprints/S00/TASKS.md), [critérios](docs/sprints/S00/ACCEPTANCE_CRITERIA.md), [relatório](docs/sprints/S00/TEST_REPORT.md), [revisão](docs/sprints/S00/REVIEW.md).
+Próximo passo apenas após encerramento autorizado: rever/aprovar [plano S01](docs/sprints/S01/PLAN.md) e contratos técnicos antes de qualquer instalação.
 
-## Direção definida
-- Backend: Node.js, TypeScript, NestJS, Prisma ORM e PostgreSQL; versões por selecionar.
-- DDD e arquitetura hexagonal, com domínio independente de framework, persistência e fornecedores de IA.
-- TDD estrito, integração com infraestrutura real e mutation score superior a 85% no escopo aplicável.
-- Estudo estruturado seguido de perguntas livres; cobertura bíblica inteira e biblioteca de fontes progressiva.
+## Backend prescrito
+NestJS, TypeScript strict, Node.js LTS compatível, REST, OpenAPI/Swagger, Zod, Prisma/PostgreSQL; pesquisa textual nativa e pgvector quando necessário. DDD/hexagonal, monólito modular, seis [módulos](docs/architecture/bounded-contexts.md). Domain independente de frameworks/persistência/fornecedor IA.
+Jest, Supertest e Stryker; TDD estrito, integração real. Linhas >=90%, branches >=85%, mutação bruta >85%, zero erros de tipagem/lint e nenhum teste obrigatório falhado/bloqueado. Versões/compatibilidade ainda por validar.
+Não há comandos de instalação, execução ou testes da aplicação existentes. Não inventar scripts. [Sete gates](docs/quality/quality-gates.md).
 
-Frontend, fornecedor e modelos de IA, embeddings, autenticação, deploy e traduções/licenças permanecem pendentes.
-
-## Documentação e colaboração
-Começar pelo [índice](docs/README.md), pelo [PRD](docs/PRD.md) e pela [governança documental](docs/documentation-governance.md).
-Agentes devem ler [AGENTS.md](AGENTS.md); a entrada alternativa é [GEMINI.md](GEMINI.md).
-
-Consultar [arquitetura](docs/architecture/README.md), [specs](docs/specs/README.md), [qualidade](docs/quality/README.md), [backlog](docs/tasks/backlog.md) e [MegaBrain](docs/megabrain/README.md).
-O [registo de inicialização](docs/tasks/DOC-0001-inicializacao-governanca.md) preserva a entrega anterior. A atualização atual está em [S00-T001](docs/sprints/S00/tasks/S00-T001-atualizacao-governanca.md).
-
-## Desenvolvimento por sprints
-Consultar [S00–S09](docs/sprints/README.md), [plano mestre](docs/roadmap/master-plan.md) e [correspondência de tarefas](docs/roadmap/traceability.md).
-Antes de código, aprovar a sprint, a spec e o plano da tarefa. Só usar scripts reais de package.json quando existir; neste momento não há comandos de aplicação para executar.
-Aplicar os [sete gates](docs/quality/quality-gates.md), incluindo typecheck/ESLint/build, integração real e mutação estritamente superior a 85% quando aplicáveis.
-StrykerJS foi adotado sob condição de compatibilidade; não instalado. Preferir rtk compatível com alternativa nativa quando necessário.
-S00-T001 está DONE após validação documental; S00 permanece REVIEW à espera de aprovação explícita de encerramento. As restantes sprints não foram iniciadas.
+## Planeamento e dependências
+Ciclo [S00–S08](docs/roadmap/master-plan.md), trilhas A domínio, B infraestrutura, C qualidade/documentação. Frontend e S09 antigos adiados; [histórico/rastreabilidade](docs/roadmap/traceability.md) preservados.
+[Ações externas](docs/external-actions/REQUIRED_ACTIONS.md): ambiente PostgreSQL isolado, cânone/traduções/licenças, fontes, fornecedor/modelos IA, acesso/retenção e deployment. Nenhum segredo no Git/chat.
+Specs e contratos continuam rascunho; aprovar documentação não aprova implementação. Branch backend feat/biblia-backend; commit por sprint só após relatório/aprovação final; merge/push e próxima sprint exigem autorização própria.
+Histórico preservado: [DOC-0001](docs/tasks/DOC-0001-inicializacao-governanca.md) e [S00-T001](docs/sprints/S00/tasks/S00-T001-atualizacao-governanca.md).

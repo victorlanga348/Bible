@@ -1,6 +1,6 @@
 # Sxx-Txxx — Título da tarefa
 
-Estado do modelo: template; não é tarefa autorizada.
+Estado do modelo: template; não é tarefa autorizada. Consolidação backend S00: trilha A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; branch feat/biblia-backend. Fontes de sprint PLAN/TASKS/ACCEPTANCE_CRITERIA/TEST_REPORT/REVIEW; mensagens de commit exatas em AGENTS, só após aprovação final.
 
 ## Identificação
 - ID: Sxx-Txxx único na sprint.
@@ -55,7 +55,7 @@ Identificar critério, ligação à spec, condição/ação/resultado e evidênc
 - Documentação pura: justificar não aplicabilidade e planear validação documental.
 
 ## Qualidade estática
-Typecheck TypeScript, ESLint, dependências arquiteturais e build aplicáveis.
+Typecheck TypeScript, ESLint, dependências arquiteturais e build aplicáveis. Cobertura de linhas >=90%, branches >=85%, zero erros de tipagem/lint. Jest/Supertest/Stryker prescritos; comprovar compatibilidade, sem dispensa silenciosa.
 Identificar scripts reais do package.json; se inexistentes, registar preparação necessária sem inventar comandos.
 
 ## Testes de integração necessários
@@ -80,7 +80,7 @@ Nenhum campo pendente é aprovação implícita.
 
 ## Evidências de execução
 Por execução: data, comando exato, ambiente, versões/revisão ou estado da árvore, saída/artefacto, resultado, falhas e limitações.
-Registar RED/GREEN/REFACTOR separadamente. Preferir rtk compatível, com equivalente nativo se necessário.
+Registar RED/GREEN/REFACTOR separadamente. Preferir rtk compatível, com equivalente nativo se necessário. Por execução/critério usar PASS/FAIL/BLOCKED/NOT_RUN, com aplicabilidade/motivo separados. Serviço/credencial obrigatório em falta é BLOCKED; não PASS ou não aplicabilidade. Registar ação externa com implementação realmente preparada e critério de desbloqueio.
 Não apresentar resultados esperados como executados.
 
 ## Resultado dos sete gates

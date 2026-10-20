@@ -1,6 +1,6 @@
 # Modelo de dados
 
-Estado: mapa conceptual proposto. Não existe schema Prisma, migração, tabela, campo, índice ou enum aprovado.
+Estado: mapa conceptual proposto; responsabilidades consolidadas em S00 por ADR-0003. Não existe schema Prisma, migração, tabela, campo, índice ou enum aprovado.
 As designações abaixo não são contratos de persistência.
 
 ## Conceitos a modelar
@@ -26,3 +26,8 @@ Antes de criar Prisma, documentar entidades, atributos justificados, identificad
 Relacionar cada escolha com a spec e os testes necessários. Rever [histórico](../specs/study-history.md), [fontes](../specs/source-retrieval.md) e [autenticação](../integrations/auth.md).
 
 Cada migração futura deve atualizar este documento e ter execução real num PostgreSQL isolado. Não tratar esta descrição como schema implementado.
+
+## Propriedade modular consolidada
+biblical-canon: Book/Chapter/Verse/Translation e referência; source-library: Source/SourceExcerpt e direitos/proveniência; study: Study/StudySection/Interpretation/Evidence/versionamento; cross-references: ligações justificadas entre passagens; ai-assistant: conversas/mensagens e orquestração; study-workspace: notas/favoritos e recuperação de estudos/sessões.
+Identidades, cardinalidades, campos e limites transacionais permanecem por especificar. Workspace referencia estudo por contrato e não duplica a propriedade do estudo; conversa não equivale à versão do estudo.
+Não criar schema de negócio na S01 para aparentar persistência real. A prova técnica de persistência terá contrato próprio e dados controlados, sem textos bíblicos/históricos fictícios.

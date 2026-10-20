@@ -1,38 +1,56 @@
-# Rastreabilidade e migração de referências
+# Rastreabilidade e evolução do roadmap
 
-Estado: correspondência documental. Não renumera resultados históricos nem aprova implementação.
-[DOC-0001](../tasks/DOC-0001-inicializacao-governanca.md) permanece o registo da inicialização anterior; contagens e árvore nele contidas são um retrato dessa entrega, não o inventário atual.
+IDs anteriores não mudam de significado; títulos/trilhas/estados preservados em [HISTORY](HISTORY.md). A tabela seguinte é correspondência de trabalho, não renumeração retroativa, transferência de aprovação ou prova de execução.
 
-## IDs anteriores e tarefas novas
-| Referência preservada | Tratamento | Tarefas por sprint |
-|---|---|---|
-| DOC-0001 | Antecedente histórico; não renumerar nem executar novamente | [S00-T001](../sprints/S00/backlog.md) |
-| PLAN-001 | Refinamento distribuído por specs e respetivos fluxos | [S01-T001](../sprints/S01/backlog.md), [S04-T001](../sprints/S04/backlog.md), [S06-T001](../sprints/S06/backlog.md) |
-| PLAN-002 | Contextos, invariantes e modelo | [S01-T001](../sprints/S01/backlog.md), [S01-T003](../sprints/S01/backlog.md), [S02-T001](../sprints/S02/backlog.md) |
-| PLAN-003 | Acesso/retenção e contratos API | [S02-T001](../sprints/S02/backlog.md), [S06-T001](../sprints/S06/backlog.md), [S07-T001](../sprints/S07/backlog.md) |
-| PLAN-004 | Fornecedor, modelos e contrato de IA | [S05-T001](../sprints/S05/backlog.md), [S05-T002](../sprints/S05/backlog.md), [S05-T003](../sprints/S05/backlog.md) |
-| PLAN-005 | Cânone, versões, licenças e biblioteca | [S03-T001](../sprints/S03/backlog.md), [S03-T002](../sprints/S03/backlog.md), [S03-T003](../sprints/S03/backlog.md) |
-| PLAN-006 | Harness, bootstrap e persistência real | [S01-T002](../sprints/S01/backlog.md), [S02-T002](../sprints/S02/backlog.md), [S02-T003](../sprints/S02/backlog.md) |
-| PLAN-007 | Recuperação e estudo estruturado integrado | [S03-T002](../sprints/S03/backlog.md), [S04-T002](../sprints/S04/backlog.md), [S04-T003](../sprints/S04/backlog.md), [S05-T002](../sprints/S05/backlog.md), [S05-T003](../sprints/S05/backlog.md) |
-| PLAN-008 | Perguntas e histórico, separados por responsabilidade | [S02-T003](../sprints/S02/backlog.md), [S06-T001](../sprints/S06/backlog.md), [S06-T002](../sprints/S06/backlog.md), [S06-T003](../sprints/S06/backlog.md) |
-| PLAN-009 | Seleção, navegação e comparação | [S01-T001](../sprints/S01/backlog.md), [S04-T001](../sprints/S04/backlog.md), [S07-T001](../sprints/S07/backlog.md), [S07-T002](../sprints/S07/backlog.md) |
-| PLAN-010 | Frontend, UX e integração acessível | [S07-T001](../sprints/S07/backlog.md), [S07-T002](../sprints/S07/backlog.md), [S07-T003](../sprints/S07/backlog.md) |
-| PLAN-011 | Operação, deploy, segurança e recuperação | [S08-T001](../sprints/S08/backlog.md), [S09-T001](../sprints/S09/backlog.md), [S09-T002](../sprints/S09/backlog.md), [S09-T003](../sprints/S09/backlog.md) |
+| Referência anterior | Destino no ciclo backend |
+|---|---|
+| DOC-0001 | Inicialização histórica preservada |
+| S00-T001 | Tarefa histórica DONE preservada; consolidação nova S00-T002 a T007 |
+| S01-T001 | S02-T004 (domínio canónico); S04-T004 (regras de estudo) |
+| S01-T002 | S01-T004/S01-T005/S01-T008 (toolchain e compatibilidade) |
+| S01-T003 | S02-T005; S04-T005 (invariantes por módulo) |
+| S02-T001 | S01-T004 (contratos técnicos); S06-T004/S07-T004 (dados pessoais/histórico) |
+| S02-T002 | S01-T006/S01-T007 (NestJS/persistência) |
+| S02-T003 | S07-T006 (workspace/histórico) |
+| S03-T001 | S02-T004 (cânone); S03-T004 (fontes) |
+| S03-T002 | S02-T006 (importação bíblica); S03-T005/S03-T006 (biblioteca) |
+| S03-T003 | S03-T007 (proveniência) |
+| S04-T001 | S04-T004 |
+| S04-T002 | S04-T005/S04-T006 |
+| S04-T003 | S04-T007 |
+| S05-T001 | S05-T004 |
+| S05-T002 | S05-T005/S05-T006 |
+| S05-T003 | S05-T007 |
+| S06-T001 | S06-T004 |
+| S06-T002 | S06-T005/S06-T006 |
+| S06-T003 | S06-T007 |
+| S07-T001 | Frontend adiado; contratos backend tratados em S02/S04/S07 |
+| S07-T002 | Frontend adiado, fora do ciclo backend |
+| S07-T003 | Frontend/acessibilidade de interface adiados |
+| S08-T001 | S08-T004 |
+| S08-T002 | S08-T005/S08-T006 |
+| S08-T003 | S08-T007 |
+| S09-T001 | S08-T004 |
+| S09-T002 | S08-T005/S08-T006 |
+| S09-T003 | S08-T007 |
 
-PLAN-* eram propostas abrangentes; a relação pode ser um-para-muitos. Não contar o mesmo trabalho como concluído nos dois sistemas.
-As specs existentes que citam PLAN-* continuam resolvidas pelo [backlog de entrada](../tasks/backlog.md); manter esses IDs até revisão própria das specs.
+## Referências PLAN preservadas
 
-## Produto, specs e sprints
-| Requisitos | Referência | Planeamento responsável |
-|---|---|---|
-| PRD-01 e PRD-04 | Seleção/comparação ainda a refinar; SS-001 parcialmente | S01, S04, S07 |
-| PRD-02, PRD-03, PRD-05, PRD-09 | SS-001 e BR-01 a BR-08 | S01, S04, S05 |
-| PRD-06 | FQ-001 | S06 |
-| PRD-07 e PRD-10 | SR-001 e política de fontes/licenças | S03, S05 |
-| PRD-08 | SH-001 | S02, S06, S07 |
-| PRD-11 | Estados, acessibilidade e recuperação por fluxo | S07, S08, S09 |
-| BR-01 a BR-12 | Regras e avaliação epistemológica | Transversal, verificadas nos fluxos afetados |
+| ID | Intenção histórica e destino de refinamento |
+|---|---|
+| PLAN-001 | Specs/fluxos: S02, S04, S06 |
+| PLAN-002 | Contextos/modelo: S00, S02, S04 |
+| PLAN-003 | Acesso/contratos: S01, S06, S07 |
+| PLAN-004 | Fornecedor/modelos/avaliações: S05 |
+| PLAN-005 | Cânone/licenças/fontes: S02, S03 |
+| PLAN-006 | Harness/backend/persistência: S01 |
+| PLAN-007 | Recuperação/estudo: S03, S04, S05 |
+| PLAN-008 | Perguntas/histórico: S06, S07 |
+| PLAN-009 | Navegação/comparação/relações: S02, S04, S07 |
+| PLAN-010 | Frontend/UX: adiado fora do ciclo backend |
+| PLAN-011 | Operação/segurança/release: S08 |
 
-Specs: [SS-001](../specs/structured-study.md), [FQ-001](../specs/free-questions.md), [SR-001](../specs/source-retrieval.md), [SH-001](../specs/study-history.md).
-Todas continuam em rascunho; associação a uma sprint não altera o seu estado.
-O [roadmap de produto](../product/roadmap.md) preserva R0–R6 e aponta para o planeamento atual.
+## Requisitos e specs
+
+PRD-01 → S02; PRD-02/03/05/09 → S04/S05; PRD-04 → S04/S07; PRD-06 → S06; PRD-07/10 → S03/S05; PRD-08 → S07; PRD-11 conserva o frontend adiado, com erros/contratos HTTP tratados no backend. BR-01 a BR-12 são transversais.
+SS-001 → S04/S05; FQ-001 → S06; SR-001 → S03/S05; SH-001 → S07 e persistência contextual em S06. As [quatro specs](../specs/README.md) continuam em rascunho; nenhuma foi alterada ou aprovada por esta migração.

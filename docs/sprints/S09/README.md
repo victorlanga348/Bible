@@ -1,3 +1,10 @@
+# S09 — Planeamento histórico adiado
+
+Fora do ciclo backend S00–S08 aprovado documentalmente em 2026-10-20. Não executada; não é dependência de S08. Hardening foi replaneado em S08 com IDs novos; os IDs S09 não serão reutilizados. Os documentos desta pasta permanecem retrato histórico, não backlog ativo.
+Ver [roadmap atual](../../roadmap/master-plan.md) e [histórico](../../roadmap/HISTORY.md).
+
+## Índice anterior preservado
+
 # S09 — Hardening e MVP
 
 ## Objetivo

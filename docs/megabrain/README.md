@@ -1,6 +1,6 @@
 # MegaBrain — Memória Técnica Operacional
 
-Estado: estrutura inicial criada; não há incidentes, lições de implementação ou padrões comprovados registados.
+Estado: estrutura local reutilizada na consolidação S00 de 2026-10-20. Sem aplicação ou padrões de implementação comprovados. O contexto operacional regista apenas problemas de ferramentas observados, com limites da evidência; não há incidente de aplicação inventado.
 O MegaBrain evita repetição de erros e perda de contexto entre sessões. Não é fonte normativa de comportamento: promover conhecimento para specs/ADRs apenas após aprovação.
 
 ## Organização

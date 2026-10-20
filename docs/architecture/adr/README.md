@@ -1,15 +1,11 @@
 # Architecture Decision Records
 
-ADRs explicam decisões relevantes e preservam alternativas e consequências. Specs definem comportamento; ADRs não substituem os respetivos critérios.
+| ADR | Estado e alcance |
+|---|---|
+| [ADR-0001](ADR-0001-stack-e-limites-arquiteturais.md) | Aceite historicamente; stack/limites originais, preservada |
+| [ADR-0002](ADR-0002-adocao-condicional-strykerjs.md) | Aceite historicamente; escolha condicionada preservada; evolução na ADR-0003 |
+| [ADR-0003](ADR-0003-backend-modular-e-stack-prescrita.md) | Aceite documentalmente em 2026-10-20; monólito, seis módulos e stack prescrita, sem implementação |
+| [Template](template.md) | Modelo para novas decisões |
 
-## Registo
-| Documento | Estado | Origem |
-|---|---|---|
-| [ADR-0001](ADR-0001-stack-e-limites-arquiteturais.md) | Aceite por decisão explícita do utilizador | Stack e limites fornecidos no pedido mestre |
-| [ADR-0002](ADR-0002-adocao-condicional-strykerjs.md) | Aceite com validação de compatibilidade pendente | StrykerJS por orientação explícita do utilizador |
-| [Template](template.md) | Modelo | Usar para decisões futuras |
-
-## Processo
-Numerar sequencialmente `ADR-0002-descricao.md`; pesquisar decisões existentes antes de criar outra. Estados: proposto, aceite, rejeitado, substituído.
-Uma decisão nova exige aprovador, data e referência verificável. Alterações relevantes a uma ADR aceite criam sucessora ligada, preservando o histórico.
-Registar pendências na [stack](../stack.md); não produzir uma ADR aceite para cada pergunta em aberto.
+Próximo ID: ADR-0004. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
+Aprovação exige decisor, data e origem verificável. Specs definem comportamento; ADR não aprova endpoint/schema ou instalação. Pendências na [stack](../stack.md).

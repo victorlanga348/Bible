@@ -1,7 +1,7 @@
 # PRD — Bíblia App
 
 Estado: visão e requisitos de alto nível definidos pelo utilizador; decomposição nas specs ainda em rascunho.
-Data da baseline: 2026-10-17. Implementação: não iniciada.
+Data da baseline: 2026-10-17. Consolidação documental backend: 2026-10-20, plano S00 aprovado pelo «ok» do utilizador. Implementação: não iniciada.
 
 ## Problema e propósito
 O estudo de uma passagem exige reunir contexto histórico, literário, cultural e teológico, reconhecer divergências e verificar fontes. O Bíblia App pretende apoiar esse trabalho sem apresentar a IA como autoridade absoluta.
@@ -34,7 +34,7 @@ A resposta deve expor evidências e limites, reconhecer fontes ausentes e evitar
 Segurança, acessibilidade, desempenho, custos, retenção e disponibilidade exigem critérios mensuráveis aprovados nas tarefas; não existem metas numéricas aprovadas para estes itens.
 
 ## Âmbito desta entrega e exclusões
-Esta entrega estabelece documentação, governança, templates, rastreabilidade e memória operacional.
+Esta entrega estabelece documentação, governança, templates, rastreabilidade e memória operacional. O ciclo backend atual é S00–S08; frontend fica adiado. Trilhas A domínio, B infraestrutura, C qualidade/documentação. Notas, favoritos e relações justificadas são responsabilidades futuras de study-workspace/cross-references, ainda por especificar em S07.
 Não inclui código, instalação, schema, serviços, chamadas de IA, corpus de textos ou fontes históricas preenchido.
 
 ## Decisões e dependências

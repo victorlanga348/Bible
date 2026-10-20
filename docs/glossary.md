@@ -1,5 +1,12 @@
 # Glossário
 
+Consolidação backend S00, 2026-10-20: termos abaixo são linguagem conceptual, não campos aprovados.
+Book/Chapter/Verse/Translation: livro/capítulo/versículo/edição textual, sempre associados ao cânone e à versificação decididos.
+Source/SourceExcerpt: fonte e excerto identificados com proveniência/direitos; Evidence: suporte verificável de uma afirmação, distinto da mera existência de uma referência.
+Study/StudySection: estudo e secção persistíveis/versionados; Interpretation: leitura fundamentada com tradição/incerteza, distinta de facto documentado.
+Cross-reference: relação justificada entre passagens, com natureza explícita; Workspace: notas/favoritos/histórico e recuperação; conversa: sequência contextual ligada ao estudo, sem o regenerar silenciosamente.
+Facto documentado, inferência, tradição interpretativa e hipótese devem continuar distinguíveis. Ver [mapa modular](architecture/bounded-contexts.md).
+
 Estado: vocabulário inicial; refinar com a aprovação das specs e dos contextos.
 
 | Termo | Significado no projeto |

@@ -1,6 +1,5 @@
 # Arquitetura
 
-Começar pela [stack](stack.md), pela [visão do sistema](system-overview.md) e pelas [regras de dependência](dependency-rules.md).
-Os [contextos](bounded-contexts.md) e o [modelo de dados](data-model.md) são propostas conceptuais; não existem módulos ou schema implementados.
-
-[ADRs](adr/README.md) guardam decisões e o seu histórico. Uma proposta de entidade ou port só se torna contrato após revisão e aprovação.
+[Visão](system-overview.md), [stack](stack.md), [contextos/módulos](bounded-contexts.md), [dependências](dependency-rules.md), [modelo conceptual](data-model.md), [ADRs](adr/README.md).
+Backend prescrito: monólito modular com seis módulos e camadas internas independentes. Documentação consolidada em S00; sem código/schema/contratos físicos aprovados.
+ADR-0003 complementa as decisões históricas preservadas; versões/compatibilidade e contratos de implementação exigem aprovação própria.

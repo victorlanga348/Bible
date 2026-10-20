@@ -1,25 +1,17 @@
 # Regras de dependência
 
-Estado: limites definidos pelo utilizador; convenções concretas de pastas e fiscalização automática ainda por aprovar.
+Direção aprovada documentalmente no PLAN S00/ADR-0003; fiscalização automática a preparar em S01.
 
-## Direção permitida
-- Domínio depende apenas de conceitos internos e recursos de linguagem compatíveis com a sua independência.
-- Aplicação depende do domínio e de contratos internos; não de adapters.
-- Infraestrutura implementa ports e pode depender de aplicação/domínio.
-- Entrada e composição NestJS ligam adapters aos casos de uso.
-- Frontend comunica pelos contratos aprovados, sem acoplamento ao schema Prisma.
+## Direção
+Domain depende de conceitos internos/linguagem; Application de Domain e ports internos; Infrastructure implementa ports e pode depender das camadas internas. Presentation delega após validação de transporte. module.ts é composição NestJS.
+Domain não importa NestJS, Prisma, Zod, clientes HTTP, SDKs de IA ou configuração de ambiente.
+Application não depende de adapters/concretos, nem recebe tipos Prisma/respostas brutas do fornecedor como contrato.
+Presentation não contém regras de negócio; entidades Prisma não substituem entidades do domínio.
+Cada módulo controla os seus dados; integração entre módulos usa contratos explícitos, sem SQL/repositório/tabela de outro módulo por atalho.
+Não resolver ciclos com acesso transversal silencioso, abstrações genéricas sem necessidade ou microsserviços.
 
-## Proibições
-- Domínio não importa NestJS, Prisma, clientes HTTP, SDKs de IA ou configuração de ambiente.
-- Casos de uso não recebem tipos de persistência ou respostas brutas de fornecedores como contrato de domínio.
-- Controllers não contêm políticas bíblicas nem regras de persistência.
-- Adapters não substituem decisões de negócio por comportamento específico do fornecedor.
-- Dependências circulares entre contextos não são resolvidas com atalhos silenciosos.
-
-## Contratos e erros
-Ports expressam necessidades do domínio/aplicação. Assinaturas, semântica de erro e políticas de repetição exigem desenho aprovado.
-Mapear erros técnicos para erros compreensíveis no limite apropriado sem expor segredos ou destruir a causa operacional.
-
-## Verificação futura
-A revisão deve inspecionar imports, tipos exportados, responsabilidades e testes de fronteira. Ferramentas automáticas de fiscalização serão selecionadas no bootstrap, sem pacote presumido.
-Evidência de conformidade integra a [tarefa](../tasks/template.md) e os [gates](../quality/quality-gates.md).
+## Contratos e fiscalização
+Assinaturas, semântica de erro, limites, idempotência/repetição e consistência exigem desenho aprovado. Não inventar endpoints/ports para preencher pastas.
+Erros técnicos são mapeados no limite adequado sem expor segredos e sem apagar causa operacional.
+Verificar imports, tipos exportados, responsabilidades, ciclos e propriedade de persistência com checks executáveis em S01. Não selecionar nova dependência de fiscalização sem aprovação.
+S00 revê regras documentais; sem código, não há fiscalização arquitetural executável aprovada. Ver [gates](../quality/quality-gates.md).

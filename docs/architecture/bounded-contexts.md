@@ -1,27 +1,16 @@
-# Bounded contexts
+# Bounded contexts e módulos
 
-Estado: proposta de modelação para revisão; não constitui separação implementada nem decisão de serviços.
-Relaciona [PRD](../PRD.md), [glossário](../glossary.md) e [modelo conceptual](data-model.md).
+Estado: responsabilidades dos seis módulos definidas pelo pedido mestre; aggregates, fronteiras transacionais e contratos detalhados ainda por aprovar. [ADR-0003](adr/ADR-0003-backend-modular-e-stack-prescrita.md).
 
-## Candidatos
-| Contexto proposto | Responsabilidade e vocabulário | Relações propostas |
+| Módulo | Propriedade e vocabulário | Relação por contrato |
 |---|---|---|
-| Navegação bíblica | Livro, capítulo, passagem, cânone e versão | Fornece seleção identificada ao estudo; depende de decisões editoriais/licenças |
-| Estudo bíblico | Estudo, secção, comparação, interpretação e pergunta | Coordena a investigação com referências e incertezas |
-| Biblioteca e evidência | Fonte, localização, condições de uso, cobertura e evidência | Fornece material identificável ao estudo sem decidir a interpretação |
-| Histórico de investigação | Estudo guardado, continuidade e proveniência | Preserva contexto para consulta; depende da política de acesso/retenção |
+| biblical-canon | Book, Chapter, Verse, Translation, referência, cânone, versificação e navegação | Fornece identidades/referências validadas, sem assumir versificação comum |
+| source-library | Source, SourceExcerpt, autoria/datação, proveniência, licenças e pesquisa | Fornece evidências identificadas e cobertura real |
+| study | Study, StudySection, Interpretation, Evidence e versões | Consome cânone/fontes, mantém composição e proveniência do estudo |
+| cross-references | Relação entre passagens, citação, alusão, paralelo e classificação profética | Usa referências canónicas e evidência da ligação |
+| ai-assistant | Orquestração LLM/RAG, recuperação, conversas, validação e limites | Consome evidências/ports; fornecedor é adapter, não autoridade de domínio |
+| study-workspace | Estudos guardados, notas, favoritos, histórico e recuperação de sessões | Referencia estudos/conversas por contratos; não lê tabelas alheias |
 
-A geração por IA é uma capacidade de infraestrutura usada pela aplicação, não uma autoridade sobre o domínio. A sua eventual modelação como contexto próprio requer evidência e ADR.
-
-## Relações e linguagem
-A navegação não deve assumir que todas as versões partilham identificadores e versificação. A biblioteca deve expor limites de cobertura. O estudo deve distinguir validade da referência, suporte da afirmação e interpretação.
-O histórico deve preservar proveniência suficiente para evitar que mudanças na biblioteca alterem silenciosamente o sentido de um estudo anterior.
-
-## Questões antes de aprovar
-- Quem mantém o ciclo de vida de estudos e perguntas?
-- Que conceitos exigem invariantes transacionais?
-- Qual é a unidade de identidade de uma passagem entre versões?
-- Como preservar proveniência e direitos de utilização no histórico?
-- Quais relações são contratos publicados entre contextos?
-
-Responder nas tarefas de modelação; não criar aggregates, tabelas ou eventos apenas a partir destes nomes.
+Um módulo não equivale automaticamente a bounded context de negócio ou aggregate. Os quatro contextos candidatos da baseline anterior evoluem para este mapa de responsabilidades; a separação técnica de IA não atribui autoridade histórica ao fornecedor.
+Perguntas antes da implementação: propriedade de ciclo de vida, identidade de passagem entre edições, consistência e transações, preservação de proveniência/direitos, identidade/acesso e retenção. Resolver em specs/ADRs antes de campos/tabelas/events.
+Referências: [PRD](../PRD.md), [linguagem](../glossary.md), [modelo](data-model.md) e [dependências](dependency-rules.md).

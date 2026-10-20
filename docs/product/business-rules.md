@@ -1,6 +1,6 @@
 # Regras de negócio
 
-Estado: princípios definidos pelo utilizador; operacionalização nas specs ainda em rascunho.
+Estado: princípios definidos pelo utilizador; operacionalização nas specs ainda em rascunho. Consolidação S00 de 2026-10-20 mantém a distinção entre facto documentado, inferência, tradição interpretativa e hipótese. Notas/favoritos/relações do backend serão especificados em S07, sem presumir contratos.
 Aplicam-se a estudos, comparações, perguntas livres e histórico de respostas.
 
 | ID | Regra | Verificação esperada |

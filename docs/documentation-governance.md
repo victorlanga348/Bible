@@ -1,83 +1,50 @@
 # Governança documental
 
-Estado: atualização solicitada pelo utilizador e autorizada pelo «ok» após o plano de inspeção e atualização. Data: 2026-10-17.
-Registo: [S00-T001](sprints/S00/tasks/S00-T001-atualizacao-governanca.md). Não autoriza implementação futura.
+Atualização: 2026-10-20. Origem: pedido mestre de backend e «ok» explícito ao [PLAN S00](sprints/S00/PLAN.md). Aprovação cobre S00-T002 a T007 e a transição documental, não implementação/encerramento/commit/push.
 
-## Fonte da verdade
-/docs contém as specs normativas; README.md contém visão geral e entrada.
-Specs aprovadas definem comportamentos, contratos aprovados definem interfaces e ADRs aceites definem decisões arquiteturais.
-PRD e regras de negócio sustentam a intenção do produto. MegaBrain guarda conhecimento técnico, sem alterar requisitos por si.
-Código e testes devem corresponder às specs aprovadas. Em conflito, interromper implementação e solicitar esclarecimento; não corrigir silenciosamente requisitos para legitimar código.
+## Fontes e estados
+/docs contém specs normativas; README contém entrada; ADRs aceites registam decisões; MegaBrain preserva conhecimento operacional. Código/testes devem corresponder a specs aprovadas.
+Estados documentais: definido pelo utilizador, rascunho/proposto, pendente, aprovado/aceite, implementado, substituído/obsoleto. Aprovação regista aprovador, data e referência; implementado exige evidência.
+Conflitos exigem interrupção da implementação e esclarecimento. Não alterar silenciosamente documentos aprovados; preservar histórico e obter aprovação de mudanças de escopo.
 
-## Estados e aprovação documental
-| Estado | Significado |
-|---|---|
-| Definido pelo utilizador | Decisão explicitamente fornecida, registada com origem |
-| Rascunho / proposto | Conteúdo em revisão, sem autorização de implementação |
-| Pendente | Decisão sem resposta; indicar impacto e responsável |
-| Aprovado / aceite | Aprovador, data e referência explícitos |
-| Implementado | Comportamento existente com evidência |
-| Substituído / obsoleto | Histórico preservado e sucessor ligado |
+## Aprovações independentes
+Escopo de sprint, spec/contratos e plano/dependências de tarefa são aprovados antes da execução. Uma aprovação pode enumerar tarefas documentais concretas; não autoriza futuros comportamentos.
+Relatório e REVIEW precedem aprovação final de encerramento/commit. Sprint permanece REVIEW até essa aprovação. Não iniciar próxima sprint sem autorização própria.
+Estado de tarefa: BACKLOG → READY → IN_PROGRESS → REVIEW → DONE; BLOCKED com causa/critério de desbloqueio. DONE exige todos os gates aplicáveis.
+Resultado de execução/critério: PASS, FAIL, BLOCKED, NOT_RUN. Aplicabilidade/motivo ficam separados, sem converter não execução em PASS.
+Trilhas: A domínio/regras; B infraestrutura/integrações; C qualidade/documentação. Não implicam subagentes, paralelismo ou serviços separados.
 
-Specs, planos de tarefa e escopo de sprint têm aprovações separadas. Aprovar planeamento documental não aprova os comportamentos planeados.
-Aprovador inicial: utilizador. Revisores técnicos são indicados por tarefa, sem atribuir pessoas não designadas.
-Não modificar documentos aprovados silenciosamente: propor alteração, mostrar impacto e obter aprovação. Preservar histórico em Git quando autorizado, ou registo explícito de evolução enquanto alterações ainda não foram commitadas.
+## Documentos canónicos
+Reutilizar arquitetura/adr, quality, product, integrations e MegaBrain existentes.
+Cada sprint terá PLAN, TASKS, ACCEPTANCE_CRITERIA, TEST_REPORT e REVIEW em docs/sprints/Sxx. TASKS é a fonte de estados de tarefa; README da sprint é a fonte do estado da sprint.
+Entradas antigas scope/backlog/acceptance remetem para os novos documentos, preservando IDs e retratos históricos. Uma lista histórica não é backlog ativo.
+Não duplicar modelos/regras em novas árvores. Specs existentes permanecem rascunho até aprovação própria.
 
-## Sprints e tarefas
-O [índice de sprints](sprints/README.md) define estrutura, transições e fechamento.
-O [plano mestre](roadmap/master-plan.md) organiza S00–S09. Tarefas novas usam Sxx-Txxx; os IDs anteriores permanecem rastreáveis na [correspondência](roadmap/traceability.md).
-Estados de tarefa permitidos: BACKLOG, READY, IN_PROGRESS, BLOCKED, REVIEW, DONE.
-Uma tarefa de implementação necessita de spec e plano aprovados antes de código. A aprovação de sprint não elimina estas condições.
-Uma tarefa de documentação exige aprovação do âmbito e verificação documental; TDD e mutação podem ser não aplicáveis com justificação.
-
-## Ciclo obrigatório
-1. Identificar sprint/tarefa, specs, contratos, dependências e ADRs.
-2. Consultar erros, padrões e armadilhas no MegaBrain; verificar skills relevantes.
-3. Apresentar plano, vantagens, desvantagens, alternativas, riscos e aceitação.
-4. Obter aprovações explícitas; limitar alterações ao necessário.
-5. Executar RED–GREEN–REFACTOR para comportamento.
-6. Executar qualidade estática, integração real, mutação e avaliações da IA aplicáveis.
-7. Sincronizar os dois lados da matriz de impacto.
-8. Registar evidências e conhecimento relevante.
-9. Passar a DONE apenas após os sete gates aplicáveis.
-10. Fechar sprint apenas com relatório, roadmap atualizado e aprovação explícita de encerramento.
-
-Trabalhar numa tarefa aprovada de cada vez, salvo autorização expressa para paralelismo. Não adicionar dependências sem justificação e aprovação.
-Inspeção deve ser focada; validação transversal de links é justificada quando a alteração afeta a navegação documental.
+## Ciclo
+Identificar tarefa/specs/contratos/ADRs; consultar MegaBrain/skills; apresentar plano, alternativas, riscos e validação; obter aprovações; executar uma tarefa por vez; aplicar TDD a comportamento; validar [sete gates](quality/quality-gates.md); sincronizar impacto; registar evidência e conhecimento real.
+Não instalar/adicionar dependências ou contratar serviços fora de escopo. Ausência de credencial não impede contratos/adapters possíveis aprovados, mas a integração real permanece BLOCKED. Registar ação externa com critério de desbloqueio.
 
 ## Matriz de impacto bidirecional
-| Alteração | Referências a rever em ambos os sentidos |
+| Mudança | Rever em ambos os sentidos |
 |---|---|
-| Entidades e regras | [Produto](product/business-rules.md), [specs](specs/README.md), [modelo](architecture/data-model.md) e testes |
-| Prisma, persistência, migrações | [Modelo](architecture/data-model.md), [testes](quality/testing-strategy.md) e [ambientes](operations/environments.md) |
-| API | [Contratos](integrations/api-contracts.md), specs, consumidores e integração HTTP |
-| IA e recuperação | [IA](ai/README.md), [biblioteca](biblical-library/README.md), specs e avaliações |
-| UI | [Páginas](pages/README.md), [componentes](components/README.md), [design](design/README.md), copy e acessibilidade |
-| Testes e critérios | [Qualidade](quality/README.md), critérios das specs, tarefas e acceptance da sprint |
-| Infraestrutura | [Operações](operations/README.md), segurança, stack e ADR aplicável |
-| Decisões arquiteturais | [ADRs](architecture/adr/README.md), arquitetura, contratos e planos |
-| Erros e aprendizagens | [MegaBrain](megabrain/README.md), regressões e documentos normativos relacionados |
-| Planeamento e estados | [Sprints](sprints/README.md), [roadmap](roadmap/README.md), [tarefas](tasks/README.md), dependências e contexto operacional |
+| Entidades/regras | PRD, product/business-rules, specs, architecture/data-model e testes |
+| Persistência/migrações | Modelo, contratos, testes reais, ambientes, recuperação |
+| API | integrations/api-contracts, specs, schemas/OpenAPI, consumidores e HTTP real |
+| IA/RAG | ai, biblioteca, fontes/licenças, contratos e avaliações reais |
+| Testes/gates | quality, critérios, tarefas, relatórios e dependências |
+| Operação/acesso | operations, segurança, auth, retenção, ações externas e ADRs |
+| Arquitetura | ADRs, módulos/ports, dependências e planos |
+| Planeamento | Sprints, roadmap, tarefas, rastreabilidade e contexto MegaBrain |
+| Erros/aprendizagens | MegaBrain, regressões e fontes normativas afetadas |
 
-Uma alteração de spec inicia análise sobre código, testes e consumidores; uma alteração técnica obriga a rever a spec. Registar ficheiros revistos e não aplicabilidade na tarefa.
+Mudança de código exige rever spec; mudança de spec exige rever consumidores/testes. Registar ficheiros revistos e motivo de não aplicabilidade.
 
-## Git e execução
-- main: versão estável; documentação em rascunho não significa aplicação implementada.
-- develop: integração apenas se adotada.
-- Funcionalidades: feat/sprint-X-trilha-nome, identificando Sxx e tarefa na descrição.
-- Correções: fix/descricao; documentação: docs/descricao; refatoração: refactor/descricao.
-- Conventional Commits com descrições em português e IDs reais quando aplicável.
-- Não inventar commits, branches ou aprovações. Commit/push/publicação dependem do âmbito autorizado.
-- Preferir rtk instalado e compatível; caso contrário usar equivalente nativo. Não editar RTK.md externo.
-- Usar apenas scripts existentes no package.json; registar comando, resultado e falhas.
+## Git e evidências
+Branch principal main; backend em feat/biblia-backend. Antes de editar verificar estado/refs e preservar trabalho. Não usar reset destrutivo, merge automático ou alterar main.
+Commits por sprint seguem mensagens exatas de [AGENTS](../AGENTS.md); descrição documental em português. Commit PENDING antes de aprovação final. Push exige autorização separada.
+Preferir rtk compatível com fallback nativo justificado, sem editar RTK.md externo. Executar apenas scripts reais do package.json. Registar comando, data, ambiente, resultado/falhas/artefactos sem segredos.
 
-## Checklist de fechamento
-1. Critérios de aceitação cumpridos e evidenciados?
-2. Sete gates aplicáveis satisfeitos, sem teste obrigatório por executar?
-3. Arquitetura, contratos, licenças, segurança e acessibilidade consistentes conforme impacto?
-4. **Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?**
-5. MegaBrain atualizado quando houve conhecimento relevante?
-6. Pendências, dependências, roadmap e estados atualizados?
-7. Encerramento da sprint explicitamente aprovado, se for pedido o seu fechamento?
-
-Resultados históricos de DOC-0001 mantêm-se como evidência da versão inicial; não são execução dos gates novos nem aprovação retroativa de sprints.
+## Fechamento
+Verificar critérios/gates aplicáveis, sincronizar docs/README/ADRs/roadmap/MegaBrain, produzir relatórios com riscos/bloqueios e pedir aprovação de encerramento.
+Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
+DOC-0001/S00-T001 preservam evidências históricas; não comprovam funcionamento do backend nem gates atuais.

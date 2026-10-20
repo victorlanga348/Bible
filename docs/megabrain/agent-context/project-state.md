@@ -1,38 +1,25 @@
 # Estado operacional do Bíblia App
 
-Atualizado: 2026-10-17. Estado: atualização documental concluída e validada; S00 em REVIEW para aprovação de encerramento; implementação não iniciada.
-Operação atual: [S00-T001](../../sprints/S00/tasks/S00-T001-atualizacao-governanca.md), plano aprovado pelo «ok» do utilizador após inspeção.
-Histórico: [DOC-0001](../../tasks/DOC-0001-inicializacao-governanca.md), preservado com os resultados anteriores.
+Atualizado: 2026-10-20. Branch feat/biblia-backend, base d1d25b7 (merge documental já feito pelo utilizador no PR #1). Consolidação S00 aprovada pelo «ok» após PLAN; relatório, encerramento e commit aprovados pelo «sim» após TEST_REPORT/REVIEW. S00 e tarefas S00-T002 a T007 DONE. Commit principal: a registar após gravação. Sem push/merge autorizado nesta operação.
 
-## O que existe
-Documentação de produto/arquitetura/IA, quatro specs em rascunho, governança, templates, S00–S09 e roadmap operacional.
-Não há código, package.json, schema, migrações, corpus aprovado, integrações ou ambientes provisionados.
-Somente a operação documental atual foi autorizada; backlogs futuros não são planos aprovados.
+## Realidade e fontes
+Somente documentação, governança, seis módulos descritos, backlog S00–S08, ações externas e plano S01. Sem package.json, código, schema/migrações, corpus, integração real ou ambiente de aplicação provisionado.
+[README](../../../README.md), [AGENTS](../../../AGENTS.md), [governança](../../documentation-governance.md), [sprints](../../sprints/README.md), [gates](../../quality/quality-gates.md) e [relatório S00](../../sprints/S00/TEST_REPORT.md).
+Specs SS-001/FQ-001/SR-001/SH-001 continuam rascunho e byte a byte preservadas; inicialização DOC-0001 e S00-T001 preservadas. Mudança documental não aprova comportamento.
 
-## Convenções e continuidade
-Ler [AGENTS](../../../AGENTS.md), [governança](../../documentation-governance.md), [sprints](../../sprints/README.md) e [gates](../../quality/quality-gates.md).
-Preferir rtk instalado e compatível; usar equivalente nativo quando necessário. A obrigatoriedade anterior foi substituída pelo novo pedido, sem editar RTK.md externo.
-Uma tarefa aprovada de cada vez, salvo autorização explícita; preservar limites e exigir spec/plano aprovados antes de código.
-Português na documentação e nas descrições de commits. Não inventar contratos, fontes, testes, decisões ou aprovações.
+## Decisões e planeamento
+ADR-0001/0002 históricas intactas; [ADR-0003](../../architecture/adr/ADR-0003-backend-modular-e-stack-prescrita.md) regista monólito, seis módulos, stack/testes prescritos. Versões/compatibilidade por validar.
+Trilhas atuais: A domínio/regras; B infraestrutura/integrações; C qualidade/documentação. Uma tarefa por vez, sem agentes paralelos autorizados.
+Nove sprints backend; frontend adiado e S09 histórico. 28 tarefas históricas preservadas, 34 futuras novas e seis de consolidação, sem reciclar IDs. [Rastreabilidade](../../roadmap/traceability.md), [histórico](../../roadmap/HISTORY.md).
+Módulos: biblical-canon, source-library, study, cross-references, ai-assistant, study-workspace. S04 determinística; S05 LLM/RAG real.
 
-## Mapa
-Sem módulos de código. [Contextos](../../architecture/bounded-contexts.md) continuam propostos.
-Trilha A: backend/persistência/infraestrutura; B: domínio/inteligência bíblica; C: frontend/UX/integração. Não equivalem a serviços separados.
-IDs novos Sxx-Txxx e estados BACKLOG, READY, IN_PROGRESS, BLOCKED, REVIEW, DONE; [IDs antigos](../../roadmap/traceability.md) preservados.
-
-## Decisões vigentes
-[ADR-0001](../../architecture/adr/ADR-0001-stack-e-limites-arquiteturais.md): stack e limites originais, sem alteração.
-[ADR-0002](../../architecture/adr/ADR-0002-adocao-condicional-strykerjs.md): StrykerJS sob compatibilidade por validar; nada instalado.
-[DEC-01 a DEC-10](../../architecture/stack.md): escolhas por resolver, com DEC-08 agora uma escolha condicionada cuja validação técnica continua pendente.
-Sem versões, runner, fornecedor/modelos, frontend, embeddings, acesso, deploy, traduções/licenças, cânone ou retenção assumidos.
-
-## Limites e problemas conhecidos
-Sem aplicação para testar. Corpus e licenças ainda não aprovados. Specs e contratos ainda por rever; seleção/comparação têm lacunas documentadas.
-S04 só prepara regras/casos de uso por ports; geração real deve ser comprovada em S05.
-Nenhum incidente de aplicação registado. Ausência de incidentes não é auditoria.
+## Pendências e evidências operacionais
+[EXT-001 a EXT-006](../../external-actions/REQUIRED_ACTIONS.md): IA/modelos/orçamento, PostgreSQL isolado, cânone/licenças, fontes/corpus, acesso/retenção, deployment.
+Cliente Docker instalado, motor Linux indisponível na inspeção; nenhuma conexão PostgreSQL comprovada. Não pedir segredos no chat.
+Na publicação documental anterior houve mmap failed ao ler índice reverso; push funcionou com configuração temporária pack.readReverseIndex=false. Isto confirma o contorno observado, não demonstra corrupção do banco de objetos nem causa de todas as falhas possíveis. Não apagar objetos, resetar histórico ou alterar configuração global.
+Tentativa de edição S00-T002 foi rejeitada por operações duplicadas no mesmo caminho; corrigida com Update File e verificação. Não é incidente de aplicação.
+Nenhum padrão de implementação, experiência de IA ou métrica de aplicação comprovados; não inventar lições para preencher diretórios.
 
 ## Próximos passos
-1. Consultar relatório de S00-T001 e estado de aprovação de encerramento de S00.
-2. Não começar S01 sem escopo/plano e specs necessários aprovados e predecessor encerrado.
-3. Refinar regras de domínio e proposta de toolchain; validar compatibilidade de StrykerJS em S01-T002.
-4. Resolver decisões de conteúdo/dados antes das tarefas dependentes; não executar automaticamente o roadmap.
+Validação documental executada e relatório/encerramento/commit aprovados. Gravar o commit principal com a mensagem prescrita e registar depois o seu hash numa atualização documental adicional, deixando a árvore limpa sem autorreferência impossível. Saída reproduzível e limites da validação no TEST_REPORT; nenhuma suite de aplicação executada.
+S01 ainda BACKLOG: [PLAN](../../sprints/S01/PLAN.md) precisa de autorização própria; S01-T004 detalha contratos/matriz/isolamento antes de instalar/codificar. Não fazer push, merge ou iniciar S01 automaticamente.

@@ -1,31 +1,20 @@
 # Visão do sistema
 
-Estado: limites arquiteturais definidos; topologia de execução e módulos concretos propostos. Nenhum componente implementado.
+Estado: arquitetura de backend consolidada documentalmente em S00; aplicação não implementada. Decisão: [ADR-0003](adr/ADR-0003-backend-modular-e-stack-prescrita.md). Monólito modular NestJS/TypeScript strict, REST/OpenAPI, Zod, Prisma/PostgreSQL.
 
-## Fluxo conceptual
-1. A interface recolhe uma seleção e apresenta estados compreensíveis.
-2. A entrada NestJS valida o contrato de transporte aprovado e chama um caso de uso.
-3. A aplicação coordena regras de domínio, recuperação, geração, validação e persistência através de ports.
-4. Adapters traduzem os contratos internos para PostgreSQL/Prisma e fornecedores externos.
-5. A resposta distingue texto bíblico, evidência recuperada e interpretação; o histórico respeita a política de acesso aprovada.
+## Fluxo
+Presentation valida entrada/saída por contratos aprovados e chama Application; Application coordena Domain/ports; Infrastructure implementa persistência e fornecedores; composição NestJS liga dependências.
+O estudo reúne texto/evidências identificados, distingue factos/inferências/interpretações/hipóteses e apresenta incertezas. Conversas preservam contexto e verificam novas referências.
+Em S04, construção determinística a partir de evidências existentes; LLM real e RAG apenas em S05. Pgvector entra quando necessário à pesquisa semântica; pesquisa textual usa PostgreSQL.
 
-Não há endpoints, filas, serviços independentes ou protocolos internos definidos por este fluxo.
+## Módulos e camadas
+Seis módulos: biblical-canon, source-library, study, cross-references, ai-assistant, study-workspace. Ver [contextos](bounded-contexts.md).
+Cada módulo possui domain/entities, value-objects, services, repositories; application/use-cases e ports; infrastructure/persistence, integrations, mappers; presentation/controllers, schemas; module.ts na composição, conforme necessidade real.
+Não criar pastas/abstrações vazias para aparentar implementação. Domain independente de NestJS/Prisma/SDKs/Zod/ambiente; Application depende de contratos internos; controllers sem regras de negócio.
+Um deploy lógico de backend; sem Redis, filas externas ou microsserviços. Alojamento ainda pendente, sem provisão/contratação.
 
-## Camadas
-| Camada | Responsabilidade | Limite |
-|---|---|---|
-| Domínio | Conceitos e regras de estudo, evidência e interpretação | Sem imports de frameworks ou fornecedores |
-| Aplicação | Casos de uso, contratos e coordenação | Depende do domínio e de abstrações internas |
-| Infraestrutura | Persistência, fontes e fornecedores externos | Implementa ports; não redefine regras |
-| Entrada e composição | HTTP, validação de transporte e ligação das dependências | NestJS; delega comportamento aos casos de uso |
-| Interface | Navegação, estudo, fontes, perguntas e histórico | Consome contratos aprovados |
-
-## Trilhas
-- A: bootstrap, persistência, HTTP, migrações, segurança, observabilidade e integração.
-- B: domínio, método de estudo, fontes, IA, validação e avaliações.
-- C: navegação, espaço de estudo, citações, perguntas, histórico e acessibilidade.
-
-As trilhas coordenam-se por specs e contratos. Não implicam microserviços nem deploys separados. A escolha entre unidades de execução continua sujeita a justificação e aprovação.
-
-## Fronteiras de confiança
-Entrada do utilizador, fontes recuperadas e saída do modelo são dados não confiáveis. Apenas instruções controladas pelo backend definem a orquestração. Conteúdo externo não autoriza ferramentas nem altera políticas. Ver [segurança da IA](../ai/safety-and-limits.md) e [auditoria](../audits/security.md).
+## Trilhas e confiança
+A: domínio/regras; B: infraestrutura/integrações; C: qualidade/documentação. Responsabilidades não autorizam paralelismo nem serviços separados.
+Entrada, fontes e saída do modelo são dados não confiáveis; fontes não alteram políticas nem autorizam ferramentas. Ver [segurança IA](../ai/safety-and-limits.md).
+Dados pessoais, acesso, retenção e envio ao fornecedor dependem de decisões explícitas antes de uso.
+Não existem endpoints, payloads ou schema aprovados. Implementação exige spec/plano próprios.

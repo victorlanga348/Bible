@@ -1,58 +1,50 @@
-# Dependências de sprints e tarefas
+# Dependências do backend
 
-Estado: sequência proposta; dependência cumprida não substitui aprovações nem gates.
-Responsáveis técnicos, datas e versões ainda não designados.
+Ordem: S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08. Encerramento aprovado e commit da anterior precedem nova autorização. S09/frontend não são dependências deste ciclo.
 
-## Ordem entre sprints
-S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08 → S09.
-A entrada numa sprint depende também da aprovação de encerramento da anterior, não apenas da última tarefa DONE.
-Esta é uma baseline conservadora. Sobreposição ou reordenação exige plano e aprovação; não autoriza paralelismo implícito.
-
-## Relações entre tarefas
-| Tarefa | Predecessoras diretas | Backlog de referência |
+| Tarefa ativa | Predecessoras diretas (IDs) | Fonte |
 |---|---|---|
-| S00-T001 | Nenhuma tarefa anterior | [S00](../sprints/S00/backlog.md) |
-| S01-T001 | S00-T001 | [S01](../sprints/S01/backlog.md) |
-| S01-T002 | S01-T001 | [S01](../sprints/S01/backlog.md) |
-| S01-T003 | S01-T002 | [S01](../sprints/S01/backlog.md) |
-| S02-T001 | S01-T003 | [S02](../sprints/S02/backlog.md) |
-| S02-T002 | S02-T001 | [S02](../sprints/S02/backlog.md) |
-| S02-T003 | S02-T002 | [S02](../sprints/S02/backlog.md) |
-| S03-T001 | S02-T003 | [S03](../sprints/S03/backlog.md) |
-| S03-T002 | S03-T001 | [S03](../sprints/S03/backlog.md) |
-| S03-T003 | S03-T002 | [S03](../sprints/S03/backlog.md) |
-| S04-T001 | S03-T003 | [S04](../sprints/S04/backlog.md) |
-| S04-T002 | S04-T001 | [S04](../sprints/S04/backlog.md) |
-| S04-T003 | S04-T002 | [S04](../sprints/S04/backlog.md) |
-| S05-T001 | S04-T003 | [S05](../sprints/S05/backlog.md) |
-| S05-T002 | S05-T001 | [S05](../sprints/S05/backlog.md) |
-| S05-T003 | S05-T002 | [S05](../sprints/S05/backlog.md) |
-| S06-T001 | S05-T003 | [S06](../sprints/S06/backlog.md) |
-| S06-T002 | S06-T001 | [S06](../sprints/S06/backlog.md) |
-| S06-T003 | S06-T002 | [S06](../sprints/S06/backlog.md) |
-| S07-T001 | S06-T003 | [S07](../sprints/S07/backlog.md) |
-| S07-T002 | S07-T001 | [S07](../sprints/S07/backlog.md) |
-| S07-T003 | S07-T002 | [S07](../sprints/S07/backlog.md) |
-| S08-T001 | S07-T003 | [S08](../sprints/S08/backlog.md) |
-| S08-T002 | S08-T001 | [S08](../sprints/S08/backlog.md) |
-| S08-T003 | S08-T002 | [S08](../sprints/S08/backlog.md) |
-| S09-T001 | S08-T003 | [S09](../sprints/S09/backlog.md) |
-| S09-T002 | S09-T001 | [S09](../sprints/S09/backlog.md) |
-| S09-T003 | S09-T002 | [S09](../sprints/S09/backlog.md) |
+| S00-T001 | Nenhuma | [S00](../sprints/S00/TASKS.md) |
+| S00-T002 | S00-T001 | [S00](../sprints/S00/TASKS.md) |
+| S00-T003 | S00-T002 | [S00](../sprints/S00/TASKS.md) |
+| S00-T004 | S00-T003 | [S00](../sprints/S00/TASKS.md) |
+| S00-T005 | S00-T004 | [S00](../sprints/S00/TASKS.md) |
+| S00-T006 | S00-T005 | [S00](../sprints/S00/TASKS.md) |
+| S00-T007 | S00-T006 | [S00](../sprints/S00/TASKS.md) |
+| S01-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S01](../sprints/S01/TASKS.md) |
+| S01-T005 | S01-T004 | [S01](../sprints/S01/TASKS.md) |
+| S01-T006 | S01-T005 | [S01](../sprints/S01/TASKS.md) |
+| S01-T007 | S01-T006 | [S01](../sprints/S01/TASKS.md) |
+| S01-T008 | S01-T007 | [S01](../sprints/S01/TASKS.md) |
+| S01-T009 | S01-T008 | [S01](../sprints/S01/TASKS.md) |
+| S02-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S02](../sprints/S02/TASKS.md) |
+| S02-T005 | S02-T004 | [S02](../sprints/S02/TASKS.md) |
+| S02-T006 | S02-T005 | [S02](../sprints/S02/TASKS.md) |
+| S02-T007 | S02-T006 | [S02](../sprints/S02/TASKS.md) |
+| S03-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S03](../sprints/S03/TASKS.md) |
+| S03-T005 | S03-T004 | [S03](../sprints/S03/TASKS.md) |
+| S03-T006 | S03-T005 | [S03](../sprints/S03/TASKS.md) |
+| S03-T007 | S03-T006 | [S03](../sprints/S03/TASKS.md) |
+| S04-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S04](../sprints/S04/TASKS.md) |
+| S04-T005 | S04-T004 | [S04](../sprints/S04/TASKS.md) |
+| S04-T006 | S04-T005 | [S04](../sprints/S04/TASKS.md) |
+| S04-T007 | S04-T006 | [S04](../sprints/S04/TASKS.md) |
+| S05-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S05](../sprints/S05/TASKS.md) |
+| S05-T005 | S05-T004 | [S05](../sprints/S05/TASKS.md) |
+| S05-T006 | S05-T005 | [S05](../sprints/S05/TASKS.md) |
+| S05-T007 | S05-T006 | [S05](../sprints/S05/TASKS.md) |
+| S06-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S06](../sprints/S06/TASKS.md) |
+| S06-T005 | S06-T004 | [S06](../sprints/S06/TASKS.md) |
+| S06-T006 | S06-T005 | [S06](../sprints/S06/TASKS.md) |
+| S06-T007 | S06-T006 | [S06](../sprints/S06/TASKS.md) |
+| S07-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S07](../sprints/S07/TASKS.md) |
+| S07-T005 | S07-T004 | [S07](../sprints/S07/TASKS.md) |
+| S07-T006 | S07-T005 | [S07](../sprints/S07/TASKS.md) |
+| S07-T007 | S07-T006 | [S07](../sprints/S07/TASKS.md) |
+| S08-T004 | Nenhuma tarefa da mesma sprint; depende da sprint anterior encerrada | [S08](../sprints/S08/TASKS.md) |
+| S08-T005 | S08-T004 | [S08](../sprints/S08/TASKS.md) |
+| S08-T006 | S08-T005 | [S08](../sprints/S08/TASKS.md) |
+| S08-T007 | S08-T006 | [S08](../sprints/S08/TASKS.md) |
 
-Estas relações são de trabalho, não aprovações. Estados efetivos pertencem aos backlogs; todas as predecessoras precisam de evidência antes de READY.
-
-## Bloqueios externos
-- Specs e contratos em rascunho impedem implementação dependente.
-- DEC-07/08: versões, harness e compatibilidade StrykerJS antes de código sujeito a esses gates.
-- DEC-04/10: acesso, retenção e dados enviados antes de persistência/exposição/chamadas correspondentes.
-- DEC-03/06/09: recuperação, cânone, edições e licenças antes de ingestão/uso dependente.
-- DEC-02: fornecedor/modelos antes do adapter real em S05.
-- DEC-01: frontend antes da implementação de UI.
-- DEC-05: infraestrutura antes de deploy/operação no ambiente escolhido.
-Decisão necessária a uma tarefa anterior deve ser antecipada por revisão aprovada do plano, sem criar dependência circular nem esperar que um contrato inventado a resolva.
-
-## Regras de revisão
-Ao adicionar dependência, verificar existência do ID e ausência de ciclos; atualizar backlog, README/escopo da sprint e este mapa.
-Não bloquear retroativamente a governança de S00 por ferramentas de uma aplicação ainda inexistente.
-S04 não depende da execução futura de S05 para o seu escopo de ports; não pode afirmar geração integrada. S05 depende dos contratos preparados em S04.
+A tabela lista arestas de tarefa; dependências de sprint/aprovação/serviço ficam no PLAN/TASKS e em [ações externas](../external-actions/REQUIRED_ACTIONS.md). Contratos não aprovados bloqueiam implementação. Dados, ambiente e credenciais obrigatórios não se substituem por fakes.
+S04 não depende de S05 para geração determinística. IDs antigos não participam neste grafo ativo, exceto antecedente S00-T001; estão preservados em [HISTORY](HISTORY.md).

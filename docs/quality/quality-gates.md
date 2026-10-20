@@ -1,48 +1,40 @@
 # Sete gates obrigatórios de qualidade
 
-Estado: política atualizada na operação S00-T001; automação e scripts ainda inexistentes.
-Uma tarefa de implementação só passa a DONE quando todos os gates aplicáveis estão satisfeitos.
+Atualização aprovada pelo «ok» de 2026-10-20 ao [PLAN S00](../sprints/S00/PLAN.md). Automação e aplicação inexistentes.
 
 ## Gate 1 — Especificação
-Spec aprovada, critérios verificáveis e dependências identificadas. Registar também aprovação do plano da tarefa e do escopo da sprint.
-Sem contrato necessário aprovado, a tarefa dependente fica BLOCKED.
+Escopo de sprint, spec/contratos, plano da tarefa e dependências aprovados explicitamente. Aprovar sprint não aprova automaticamente tarefas/implementações futuras. Contrato necessário não aprovado bloqueia implementação dependente.
 
 ## Gate 2 — TDD
-Evidência de RED pela razão esperada, GREEN e REFACTOR validado, com testes executados e verificação arquitetural.
-Não aceitar implementação anterior ao teste como TDD.
+RED pela causa esperada, GREEN mínimo e REFACTOR com regressão/arquitetura verificados. Evidências antes/depois, nunca reconstruídas para legitimar código anterior.
 
 ## Gate 3 — Qualidade estática
-TypeScript typecheck, ESLint, verificação de dependências arquiteturais e build aplicáveis.
-Usar scripts reais do package.json. Se obrigatórios e ainda inexistentes, preparar a ferramenta numa tarefa aprovada; não inventar nomes nem declarar aprovação.
-Registar falhas e corrigir antes de DONE.
+TypeScript strict, zero erros de typecheck, zero erros ESLint, build e fiscalização arquitetural aplicáveis.
+Line Coverage >= 90%; Branch Coverage >= 85%. Usar scripts reais do package.json; não inventar comandos nem presumir ferramentas.
 
 ## Gate 4 — Integração real
-PostgreSQL isolado, Prisma, repositórios, transações, restrições e migrações reais quando afetados.
-Testes HTTP com NestJS inicializado e verificação de rotas/DTOs/entradas/respostas/erros/persistência/segurança conforme contrato.
-Integrações externas em suites específicas reais; mocks não substituem comprovação permanente.
-Segurança, acessibilidade e recuperação de fluxos entram nos critérios aplicáveis e nas suites correspondentes, sem desaparecer por esta consolidação.
+PostgreSQL independente de dev/produção, Prisma, migrações, repositórios, consultas, transações e restrições reais.
+HTTP: NestJS inicializado/Supertest, contratos/schemas, entradas/saídas, erros, persistência e segurança. Fontes autênticas/licenciadas.
+Credencial/serviço obrigatório ausente: BLOCKED, nunca PASS. Mocks/fakes não substituem comprovação permanente.
 
 ## Gate 5 — Mutação
-StrykerJS sob validação de compatibilidade. Domínio e aplicação afetados com score bruto superior a 85%, cálculo conforme [política](mutation-testing.md), relatório gerado e sobreviventes analisados.
-Exclusões justificadas; escopo não manipulado. Score insuficiente impede conclusão.
+Stryker Mutator obrigatório, prioritariamente Domain/Application. Provar compatibilidade de versões/Jest; score bruto > 85%, relatório e análise de sobreviventes.
+85% exatos falham; sem mutantes válidos não há score aprovável. Não excluir arbitrariamente código próprio. Gerado, migrações e SDKs externos fora do cálculo; escopo/exclusões documentados. Ver [cálculo](mutation-testing.md).
 
 ## Gate 6 — IA
-Quando aplicável: fontes verificadas, citações válidas, suporte semântico, avaliações com critérios aprovados executadas e limitações documentadas.
-Combinar casos de referência e execução real controlada; verificar inexistência de referências fabricadas.
-Não confundir cobertura ou mutação de software com qualidade histórica/interpretativa. Ver [avaliação](../ai/evaluation.md).
+Contratos determinísticos, fornecedor real e avaliações próprias quando aplicáveis: fontes verificadas, suporte semântico, citações existentes, divergências/incertezas e limitações.
+Corpus/rubrica/orçamento/critérios aprovados; cobertura e mutação não provam veracidade histórica. Ver [avaliação](../ai/evaluation.md).
 
 ## Gate 7 — Governança
-Critérios de aceitação satisfeitos; docs, contratos, ADRs e roadmap sincronizados; MegaBrain atualizado quando houver conhecimento relevante.
-Verificar limites de arquitetura, direitos de utilização, segurança, acessibilidade e operação conforme impacto.
-Relatório com comandos, resultados, falhas, artefactos e limitações. Pergunta obrigatória:
-**"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
+Critérios evidenciados; docs/README, contratos, ADRs, tarefas, roadmap e MegaBrain sincronizados. Rever segurança, direitos e operação conforme impacto.
+TEST_REPORT com comandos/data/ambiente/resultados, cobertura, mutação, sobreviventes, bloqueios e TDD; REVIEW técnico. Inspecionar segredos/dependências externas.
+Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
 
-## Aplicabilidade, estado e fechamento
-Registar por gate: PENDENTE, APROVADO, FALHADO ou NÃO APLICÁVEL, com evidência/motivo e revisão.
-PENDENTE/FALHADO em gate obrigatório impede DONE. Falta de ferramenta/credencial não é NÃO APLICÁVEL.
-Para documentação pura: Gate 1 verifica autorização do âmbito documental e critérios; Gate 7 verifica estrutura, links, coerência e evidências. Gates 2–6 são NÃO APLICÁVEL apenas porque não há comportamento executável.
-Concluir uma tarefa não encerra a sprint: esta permanece REVIEW até aprovação explícita de encerramento.
-
-## Migração da política anterior
-Os antigos G1–G10 foram consolidados: autorização em Gate 1; TDD em 2; software/estática em 3; integração em 4; mutação em 5; IA em 6; documentação/arquitetura/direitos/operação/UX/memória distribuídos por 3, 4, 6 e 7.
-A evidência histórica DOC-0001 descreve a política então vigente; não reclassificar retroativamente como execução destes sete gates.
+## Resultados e fechamento
+Por gate: PENDENTE/APROVADO/FALHADO/NÃO APLICÁVEL com evidência. Por execução/critério: PASS/FAIL/BLOCKED/NOT_RUN, aplicabilidade e motivo separados.
+Gate obrigatório pendente/falhado/bloqueado impede DONE. Zero testes obrigatórios falhados/bloqueados. Não aplicabilidade não significa suite PASS.
+Documentação pura: Gate 1 verifica autorização e Gate 7 executa checks documentais; Gates 2–6 não aplicáveis sem comportamento executável, sem métricas fictícias.
+Configuração/migração têm verificações executáveis apropriadas. Ausência de ferramenta/serviço obrigatório não dispensa gate.
+Sem código mutável real, justificar aplicabilidade e relatar métricas não medidas; não criar regras artificiais.
+Apresentar relatório e aguardar aprovação explícita do encerramento/commit. Sprint fica REVIEW até aprovação. Push/merge e próxima sprint exigem autorização própria.
+DOC-0001/S00-T001 preservam a política/evidência da sua data, sem aprovar gates atuais retroativamente.

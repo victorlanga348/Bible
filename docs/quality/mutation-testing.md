@@ -1,38 +1,22 @@
 # Mutation testing
 
-Estado: StrykerJS adotado sob condição de compatibilidade, por orientação do utilizador. Não instalado; versão, runner, configuração e compatibilidade ainda não validados.
-Ver [ADR-0002](../architecture/adr/ADR-0002-adocao-condicional-strykerjs.md) e DEC-08 na [stack](../architecture/stack.md).
-Não existe score medido ou relatório executado.
+Stryker Mutator obrigatório pelo pedido mestre e PLAN S00 aprovado em 2026-10-20. Não instalado; compatibilidade com Node/TypeScript/Jest por provar. ADR-0002 preserva a decisão anterior; evolução no [índice ADR](../architecture/adr/README.md).
 
-## Obrigatoriedade e escopo
-Executar nos módulos de domínio e aplicação abrangidos por cada alteração executável, incluindo invariantes, classificação, validação de evidência e coordenação.
-O plano deve identificar ficheiros incluídos, operadores, configuração, comando real, baseline e exclusões antes de executar.
-Avaliar comportamento próprio de composição e adapters; não os excluir automaticamente.
-Compatibilidade por resolver, comando inexistente ou suite incompleta não dispensam o gate aplicável.
+## Escopo
+Priorizar Domain/Application e avaliar comportamento próprio de composição/adapters. Plano identifica ficheiros, operadores, runner/configuração, baseline e exclusões.
+Gerado, migrações e SDKs externos fora do cálculo. Outras exclusões exigem motivo/impacto/revisão; nunca excluir código difícil, sem cobertura ou sobreviventes para elevar score.
 
 ## Cálculo preservado
-Mutation score = 100 × detetados / válidos.
-Detetados: mutantes mortos por testes ou por timeout classificado como deteção pela ferramenta.
+Mutation Score bruto = 100 × detetados / válidos.
+Detetados: mortos por testes + timeouts classificados como deteção pela ferramenta.
 Válidos: detetados + sobreviventes + sem cobertura.
-Registar categorias originais e confirmar o mapeamento com a versão/configuração selecionada antes de aprovar; esta convenção não comprova compatibilidade atual de StrykerJS.
+Registar categorias originais e confirmar mapeamento com a versão escolhida. Erros de compilação/execução/infraestrutura são separados/investigados, nunca deteções por conveniência.
+Score estritamente > 85%, antes do arredondamento; 85% falha. Line Coverage >= 90%; Branch Coverage >= 85% são gates separados.
+Sem mutantes válidos não há score aprovável. Justificar não aplicabilidade real; execução incompleta/falhada não é escopo vazio.
 
-Score bruto deve ser **estritamente superior a 85%**, antes de arredondamento. 85% exatos falham.
-Erros de compilação, execução ou infraestrutura são reportados separadamente, investigados e nunca contados como deteção por conveniência.
-Sem mutantes válidos não há score aprovável: justificar não aplicabilidade real; execução falhada ou incompleta não é escopo vazio.
-
-## Exclusões
-Podem ser justificadas para código gerado, build, dependências, declarações sem comportamento ou documentação.
-Identificar caminho, motivo, impacto e revisão; não excluir código difícil, sem cobertura ou com sobreviventes apenas para elevar o score.
-Não apagar testes ou restringir artificialmente o escopo para obter aprovação.
-
-## Sobreviventes e relatório
-Produzir relatório com localização, mutação, comportamento afetado, cobertura, teste em falta, possível equivalência, responsável e tarefa.
-Equivalência exige evidência e revisão, não uma etiqueta arbitrária.
-Defeitos críticos de evidência, acesso ou licenças exigem correção mesmo com score global suficiente.
-Timeouts excessivos devem ser investigados.
-
-## Gate e evidências
-Score insuficiente ou gate obrigatório pendente/falhado impede DONE.
-Registar comando, versão, configuração, escopo, exclusões, contagens por categoria, score bruto, relatório e análise dos sobreviventes.
-Documentação pura: não aplicável com justificação, sem score fictício.
-A instalação/validação técnica só ocorrerá numa tarefa aprovada; não há dependências instaladas nesta operação.
+## Sobreviventes, evidência e bloqueio
+Relatório: localização, operador, comportamento, cobertura, teste em falta, equivalência eventualmente comprovada, responsável e tarefa.
+Investigar timeouts excessivos e defeitos críticos de fontes/acesso/licenças mesmo com score suficiente.
+Guardar comando real, versão, revisão, escopo, exclusões, categorias, score bruto e artefactos. Não inventar relatórios/score.
+Incompatibilidade/toolchain incompleta bloqueia gate aplicável, sem troca/dispensa silenciosa.
+Documentação pura: não aplicável, sem score medido. Ver [gates](quality-gates.md).

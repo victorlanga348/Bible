@@ -1,15 +1,6 @@
-# Gestão de tarefas
+# Tarefas
 
-Tarefas novas pertencem a uma sprint e usam Sxx-Txxx. Estados: BACKLOG, READY, IN_PROGRESS, BLOCKED, REVIEW, DONE.
-Consultar [regras de transição](../sprints/README.md) e [backlogs por sprint](../roadmap/master-plan.md).
-
-O [template único](template.md) define a ficha detalhada. Antes de executar, criar a ficha em docs/sprints/Sxx/tasks/, identificar spec, aprovações e gates. Backlog não substitui plano técnico.
-
-## Referências anteriores
-O [backlog de entrada](backlog.md) preserva DOC-0001 e PLAN-* como antecedentes e referências; os backlogs operacionais residem nas sprints.
-[DOC-0001](DOC-0001-inicializacao-governanca.md) mantém estado e evidências históricos. Não reabrir ou reclassificar para simular os gates atuais.
-A [correspondência](../roadmap/traceability.md) permite seguir links antigos sem renumeração silenciosa.
-
-## Operação atual
-[S00-T001](../sprints/S00/tasks/S00-T001-atualizacao-governanca.md) é a única tarefa autorizada nesta atualização, exclusivamente documental.
-Antes de cada tarefa consultar MegaBrain/ADRs e skills relevantes; depois registar evidências e conhecimento real. Conclusão exige os [sete gates](../quality/quality-gates.md).
+Fila ativa em [S00–S08](../sprints/README.md), TASKS.md por sprint. [Template](template.md), [backlog de entrada](backlog.md), [rastreabilidade](../roadmap/traceability.md).
+IDs únicos/nunca reutilizados; detalhes em docs/sprints/Sxx/tasks com índice. Consultar ADRs/MegaBrain antes da execução. Aprovar scope/spec/contratos/plano/dependências antes de código; uma tarefa por vez.
+Consolidação S00-T002 a T007 aprovada pelo «ok» de 2026-10-20 ao PLAN S00. Relatório/encerramento/commit exigem aprovação posterior; specs futuras não foram aprovadas.
+Histórico: [DOC-0001](DOC-0001-inicializacao-governanca.md), S00-T001 e tarefas antigas em [HISTORY](../roadmap/HISTORY.md). Não executar dois backlogs concorrentes.

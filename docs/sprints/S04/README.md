@@ -1,26 +1,8 @@
-# S04 — Estudo Estruturado
+# S04 — Motor de Estudos
 
-## Objetivo
-Implementar políticas e casos de uso de estudo por contratos internos aprovados, sem declarar geração integrada.
+Estado: BACKLOG. Sem início/encerramento aprovado. Dependências: [S03](../S03/README.md) encerrada; contratos/plano/tarefas e ações externas satisfeitos.
+Trilhas: A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; não autorizam paralelismo.
+Estudo estruturado determinístico é construído e guardado com versões a partir de evidências existentes.
 
-## Estado e aprovação
-BACKLOG — proposta, sem aprovação de início ou implementação.
-Sem datas de início/fim atribuídas. Responsáveis e revisores técnicos futuros por designar; aprovador inicial: utilizador.
-Aprovação do escopo, specs e planos de tarefa: pendentes e separadas.
-
-## Dependências e trilhas
-Dependências: [S03](../S03/README.md)
-Trilhas: B e A. Trilhas não implicam serviços separados nem autorização de paralelismo.
-
-## Critérios de entrada
-Biblioteca necessária verificada; SS-001, contratos internos e plano aprovados.
-Contratos necessários não aprovados bloqueiam a implementação dependente.
-
-## Entregáveis e critérios de saída
-Refinar SS-001 e contratos de geração/validação; implementar estruturação, contexto, comparação justificada e políticas epistemológicas; integrar fontes/persistência reais existentes.
-Critérios detalhados em [acceptance](acceptance.md); tarefas elegíveis a DONE só com gates aplicáveis satisfeitos. Relatório, pendências e roadmap atualizados; aprovação explícita de encerramento antes de marcar a sprint DONE.
-
-## Navegação
-[Escopo](scope.md) · [Backlog e tarefas](backlog.md) · [Aceitação](acceptance.md) · [Retrospectiva](retrospective.md).
-Specs e referências: [SS-001](../../specs/structured-study.md); [Método](../../product/study-methodology.md); [Interpretação](../../biblical-library/interpretation-policy.md).
-Processo: [sprints](../README.md), [gates](../../quality/quality-gates.md), [dependências globais](../../roadmap/dependencies.md).
+[PLAN](PLAN.md) · [TASKS](TASKS.md) · [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md) · [TEST_REPORT](TEST_REPORT.md) · [REVIEW](REVIEW.md).
+Backlog tem estados de tarefa; este README tem o estado da sprint. Histórico anterior em [HISTORY](../../roadmap/HISTORY.md). Specs continuam sujeitas a aprovação própria.
