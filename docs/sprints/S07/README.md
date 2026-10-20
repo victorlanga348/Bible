@@ -1,0 +1,26 @@
+# S07 — Frontend
+
+## Objetivo
+Criar experiência acessível sobre contratos aprovados e backend real.
+
+## Estado e aprovação
+BACKLOG — proposta, sem aprovação de início ou implementação.
+Sem datas de início/fim atribuídas. Responsáveis e revisores técnicos futuros por designar; aprovador inicial: utilizador.
+Aprovação do escopo, specs e planos de tarefa: pendentes e separadas.
+
+## Dependências e trilhas
+Dependências: [S06](../S06/README.md)
+Trilhas: C; A e B na integração. Trilhas não implicam serviços separados nem autorização de paralelismo.
+
+## Critérios de entrada
+Framework/frontend e proposta de UX aprovados; API necessária verificada e contratos estabilizados.
+Contratos necessários não aprovados bloqueiam a implementação dependente.
+
+## Entregáveis e critérios de saída
+Decidir frontend; aprovar UX/tokens/responsividade; implementar navegação, estudo, citações, perguntas e histórico; integrar estados reais.
+Critérios detalhados em [acceptance](acceptance.md); tarefas elegíveis a DONE só com gates aplicáveis satisfeitos. Relatório, pendências e roadmap atualizados; aprovação explícita de encerramento antes de marcar a sprint DONE.
+
+## Navegação
+[Escopo](scope.md) · [Backlog e tarefas](backlog.md) · [Aceitação](acceptance.md) · [Retrospectiva](retrospective.md).
+Specs e referências: [Espaço de estudo](../../pages/study-workspace.md); [Explorador](../../pages/passage-explorer.md); [API](../../integrations/api-contracts.md).
+Processo: [sprints](../README.md), [gates](../../quality/quality-gates.md), [dependências globais](../../roadmap/dependencies.md).
