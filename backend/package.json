@@ -20,9 +20,10 @@
     "test:architecture": "node --test scripts/architecture.test.cjs",
     "test:tooling": "node --test scripts/*.test.cjs",
     "test:mutation": "stryker run && node scripts/check-mutation.cjs",
-    "test:mutation:incremental": "stryker run --incremental --incrementalFile reports/mutation/incremental.json && node scripts/check-mutation.cjs",
+    "test:mutation:incremental": "node scripts/mutation-incremental.cjs",
     "prisma:generate": "prisma generate",
-    "db:migrate:test": "npm run build && node scripts/migrate-test.cjs"
+    "db:migrate:test": "npm run build && node scripts/migrate-test.cjs",
+    "db:import:sources:test": "npm run build && node scripts/import-sources-test.cjs"
   },
   "dependencies": {
     "@nestjs/common": "12.2.0",

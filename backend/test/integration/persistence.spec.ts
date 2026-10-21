@@ -22,7 +22,8 @@ describe('real Prisma, migrations, constraints and transactions', () => {
   it('has applied the versioned migration', async () => {
     const migrations = await database.client.$queryRaw<{ migration_name: string; applied: boolean }[]>`
       SELECT migration_name, finished_at IS NOT NULL AS applied FROM app._prisma_migrations ORDER BY migration_name`;
-    expect(migrations).toEqual([{ migration_name: '202610200001_bootstrap_namespace', applied: true }]);
+    expect(migrations).toEqual(expect.arrayContaining([{ migration_name: '202610200001_bootstrap_namespace', applied: true }]));
+    expect(migrations.every(migration => migration.applied)).toBe(true);
   });
   it('persists and reads parameterised data without treating SQL as code', async () => {
     const payload = "technical probe'; DROP TABLE app.persistence_probe; --";

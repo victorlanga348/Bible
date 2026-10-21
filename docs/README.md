@@ -1,6 +1,8 @@
 # Documentação do Bíblia App
 
-Fonte normativa e estado real. S00/S01 DONE e commitadas; [S02](sprints/S02/README.md) DONE no recorte corpus/domínio/parser, por decisão «termina, o que falta vou adicionar depois», registada na [SPEC v0.3](sprints/S02/SPEC.md). Corpus/aviso/fixture reais verificados, T004 DONE; [domínio/parser T005](sprints/S02/tasks/S02-T005-domain.md) implementados e verificados (152 testes PASS; mutação global97,21%). [T006](sprints/S02/tasks/S02-T006-integration.md)/T007 adiadas no backlog; Application/importação de banco/API bíblica e IA continuam futuras. [Relatório S02](sprints/S02/TEST_REPORT.md) distingue essas evidências e limites; encerramento do recorte e commit principal S02 `c0c24b9` concluídos. Continuação para preparar S03 autorizada depois dele.
+
+
+Fonte normativa e estado real. S00/S01 DONE e commitadas; [S02](sprints/S02/README.md) DONE com escopo reduzido a corpus/domínio/parser por decisão do utilizador, principal `c0c24b9`; integração/API bíblica e IA continuam futuras. [S03](sprints/S03/README.md) DONE, T004–T007 DONE tecnicamente: biblioteca independente com importação/pesquisa/HTTP reais no alvo de teste, revisão integrada e CI local com original verificado. Resultados atuais e limites no [TEST_REPORT](sprints/S03/TEST_REPORT.md). [T007](sprints/S03/tasks/S03-T007-verification.md) aprovada/concluída; encerramento/commit S03 aprovados pelo «pode usar» após revisão final, sem push/merge.
 
 ## Entrada
 [PRD](PRD.md), [linguagem](glossary.md), [regras](product/business-rules.md), [governança](documentation-governance.md), [stack](architecture/stack.md), [arquitetura](architecture/README.md), [ADRs](architecture/adr/README.md).

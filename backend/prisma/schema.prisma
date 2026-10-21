@@ -6,4 +6,43 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas = ["app"]
+}
+
+model SourceLibrarySource {
+  id             String @id
+  title          String
+  author         String
+  translator     String?
+  language       String
+  edition        String
+  kind           String
+  originUrl      String @map("origin_url")
+  snapshotSha256 String @map("snapshot_sha256")
+  retrievedAt    String @map("retrieved_at")
+  rightsStatement String @map("rights_statement")
+  rightsUrl      String @map("rights_url")
+  attribution    String
+  permissions    Json
+  limitations    String
+  excerpts       SourceLibraryExcerpt[]
+
+  @@map("source_library_source")
+  @@schema("app")
+}
+
+model SourceLibraryExcerpt {
+  id         String @id
+  sourceId   String @map("source_id")
+  locator    String
+  order      BigInt
+  text       String
+  textSha256 String @map("text_sha256")
+  originUrl  String? @map("origin_url")
+  source     SourceLibrarySource @relation(fields: [sourceId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([sourceId, locator], map: "source_library_excerpt_source_locator_key")
+  @@unique([sourceId, order], map: "source_library_excerpt_source_order_key")
+  @@map("source_library_excerpt")
+  @@schema("app")
 }

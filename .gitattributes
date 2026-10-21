@@ -1,0 +1,4 @@
+# Preserve the licensed source notice byte for byte, including original whitespace.
+backend/test/fixtures/source-library/josephus-antiquities-pg2848-en/NOTICE.source.txt -text whitespace=-blank-at-eol,-blank-at-eof
+# Fixture digests refer to UTF-8 JSON serialized with LF endings.
+backend/test/fixtures/source-library/josephus-antiquities-pg2848-en/*.json text eol=lf

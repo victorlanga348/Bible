@@ -1,6 +1,6 @@
 # Backend Bíblia App
 
-Fundação da Sprint 01: NestJS, TypeScript strict, Zod, OpenAPI e Prisma/PostgreSQL reais. Os módulos bíblicos/IA pertencem às sprints seguintes e ainda não estão implementados. Estado e evidências: [Sprint 01](../docs/sprints/S01/README.md).
+Fundação NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL da S01, Domain/parser bíblico S02 e biblioteca independente de fontes S03. As três operações de leitura de fontes estão implementadas; API/importação bíblica e IA continuam adiadas. Estado e evidências: [S03](../docs/sprints/S03/README.md).
 
 ## Preparação local
 
@@ -24,6 +24,8 @@ Copiar `.env.example` para `.env` e `.env.test.example` para `.env.test`, preenc
 
 As palavras-passe nas URLs devem ser codificadas para URL. Há exemplos sem segredos nos dois ficheiros `.example`. Se o volume de desenvolvimento já existe, mudar a variável não muda a palavra-passe dentro do PostgreSQL.
 
+O utilizador pode apontar `DATABASE_URL` a outro PostgreSQL local; nesse caso, deve provisionar o schema `app` e as migrações nesse alvo num trabalho próprio. Na revisão S03-T007, o `.env` alterado pelo utilizador foi validado; apenas `BIBLE_TEST_DB_PASSWORD` foi sincronizada com a credencial já validada de `.env.test`, evitando divergência quando o container de teste for recriado. Restantes valores preservados; o alvo de desenvolvimento não foi migrado nem recebeu fixtures. As variáveis adicionais de Google/JWT/PostgreSQL não são consumidas pela aplicação atual. Testes mantêm a configuração isolada de `.env.test`, com guard e identidade real antes de escrever.
+
 ```powershell
 docker compose up -d --wait
 npm run db:migrate:test
@@ -34,6 +36,20 @@ npm start
 O servidor escuta em `127.0.0.1:3000`. `GET /health/live` verifica o processo; `GET /health/ready` executa uma consulta Prisma real e devolve 503 se o banco estiver indisponível. Swagger: `/docs/`; contrato: `/openapi.json`. Ctrl+C encerra HTTP e ligações. Configuração inválida impede o arranque e produz um diagnóstico genérico sem a URL.
 
 A migração de teste recusa alvos inseguros antes de ligar e confirma a identidade no servidor. Não há comando de migração de produção nesta sprint. A migração inicial só estabelece o namespace `app`; a tabela `persistence_probe` é uma fixture técnica criada exclusivamente na base de testes. Não contém textos bíblicos fictícios.
+
+S03 acrescenta `app.source_library_source` e `app.source_library_excerpt`, com constraints próprias e pesquisa lexical inglesa calculada, sem GIN persistente. Só o banco de teste foi migrado nesta execução. `npm start` usa desenvolvimento: sem migrações/dados nesse alvo, readiness pode estar saudável e operações de fontes falharem. Não confundir conectividade com esquema/acervo instalado; não há provisionamento automático de desenvolvimento.
+
+## Biblioteca de fontes no alvo de teste
+
+Contratos: `GET /sources`, `GET /sources/:sourceId/excerpts?q=God&limit=20&offset=0` e `GET /source-excerpts/:excerptId`. As respostas conservam direitos, créditos, localizações e limitações. A pesquisa encontra palavras no capítulo admitido; não valida afirmações históricas ou associações bíblicas.
+
+Para verificar a admissão, obter o HTML original indicado no [manifesto da fixture](test/fixtures/source-library/josephus-antiquities-pg2848-en/manifest.json) e conservá-lo no caminho ignorado `data/source-library/josephus-antiquities-pg2848-en/source.html`. O SHA-256 exigido é `098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99`. Um original ausente ou alterado faz o teste/importador falhar; não gerar substituto nem atualizar o hash sem nova admissão. Manifesto, quatro excertos e aviso originais são fixtures versionadas, exclusivas de teste.
+
+```powershell
+npm run db:import:sources:test -- data/source-library/josephus-antiquities-pg2848-en/source.html test/fixtures/source-library/josephus-antiquities-pg2848-en/manifest.json test/fixtures/source-library/josephus-antiquities-pg2848-en/excerpts.json test/fixtures/source-library/josephus-antiquities-pg2848-en/NOTICE.source.txt
+```
+
+O comando exige os quatro caminhos explícitos, valida hashes contra a admissão fixa e confirma `biblia_test`/utilizador/schema antes de escrever. Importação atómica: mesmo id/hash retorna `unchanged`; hash diferente é conflito sem substituição. Não existe escrita/importação HTTP nem importação de fixture para produção. As suites limpam apenas tabelas do módulo na base de teste e conservam ficheiros reais. Integração, cobertura e mutação exigem também o HTML original provisionado. O CI agora obtém o HTML por HTTPS da URL admitida e verifica o SHA-256 fixo antes das suites; indisponibilidade ou alteração fazem o job falhar. A preparação foi exercitada localmente em T007, incluindo falhas de download/integridade; execução remota continua NOT_RUN.
 
 ## Verificação
 
@@ -53,6 +69,8 @@ No OneDrive, entradas de diretório podem ser identificadas como links apesar de
 `npm run test:mutation:incremental` usa o último relatório para reavaliar mutantes afetados por mudanças de testes/código; resultados reutilizados ficam identificados pelo Stryker. O comando padrão `test:mutation`, usado no CI, executa a avaliação integral. Não editar os relatórios para alterar o score.
 
 O cache incremental usa `reports/mutation/incremental.json`, separado do relatório JSON final `reports/mutation/mutation.json`. Usar o mesmo caminho faz dois writers do Stryker escreverem no mesmo ficheiro e pode produzir JSON inválido, como observado na S02. Sem cache válido a primeira avaliação incremental pode ser integral; um relatório anterior válido pode inicializar o cache, conservando a origem e deixando a seleção/reutilização a cargo do Stryker. JSON inválido não aprova o gate, mesmo que o log mostre um score suficiente.
+
+O script incremental encaminha argumentos ao Stryker antes de executar o gate. Para reavaliar trechos estáticos após corrigir o harness/testes, suporta `npm run test:mutation:incremental -- --force --mutate ficheiro:linha-linha`. Stryker preserva no cache os mutantes fora da seleção; não editar estados manualmente. Depois de uma reavaliação dirigida, executar novamente o comando sem argumentos e conferir relatório/escopo completo. Um resultado estático antigo pode ser reutilizado mesmo após novos testes, por não ter cobertura associada a cada teste; não tratar isso como nova prova do cenário corrigido.
 
 Cobertura: `reports/coverage/`; mutação: `reports/mutation/`. Limites: linhas >=90%, branches >=85%, score bruto de mutação >85%; o gate adicional rejeita exatamente 85%, relatórios incompletos e denominador vazio. Código próprio `src/**/*.ts` está no escopo; cliente Prisma gerado fica excluído.
 

@@ -8,7 +8,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S00](S00/README.md) | Governança e Planeamento | DONE | Antecedente DOC-0001 |
 | [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
 | [S02](S02/README.md) | Cânone: corpus, domínio e parser | DONE | Encerramento com escopo reduzido aprovado; T004/T005 entregues, T006/T007 adiadas; commit principal c0c24b9 |
-| [S03](S03/README.md) | Biblioteca de Fontes | BACKLOG | Commit S02 c0c24b9 e continuação autorizada; preparar escopo/contratos/plano S03 para aprovação |
+| [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
 | [S04](S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada |
 | [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
@@ -31,6 +31,10 @@ IDs Sxx-Txxx únicos/nunca reutilizados. IDs antigos/temas/estados estão em [HI
 Tarefas detalhadas usam [template](../tasks/template.md) e docs/sprints/Sxx/tasks com índice quando existir. Aprovação da sprint não aprova automaticamente spec, contratos, versões ou plano da tarefa.
 
 ## Transições
+
+S03-T006 BLOCKED → READY → IN_PROGRESS em2026-10-21: novo «vai enfrente» aceita o plano detalhado e pesquisa calculada sem GIN persistente. Uma tarefa ativa; T007/encerramento/commit continuam com aprovações próprias. Migrações/importação somente no alvo de teste guardado.
+
+S03 BLOCKED → READY → IN_PROGRESS em2026-10-21 após «vai enfrente» à SPEC/recorte/planos T004/T005 e admissão do corpus. T004 DONE por provas de dados/curadoria; T005 iniciou RED e segue validação. T006/T007 têm planos/antecessoras próprios, sem execução ou encerramento/commit S03 autorizados.
 BACKLOG: refinamento sem entrada aprovada; READY: sprint/spec/contratos/plano aprovados e dependências satisfeitas; IN_PROGRESS: tarefa READY iniciada; BLOCKED: impedimento com causa/desbloqueio; REVIEW: execução em revisão; DONE: todos os gates aplicáveis e critérios demonstrados.
 Fluxo BACKLOG → READY → IN_PROGRESS → REVIEW → DONE. Impedimento conhecido leva a BLOCKED; volta a READY apenas com prova de desbloqueio. Falha de revisão volta a IN_PROGRESS se correção autorizada, senão BLOCKED. Não marcar DONE só por escrever código.
 
@@ -40,3 +44,13 @@ Depois de aprovação final, commitar apenas ficheiros da sprint em feat/biblia-
 Estados de execução: PASS/FAIL/BLOCKED/NOT_RUN com aplicabilidade/motivo separados. Gates obrigatórios pendentes/bloqueados impedem DONE. Sem testes/credenciais não declarar PASS.
 Pergunta de fechamento: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
 Ver [governança](../documentation-governance.md), [gates](../quality/quality-gates.md), [roadmap](../roadmap/master-plan.md) e [dependências](../roadmap/dependencies.md).
+
+S03 BACKLOG → BLOCKED em2026-10-21 após commit S02 c0c24b9/registo ee55c4e e pedido de continuação. PLAN/SPEC/planos T004/T005 e pesquisa de candidatas preparados; contratos/recorte/corpus ainda precisam de aceite/prova antes de código. S02-T006/T007 continuam adiadas; proposta explicita associação bíblica também adiada, sem fake de existência.
+
+S03-T006 IN_PROGRESS → REVIEW → DONE técnico em2026-10-21: critérios/gates aplicáveis verificados,439 testes e mutação bruta99,08883826879271%, relatório/revisão/docs sincronizados. T007 continua BLOCKED no aceite do seu plano; a sprint permanece IN_PROGRESS, commit PENDING.
+
+S03-T007 BLOCKED → READY → IN_PROGRESS em2026-10-21: «aprovado, e veja que alterei o .env, podes usar e adaptar o que precisares tambem» aceita o plano de revisão integrada/CI e uso da configuração local. T006 DONE, base de teste isolada confirmada; sem encerramento/commit S03 ou S04 autorizado nesse momento.
+
+S03-T007 IN_PROGRESS → REVIEW → DONE técnico e S03 IN_PROGRESS → REVIEW em2026-10-21:440 regressões, estática/build/tooling13, linhas100%/branches97,07%, mutação bruta435/439=99,08883826879271%, percurso integrado/CI local e documentação verificados. Encerramento/commit S03 PENDING naquele momento até aprovação final e pergunta obrigatória; nenhuma autorização S04/push/merge.
+
+S03 REVIEW → DONE em2026-10-21: «pode usar», após TEST_REPORT/REVIEW e pergunta obrigatória, aprova encerramento e commit da sprint. Sem autorização de S04, push/merge ou deployment. Registar hash após criação, sem autorreferência impossível.

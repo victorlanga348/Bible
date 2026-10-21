@@ -41,6 +41,17 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
       - run: npm run prisma:generate
+      - name: Provision admitted source original
+        shell: bash
+        run: |
+          set -euo pipefail
+          directory=data/source-library/josephus-antiquities-pg2848-en
+          mkdir -p "$directory"
+          original="$(mktemp "$directory/source.html.XXXXXX")"
+          trap 'rm -f "$original"' EXIT
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$original" 'https://www.gutenberg.org/files/2848/2848-h/2848-h.htm'
+          printf '%s  %s\n' '098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99' "$original" | sha256sum --check --status
+          mv "$original" "$directory/source.html"
       - run: npm run db:migrate:test
       - run: npm run typecheck
       - run: npm run lint

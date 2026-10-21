@@ -2,7 +2,7 @@
 
 Ordem: S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08. Encerramento aprovado e commit da anterior precedem nova autorização. S09/frontend não são dependências deste ciclo.
 
-Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que falta vou adicionar depois». T006/T007 ficam BACKLOG fora desse fecho, sem sprint futura atribuída; suas arestas abaixo são preservadas para retoma, não tarefas ativas ou satisfeitas. S03 permanece BACKLOG; rever impacto da ausência de integração bíblica antes da sua aprovação, com commit principal S02 c0c24b9 já realizado e continuação para preparação autorizada.
+Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que falta vou adicionar depois». T006/T007 bíblicas ficam BACKLOG fora desse fecho, sem sprint futura atribuída; suas arestas abaixo são preservadas para retoma, não tarefas ativas ou satisfeitas. S03 foi posteriormente aprovada com biblioteca independente e associação bíblica adiada; T004–T006 DONE tecnicamente, incluindo integração real. T007 tem plano próprio para aceite. O commit principal S02 c0c24b9 precedeu essa preparação/execução; não há contrato de existência bíblica satisfeito por inferência.
 
 | Tarefa ativa | Predecessoras diretas (IDs) | Fonte |
 |---|---|---|
@@ -50,3 +50,7 @@ Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que fa
 
 A tabela lista arestas de tarefa; dependências de sprint/aprovação/serviço ficam no PLAN/TASKS e em [ações externas](../external-actions/REQUIRED_ACTIONS.md). Contratos não aprovados bloqueiam implementação. Dados, ambiente e credenciais obrigatórios não se substituem por fakes.
 S04 não depende de S05 para geração determinística. IDs antigos não participam neste grafo ativo, exceto antecedente S00-T001; estão preservados em [HISTORY](HISTORY.md).
+
+Histórico da preparação S03 após c0c24b9: pacote PLAN/SPEC/T004/T005 preparado, então BLOCKED no aceite/corpus. «vai enfrente» posterior aprovou pacote; T004/T005 concluídas tecnicamente, sprint IN_PROGRESS e T006/T007 dependentes de planos/execução próprios. Proposta de biblioteca independente: associação validada fonte-passagem adiada em vez de simular a capacidade que S02-T006 ainda não oferece. Não alterar retroativamente as tarefas bíblicas nem iniciar as fontes sem curadoria/aprovações.
+
+Estado atual S03 em2026-10-21: T004–T007 DONE técnico após os aceites próprios; sprint DONE após «pode usar» ao encerramento/commit, gates locais e revisão integrada/CI local comprovados. Original verificado por HTTPS/hash preparado no CI, execução remota NOT_RUN. S04 continua BACKLOG até aprovação própria; S02-T006/T007 e associação bíblica permanecem adiadas.

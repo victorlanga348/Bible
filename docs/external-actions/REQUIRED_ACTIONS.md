@@ -1,6 +1,6 @@
 # Ações externas necessárias
 
-Atualizado: 2026-10-21, S01 DONE após aprovação final. PostgreSQL local isolado operacional e validado; nenhuma integração IA ou corpus implementado. Credenciais PostgreSQL geradas localmente e ignoradas pelo Git, sem valores neste registo.
+Atualizado: 2026-10-21. S00–S03 encerradas após os aceites próprios; S03 tem biblioteca independente de fontes implementada e validada no alvo isolado de teste. Corpus S02 local/domínio presentes, integração bíblica adiada e nenhuma integração IA. Configuração e credenciais locais ignoradas pelo Git, sem valores neste registo.
 Responsável por cada ação/decisão: utilizador; agente prepara e valida apenas no escopo aprovado. Não enviar segredos pelo chat, commit ou log. Estados de ações: ACTION_REQUIRED até evidência de desbloqueio; resultados de testes são separados.
 
 ## EXT-001 — AI Provider
@@ -96,7 +96,13 @@ Resolução em 2026-10-21: «ok» explícito após pacote v0.2 e plano T005. ZIP
 
 ## EXT-004 — Fontes e corpus de avaliação
 
+Atualização2026-10-21: preparação S03 autorizada após S02 c0c24b9; [SPEC/plano T004](../sprints/S03/SPEC.md) propõem Josefo/Whiston/Gutenberg2848 e capítulo inicial, com condições por operação, localização/cobertura e limitações explícitas. Pesquisa primária efetuada, mas recorte/contratos/curadoria ainda aguardam aceite; corpus/aviso/hash/fixture não obtidos/admitidos. OpenStax permanece alternativa com requisitos de IA próprios. Estado ACTION_REQUIRED preservado, sem assumir licença universal ou integração/evaluação resolvidas.
+
 ID: EXT-004
+
+Atualização T006/T007 aprovadas: importação, pesquisa e HTTP reais implementados/validados localmente no recorte admitido; gates em TEST_REPORT S03. Original HTML completo permanece ignorado; o workflow passa a provisioná-lo por HTTPS e SHA-256 fixo antes das suites. Download real e rejeição de falha/bytes alterados foram verificados localmente; CI remota NOT_RUN. Não há bloqueio local de fonte/credencial para o capítulo atual, nem autorização de IA ou ampliação. Desenvolvimento não foi migrado/importado. T007 validou o `.env` do utilizador e sincronizou apenas `BIBLE_TEST_DB_PASSWORD` com a credencial de `.env.test`/base já validada; demais valores preservados e Compose resolvido conferido, sem expor segredos ou recriar containers.
+
+Resolução parcial verificada em2026-10-21 após «vai enfrente»: capítulo1 do Livro I de Josefo/Whiston/Gutenberg2848 admitido para ingest/store/index/display/quote locais e fixture versionável de teste. HTML SHA098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99;4 parágrafos/localizações reais, aviso integral de export irmão e condições/revisão local no manifesto/README da fixture source-library. sendToAi pending; não resolve corpus/avaliações/integrações IA ou outras obras. Estado geral ACTION_REQUIRED preservado para ampliações/IA, não bloqueia o recorte documental/local já admitido. Esta resolução de curadoria não era prova de integração; T006 posterior foi aprovada e verificada no recorte local, conforme atualização acima.
 Componente: source-library e avaliações IA
 Estado: ACTION_REQUIRED
 Sprint afetada: S03/S05/S08
@@ -114,10 +120,10 @@ Como obter:
 Selecionar obras/edições verificáveis, obter acesso e condições concretas, identificar excertos/localizações e revisão humana. Nenhuma fonte foi selecionada ou licença verificada nesta consolidação.
 
 Implementação preparada:
-Plano de Source/SourceExcerpt, proveniência, pesquisa e avaliação; catálogo atual vazio.
+Source/SourceExcerpt, proveniência/permissões, importação/pesquisa/HTTP locais T004–T006 verificados com a fixture admitida. Acervo maior e avaliações semânticas/IA continuam futuros.
 
 Validação pendente:
-Ingestão/pesquisa real, referências existentes e suporte efetivo, casos sem cobertura, divergências, curadoria/rubrica e direitos preservados.
+Para ampliações/IA: novos corpora/usos, referências e suporte efetivo, divergências, curadoria/rubrica e direitos. A integração lexical local T006 já passou; não resolve suporte semântico SR-AC05.
 
 Critério de desbloqueio:
 Fontes/usos/corpus aprovados e disponíveis, com testes/avaliações reais executados. Não criar história/citação fictícia para substituir dados ausentes.

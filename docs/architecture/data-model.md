@@ -7,6 +7,8 @@ Histórico da preparação S02-T004, proposta v0.2 de 2026-10-21: a [SPEC S02](.
 Aceite posterior: o «ok» do utilizador aprovou a SPEC v0.2/recorte e plano T005. Domain/referências puros foram implementados; transposição física das tabelas/migrações/casos de aplicação só na T006 com plano detalhado aprovado. Nada nesta implementação de entidades comprova persistência de negócio; o corpo conceptual abaixo permanece para os restantes módulos.
 
 ## Conceitos a modelar
+
+S03 SPEC v0.1 e refinamento T006 aprovados: Prisma/migrações implementam app.source_library_source e app.source_library_excerpt, com PK/FK, unicidade de locator/ordem por fonte, checks de campos/digests/permissions. Ordem bigint limitada a inteiro positivo seguro; retrievedAt texto preserva precisão original. Permissões JSON têm seis chaves/estados estritos, incluindo rejeição SQL de null por migração corretiva. Fonte/excertos entram numa transação com lock por identidade e idempotência id/hash. Pesquisa lexical calculada só após autorização, sem GIN persistente. Aplicado/verificado apenas em biblia_test; sem FK/acesso direto a tabelas biblical-canon ou associação bíblica validada. Critérios e provas em S03-T006/TEST_REPORT.
 | Conceito | Necessidade de produto | Restrições a esclarecer |
 |---|---|---|
 | Passagem e versão | Localizar o texto estudado | Cânone, versificação, direitos e identificação |

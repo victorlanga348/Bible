@@ -2,7 +2,8 @@ import { Module, StandardSchemaValidationPipe, type INestApplication } from '@ne
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { RuntimeConfig } from './config/runtime-config';
-import { Database } from './infrastructure/database';
+import { DatabaseModule } from './infrastructure/database.module';
+import { SourceLibraryModule } from './modules/source-library/module';
 import { HealthController } from './presentation/health.controller';
 import { ErrorFilter } from './presentation/error.filter';
 
@@ -14,10 +15,10 @@ export function configureTransport(app: INestApplication): void {
 export async function createApplication(config: RuntimeConfig): Promise<INestApplication> {
   @Module({
     controllers: [HealthController],
-    providers: [{ provide: Database, useFactory: () => new Database(config.databaseUrl) }],
+    imports: [DatabaseModule.register(config.databaseUrl), SourceLibraryModule],
   })
   class ApplicationModule {}
-  const app = await NestFactory.create(ApplicationModule, { logger: false });
+  const app = await NestFactory.create(ApplicationModule, { logger: false, abortOnError: false });
   configureTransport(app);
   const document = SwaggerModule.createDocument(app, new DocumentBuilder().setTitle('Bíblia App — Backend').setVersion('0.1.0').build());
   SwaggerModule.setup('docs', app, document, { jsonDocumentUrl: 'openapi.json' });

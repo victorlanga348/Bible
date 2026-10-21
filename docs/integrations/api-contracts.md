@@ -7,6 +7,8 @@ Histórico da preparação S02-T004, proposta v0.2 de 2026-10-21: contratos de c
 Aceite posterior pelo «ok»: cinco contratos v0.2 aprovados, mas ainda sem handlers/composição/HTTP bíblico. T005 implementa apenas Domain/parser; provas reais da API/persistência em T006/T007. Manter distinção entre contrato aprovado e rota efetivamente existente.
 
 ## Capacidades a especificar
+
+S03: três contratos de catálogo/excertos/pesquisa da SPEC v0.1 implementados após aprovação do plano/refinamento T006 pelo novo «vai enfrente». Nest/Supertest/PostgreSQL reais verificam200/400/403/404/500 e OpenAPI. O403 de negócio é limitado ao filtro source-library; HttpException403 inesperada mantém sanitização500 técnica S01. Não há associação validada a passagens ou suporte semântico automático. Só o banco de teste foi migrado/importado; scripts locais e limites no README do backend, resultados finais no TEST_REPORT S03.
 | Necessidade conceptual | Origem | Trabalho necessário |
 |---|---|---|
 | Resolver seleção bíblica | PRD-01 | Cânone, versões, versificação e PLAN-009 |

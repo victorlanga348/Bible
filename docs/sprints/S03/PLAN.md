@@ -1,32 +1,54 @@
-# S03 — Biblioteca de Fontes
+# S03 — Plano refinado da Biblioteca de Fontes
 
-Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
-Branch: feat/biblia-backend. Commit: PENDING. Dependência: S02 encerrada e nova aprovação.
+Estado vigente: T004–T007 DONE tecnicamente após os aceites e gates aplicáveis. [T006](tasks/S03-T006-integration.md) implementa biblioteca independente real, com refinamento aprovado sem GIN persistente; [T007](tasks/S03-T007-verification.md), aprovada pelo «aprovado» posterior, concluiu revisão integrada/CI local/configuração. Resultado440 testes/mutação99,09% no TEST_REPORT. Sprint DONE; encerramento/commit aprovados pelo «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento. Hash será registado após criação. O pacote de proposta abaixo preserva o histórico anterior à execução.
 
-## Objetivo e escopo
-Evidências reais são recuperáveis e possuem origem, localização e direitos verificáveis.
-Source, SourceExcerpt, autoria/datação, proveniência/licenças, ligação fonte-passagem, importação, classificação e pesquisa textual nativa PostgreSQL.
+Data:2026-10-21. Preparação autorizada por «se terminou pode finalizar e ir para a proxima», após S02 encerrada com escopo reduzido e commitada em c0c24b9; hash registado em ee55c4e. Estado vigente: APROVADO pelo «vai enfrente» quanto a escopo/SPEC/planos T004/T005; sprint IN_PROGRESS, T004/T005 DONE tecnicamente, integração T006/T007 pendente. Texto de proposta abaixo preserva o pacote revisto. Commit S03 PENDING, sem push/merge.
 
-## Fora do escopo
-Frontend, módulos de sprints posteriores, serviços adicionais, merge/push/publicação automática. Aprovar este roadmap não aprova specs, contratos ou imports.
-Em S04 não exigir LLM; em S05 não aceitar integração estática como real.
+## Objetivo, recorte e dependências
 
-## Tarefas, contratos e ficheiros
-Ordem e dependências em [TASKS](TASKS.md). Antes de cada tarefa refinar spec, ports, entradas/saídas Zod/HTTP/OpenAPI, erros, persistência e critérios de segurança pertinentes, sem inventar assinaturas/fields neste rascunho.
-Ficheiros previstos: documentação da tarefa/spec, módulo afetado com domain/application/infrastructure/presentation/module.ts, testes e migrações justificadas. Caminhos concretos e dependências aprovados no plano detalhado antes da edição.
-Contratos aprovados não existem ainda. Domain independente de NestJS/Prisma/SDKs e Application de adapters; nenhum acesso direto a dados de outro módulo.
+Tornar fontes/excertos autênticos recuperáveis e citáveis com origem/localização/permissões/cobertura verificáveis. Proposta detalhada na [SPEC v0.1](SPEC.md): um capítulo de uma obra/edição inicial, catálogo/leitura e pesquisa textual PostgreSQL. Josefo/Whiston, Project Gutenberg2848, capítulo inicial admitido após aceite: artefacto/condições/hashes/fixture reais em backend/test/fixtures/source-library/josephus-antiquities-pg2848-en. Sem pesquisa/API de fonte implementada ainda.
 
-## Testes e Red → Green → Refactor
-Para cada comportamento aprovado: teste antes; RED por causa esperada e saída guardada; GREEN mínimo; REFACTOR com regressões/fiscalização arquitetural.
-Domínio puro sem serviços; Application com infraestrutura real como padrão; Prisma/PostgreSQL/migrações/repositórios/transações/restrições reais; HTTP NestJS/Supertest; fixtures autênticas/autorizadas e limpeza segura.
-IA separa contratos determinísticos, integração real e avaliações semânticas com fontes verificadas. Falta de credencial deixa teste/gate BLOCKED.
+Dependências existentes: Nest12/TS6 strict/Node24, Prisma7/PG17 real isolado, Zod/OpenAPI/Jest/Supertest/Stryker10, guard e arquitetura S01. Não há dependência/serviço novo ou IA. S02-T006/T007 permanecem adiadas: não existe contrato executável de existência de passagem para associar fonte-passagem com validação real. Proposta explícita: adiar essa associação e trabalhar na biblioteca independente; não reativar as tarefas bíblicas sem pedido.
 
-## Aceitação, riscos e alternativas
-Critérios em [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md). Limites: linhas >=90%, branches >=85%, mutação bruta >85%; zero erros de tipagem/lint e nenhum teste obrigatório falhado/bloqueado.
-Riscos: contratos incompletos, direitos/dados indisponíveis, credenciais/infraestrutura em falta e regressões. Mitigar aprovando contratos/dados, ações externas e testes antes de código. Não substituir por fixtures fictícias.
-Alternativa de antecipar módulos ou usar fakes como aceitação rejeitada; preservação de fronteiras custa contratos/mapeamentos, reduzindo acoplamento. Versões e custos exigem investigação/aprovação antes do uso.
-Dependências externas em [REQUIRED_ACTIONS](../../external-actions/REQUIRED_ACTIONS.md); dados/acesso/retensão/fornecedores conforme momento afetado.
+SR-001 original continua rascunho, preservada. SPEC operacionaliza recuperação determinística e deixa suporte semântico de afirmação para S04/S05. Direitos por ingest/store/index/display/quote/sendToAi separados; acesso público não concede todas as operações.
 
-## Validação e aprovação
-Scripts reais de package.json serão identificados depois de existir aplicação; não há comandos de suite aprovados neste rascunho.
-Executar sete gates aplicáveis, registar por critério comando/ambiente/data/resultado e artefactos, produzir [TEST_REPORT](TEST_REPORT.md) e [REVIEW](REVIEW.md), aguardar aprovação de encerramento/commit. Não iniciar sprint seguinte sem autorização própria.
+## Tarefas e ordem
+
+| Tarefa | Escopo proposto e saída verificável |
+|---|---|
+| S03-T004 | Aprovar SPEC/recorte/curadoria; verificar/admitir artefacto e condições por operação; manifesto/hash/cobertura/fixture autêntica, EXT-004 resolvida só para usos realmente demonstrados |
+| S03-T005 | Domain puro Source/SourceExcerpt/invariantes/elegibilidade por permissão, TDD e gates. Componente histórica de associações fonte-passagem adiada explicitamente; sem Application/ports vazios/ORM/HTTP |
+| S03-T006 | Application/ports específicos e adapters reais, duas tabelas/migração/ingestão atómica/idempotente, pesquisa nativa/contagens e três contratos HTTP. Plano detalhado próprio antes de código |
+| S03-T007 | Prova integrada de contratos, origem/localização/fidelidade/cobertura/direitos; estática/build/arquitetura/cobertura/mutação e revisão/documentação. Plano detalhado próprio |
+
+Fichas T004/T005 preparadas para aprovação concreta; não há implementação autorizada por inferência. Uma tarefa por vez, sem agentes paralelos. Ficheiros imediatos apenas docs/sprints/S03 e fontes documentais afetadas. Após aprovação/admissão: backend/src/modules/source-library/domain e test/unit/source-library; T006 só quando o seu plano estiver revisto/aprovado. Raw fora do Git, excertos/licenças de teste versionáveis após admissão; fixtures não alimentam produção.
+
+## Alternativas, vantagens e custos
+
+| Opção | Vantagem | Custo/limite |
+|---|---|---|
+| Biblioteca independente e um capítulo real (proposta) | Avança módulo de fontes sem reabrir S02, reduz matriz de direitos/extração para primeira prova | Sem ligação validada a passagens; cobertura deliberadamente pequena, deve ficar visível |
+| Retomar S02-T006 antes de S03 | Permitiria validar existência na edição nas associações | Executaria trabalho que o utilizador pediu para adicionar depois; exige novo pedido/planeamento |
+| Obra/corpus mais amplo ou várias edições | Amplia cobertura | Mais curadoria/direitos/numeração/fixtures; mudança de escopo antes de incorporar |
+| Fonte moderna OpenStax | Alternativa com condições declaradas e contexto secundário | Condições atuais não tornam uso em IA livre; não incorporar por inferência |
+| Pesquisa PostgreSQL nativa | Stack existente, consultas reais e ordenação verificáveis | Busca lexical inglesa inicial não prova suporte, consenso ou relevância semântica |
+
+## Riscos e mitigação
+
+Direitos/edição/formato divergentes: conferir aviso do artefacto/condições antes de copiar, interromper admissão se necessário; EXT-004 mantém obrigação de prova. Testemunho antigo/tradução não são verdade histórica automática; classificar, preservar limitações e texto, sem conclusão gerada.
+
+Ligação bíblica indisponível: adiar explicitamente, sem parser sintático apresentado como validação de existência ou tabelas alheias. Português versus corpus inglês: idioma visível, sem tradução gerada ou stemming português presumido. Fonte única: cobertura real declarada, zero resultados não é prova de falsidade.
+
+Indexação/permissão: testar bloqueio em ingestão/consulta/resultados; não vazar texto em erro/log. Importação parcial: manifesto/hash, constraints e transação/rollback/repetição reais. Limpeza: só teste guardado, sem dev/produção. Stryker: paths cache/relatório separados, um runner sobre banco partilhado, preservar denominador/analisar sobreviventes.
+
+## Aceitação e validação
+
+[Critérios](ACCEPTANCE_CRITERIA.md): fidelidade da fixture/origem/localização; invariantes/permissions; importação/pesquisa reais; contratos HTTP e cobertura explícita, sem aceite de suporte semântico automático. T004/T005 têm planos RGR próprios e a implementação depende da sua aprovação/admissão.
+
+Scripts reais em backend/package.json: test:unit, test:integration, test:e2e, test:coverage, test:tooling/test:architecture, typecheck, lint, build, prisma:generate, db:migrate:test e test:mutation ou test:mutation:incremental. Zero falhas obrigatórias; linhas>=90%, branches>=85%, score bruto>85% com todo src próprio, compatibilidade Stryker/Jest comprovada novamente na execução. Integração real, nunca aprovação por doubles.
+
+Preparação atual é documental: TDD/software gates não aplicáveis sem código/ambiente alterado; executar links/estados/coerência/diff, registar em TEST_REPORT. Nenhum score S03 medido. IA não aplicável à sprint; pesquisa/citação não assegura suporte semântico. Não executar suites já aprovadas só para atribuir números S02 à S03.
+
+## Histórico do pacote apresentado e aprovação recebida
+
+O utilizador aprovou escopo/recorte acima, SPEC v0.1 e planos/dependências concretos T004/T005 pelo «vai enfrente». Não repetir esta aprovação; futuros planos T006/T007 continuam próprios. Isto inclui verificar/admitir candidata/usos antes de código e adiar associações por dependência S02 ausente. Alternativa de edição/obra/associações altera impacto e exige atualização explícita. T006/T007 terão plano próprio; encerramento/commit/push/merge S03 não estão autorizados por este refinamento.

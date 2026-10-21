@@ -1,6 +1,7 @@
 # Política de fontes
 
-Estado: princípios definidos; processo de curadoria proposto, ainda sem corpus aprovado.
+Estado: princípios definidos; processo/recorte S03 SPEC v0.1 aprovados pelo «vai enfrente» em2026-10-21. Primeiro capítulo Josefo/Whiston admitido para usos locais/fixture de teste, sem autorização de IA/ampliação inferida.
+T006 aplica ingest/store na importação, display/quote antes de materializar texto e index/display/quote na pesquisa. Index pending/denied pode permitir armazenamento/leitura autorizada, mas não pesquisa; não há GIN persistente que indexe automaticamente esse material. Metadados/aviso/textos são confrontados com hashes fixos da admissão antes do importador guardado de teste. Nenhuma escrita HTTP ou importação de fixture em produção.
 Relaciona [catálogo](../biblical-library/source-catalog.md), [recuperação](../specs/source-retrieval.md) e [citações](../ai/grounding-and-citations.md).
 
 ## Admissão proposta
@@ -20,4 +21,4 @@ Fonte com licença incerta fica pendente para a operação afetada. Registar alt
 A política concreta de retenção de excertos depende das licenças e de DEC-10.
 
 ## Critério de revisão
-A curadoria precisa de aprovação documentada e evidência verificável. Não há fontes históricas, traduções ou comentários aprovados nesta inicialização.
+A curadoria precisa de aprovação documentada e evidência verificável. Admissão S03 limitada ao capítulo/edição/usos documentados no catálogo/manifesto; outras fontes/obras/IA permanecem sujeitas à curadoria própria. Aprovação de origem/localização não comprova suporte semântico de uma afirmação.
