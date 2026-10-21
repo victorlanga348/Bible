@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Commit principal S03 criado em2026-10-21: `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`,77 ficheiros selecionados, mensagem `feat(sprint-03): implement source library`. Hash registado neste incremento documental posterior; nenhuma alteração de main ou push/merge.
+
 Ciclo canónico S00–S08 do pedido mestre, consolidado com aprovação documental em 2026-10-20. Aprovação do planeamento não aprova execução das sprints futuras.
 Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documentação. Uma tarefa aprovada de cada vez; sem subagentes/paralelismo implícito.
 

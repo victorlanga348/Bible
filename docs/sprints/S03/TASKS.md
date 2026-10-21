@@ -1,6 +1,6 @@
 # S03 — Tarefas
 
-Fonte canónica,2026-10-21. T004–T007 DONE tecnicamente após aprovação dos respetivos planos e evidências reais. Revisão integrada T007:440 testes PASS, gates aplicáveis e documentação verificados; sem IA. Sprint DONE após «pode usar» ao encerramento/commit; hash será registado após criação, sem push/merge.
+Fonte canónica,2026-10-21. T004–T007 DONE tecnicamente após aprovação dos respetivos planos e evidências reais. Revisão integrada T007:440 testes PASS, gates aplicáveis e documentação verificados; sem IA. Sprint DONE após «pode usar» ao encerramento/commit; commit principal `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`, registado posteriormente, sem push/merge.
 
 | ID | Título preservado | Trilha | Prioridade | Estado | Dependências/escopo proposto | Referência |
 |---|---|---|---|---|---|---|

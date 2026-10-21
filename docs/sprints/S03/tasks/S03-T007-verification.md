@@ -1,6 +1,6 @@
 # S03-T007 — Revisão integrada da biblioteca de fontes
 
-Data:2026-10-21. Trilha C, prioridade alta. Estado: DONE técnico. O utilizador aprovou este plano com «aprovado, e veja que alterei o .env, podes usar e adaptar o que precisares tambem». T006 DONE e dependências locais confirmadas; BLOCKED → READY → IN_PROGRESS → REVIEW → DONE com os critérios abaixo demonstrados no TEST_REPORT. A autorização cobre uso/adaptação necessária do `.env`, preservando segredos e o alvo isolado de testes. Sem dependências npm novas, agentes paralelos, publicação, commit ou push. Sprint DONE após o posterior «pode usar» ao encerramento/commit; hash a registar após criação.
+Data:2026-10-21. Trilha C, prioridade alta. Estado: DONE técnico. O utilizador aprovou este plano com «aprovado, e veja que alterei o .env, podes usar e adaptar o que precisares tambem». T006 DONE e dependências locais confirmadas; BLOCKED → READY → IN_PROGRESS → REVIEW → DONE com os critérios abaixo demonstrados no TEST_REPORT. A autorização cobre uso/adaptação necessária do `.env`, preservando segredos e o alvo isolado de testes. Sem dependências npm novas, agentes paralelos, publicação, commit ou push. Sprint DONE após o posterior «pode usar» ao encerramento/commit; commit principal `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`, registado posteriormente.
 
 ## Objetivo, escopo e dependências
 

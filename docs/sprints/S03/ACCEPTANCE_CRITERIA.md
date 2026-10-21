@@ -1,6 +1,6 @@
 # S03 — Critérios de aceitação
 
-SPEC/recorte e planos T004–T007 aprovados pelos aceites registados. Admissão, Domain, integração/HTTP e revisão integrada reais comprovados; AC01–04 PASS técnico no recorte aprovado. Sprint DONE após «pode usar» ao encerramento/commit; hash será registado após criação. IA não aplicável/NOT_RUN e CI remota NOT_RUN são limites explícitos, sem substituir gates locais obrigatórios.
+SPEC/recorte e planos T004–T007 aprovados pelos aceites registados. Admissão, Domain, integração/HTTP e revisão integrada reais comprovados; AC01–04 PASS técnico no recorte aprovado. Sprint DONE após «pode usar» ao encerramento/commit; commit principal `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`, registado posteriormente. IA não aplicável/NOT_RUN e CI remota NOT_RUN são limites explícitos, sem substituir gates locais obrigatórios.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|

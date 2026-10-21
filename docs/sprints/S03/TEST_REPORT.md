@@ -1,6 +1,12 @@
 # S03 — Relatório de testes e admissão
 
-Estado vigente: S03-T004–T007 DONE técnico em2026-10-21, após aceites dos respetivos planos e todos os critérios/gates aplicáveis. Sprint DONE; encerramento/commit S03 aprovados pelo «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento. Hash a registar após criação. O aceite final não aprova S04/push/merge. Evidências atuais a seguir; etapas anteriores preservam histórico real, incluindo tentativas rejeitadas.
+Estado vigente: S03-T004–T007 DONE técnico em2026-10-21, após aceites dos respetivos planos e todos os critérios/gates aplicáveis. Sprint DONE; encerramento/commit S03 aprovados pelo «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento. Commit principal: `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`, registado posteriormente. O aceite final não aprova S04/push/merge. Evidências atuais a seguir; etapas anteriores preservam histórico real, incluindo tentativas rejeitadas.
+
+## Fechamento aprovado e commit
+
+Em2026-10-21, o «pode usar» posterior à revisão/pergunta obrigatória autorizou encerramento/commit: S03 REVIEW → DONE. Criado `604c45a29e78b5fb4d705ca4be95cbf77c1bc942` (`feat(sprint-03): implement source library`),77 ficheiros explicitamente selecionados. `git diff --cached --check` PASS e hashes dos três artefactos versionados confirmados diretamente no índice; nenhum ambiente/raw/relatório sensível incluído. Hash registado neste incremento documental posterior, sem autorreferência impossível.
+
+Reutilizada a baseline440 e mutação99,09%: nenhum src/teste/contrato/dependência mudou após validação final. Revisão de encerramento executou novamente checks de artefactos/fontes/cache e docs:77 ficheiros/31 Markdown/228 links, zero ausentes/segredos conhecidos/whitespace/proibidos/staging antes da seleção. Três parágrafos com perda de acentos por pipe PowerShell → Node corrigidos via apply_patch UTF-8; causa confirmada isoladamente (code point225 →63), registada no MegaBrain. Encerramento documental dispensa novo RED de negócio; checks documentais reais aplicáveis. CI remota/deployment continuam NOT_RUN, sem S04/push/merge.
 
 ## Resultado final T007 — revisão integrada vigente
 

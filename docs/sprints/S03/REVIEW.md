@@ -1,6 +1,6 @@
 # S03 — Revisão final da Biblioteca de Fontes
 
-Data:2026-10-21. Sprint DONE; T004–T007 DONE tecnicamente no recorte aprovado. O «aprovado» posterior aceitou o plano T007 e uso/adaptação necessária do `.env`. Encerramento/commit S03 aprovados pelo «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento; sem S04, push/merge ou deployment autorizados. Branch feat/biblia-backend, HEAD ee55c4e, nada staged.
+Data:2026-10-21. Sprint DONE; T004–T007 DONE tecnicamente no recorte aprovado. O «aprovado» posterior aceitou o plano T007 e uso/adaptação necessária do `.env`. Encerramento/commit S03 aprovados pelo «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento; sem S04, push/merge ou deployment autorizados. Branch feat/biblia-backend; base da validação ee55c4e. Commit principal `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`,77 ficheiros, registado posteriormente; sem autorreferência ao commit deste registo.
 
 Entregue e verificado: quatro parágrafos autênticos de Josefo/Whiston/Gutenberg2848, proveniência/aviso/direitos/cobertura, Domain puro, Application por ports, duas tabelas/migrações Prisma/PostgreSQL, importador de teste guardado/atómico/idempotente e três operações Nest/Zod/OpenAPI de catálogo/leitura/pesquisa lexical. A prova T007 percorre os quatro artefactos até à resposta HTTP real, sem seed direto. Bloqueios por direitos, ausência e falha real da base permanecem demonstrados na regressão.
 
@@ -16,7 +16,7 @@ Limites que continuam explícitos: uma obra inglesa/quatro parágrafos, pesquisa
 
 Pergunta obrigatória de fechamento: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
 
-Decisão final do utilizador em2026-10-21: «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento aprova o encerramento e o commit `feat(sprint-03): implement source library`. Pergunta apresentada na resposta final anterior; a resposta literal foi preservada, sem atribuir declaração adicional sobre alterações ausentes. Sprint REVIEW → DONE. Commit autorizado, hash a registar após criação; sem push/merge ou próxima sprint por inferência.
+Decisão final do utilizador em2026-10-21: «pode usar», após o relatório/revisão final e a pergunta obrigatória de fechamento aprova o encerramento e o commit `feat(sprint-03): implement source library`. Pergunta apresentada na resposta final anterior; a resposta literal foi preservada, sem atribuir declaração adicional sobre alterações ausentes. Sprint REVIEW → DONE. Commit autorizado, commit principal `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`, registado posteriormente; sem push/merge ou próxima sprint por inferência.
 
 ## Histórico da revisão técnica T006
 
