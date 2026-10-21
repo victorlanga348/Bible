@@ -1,6 +1,6 @@
 # Observabilidade
 
-Estado: necessidades propostas; fornecedor, biblioteca e métricas concretas pendentes.
+Estado: S01 implementa diagnósticos JSON sanitizados de erros HTTP/arranque e rotas locais de liveness/readiness; contratos e provas no [relatório S01](../sprints/S01/TEST_REPORT.md). Fornecedor, métricas e observabilidade de negócio/IA continuam propostos.
 
 ## O que observar
 Coordenar pedido, estudo, recuperação, geração e persistência com proveniência suficiente para diagnóstico.

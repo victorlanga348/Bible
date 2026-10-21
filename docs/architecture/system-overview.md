@@ -1,6 +1,6 @@
 # Visão do sistema
 
-Estado: arquitetura de backend consolidada documentalmente em S00; aplicação não implementada. Decisão: [ADR-0003](adr/ADR-0003-backend-modular-e-stack-prescrita.md). Monólito modular NestJS/TypeScript strict, REST/OpenAPI, Zod, Prisma/PostgreSQL.
+Estado: arquitetura consolidada documentalmente em S00; fundação técnica implementada, validada e aceite no encerramento S01 em 2026-10-21, sem módulos de negócio. Decisões: [ADR-0003](adr/ADR-0003-backend-modular-e-stack-prescrita.md) e [ADR-0004](adr/ADR-0004-fundacao-executavel-s01.md). Monólito modular NestJS/TypeScript strict, REST/OpenAPI, Zod, Prisma/PostgreSQL.
 
 ## Fluxo
 Presentation valida entrada/saída por contratos aprovados e chama Application; Application coordena Domain/ports; Infrastructure implementa persistência e fornecedores; composição NestJS liga dependências.
@@ -17,4 +17,4 @@ Um deploy lógico de backend; sem Redis, filas externas ou microsserviços. Aloj
 A: domínio/regras; B: infraestrutura/integrações; C: qualidade/documentação. Responsabilidades não autorizam paralelismo nem serviços separados.
 Entrada, fontes e saída do modelo são dados não confiáveis; fontes não alteram políticas nem autorizam ferramentas. Ver [segurança IA](../ai/safety-and-limits.md).
 Dados pessoais, acesso, retenção e envio ao fornecedor dependem de decisões explícitas antes de uso.
-Não existem endpoints, payloads ou schema aprovados. Implementação exige spec/plano próprios.
+Endpoints técnicos e namespace de persistência estão descritos na [SPEC S01](../sprints/S01/SPEC.md), com provas no [relatório](../sprints/S01/TEST_REPORT.md). Endpoints, payloads e schema de negócio exigem spec/plano próprios.

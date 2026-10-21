@@ -6,7 +6,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | Sprint | Objetivo | Estado | Dependência |
 |---|---|---|---|
 | [S00](S00/README.md) | Governança e Planeamento | DONE | Antecedente DOC-0001 |
-| [S01](S01/README.md) | Fundação Técnica | BACKLOG | S00 encerrada |
+| [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
 | [S02](S02/README.md) | Cânone Bíblico | BACKLOG | S01 encerrada |
 | [S03](S03/README.md) | Biblioteca de Fontes | BACKLOG | S02 encerrada |
 | [S04](S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada |
@@ -14,6 +14,8 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |
 | [S08](S08/README.md) | Hardening e Release | BACKLOG | S07 encerrada |
+
+Transição S01 REVIEW → DONE em 2026-10-21, após aprovação do utilizador: «segunda sprint aprovada, continue com a proxima apos o commit». Autoriza commit S01 e continuação para S02 depois dele; contratos/dados/cânone da S02 não são aprovados por inferência. Sem push/merge autorizado.
 
 ## Identidade e fontes
 Cada sprint tem PLAN.md, TASKS.md, ACCEPTANCE_CRITERIA.md, TEST_REPORT.md, REVIEW.md; README define estado de sprint e TASKS estados das tarefas. Entradas scope/backlog/acceptance preservam navegação e apontam para a fonte única.

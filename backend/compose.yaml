@@ -1,0 +1,30 @@
+name: biblia-backend
+services:
+  postgres-dev:
+    image: postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_DB: biblia_dev
+      POSTGRES_USER: biblia_dev
+      POSTGRES_PASSWORD: ${BIBLE_DEV_DB_PASSWORD:?Configure BIBLE_DEV_DB_PASSWORD}
+    ports: ["127.0.0.1:55432:5432"]
+    volumes: ["postgres-dev:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U biblia_dev -d biblia_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  postgres-test:
+    image: postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_DB: biblia_test
+      POSTGRES_USER: biblia_test
+      POSTGRES_PASSWORD: ${BIBLE_TEST_DB_PASSWORD:?Configure BIBLE_TEST_DB_PASSWORD}
+    ports: ["127.0.0.1:55433:5432"]
+    tmpfs: ["/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U biblia_test -d biblia_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  postgres-dev:

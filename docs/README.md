@@ -1,6 +1,6 @@
 # Documentação do Bíblia App
 
-Fonte normativa e estado real de um backend ainda não implementado. S00 documental DONE: relatório, encerramento e commit aprovados pelo «sim» do utilizador em 2026-10-20. S01 não iniciada; specs em rascunho não autorizam comportamento.
+Fonte normativa e estado real do projeto. S00 documental DONE e commitada. S01 DONE, fundação executável em [backend](../backend/README.md), validação técnica local e aprovação final concluídas; ver [relatório](sprints/S01/TEST_REPORT.md) e [revisão](sprints/S01/REVIEW.md). Commit S01 autorizado; continuar S02 depois dele. Specs/contratos de negócio continuam sujeitos a aprovação própria; nenhum módulo bíblico/IA implementado.
 
 ## Entrada
 [PRD](PRD.md), [linguagem](glossary.md), [regras](product/business-rules.md), [governança](documentation-governance.md), [stack](architecture/stack.md), [arquitetura](architecture/README.md), [ADRs](architecture/adr/README.md).

@@ -1,0 +1,17 @@
+# ERR-0001 — Compatibilidade da toolchain S01
+
+Data inicial: 2026-10-20; atualização: 2026-10-21. Tarefas S01-T005/T006/T008. Estado: causas abaixo corrigidas e verificadas; mutação integral final95,93% aprovada, com análise/limites no relatório S01. Sprint aceite e encerrada pelo utilizador em 2026-10-21. Não é erro de domínio bíblico.
+
+## Sintomas, causas confirmadas e correções
+
+1. TS5011 no Jest: TypeScript 6 exigiu rootDir explícito. Definido rootDir `.` no harness e `src` no build. O teste seguinte executou os 26 comportamentos e falhou por Not implemented (RED válido); a falha de configuração anterior não contou como RED.
+2. Nest12 ESM não carregava no Jest sem VM modules. Node local 24.16.0 suporta require(esm), mas Jest também precisou da flag --experimental-vm-modules. Compilação com module Node16 recusou os imports; module Node20 passou strict/typecheck. Testes HTTP reais comprovam a combinação.
+3. process.loadEnvFile não atualizou process.env dentro da sandbox Jest; parseEnv + atribuição explícita resolveu sem imprimir valores. No script de migração, carregar .env antes de .env.test mantinha NODE_ENV=development: a sobreposição explícita do ficheiro de testes resolveu o bloqueio do guard, sem remover a proteção.
+4. Prisma 7.10.1 recusou --allow-no-models. A ajuda do CLI indicou --require-models como opção inversa; prisma generate simples gerou o cliente sem modelos. Não criar entidade fictícia para contornar diferenças de CLI.
+5. Stryker inicialmente não descobriu testes: --showConfig demonstrou separador misto no testMatch que expandia <rootDir> dentro de .stryker-tmp no Windows. Glob **/test/**/*.spec.ts descobriu os testes; a seguir o runner não conseguiu resolver jest-environment-node. Dependência explícita 30.5.2 resolveu. Dry run posterior executou e aprovou 48 testes; resultado das mutações registado separadamente no TEST_REPORT.
+6. Checker de arquitetura deixava passar barrel ../infrastructure por exigir barra a seguir ao nome da camada. Teste novo falhou (0 violações em vez de 1), corrigido regex para aceitar fim do caminho. Regressão: 13 checks de tooling aprovados.
+7. Em 2026-10-21, Jest descobria zero ficheiros no diretório OneDrive. A listagem Node com withFileTypes identificava ficheiros como links; lstat/stat/realpath reconheciam ficheiros normais. A falha persistiu sem cache, com npm.cmd nativo e fora do sandbox, excluindo RTK/permissões como explicação para este caso. O crawler ignorava essas entradas; haste.enableSymlinks=true corrigiu a descoberta. Watchman deve estar desativado: na configuração multiprojeto, o argumento --watchman=false no script test chega à validação dos três projetos, enquanto a opção apenas na raiz não chegava e a opção dentro de cada projeto gerava avisos. Configuração de mutação desativa Watchman diretamente. Regressão executável: cinco suites/60 testes, zero avisos de configuração; linhas100%/branches94,54%. Não alterar os ficheiros do OneDrive ou remover testes para contornar o problema.
+
+## Prevenção
+
+Validar a matriz com compilação e suites reais; metadados/nomes de versão não provam compatibilidade. Consultar a ajuda do CLI instalado quando diverge da documentação. Separar erro de ambiente de RED de comportamento; nunca dispensar mutação por configuração incorreta. Usar os scripts npm para preservar a configuração de descoberta e verificar o número de suites; zero testes nunca é sucesso. Uma só instância de mutação sobre a fixture de base partilhada. Ver [SPEC](../../sprints/S01/SPEC.md) e [relatório](../../sprints/S01/TEST_REPORT.md).

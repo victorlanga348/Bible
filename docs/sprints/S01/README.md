@@ -1,6 +1,7 @@
 # S01 — Fundação Técnica
 
-Estado: BACKLOG. Sem início/encerramento aprovado. Dependências: [S00](../S00/README.md) encerrada; contratos/plano/tarefas e ações externas satisfeitos.
+Estado: DONE em 2026-10-21. Relatório/revisão, escolhas técnicas e encerramento/commit aprovados pelo utilizador: «segunda sprint aprovada, continue com a proxima apos o commit». Início/escopo autorizados em 2026-10-20; Docker Desktop local escolhido e execução do backend solicitada. Fundação em [backend](../../../backend/README.md), contratos na [SPEC](SPEC.md) e evidências no TEST_REPORT.
+Dependências: [S00](../S00/README.md) encerrada/commitada; PostgreSQL local isolado operacional. Execução local: 60 testes Jest, tooling13/13, linhas100%, branches94,54%, mutação integral95,93%. CI remoto NOT_RUN. Commit AUTORIZADO; hash a registar após criação. Continuação para S02 autorizada após o commit, com decisões/specs/contratos próprios. Sem autorização de push/merge.
 Trilhas: A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; não autorizam paralelismo.
 Aplicação inicia e comunica com PostgreSQL real; persistência e HTTP reais verificados.
 

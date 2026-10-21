@@ -1,6 +1,6 @@
 # Mutation testing
 
-Stryker Mutator obrigatório pelo pedido mestre e PLAN S00 aprovado em 2026-10-20. Não instalado; compatibilidade com Node/TypeScript/Jest por provar. ADR-0002 preserva a decisão anterior; evolução no [índice ADR](../architecture/adr/README.md).
+Stryker Mutator obrigatório pelo pedido mestre e PLAN S00. Stryker10 instalado/configurado em S01; resultados e compatibilidade no [relatório S01](../sprints/S01/TEST_REPORT.md), sem aprovação antecipada. ADR-0002 preserva a decisão anterior; evolução no [índice ADR](../architecture/adr/README.md).
 
 ## Escopo
 Priorizar Domain/Application e avaliar comportamento próprio de composição/adapters. Plano identifica ficheiros, operadores, runner/configuração, baseline e exclusões.

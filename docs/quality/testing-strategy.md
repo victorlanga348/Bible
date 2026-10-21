@@ -1,6 +1,6 @@
 # Estratégia de testes reais
 
-Jest, Supertest e Stryker prescritos; versões/compatibilidade/instalação pendentes. Sem package.json, testes de aplicação, banco provisionado ou CI configurada.
+Jest, Supertest e Stryker prescritos e instalados na fundação S01. Scripts, PostgreSQL local isolado e CI configurada existem; compatibilidade/resultados locais no [relatório S01](../sprints/S01/TEST_REPORT.md). Execução remota do workflow NOT_RUN.
 
 ## Níveis
 | Nível | Comprovação |

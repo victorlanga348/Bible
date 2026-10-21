@@ -1,0 +1,41 @@
+# S01 — Fundação executável
+
+Data: 2026-10-20. Execução na branch feat/biblia-backend, diretório backend/, conforme autorização de início da sprint, escolha Docker Desktop local e orientação de avançar para a pasta executável. Commit sempre sujeito a nova confirmação.
+
+Aceitação final: 2026-10-21, pelo utilizador, após relatório/revisão: «segunda sprint aprovada, continue com a proxima apos o commit». Confirma a revisão das escolhas técnicas e autoriza encerramento/commit S01; não reescreve a cronologia da execução nem aprova contratos de negócio futuros.
+
+## Escopo
+Somente bootstrap técnico NestJS/TypeScript strict, PostgreSQL isolado/Prisma, validação Zod, REST/OpenAPI, erros/logging e ferramentas de qualidade. Sem domínio bíblico, IA, autenticação pública, textos ou fontes importados. O serviço local liga a 127.0.0.1; exposição externa requer decisão de acesso posterior.
+
+## Matriz de execução
+Versões consultadas diretamente no registry npm em 2026-10-20, antes da instalação: Node local 24.16.0/npm 11.13.0; Nest core/common/platform-express/testing 12.2.0; Swagger 12.0.2; TypeScript 6.0.3; Zod 4.6.7; Prisma CLI/client/adapter-pg 7.10.1; pg 8.23.1; RxJS 7.8.2; reflect-metadata 0.2.2; Jest 30.5.2; ts-jest 29.4.15; Supertest 7.3.1; Stryker core/jest-runner/typescript-checker 10.0.0; ESLint 10.13.0, @eslint/js 10.0.1 e typescript-eslint 8.72.0. Tipos e transitivas fixados no lockfile.
+TypeScript 7.0.2 (latest consultado) está fora de ts-jest <7 e typescript-eslint <6.1. Prisma latest 8.0.0-rc.23 é candidato e muda a interface; usar a linha estável 7, explicitamente fixada. Nest 12/Jest requer Node >=24.9; Node local satisfaz. Metadados não provam execução: testes e mutação têm de ser realmente executados.
+CommonJS com module Node20/moduleResolution Node16, compatível com require(esm) do Node 24; Jest exige --experimental-vm-modules. Node16 como module foi testado e recusou os imports ESM do Nest; Node20 resolveu sem relaxar strict. Prisma generator prisma-client com moduleFormat cjs. Não usar geradores que mudem para Vitest/oxlint nem adicionar frameworks de validação redundantes. pg/adapter são necessários ao Prisma 7 e reflect-metadata/RxJS ao Nest. jest-environment-node 30.5.2 é dependência explícita de desenvolvimento porque o runner Stryker precisa de resolver esse ambiente a partir do projeto.
+
+## Contratos técnicos
+- Configuração: NODE_ENV development/test; PORT inteiro 1–65535, default 3000; em desenvolvimento DATABASE_URL obrigatória. Em teste TEST_DATABASE_URL obrigatória e selecionada explicitamente. URLs PostgreSQL válidas, com base identificada; segredo nunca em mensagem de erro/log. Produção/exposição ainda não configuradas.
+- Teste destrutivo exige NODE_ENV=test, utilizador/base biblia_test, host local ou postgres no CI, schema app, alvo distinto da DATABASE_URL de desenvolvimento; confirmar current_database/current_user antes de fixture/limpeza.
+- GET /health/live: 200, objeto estrito status=ok, independente do banco.
+- GET /health/ready: 200, status=ok/database=up se consulta Prisma real responder; 503, status=unavailable/database=down em indisponibilidade. Nenhuma URL, versão, stack ou credencial na resposta.
+- GET /openapi.json publica contrato OpenAPI; GET /docs serve Swagger local. Sem endpoints de negócio nesta sprint.
+- Erros HTTP: objeto error com code/message. 400 VALIDATION_ERROR/Entrada inválida.; 404 NOT_FOUND/Recurso não encontrado.; 500 INTERNAL_ERROR/Erro interno. Log estruturado indica componente/código, sem guardar corpo/URL/segredo ou mensagem bruta do driver. Readiness indisponível usa a resposta técnica explícita acima.
+- Arranque: configuração inválida falha antes de escutar; configuração válida permite processo vivo mesmo com DB indisponível, mas readiness retorna 503. Encerramento fecha aplicação e pool Prisma. Pool limitado e timeout de consulta/conexão explícitos para não aguardar indefinidamente.
+
+## Persistência e isolamento
+Docker PostgreSQL 17.11-bookworm, dois serviços/credenciais/bases independentes: biblia_dev (porta local 55432) e biblia_test (55433). Imagem oficial verificada HTTP 200, digest multiarch sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826. Só bind loopback. Credenciais locais geradas fora do Git; exemplos têm valores vazios. Teste descartável, desenvolvimento com volume dedicado; não apagar volumes sem operação específica.
+Schema principal sem entidades fictícias: prisma generate sem modelos, executado com sucesso no CLI 7.10.1; a opção antiga --allow-no-models foi recusada e removida, pois agora a ausência de modelos é permitida por defeito. Primeira migração SQL estabelece namespace app. _prisma_migrations comprova a migração real. Nenhuma tabela de negócio provisória.
+Fixture SQL exclusiva do banco de teste: app.persistence_probe, id text PRIMARY KEY, payload text NOT NULL com CHECK length(payload)>0. Repositório técnico de teste faz SQL parametrizado via Prisma real; verificar escrita/leitura, unicidade, check, transação/rollback e limpeza determinística apenas dessa tabela após proteção do alvo. A fixture não é aplicada a dev/produção.
+
+## Validação
+RGR por comportamento: teste primeiro, stubs de assinatura quando necessários à compilação, RED de comportamento ausente (não erro de import/sintaxe), implementação mínima GREEN e REFACTOR com repetição. Evidências reais no TEST_REPORT. Harness/configuração têm checks executáveis de estrutura e compilação.
+Jest/Supertest/PostgreSQL/Prisma reais. Cobertura de linhas >=90%, branches >=85%. Stryker em todo comportamento próprio src/**/*.ts; gerado excluído. Não excluir adapters/composição só pela localização. Separar funções de bootstrap para exercitar composição sem iniciar servidor em imports.
+Mutation Score bruto >85%; thresholds.break=85 sozinho aceita exatamente 85, por isso gate adicional lê categorias/contagens JSON e exige 100×detetados >85×válidos, rejeitando denominador zero/execução incompleta. Relatório/sobreviventes analisados, nunca substituídos por percentagem arredondada. Nenhuma métrica pode ser declarada antes da execução.
+CI GitHub Actions: banco PostgreSQL de serviço isolado, npm ci/geração/migração/testes/build/lint/typecheck/arquitetura/mutação e artefactos. Apenas o serviço efémero de CI usa trust sem credenciais versionadas; Compose local usa duas palavras-passe geradas. Actions fixadas em SHAs obtidos dos tags oficiais em 2026-10-20. Configurar/validar YAML não comprova execução remota; sem push autorizado a execução remota permanece NOT_RUN. A entrega S01 é a configuração do workflow; prova remota não é declarada como PASS.
+Stryker usa o mesmo conjunto de testes numa configuração Jest única e glob relativo: no Windows, <rootDir> no glob dentro de .stryker-tmp produziu caminho misto e nenhum teste encontrado. Uma só instância de mutação evita concorrência na fixture. Mutantes estáticos continuam incluídos, mesmo quando tornam a execução mais lenta.
+
+## Riscos e alternativas
+Escolha estável Prisma 7 conserva migrações/schema e evita uma RC; custo é futura migração explícita. TS6 compatível com ferramentas, sem alegar compatibilidade dinâmica antes dos testes. CommonJS reduz alterações ao Jest prescrito; migrar a ESM exige nova análise.
+Docker indisponível impede suites reais até motor operacional; não usar fakes como substituição. Se houver bloqueio externo, preparar o resto do escopo autorizado e registar exatamente a validação pendente.
+
+## Fontes consultadas
+[Nest 12](https://docs.nestjs.com/migration-guide), [OpenAPI/schema](https://docs.nestjs.com/openapi/introduction), [Prisma release status](https://www.prisma.io/docs/orm/release-status), [CLI v7](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference), [generator v7](https://www.prisma.io/docs/orm/v7/prisma-schema/overview/generators), [adapter PostgreSQL](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/postgresql), [Stryker/Jest](https://stryker-mutator.io/docs/stryker-js/jest-runner/), [thresholds](https://stryker-mutator.io/docs/stryker-js/configuration/), [Node LTS](https://nodejs.org/en/about/previous-releases), [PostgreSQL](https://www.postgresql.org/support/versioning/). Registry npm consultado em endpoints públicos por pacote/versão, sem instalar globais.

@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "jest",
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "jest": { "projectType": "custom", "configFile": "jest.mutation.config.cjs" },
+  "mutate": ["src/**/*.ts", "!src/generated/**"],
+  "coverageAnalysis": "perTest",
+  "fileLogLevel": "debug",
+  "concurrency": 1,
+  "testRunnerNodeArgs": ["--experimental-vm-modules"],
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "thresholds": { "high": 90, "low": 85, "break": 85 }
+}

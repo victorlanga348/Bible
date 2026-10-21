@@ -1,6 +1,6 @@
 # Ações externas necessárias
 
-Atualizado: 2026-10-20, S00-T005. Nenhuma integração, corpus ou ambiente de aplicação implementado. Não foram verificadas variáveis/credenciais privadas; não se presume que existam.
+Atualizado: 2026-10-21, S01 DONE após aprovação final. PostgreSQL local isolado operacional e validado; nenhuma integração IA ou corpus implementado. Credenciais PostgreSQL geradas localmente e ignoradas pelo Git, sem valores neste registo.
 Responsável por cada ação/decisão: utilizador; agente prepara e valida apenas no escopo aprovado. Não enviar segredos pelo chat, commit ou log. Estados de ações: ACTION_REQUIRED até evidência de desbloqueio; resultados de testes são separados.
 
 ## EXT-001 — AI Provider
@@ -35,29 +35,29 @@ Decisões e orçamento aprovados, credencial configurada fora do Git, adapter im
 
 ID: EXT-002
 Componente: PostgreSQL de desenvolvimento e testes
-Estado: ACTION_REQUIRED
+Estado: RESOLVED (ambiente local S01; CI remoto ainda NOT_RUN)
 Sprint afetada: S01 e suites de persistência posteriores
 
 Ação necessária:
-Aprovar mecanismo de isolamento e disponibilizar PostgreSQL de teste independente de dev/produção. Se Docker for aprovado, iniciar o motor Linux e autorizar recursos necessários.
+Utilizador escolheu Docker Desktop local. Motor Linux iniciado; PostgreSQL dev/test separados estão saudáveis. Não é necessária intervenção adicional para os testes locais S01.
 
 Local:
-Ambiente local/CI de teste aprovado, sem acesso a dados reais. Na inspeção, dockerDesktopLinuxEngine indisponível.
+backend/compose.yaml; dev 127.0.0.1:55432/biblia_dev, testes 127.0.0.1:55433/biblia_test. CI tem serviço efémero separado e workflow configurado; execução remota não comprovada.
 
 Variável:
-Nomes/validação a definir no contrato técnico S01-T004; nenhuma ligação ou credencial aprovada. Não presumir nomes nem valores existentes.
+DATABASE_URL, BIBLE_DEV_DB_PASSWORD e BIBLE_TEST_DB_PASSWORD em backend/.env; TEST_DATABASE_URL e NODE_ENV=test em backend/.env.test. Valores privados não versionados. Contrato em docs/sprints/S01/SPEC.md.
 
 Como obter:
-Escolher PostgreSQL local isolado ou container/serviço autorizado na decisão técnica; criar base/utilizador exclusivos de teste e fornecer configuração segura. Não contratar serviço ou baixar imagem sem escopo aprovado.
+Procedimento reproduzível em backend/README.md. Palavras-passe locais distintas geradas com fonte criptográfica; imagem oficial PostgreSQL17 fixada por digest. Nenhum serviço contratado.
 
 Implementação preparada:
-Plano de isolamento, migrações, transações, constraints e limpeza segura; nenhum schema/migração/ligação criado.
+Compose real, adapter Prisma/pg, migração versionada, guard de alvo e identidade, fixture exclusiva de testes, integrações e HTTP reais.
 
 Validação pendente:
-Arranque, conexão Prisma, migração real numa base vazia, persistência/consulta, transação/rollback, restrição, limpeza e comprovação de isolamento.
+Verificações locais executadas: migração em base vazia, leitura/escrita parametrizada, PK/CHECK, commit/rollback, limpeza e identidade. Resultado PASS no relatório S01. Workflow remoto NOT_RUN sem push autorizado; não o declarar validado.
 
 Critério de desbloqueio:
-Ambiente aprovado disponível, identidade do alvo de teste comprovada e todas as verificações reais executadas; sem isso, integração obrigatória BLOCKED.
+Cumprido localmente: ambiente disponível, identidade biblia_test/biblia_test comprovada e sete integrações reais aprovadas, incluindo fecho físico de sessão. Em 2026-10-21, após reiniciar Docker e recriar tmpfs, migração reaplicada e suite real aprovada. A resolução desta ação não aprova os restantes gates nem o encerramento da sprint.
 
 ## EXT-003 — Cânone e traduções
 

@@ -1,6 +1,6 @@
 # Sete gates obrigatórios de qualidade
 
-Atualização aprovada pelo «ok» de 2026-10-20 ao [PLAN S00](../sprints/S00/PLAN.md). Automação e aplicação inexistentes.
+Política consolidada pelo «ok» ao [PLAN S00](../sprints/S00/PLAN.md). Fundação e automação implementadas em S01; execução/estado reais no [relatório S01](../sprints/S01/TEST_REPORT.md).
 
 ## Gate 1 — Especificação
 Escopo de sprint, spec/contratos, plano da tarefa e dependências aprovados explicitamente. Aprovar sprint não aprova automaticamente tarefas/implementações futuras. Contrato necessário não aprovado bloqueia implementação dependente.

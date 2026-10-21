@@ -1,6 +1,6 @@
 # Runbooks
 
-Estado: roteiros conceptuais; não há comandos operacionais, ambiente ou procedimento de recuperação validado.
+Estado: comandos locais de preparação, migração de teste, arranque, validação e paragem documentados no [backend](../../backend/README.md) e executados conforme [relatório S01](../sprints/S01/TEST_REPORT.md). Os cenários abaixo continuam conceptuais para operação futura; não há procedimento de recuperação de produção validado.
 
 ## Antes de intervir
 Confirmar ambiente e âmbito, pesquisar MegaBrain, recolher evidência sanitizada e distinguir hipótese de causa.

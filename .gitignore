@@ -1,0 +1,10 @@
+backend/node_modules/
+backend/dist/
+backend/reports/
+backend/.stryker-tmp/
+backend/stryker.log
+backend/src/generated/
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.test.example

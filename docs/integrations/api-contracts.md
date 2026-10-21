@@ -1,7 +1,7 @@
 # Contratos de API
 
-Estado: nenhum contrato HTTP aprovado ou implementado.
-Não existem métodos, rotas, payloads, campos, códigos de resposta ou formatos de erro definidos.
+Estado: contratos HTTP técnicos implementados e aceites na revisão final S01 em 2026-10-21, definidos na [SPEC S01](../sprints/S01/SPEC.md) e publicados pela aplicação em `/openapi.json`. Liveness, readiness, Swagger e erros técnicos têm testes NestJS/Supertest reais; evidências no [relatório](../sprints/S01/TEST_REPORT.md).
+Contratos de negócio continuam por especificar/aprovar. As capacidades abaixo não criam métodos, rotas, payloads ou campos por inferência.
 
 ## Capacidades a especificar
 | Necessidade conceptual | Origem | Trabalho necessário |

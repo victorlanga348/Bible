@@ -1,6 +1,6 @@
 # TDD estrito — RED → GREEN → REFACTOR
 
-Atualização documental aprovada pelo «ok» de 2026-10-20 ao PLAN S00. Aplicação não implementada.
+Atualização documental aprovada pelo «ok» de 2026-10-20 ao PLAN S00. Fundação executável implementada em S01; evidências RED/GREEN/REFACTOR no [relatório S01](../sprints/S01/TEST_REPORT.md).
 
 ## RED
 Identificar critério/spec aprovados. Escrever teste antes do comportamento, executar e guardar comando real, ambiente, saída sanitizada, data e motivo da falha esperada.
