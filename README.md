@@ -4,7 +4,7 @@ Plataforma de estudo bíblico histórico, contextual e comparativo, com fontes v
 
 ## Estado real — 2026-10-21
 Fundação técnica implementada e validada localmente na [pasta backend](backend/README.md): NestJS/TypeScript strict, Zod, Prisma/PostgreSQL isolado e testes HTTP/persistência reais. S02 tem corpus local admitido e domínio/parser implementados e verificados; consulta/importação de banco/API bíblica e IA ainda não estão implementadas. Sem frontend ou backend completo.
-S00/S01 DONE e commitadas, principal S01 `1702cc0`. [S02](docs/sprints/S02/README.md) DONE com escopo reduzido por «termina, o que falta vou adicionar depois»: corpus/domínio/parser T004/T005 entregues; [T006](docs/sprints/S02/tasks/S02-T006-integration.md)/T007 adiadas no backlog. Resultados atuais no [relatório S02](docs/sprints/S02/TEST_REPORT.md); encerramento do recorte aprovado, commit S02 PENDING e CI remoto NOT_RUN.
+S00/S01 DONE e commitadas, principal S01 `1702cc0`. [S02](docs/sprints/S02/README.md) DONE com escopo reduzido por «termina, o que falta vou adicionar depois»: corpus/domínio/parser T004/T005 entregues; [T006](docs/sprints/S02/tasks/S02-T006-integration.md)/T007 adiadas no backlog. Resultados atuais no [relatório S02](docs/sprints/S02/TEST_REPORT.md); encerramento aprovado e commit principal S02 `c0c24b9`, CI remoto NOT_RUN. Pedido posterior autoriza preparação S03, com escopo/contratos/plano próprios para revisão.
 
 ## Entrada
 Ler [índice](docs/README.md), [AGENTS](AGENTS.md), [GEMINI](GEMINI.md), [governança](docs/documentation-governance.md), [sprints](docs/sprints/README.md) e [contexto operacional](docs/megabrain/agent-context/project-state.md).

@@ -7,8 +7,8 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 |---|---|---|---|
 | [S00](S00/README.md) | Governança e Planeamento | DONE | Antecedente DOC-0001 |
 | [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
-| [S02](S02/README.md) | Cânone: corpus, domínio e parser | DONE | Encerramento com escopo reduzido aprovado; T004/T005 entregues, T006/T007 adiadas, commit PENDING |
-| [S03](S03/README.md) | Biblioteca de Fontes | BACKLOG | Rever impacto da integração bíblica adiada e commit S02; nova aprovação de S03 |
+| [S02](S02/README.md) | Cânone: corpus, domínio e parser | DONE | Encerramento com escopo reduzido aprovado; T004/T005 entregues, T006/T007 adiadas; commit principal c0c24b9 |
+| [S03](S03/README.md) | Biblioteca de Fontes | BACKLOG | Commit S02 c0c24b9 e continuação autorizada; preparar escopo/contratos/plano S03 para aprovação |
 | [S04](S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada |
 | [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
@@ -23,7 +23,7 @@ S02 BLOCKED → READY → IN_PROGRESS em 2026-10-21 após «ok» à SPEC v0.2/re
 
 ## Identidade e fontes
 
-S02 IN_PROGRESS → REVIEW → DONE no recorte corpus/domínio/parser em2026-10-21 por «termina, o que falta vou adicionar depois». T006/T007 BLOCKED → BACKLOG, retiradas do escopo de fecho e preservadas para adição posterior pelo utilizador. Gates do incremento entregue verificados no relatório/revisão; integração/API adiadas continuam NOT_RUN. Commit PENDING, sem push/merge ou S03 autorizados.
+S02 IN_PROGRESS → REVIEW → DONE no recorte corpus/domínio/parser em2026-10-21 por «termina, o que falta vou adicionar depois». T006/T007 BLOCKED → BACKLOG, retiradas do escopo de fecho e preservadas para adição posterior pelo utilizador. Gates do incremento entregue verificados no relatório/revisão; integração/API adiadas continuam NOT_RUN. Pedido posterior «se terminou pode finalizar e ir para a proxima» autorizou commit/continuação; principal S02 c0c24b9 realizado, preparação S03 autorizada. Sem push/merge ou execução de contratos/planos S03 ainda não aprovados.
 
 S02-T005 READY → IN_PROGRESS → REVIEW → DONE técnico em 2026-10-21: TDD/gates e revisão documentados,152 testes e mutação válida97,21%. Naquele momento T006 estava BLOCKED e o fecho ainda não fora aprovado; a decisão posterior está registada a seguir.
 Cada sprint tem PLAN.md, TASKS.md, ACCEPTANCE_CRITERIA.md, TEST_REPORT.md, REVIEW.md; README define estado de sprint e TASKS estados das tarefas. Entradas scope/backlog/acceptance preservam navegação e apontam para a fonte única.

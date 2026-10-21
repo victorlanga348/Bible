@@ -8,7 +8,7 @@ T006/T007 saem do escopo de encerramento e ficam BACKLOG para o utilizador retom
 
 Impacto: a entrega validada pode ser encerrada agora, mas não oferece leitura bíblica HTTP/persistência. Dependências futuras de integração continuam por resolver; S03 não recebe autorização automática. Alternativa original era executar T006/T007 antes do fecho; a decisão atual escolhe o adiamento. Não há alteração de stack, threshold ou exclusão de código para ocultar falhas.
 
-Esta atualização documental de encerramento exige checks de links/estados/escopo/diff e confronto das evidências existentes com as fontes; sem comportamento novo para TDD adicional. Commit S02 PENDING, sem pedido específico de commit, push ou merge.
+Esta atualização documental de encerramento exige checks de links/estados/escopo/diff e confronto das evidências existentes com as fontes; sem comportamento novo para TDD adicional. Commit principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, realizado após o pedido posterior «se terminou pode finalizar e ir para a proxima». Preparação S03 autorizada após ele, sem push/merge. As menções PENDING do histórico abaixo antecedem essa autorização/execução.
 
 ## Histórico do plano integral e da aprovação T005
 

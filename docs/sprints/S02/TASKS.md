@@ -1,6 +1,6 @@
 # S02 — Tarefas
 
-Fonte canónica, atualizada em2026-10-21. Sprint DONE com escopo reduzido a T004/T005 por decisão explícita: «termina, o que falta vou adicionar depois». SPEC v0.2/recorte/contratos/plano T005 já tinham sido aprovados; revisão de escopo para encerramento registada no PLAN/SPEC. Commit PENDING até execução, agora autorizado por «se terminou pode finalizar e ir para a proxima»; preparação S03 autorizada depois dele, sem push/merge.
+Fonte canónica, atualizada em2026-10-21. Sprint DONE com escopo reduzido a T004/T005 por decisão explícita: «termina, o que falta vou adicionar depois». SPEC v0.2/recorte/contratos/plano T005 já tinham sido aprovados; revisão de escopo para encerramento registada no PLAN/SPEC. Commit principal `c0c24b9f48aba7926dea05207a7263a97b7fc7b0` realizado após «se terminou pode finalizar e ir para a proxima»; preparação S03 autorizada depois dele, sem push/merge.
 
 Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documentação. Responsável pela execução/revisão técnica: agente executor; aprovador: utilizador. Uma tarefa por vez.
 

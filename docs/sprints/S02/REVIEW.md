@@ -1,6 +1,6 @@
 # S02 — Revisão e encerramento do escopo reduzido
 
-Data:2026-10-21. Estado: DONE no recorte corpus/domínio/parser. Aprovação de redução de escopo e encerramento: utilizador, «termina, o que falta vou adicionar depois», após relatório de T004/T005 e explicação das pendências T006/T007. Commit S02 PENDING até execução, autorizado posteriormente por «se terminou pode finalizar e ir para a proxima» em2026-10-21, após esta revisão e pergunta de fechamento. Continuação para preparação S03 autorizada após commit, sem aprovação implícita de novos contratos/planos. Sem push/merge.
+Data:2026-10-21. Estado: DONE no recorte corpus/domínio/parser. Aprovação de redução de escopo e encerramento: utilizador, «termina, o que falta vou adicionar depois», após relatório de T004/T005 e explicação das pendências T006/T007. Commit principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, realizado após «se terminou pode finalizar e ir para a proxima» em2026-10-21, depois desta revisão/pergunta de fechamento;44 ficheiros do escopo, árvore limpa após commit. Hash registado posteriormente. Continuação para preparação S03 autorizada após commit, sem aprovação implícita de novos contratos/planos. Sem push/merge.
 
 ## Entrega e decisão
 

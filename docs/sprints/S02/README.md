@@ -8,6 +8,6 @@ Adiado para o utilizador retomar depois: T006 (migração/importação, Applicat
 
 [PLAN e decisão de escopo](PLAN.md) · [SPEC](SPEC.md) · [TASKS](TASKS.md) · [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md) · [TEST_REPORT](TEST_REPORT.md) · [REVIEW](REVIEW.md).
 
-Commit S02 PENDING até execução, agora autorizado por «se terminou pode finalizar e ir para a proxima» em2026-10-21. O mesmo pedido autoriza continuar para a preparação S03 após o commit, com contratos/planos detalhados sujeitos a aprovação própria. Sem push/merge. Este encerramento não fornece a integração bíblica de que funcionalidades futuras possam precisar; rever essas dependências no próximo planeamento.
+Commit principal S02 realizado: `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, `feat(sprint-02): implement biblical canon`, autorizado por «se terminou pode finalizar e ir para a proxima» em2026-10-21. Hash registado posteriormente, sem autorreferência ao commit deste registo. O mesmo pedido autoriza continuar para a preparação S03 após o commit, com contratos/planos detalhados sujeitos a aprovação própria. Sem push/merge. Este encerramento não fornece a integração bíblica de que funcionalidades futuras possam precisar; rever essas dependências no próximo planeamento.
 
 Pergunta de fechamento: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**

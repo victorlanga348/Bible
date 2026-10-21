@@ -1,6 +1,6 @@
 # Estado operacional do Bíblia App
 
-Atualizado: 2026-10-21. Branch feat/biblia-backend. S00/S01 DONE e commitadas; S02 DONE com escopo reduzido: T004/T005 entregues, T006/T007 adiadas no BACKLOG por «termina, o que falta vou adicionar depois». Encerramento aprovado; commit S02 PENDING, sem pedido específico de commit/push/merge ou S03.
+Atualizado: 2026-10-21. Branch feat/biblia-backend. S00/S01 DONE e commitadas; S02 DONE com escopo reduzido: T004/T005 entregues, T006/T007 adiadas no BACKLOG por «termina, o que falta vou adicionar depois». Encerramento/commit e preparação S03 aprovados por «se terminou pode finalizar e ir para a proxima». Principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`,44 ficheiros, árvore limpa depois; hash registado posteriormente. Sem push/merge ou execução de contratos/planos S03 ainda não aprovados.
 
 ## Fontes, história e aprovações
 
@@ -32,6 +32,6 @@ Sem padrões/experiência IA inventados para preencher índices.
 
 ## Próximos passos e limites
 
-[Plano T006](../../sprints/S02/tasks/S02-T006-integration.md) preservado para futura retoma, adiada expressamente pelo utilizador junto com T007: Application/ports específicos, adapters reais, migração/importação atómica/idempotente, consultas/navegação e cinco contratos HTTP já aprovados. Nenhuma implementação T006 iniciada ou dependência nova instalada. T007 ainda depende dela. O fecho reduzido não entrega integração bíblica; rever esse impacto antes de S03 e obter autorização própria, com commit S02 ainda pendente.
+[Plano T006](../../sprints/S02/tasks/S02-T006-integration.md) preservado para futura retoma, adiada expressamente pelo utilizador junto com T007: Application/ports específicos, adapters reais, migração/importação atómica/idempotente, consultas/navegação e cinco contratos HTTP já aprovados. Nenhuma implementação T006 iniciada ou dependência nova instalada. T007 ainda depende dela. O fecho reduzido não entrega integração bíblica; rever esse impacto antes de S03 e obter aprovação do seu escopo/contratos/plano concretos. Commit S02 já realizado; continuação para preparação S03 autorizada.
 
-[Relatório S02](../../sprints/S02/TEST_REPORT.md) e [revisão](../../sprints/S02/REVIEW.md) separam provas Domain da futura integração. Commit S02 PENDING. Ações externas EXT-001–006 continuam pertinentes por momento (IA/orçamento, isolação PG, fontes, acesso/retenção, deployment); não pedir segredos no chat.
+[Relatório S02](../../sprints/S02/TEST_REPORT.md) e [revisão](../../sprints/S02/REVIEW.md) separam provas Domain da futura integração. Commit principal S02 registado acima; sem autorreferência impossível ao commit de registo. Ações externas EXT-001–006 continuam pertinentes por momento (IA/orçamento, isolação PG, fontes, acesso/retenção, deployment); não pedir segredos no chat.

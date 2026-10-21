@@ -1,7 +1,7 @@
 # S02 — Relatório de testes
 
 Data: 2026-10-21. Sprint DONE com escopo reduzido a corpus/domínio/parser T004/T005 por decisão explícita «termina, o que falta vou adicionar depois». SPEC v0.2/plano T005 aprovados antes do código; revisão de escopo v0.3 registada. T006/T007 adiadas no BACKLOG; consultas/importação/HTTP bíblicos ainda não implementados.
-Branch feat/biblia-backend; base d0036ab, após commit principal S01 1702cc0. Encerramento do recorte aprovado; commit S02 PENDING, sem pedido específico de commit/push/merge. Resultados abaixo são da árvore de trabalho, não de uma release ou CI remota.
+Branch feat/biblia-backend; base d0036ab, após commit principal S01 1702cc0. Encerramento do recorte e commit aprovados; principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, `feat(sprint-02): implement biblical canon`,44 ficheiros selecionados e árvore limpa após commit. Hash registado posteriormente; menções PENDING abaixo são históricas. Sem push/merge. Resultados abaixo são da árvore de trabalho, não de uma release ou CI remota.
 
 ## Ambiente e comandos reais
 

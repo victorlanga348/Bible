@@ -2,7 +2,7 @@
 
 Ordem: S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08. Encerramento aprovado e commit da anterior precedem nova autorização. S09/frontend não são dependências deste ciclo.
 
-Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que falta vou adicionar depois». T006/T007 ficam BACKLOG fora desse fecho, sem sprint futura atribuída; suas arestas abaixo são preservadas para retoma, não tarefas ativas ou satisfeitas. S03 permanece BACKLOG; rever impacto da ausência de integração bíblica antes da sua aprovação, além de commit S02 ainda pendente.
+Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que falta vou adicionar depois». T006/T007 ficam BACKLOG fora desse fecho, sem sprint futura atribuída; suas arestas abaixo são preservadas para retoma, não tarefas ativas ou satisfeitas. S03 permanece BACKLOG; rever impacto da ausência de integração bíblica antes da sua aprovação, com commit principal S02 c0c24b9 já realizado e continuação para preparação autorizada.
 
 | Tarefa ativa | Predecessoras diretas (IDs) | Fonte |
 |---|---|---|
