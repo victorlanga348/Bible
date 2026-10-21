@@ -1,6 +1,6 @@
 # S01 — Fundação Técnica
 
-Plano técnico preparado em S00-T006, 2026-10-20. Estado: ESCOPO/INÍCIO DA SPRINT APROVADOS pelo utilizador: «pode iniciar essa sprint, antes de fazer o commit me pergunta se pode». Sprint DONE em 2026-10-21; revisão/escolhas técnicas/encerramento/commit aprovados: «segunda sprint aprovada, continue com a proxima apos o commit». Branch feat/biblia-backend. Commit AUTORIZADO; hash a registar após criação.
+Plano técnico preparado em S00-T006, 2026-10-20. Estado: ESCOPO/INÍCIO DA SPRINT APROVADOS pelo utilizador: «pode iniciar essa sprint, antes de fazer o commit me pergunta se pode». Sprint DONE em 2026-10-21; revisão/escolhas técnicas/encerramento/commit aprovados: «segunda sprint aprovada, continue com a proxima apos o commit». Branch feat/biblia-backend. Commit principal: `1702cc073e76c0bc3225d19f07fc69b7d0f80861`, registado posteriormente.
 S00 encerrada/commitada. Após autorização de início, escolha de Docker Desktop local e orientação do utilizador para criar o backend, a execução avançou em backend/. As escolhas técnicas do agente estão em [SPEC](SPEC.md); não são apresentadas como aprovações individuais de versões pelo utilizador. Qualquer commit requer confirmação prévia.
 
 ## Objetivo
