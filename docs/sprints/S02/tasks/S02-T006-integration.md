@@ -1,0 +1,68 @@
+# S02-T006 — Importação, consultas e API com infraestrutura real
+
+Data: 2026-10-21. Trilha B, prioridade alta. Estado: BACKLOG, adiada fora do fecho S02 por «termina, o que falta vou adicionar depois» em2026-10-21; T004/T005 concluídas. Responsável proposto: agente executor; aprovador: utilizador. Branch feat/biblia-backend, uma tarefa por vez. Plano preservado para o utilizador adicionar depois, sem aprovação de execução agora e sem sprint/data futura atribuída. Sem código/migração/importação T006 executados. Commit S02 PENDING.
+
+## Objetivo e fontes
+
+Entregar leitura da Bíblia Livre admitida através das cinco operações já aprovadas na [SPEC v0.2](../SPEC.md), com Application independente, Prisma/PostgreSQL reais e contratos Zod/OpenAPI estritos. Não reabre edição/cânone/gramática ou erros aprovados.
+
+Consultados SPEC/PLAN, modelo/API, fronteiras, ADR-0003/0004, TDD/testes/gates, ERR-0001/0002 e índices de padrões/armadilhas. Nenhuma skill de frontend/Vercel/IA é necessária ao monólito NestJS local já estabelecido. Usar stack instalada, sem nova dependência/serviço ou agente paralelo.
+
+## Escopo, ficheiros e contratos internos propostos
+
+1. Quatro modelos Prisma correspondentes às tabelas canon_translation/book/chapter/verse de propriedade biblical-canon em app. Migração aditiva versionada, PK/FK compostas, ordem única por edição e checks positivos/texto não branco. Contagens derivadas por consulta; sem índices/colunas adicionais especulativos. Números PostgreSQL bigint com checks de inteiro positivo seguro permitem o domínio aprovado sem truncar entradas grandes para int32; conversão para number só após validação segura. Não substituir entidades por tipos Prisma.
+2. Application: port específico CanonReadPort para listar traduções, obter edição, livros/contagens, capítulos/contagens, versículos ordenados e vizinhos de capítulo; port CanonImportPort para persistir snapshot validado atomicamente. Resultados são entidades/estruturas próprias, sem tipos Prisma. ImportSnapshot contém translation, books e capítulos/versículos identificados pelos campos da SPEC, sem estado de contagens duplicado. Resultado de importação: imported ou unchanged; hash divergente levanta conflito interno controlado. Ausência nas leituras é explícita e mapeada pela aplicação; falha de banco nunca vira coleção vazia.
+3. Casos Application correspondem a listar traduções/livros/capítulos, ler passagem, resolver referência e importar snapshot. Resolver usa parser T005 e verifica existência integral, sem escrita; consulta completa preserva registos reais, intervalo explícito exige todos os números. Navegação real cruza livros na ordem do catálogo, com null nos extremos. Não duplicar regras na apresentação.
+4. Infrastructure: adapter Prisma específico para os ports, transação única de importação, consultas parametrizadas e verificação de hashes/dados no adapter de ficheiro. Mesmo id/hash é no-op; hash diferente/falha parcial não altera edição. Concorrência usa identidade/constraints/transação e tratamento explícito, sem uma segunda importação parcial por corrida.
+5. Presentation/composição: schemas Zod de entrada/saída, controller e module.ts; integrar em app.ts preservando health/erros S01. Expor somente GET translations, livros, capítulos, versículos e POST references/resolve da SPEC. Não criar endpoint público de importação. Corpo/query desconhecidos →400; ausência bem formada →404; falha inesperada →500 sanitizado. DTOs/OpenAPI e créditos/licença da SPEC, sem campos novos.
+
+Caminhos previstos: backend/src/modules/biblical-canon/{application,infrastructure,presentation}/ e module.ts, backend/prisma/schema.prisma e migrations/, backend/src/app.ts; testes em backend/test/{unit,integration,e2e}/biblical-canon/. Reutilizar composição/configuração/guard e mapear erros no limite do módulo; alterar filtro global apenas se a integração do envelope aprovado o exigir, com regressão S01.
+
+## Artefacto e execução local propostos
+
+Manter ZIP/XML originais ignorados e hashes admitidos da SPEC. Preparar representação JSON local do XML com Python stdlib já disponível, como operação explícita de dados: translation (metadados reais), books (catálogo verificado), chapters e verses com identidades/textos exatos. Sem trim textual, aliases TXT, SQL recebido ou extracção arbitrária de caminhos. Confrontar todos os31.102 registos com XML e fixar SHA-256 real do JSON num manifesto derivado que remete ao ZIP/XML admitidos. Não inventar o hash antes dessa operação.
+
+O importador TypeScript consome JSON e manifesto local verificados; valida hash do JSON e ZIP, identidade/metadados, unicidade, relações e inventário antes de escrever. Não importa um manifesto remoto ou muda o hash admitido automaticamente. Não será lançado um conversor XML genérico nem acrescentado Python ao runtime Nest. A preparação dos dados tem checks executáveis de fidelidade, e o comportamento do importador TypeScript tem TDD/mutação. Custos: etapa de preparação explícita e disco local; benefício: nenhuma biblioteca ZIP/XML ou dependência nova no serviço.
+
+Primeiro alvo exclusivamente biblia_test em loopback55433, guard S01 confirmando identidade/distinção de dev antes de migração/limpeza. Só eliminar dados de tabelas do módulo nesse alvo confirmado; fixtures persistem no Git. Não tocar em postgres-dev, produção, credenciais ou volumes de desenvolvimento. Aplicar migração e uma importação integral real do snapshot no banco de teste; os excertos versionados são só testes dirigidos, nunca o acervo de uso.
+
+Reutilizar scripts reais prisma:generate, db:migrate:test, build e suites existentes. Proposta de acrescentar um script explícito db:import:test que passa pelo mesmo guard e valida artefactos; ainda não existe e não é comando executado. Migração/importação dev ou de uso continua fora desta aprovação e precisará de alvo/plano próprios.
+
+## Alternativas, riscos e mitigação
+
+| Opção/risco | Impacto e tratamento |
+|---|---|
+| Importação JSON preparada explicitamente (proposta) | Sem dependência nova; requer verificar/checksum e documentar a etapa, texto integral comparado ao XML |
+| Parser ZIP/XML de terceiros | Automatizaria extracção no serviço; exigiria escolha, licença/compatibilidade e aprovação de dependência. Não instalado/proposto como necessário agora |
+| Executar SQL do fornecedor | Não adotado: contornaria modelo/validação/transação próprios e não garante namespace |
+| Corrupção/duplicação/importação incompleta | Hashes, validação prévia e transação; constraints reais, rollback e repetição concorrente testados |
+| Schema do adapter incorreto | Primeiros modelos reais devem provar tabelas em app, inclusive leitura Prisma/SQL qualificada; cobre limitação identificada em S01 |
+| Erro de intervalo/ordenação ou texto alterado | Confronto integral com snapshot; testes de transição/ausência e comparação exata de texto |
+| Limpeza de banco errado | Guard antes de qualquer mutação; apenas alvo isolado de teste, sem fallback automático |
+| Lentidão da mutação com corpus integral | Importação integral em teste de aceitação controlado; casos dirigidos reutilizam recorte autêntico identificado, sem trocar integração real por doubles ou excluir código próprio |
+| Corrida de relatório Stryker | Paths distintos do ERR-0002, uma execução por vez e parsing das saídas |
+
+## Critérios verificáveis e TDD
+
+| Caso | Resultado exigido e prova |
+|---|---|
+| T006-AC01 | Migração real cria quatro tabelas em app; PK/FK, unicidade e checks rejeitam estados inválidos; schema não aparece indevidamente em public |
+| T006-AC02 | Importação integral preserva66 livros/1.189 capítulos/31.102 versículos e compara todo texto/identidade com XML admitido; manifesto/direitos rastreáveis |
+| T006-AC03 | Repetição id/hash não duplica; hash divergente/falha parcial/conflito concorrente têm resultado controlado e nenhuma edição parcial persistida |
+| T006-AC04 | Casos Application/Prisma reais devolvem catálogo/contagens/textos ordenados, rejeitam ausência/intervalo incompleto e navegam entre capítulos/livros/extremos |
+| T006-AC05 | Cinco operações Nest/Supertest reais cumprem DTOs/Zod/OpenAPI,200/400/404/500; resolver não escreve; indisponibilidade não vira vazio nem expõe dados técnicos |
+| T006-AC06 | Estática/build/arquitetura, regressão S01/T005, cobertura/mutação e docs aprovados sem exclusões artificiais |
+
+Escrever e executar RED por família antes do comportamento: validação/importação, persistência/transação, consulta/navegação e HTTP. Assinaturas/stubs compiláveis permitem demonstrar falha por resultado ausente; falta de tabela/cliente gerado/serviço não conta RED de regra. Migração/estrutura primeiro recebem verificações executáveis próprias. Application usa adapters reais como padrão; fixtures autênticas dirigidas e snapshot integral têm propósitos separados.
+
+GREEN mínimo de cada família com PostgreSQL/Nest reais; REFACTOR mantendo contratos e repetindo regressão/arquitetura. Nenhuma suite destrutiva simultânea sobre o banco partilhado. Guardar comando/data/ambiente/saídas RED/GREEN/refactor, sem credenciais.
+
+Validação pelos scripts reais test:unit, test:integration, test:e2e, test:coverage, typecheck, lint, build, test:tooling e test:mutation ou test:mutation:incremental. Mínimos linhas>=90%, branches>=85%, mutação bruta>85%; todo src próprio incluído, foco em Domain/Application, sobreviventes analisados. JSON/cache separados e relatório confrontado com fontes. IA não aplicável. T007 permanece a revisão integrada/gates/fechamento da sprint e não dispensa testes nesta tarefa.
+
+## Aprovação necessária na futura retoma e saída
+
+Uma futura aprovação deverá cobrir este plano, contratos internos/dependências existentes, preparação JSON fiel, migração e importação somente de teste. SPEC v0.2/recorte/HTTP já aprovados permanecem iguais. Mudança necessária de semântica/dependência exige impacto e nova aprovação, sem solução silenciosa.
+
+Resultado atual de T006: testes/implementação NOT_RUN; gates1/2/3/4/5/7 pendentes, gate6 não aplicável por ausência de IA. Depois da execução, sincronizar critérios/report/review/modelo/API/cânone/README/MegaBrain, analisar segredos e confirmar os gates antes de DONE. Não aprova encerramento/commit S02, T007 detalhada, S03, push ou merge.
+
+Pergunta obrigatória de fechamento: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**

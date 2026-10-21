@@ -1,26 +1,37 @@
 # Estado operacional do Bíblia App
 
-Atualizado: 2026-10-21. Branch feat/biblia-backend; base histórica d1d25b7 (merge documental do PR #1). S00 e tarefas S00-T002 a T007 DONE, aprovação final pelo «sim» após TEST_REPORT/REVIEW; commit principal S00 `74d8b6ca685cc99271c803d931c2ac371d99e0a9`. S01 DONE após «segunda sprint aprovada, continue com a proxima apos o commit»; commit principal S01 `1702cc073e76c0bc3225d19f07fc69b7d0f80861`, `feat(sprint-01): bootstrap backend infrastructure`. Hash registado posteriormente; o commit do registo pertence ao histórico Git. Sem push/merge autorizado.
+Atualizado: 2026-10-21. Branch feat/biblia-backend. S00/S01 DONE e commitadas; S02 DONE com escopo reduzido: T004/T005 entregues, T006/T007 adiadas no BACKLOG por «termina, o que falta vou adicionar depois». Encerramento aprovado; commit S02 PENDING, sem pedido específico de commit/push/merge ou S03.
 
-## Realidade e fontes
-Fundação S01 em backend/: NestJS12, TS6 strict/Node24, Zod4, Prisma7/pg, PostgreSQL17 dev/test isolados por Docker Desktop local. Migração de namespace aplicada à base de testes; fixture técnica exclusiva de testes. Há testes HTTP/persistência reais, package.json/lockfile, toolchain e workflow preparado. Sem corpus, IA ou módulos de negócio implementados.
-[README](../../../README.md), [AGENTS](../../../AGENTS.md), [governança](../../documentation-governance.md), [sprints](../../sprints/README.md), [gates](../../quality/quality-gates.md) e [relatório S00](../../sprints/S00/TEST_REPORT.md).
-Specs SS-001/FQ-001/SR-001/SH-001 continuam rascunho e byte a byte preservadas; inicialização DOC-0001 e S00-T001 preservadas. Mudança documental não aprova comportamento.
+## Fontes, história e aprovações
 
-## Decisões e planeamento
-ADR-0001/0002 históricas intactas; [ADR-0003](../../architecture/adr/ADR-0003-backend-modular-e-stack-prescrita.md) regista monólito, seis módulos, stack/testes prescritos. Versões e compatibilidade técnica demonstradas na S01; escolhas do agente na [ADR-0004](../../architecture/adr/ADR-0004-fundacao-executavel-s01.md)/SPEC, aceites na revisão final pelo utilizador em 2026-10-21.
-Trilhas atuais: A domínio/regras; B infraestrutura/integrações; C qualidade/documentação. Uma tarefa por vez, sem agentes paralelos autorizados.
-Nove sprints backend; frontend adiado e S09 histórico. 28 tarefas históricas preservadas, 34 futuras novas e seis de consolidação, sem reciclar IDs. [Rastreabilidade](../../roadmap/traceability.md), [histórico](../../roadmap/HISTORY.md).
-Módulos: biblical-canon, source-library, study, cross-references, ai-assistant, study-workspace. S04 determinística; S05 LLM/RAG real.
+/docs é normativo; [README](../../../README.md), [AGENTS](../../../AGENTS.md), [governança](../../documentation-governance.md), [sprints](../../sprints/README.md), [gates](../../quality/quality-gates.md). Uma tarefa por vez, sem subagentes. Trilhas A/B/C não autorizam paralelismo.
 
-## Pendências e evidências operacionais
-[EXT-001 a EXT-006](../../external-actions/REQUIRED_ACTIONS.md): IA/modelos/orçamento, PostgreSQL isolado, cânone/licenças, fontes/corpus, acesso/retenção, deployment.
-Docker Desktop local escolhido pelo utilizador, iniciado com janela oculta; motor Linux operacional. postgres-dev e postgres-test saudáveis; credenciais distintas geradas localmente em ficheiros ignorados. Em 2026-10-21 o motor estava parado: reiniciado, serviços saudáveis e migração reaplicada após recriação do tmpfs de teste. Validação final: 7 integrações reais, 17 E2E e 36 unitários (60 Jest), tooling13/13, lint/typecheck/build aprovados; linhas100%, branches94,54%. Mutação integral: Killed115/Timeout3/Survived5/CompileError49, bruto118/123 = 95,9349593495935%; sobreviventes/timeouts analisados, sem NoCoverage/RuntimeError/Pending. CI configurada, remoto NOT_RUN. Não pedir segredos no chat.
-Na publicação documental anterior houve mmap failed ao ler índice reverso; push funcionou com configuração temporária pack.readReverseIndex=false. Isto confirma o contorno observado, não demonstra corrupção do banco de objetos nem causa de todas as falhas possíveis. Não apagar objetos, resetar histórico ou alterar configuração global.
-Tentativa de edição S00-T002 foi rejeitada por operações duplicadas no mesmo caminho; corrigida com Update File e verificação. Não é incidente de aplicação.
-No OneDrive, Dirent identificou ficheiros como links e o crawler Jest ignorou-os, embora lstat/stat reconhecessem ficheiros normais. haste.enableSymlinks e Watchman desativado no script/config corrigiram; cinco suites/60 testes aprovados sem avisos de configuração. Causa/correção no [ERR-0001](../errors/ERR-0001-s01-toolchain.md). Não atribuir este caso a RTK ou dispensar testes com zero descobertas.
-Métricas técnicas limitadas à fundação S01 acima; não há padrão concreto formalmente aprovado ou experiência IA comprovada. Não inventar lições para preencher diretórios.
+Base histórica d1d25b7 (merge documental PR1); S00-T002–T007 aprovadas e encerradas pelo «sim», commit principal74d8b6ca685cc99271c803d931c2ac371d99e0a9, registo posterior b458c0b. DOC-0001/S00-T001 e specs SS-001/FQ-001/SR-001/SH-001 preservadas; estas specs continuam rascunho.
+S01 encerrada/commitada por «segunda sprint aprovada, continue com a proxima apos o commit»: principal1702cc073e76c0bc3225d19f07fc69b7d0f80861, registo d0036ab. A interrupção ocorreu após conclusão do commit; retoma conferiu HEAD/árvore e não repetiu.
+S02 inicialmente BLOCKED por escolhas/contratos; após «avanca» foi apresentada SPEC v0.2 concreta. O «ok» seguinte aprova explicitamente esse recorte/contratos/plano T005; não inferir escolha religiosa nem repetir perguntas já decididas.
 
-## Próximos passos
-Na S00, validação documental e relatório/encerramento/commit foram aprovados; commit principal gravado e hash registado posteriormente sem autorreferência impossível. O hash do commit de registo pertence ao histórico Git. A S00 não executou suites de aplicação; as evidências executáveis pertencem à S01.
-S01 e tarefas T004–T009 DONE e commitadas; hash principal registado acima. Início autorizado anteriormente com confirmação antes do commit; revisão/escolhas técnicas/encerramento/commit aprovados em 2026-10-21. [SPEC](../../sprints/S01/SPEC.md), [TEST_REPORT](../../sprints/S01/TEST_REPORT.md) e [REVIEW](../../sprints/S01/REVIEW.md) preservam decisões/evidências/limites. Pergunta de fechamento apresentada; utilizador aprovou sem indicar alterações adicionais. Continuar S02-T004, refinando plano e decisões de cânone/licenças/specs/contratos antes de implementação de negócio. Sem autorização de push/merge ou de commit futuro da S02.
+[ADR-0001/0002](../../architecture/adr/README.md) históricas; ADR-0003/0004 aplicáveis, sem mudança de stack. Nove sprints backend S00–S08; frontend adiado/S09 histórico. [Rastreabilidade](../../roadmap/traceability.md) e [histórico](../../roadmap/HISTORY.md) preservam IDs. Módulos biblical-canon, source-library, study, cross-references, ai-assistant, study-workspace; S04 determinística/S05 LLM-RAG real.
+
+## Realidade executável
+
+Fundação em backend/: Node24.16/npm11.13, TS6 strict, Nest12, Zod4, Prisma7/pg, PostgreSQL17.11 em Docker Desktop Linux local. Dois serviços dev/test separados em loopback55432/55433; credenciais distintas só nos ficheiros ignorados, nunca no chat. Sem deploy ou CI remota executada. Schema técnico app e fixture persistence_probe, sem modelos bíblicos ainda.
+S01:60 Jest (36 unit/7 integração/17 E2E), tooling13, typecheck/lint/build PASS; linhas100%, branches94,54%; mutação integral118/123 =95,9349593495935%,5 sobreviventes/3 timeouts analisados no relatório próprio. Estes números não comprovam features futuras.
+
+S02-T004 DONE: Bíblia Livre/porbr2018, pt-BR, protestant-66, ordem/versificação do XML do fornecedor. ZIP4379838 bytes, SHA2561f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682; XML5e2845e9d5551b86aaffef56d689a77946fdf8eabfb672b15d15fa8a23e627db. Inventário real66 livros/1189 capítulos/31102 versículos, sem lacunas/duplicações numéricas. Aviso CC BY4.0/créditos preservado. EXT-003 resolvida só para snapshot/usos S02; sem GPG independente/IA/imagens/áudio/comentários.
+Corpus completo em backend/data/ ignorado; fixture versionável autêntica GEN1:1/JHN3:16–18, texto XML exato incluindo espaços finais. TXT tem aliases BibleWorks/diferenças espaços/colchetes; usar XML USFM aprovado, sem fundir/normalizar texto ou executar SQL do ZIP.
+
+S02-T005 DONE técnico: oito ficheiros Domain de entidades/referência/parser/invariantes/erro; sem dependências/framework/ports vazios. RED87 → GREEN53/87 → regressão152 (128 unit,7 integração,17 E2E), tooling13 e estática/build PASS. Linhas161/161=100%, branches86/89=96,62%; Domain80/80 linhas e34/34 branches. Mutação incremental288:206Killed/3Timeout/6Survived/73CompileError, bruto209/215=97,20930232558139%; Domain91/92=98,91304347826087%. Dry run152,172 resultados S01 reutilizados/116 novos, fontes do relatório iguais a src. Sobrevivente novo: mensagem interna de erro; mantido no score, sem contrato literal aprovado. Sem Application/importação/consulta/API bíblica ou IA implementadas.
+
+## Experiência confirmada
+
+OneDrive: Dirent classificou ficheiros como links e Jest não descobriu testes; haste.enableSymlinks e watchman=false corrigiram. Configuração atual mantém VM modules/roots src-test; [ERR-0001](../errors/ERR-0001-s01-toolchain.md). Zero testes descobertos não é PASS.
+Stryker incremental usava cache/JsonReporter no mesmo caminho; dois writers confirmados no código instalado geraram JSON inválido. Cache agora reports/mutation/incremental.json, final mutation.json; repetição válida/gate aprovado. Artefacto inválido preservado, sem score aceite da tentativa falhada. [ERR-0002](../errors/ERR-0002-stryker-report-collision.md).
+Leituras de erro JSON devem limitar trechos para não despejar uma linha enorme. Não editar relatório para fabricar aprovação.
+Histórico Git: mmap ao ler índice reverso contornado numa publicação anterior com pack.readReverseIndex=false temporário; não prova corrupção geral, não apagar objetos/resetar configuração global. Tentativa antiga apply_patch com operações duplicadas falhou sem edição; usar Update File para o mesmo caminho.
+Sem padrões/experiência IA inventados para preencher índices.
+
+## Próximos passos e limites
+
+[Plano T006](../../sprints/S02/tasks/S02-T006-integration.md) preservado para futura retoma, adiada expressamente pelo utilizador junto com T007: Application/ports específicos, adapters reais, migração/importação atómica/idempotente, consultas/navegação e cinco contratos HTTP já aprovados. Nenhuma implementação T006 iniciada ou dependência nova instalada. T007 ainda depende dela. O fecho reduzido não entrega integração bíblica; rever esse impacto antes de S03 e obter autorização própria, com commit S02 ainda pendente.
+
+[Relatório S02](../../sprints/S02/TEST_REPORT.md) e [revisão](../../sprints/S02/REVIEW.md) separam provas Domain da futura integração. Commit S02 PENDING. Ações externas EXT-001–006 continuam pertinentes por momento (IA/orçamento, isolação PG, fontes, acesso/retenção, deployment); não pedir segredos no chat.

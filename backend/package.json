@@ -20,7 +20,7 @@
     "test:architecture": "node --test scripts/architecture.test.cjs",
     "test:tooling": "node --test scripts/*.test.cjs",
     "test:mutation": "stryker run && node scripts/check-mutation.cjs",
-    "test:mutation:incremental": "stryker run --incremental --incrementalFile reports/mutation/mutation.json && node scripts/check-mutation.cjs",
+    "test:mutation:incremental": "stryker run --incremental --incrementalFile reports/mutation/incremental.json && node scripts/check-mutation.cjs",
     "prisma:generate": "prisma generate",
     "db:migrate:test": "npm run build && node scripts/migrate-test.cjs"
   },

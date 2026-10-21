@@ -1,7 +1,10 @@
 # Contratos de API
 
 Estado: contratos HTTP técnicos implementados e aceites na revisão final S01 em 2026-10-21, definidos na [SPEC S01](../sprints/S01/SPEC.md) e publicados pela aplicação em `/openapi.json`. Liveness, readiness, Swagger e erros técnicos têm testes NestJS/Supertest reais; evidências no [relatório](../sprints/S01/TEST_REPORT.md).
-Contratos de negócio continuam por especificar/aprovar. As capacidades abaixo não criam métodos, rotas, payloads ou campos por inferência.
+Cinco contratos bíblicos aprovados na SPEC v0.2 S02; restantes capacidades de negócio continuam por especificar/aprovar. As capacidades abaixo não criam métodos, rotas, payloads ou campos por inferência.
+
+Histórico da preparação S02-T004, proposta v0.2 de 2026-10-21: contratos de catálogo/consulta/resolução, DTOs e erros foram concretizados para revisão na [SPEC S02](../sprints/S02/SPEC.md), antes do aceite registado a seguir. Nenhuma rota acima da fundação S01 é apresentada como existente. A SPEC é a fonte para evitar duplicação de campos/contratos nesta entrada.
+Aceite posterior pelo «ok»: cinco contratos v0.2 aprovados, mas ainda sem handlers/composição/HTTP bíblico. T005 implementa apenas Domain/parser; provas reais da API/persistência em T006/T007. Manter distinção entre contrato aprovado e rota efetivamente existente.
 
 ## Capacidades a especificar
 | Necessidade conceptual | Origem | Trabalho necessário |

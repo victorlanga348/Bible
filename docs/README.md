@@ -1,6 +1,6 @@
 # Documentação do Bíblia App
 
-Fonte normativa e estado real do projeto. S00 documental DONE e commitada. S01 DONE, fundação executável em [backend](../backend/README.md), validação técnica local e aprovação final concluídas; ver [relatório](sprints/S01/TEST_REPORT.md) e [revisão](sprints/S01/REVIEW.md). Commit S01 autorizado; continuar S02 depois dele. Specs/contratos de negócio continuam sujeitos a aprovação própria; nenhum módulo bíblico/IA implementado.
+Fonte normativa e estado real. S00/S01 DONE e commitadas; [S02](sprints/S02/README.md) DONE no recorte corpus/domínio/parser, por decisão «termina, o que falta vou adicionar depois», registada na [SPEC v0.3](sprints/S02/SPEC.md). Corpus/aviso/fixture reais verificados, T004 DONE; [domínio/parser T005](sprints/S02/tasks/S02-T005-domain.md) implementados e verificados (152 testes PASS; mutação global97,21%). [T006](sprints/S02/tasks/S02-T006-integration.md)/T007 adiadas no backlog; Application/importação de banco/API bíblica e IA continuam futuras. [Relatório S02](sprints/S02/TEST_REPORT.md) distingue essas evidências e limites; encerramento do recorte aprovado, commit S02 PENDING.
 
 ## Entrada
 [PRD](PRD.md), [linguagem](glossary.md), [regras](product/business-rules.md), [governança](documentation-governance.md), [stack](architecture/stack.md), [arquitetura](architecture/README.md), [ADRs](architecture/adr/README.md).

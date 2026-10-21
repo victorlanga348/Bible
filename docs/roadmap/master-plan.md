@@ -6,8 +6,8 @@ Consolidação documental aprovada em 2026-10-20, sem aprovação antecipada de 
 |---|---|---|---|
 | [S00](../sprints/S00/README.md) | Governança e Planeamento | DONE | DOC-0001 |
 | [S01](../sprints/S01/README.md) | Fundação Técnica | DONE | Validação local e aprovação final/commit recebidas em 2026-10-21 |
-| [S02](../sprints/S02/README.md) | Cânone Bíblico | BACKLOG | S01 encerrada e nova aprovação |
-| [S03](../sprints/S03/README.md) | Biblioteca de Fontes | BACKLOG | S02 encerrada e nova aprovação |
+| [S02](../sprints/S02/README.md) | Cânone: corpus, domínio e parser | DONE | Utilizador encerrou com escopo reduzido; T004/T005 entregues, T006/T007 adiadas no backlog; commit PENDING |
+| [S03](../sprints/S03/README.md) | Biblioteca de Fontes | BACKLOG | Rever integração bíblica adiada/commit S02 e obter nova aprovação |
 | [S04](../sprints/S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada e nova aprovação |
 | [S05](../sprints/S05/README.md) | IA e RAG | BACKLOG | S04 encerrada e nova aprovação |
 | [S06](../sprints/S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada e nova aprovação |

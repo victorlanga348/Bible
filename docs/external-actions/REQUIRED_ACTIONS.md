@@ -63,8 +63,11 @@ Cumprido localmente: ambiente disponível, identidade biblia_test/biblia_test co
 
 ID: EXT-003
 Componente: biblical-canon
-Estado: ACTION_REQUIRED
+Estado: RESOLVED para snapshot e usos S02 v0.2; implementação/gates da sprint separados
 Sprint afetada: S02
+
+Atualização 2026-10-21, S02-T004: S01 encerrada/commitada e continuação S02 autorizada. Cânone/edição solicitados ao utilizador; ainda sem decisão. Pesquisa de condições declaradas para Bíblia Livre/porbr2018 e BPM/porbrbsl na [SPEC S02](../sprints/S02/SPEC.md), sem seleção, download ou incorporação de corpus. Esta pesquisa não resolve a ação nem aprova os usos.
+Após «avanca», pacote v0.2 proposto na SPEC: obter/verificar Bíblia Livre/porbr2018 e catálogo de66 livros, preservar edição/atribuição/licença/proveniência e limitar usos ao backend local previsto. Aprovação do pacote e inspeção do artefacto/aviso continuam pendentes; não há hash/importação nem resolução de EXT-003 por inferência.
 
 Ação necessária:
 Decidir cânone, versificação, identidades de livros e traduções/edições; fornecer dados autênticos com permissões verificadas para os usos concretos.
@@ -81,11 +84,15 @@ Identificar edições e respetivos detentores/fontes, obter texto e condições 
 Implementação preparada:
 Responsabilidade modular, parser/validação/importação previstos; nenhum texto ou catálogo importado.
 
+Preparação documental refinada em S02-T004: PLAN, SPEC rascunho, ficha da tarefa, alternativas/riscos e matriz de critérios. Nenhum adapter/parser/modelo/API bíblico executável criado. Depois das escolhas, concretizar contratos e verificar o artefacto/usos para aprovação antes de implementação.
+
 Validação pendente:
 Dados reais de livros/capítulos/versículos, diferenças de versificação, casos válidos/inválidos, navegação e API com atribuição e direitos respeitados.
 
 Critério de desbloqueio:
 Cânone/versificação e edições/usos aprovados, origem/licenças registadas e corpus reproduzível disponível; executar testes reais previstos.
+
+Resolução em 2026-10-21: «ok» explícito após pacote v0.2 e plano T005. ZIP porbr2018 obtido, aviso incluído confirma CC BY4.0/créditos, hash real `1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682`; XML canónico/catalogação confirmam66 livros/1.189 capítulos/31.102 versículos. Manifesto/aviso/fixture em backend/test/fixtures/biblical-canon/porbr2018; corpus completo local ignorado. Diferenças TXT/XML foram diagnosticadas e o texto do XML foi preservado sem correção. Usos admitidos limitados à SPEC aprovada, sem imagens/áudio/comentários, IA ou incorporação de fontes históricas. A resolução não é PASS de importação no banco/API; T005/T006/T007 exigem as provas próprias. Histórico anterior acima preserva a cronologia, não o estado atual.
 
 ## EXT-004 — Fontes e corpus de avaliação
 

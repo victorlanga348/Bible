@@ -1,7 +1,10 @@
 # Modelo de dados
 
-Estado: mapa conceptual proposto; responsabilidades consolidadas em S00 por ADR-0003. Não existe schema Prisma, migração, tabela, campo, índice ou enum aprovado.
+Estado: mapa conceptual para os restantes módulos; responsabilidades consolidadas em S00 por ADR-0003. Modelo lógico das quatro tabelas biblical-canon aprovado na SPEC v0.2 S02; transposição Prisma/migração ainda não implementada.
 As designações abaixo não são contratos de persistência.
+
+Histórico da preparação S02-T004, proposta v0.2 de 2026-10-21: a [SPEC S02](../sprints/S02/SPEC.md) concretiza quatro tabelas propostas de propriedade biblical-canon, chaves/relações/constraints, metadados de proveniência e transação/idempotência de importação. Não há schema/migração de negócio aprovado ou implementado; o namespace técnico da S01 já existe. Campos propostos permanecem na SPEC para revisão antes de transposição para Prisma.
+Aceite posterior: o «ok» do utilizador aprovou a SPEC v0.2/recorte e plano T005. Domain/referências puros foram implementados; transposição física das tabelas/migrações/casos de aplicação só na T006 com plano detalhado aprovado. Nada nesta implementação de entidades comprova persistência de negócio; o corpo conceptual abaixo permanece para os restantes módulos.
 
 ## Conceitos a modelar
 | Conceito | Necessidade de produto | Restrições a esclarecer |

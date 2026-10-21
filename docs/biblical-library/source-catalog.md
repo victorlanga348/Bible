@@ -1,12 +1,12 @@
 # Catálogo de fontes
 
-Estado: catálogo vazio por ausência de fontes aprovadas; isto é uma limitação real, não cobertura concluída.
+Estado: edição bíblica inicial admitida em S02 v0.2; catálogo de fontes históricas/comentários continua vazio. Cobertura documental não é declarada completa.
 Nenhuma obra, comentário ou recurso histórico foi verificado ou incorporado nesta inicialização.
 
 ## Registo de cobertura
 | Categoria | Estado atual | Próximo passo |
 |---|---|---|
-| Textos bíblicos e traduções | Nenhum selecionado | Resolver cânone, edições e licenças |
+| Textos bíblicos e traduções | Bíblia Livre/porbr2018 aprovada; snapshot/aviso/catalogação/fixture reais verificados em S02-T004 | Implementar domínio/consulta/importação conforme SPEC e testes; ver [cânone/versões](canon-and-versions.md) |
 | História e cultura | Nenhuma fonte aprovada | Definir curadoria e verificar candidatas |
 | Autoria, destinatários e propósito | Sem acervo validado | Selecionar fontes e documentar incertezas |
 | Comentários e tradições interpretativas | Nenhum incorporado | Aprovar critérios de diversidade e utilização |

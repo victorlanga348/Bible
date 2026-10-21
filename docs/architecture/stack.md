@@ -9,7 +9,7 @@ DDD, arquitetura hexagonal, monólito modular, SOLID e inversão de dependência
 Jest, Supertest, Stryker Mutator, testes reais e avaliações de IA. Line Coverage >= 90%; Branch Coverage >= 85%; Mutation Score bruto > 85%. Ferramentas fixadas e instaladas em S01; resultados não devem ser inferidos da instalação.
 Sem Redis, microsserviços, filas externas ou outras tecnologias adicionais sem necessidade e aprovação.
 
-## Decisões pendentes
+## Estado das decisões
 | ID | Situação | Momento |
 |---|---|---|
 | DEC-01 | Frontend adiado, fora do ciclo backend | Novo ciclo aprovado |
@@ -17,10 +17,10 @@ Sem Redis, microsserviços, filas externas ou outras tecnologias adicionais sem 
 | DEC-03 | Modelo/dimensão de embeddings e desenho de recuperação; pgvector prescrito quando necessário | Antes de indexação semântica S05 |
 | DEC-04 | Autenticação/autorização e proteção do uso privado | Antes de exposição/dados pessoais |
 | DEC-05 | Alojamento, backups/recuperação e publicação | Antes de preparação de release S08; publicação separada |
-| DEC-06 | Traduções, edições e licenças | Antes da importação/uso S02 |
+| DEC-06 | Bíblia Livre/porbr2018/CC BY4.0, snapshot/aviso/fixture admitidos para usos S02 v0.2 | «ok» explícito em 2026-10-21; SPEC S02 e EXT-003. Outras edições/IA fora do aceite |
 | DEC-07 | Matriz implementada em S01: npm/lockfile, Node24/TS6/Nest12/Prisma7, Docker PostgreSQL17, CommonJS com module Node20 | Revisão final aceite em 2026-10-21; ver SPEC/TEST_REPORT |
 | DEC-08 | Stryker10/Jest30 executados: dry run60 e mutação integral95,93% aprovados, análise no TEST_REPORT | Aceitação formal final S01 recebida em 2026-10-21 |
-| DEC-09 | Cânone, nomes/identidades, capítulos/versículos e versificação | Antes do catálogo/parser S02 |
+| DEC-09 | Recorte protestant-66, catálogo/ordem/códigos USFM/versificação do XML porbr2018; parser estrito da SPEC S02 | «ok» explícito em 2026-10-21 e inventário real66/1189/31102; Domain/parser T005 verificados, Application pendente |
 | DEC-10 | Retenção/eliminação, acesso ao histórico e envio ao fornecedor | Antes dos dados/chamadas afetados |
 
 Jest/Zod/OpenAPI/monólito não são escolhas abertas. DEC-07/08 estão concretizadas, validadas tecnicamente e aceites na revisão final S01 pelo utilizador em 2026-10-21; futuras incompatibilidades de Stryker bloqueiam, não autorizam substituição.

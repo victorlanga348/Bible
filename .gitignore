@@ -3,6 +3,7 @@ backend/dist/
 backend/reports/
 backend/.stryker-tmp/
 backend/stryker.log
+backend/data/biblical-canon/
 backend/src/generated/
 backend/.env
 backend/.env.*
