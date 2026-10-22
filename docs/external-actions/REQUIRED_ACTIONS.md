@@ -59,6 +59,14 @@ Verificações locais executadas: migração em base vazia, leitura/escrita para
 Critério de desbloqueio:
 Cumprido localmente: ambiente disponível, identidade biblia_test/biblia_test comprovada e sete integrações reais aprovadas, incluindo fecho físico de sessão. Em 2026-10-21, após reiniciar Docker e recriar tmpfs, migração reaplicada e suite real aprovada. A resolução desta ação não aprova os restantes gates nem o encerramento da sprint.
 
+### Atualização operacional — PostgreSQL instalado no PC
+
+Em2026-10-21, após o utilizador indicar o PostgreSQL instalado no PC e pedir «voce nao consegue criar a base de dados daqui mesmo?», foi criada a base de desenvolvimento `bible_db`, owner `postgres`, no servidor local PostgreSQL16.14/porta5432 já indicado por DATABASE_URL. Inspeção prévia confirmou servidor/identidade e ausência da base; operação explícita `CREATE DATABASE "bible_db" OWNER "postgres"`, sem remoção/substituição de base existente. Ligação posterior PASS, current_database=bible_db/current_user=postgres. Credenciais vieram do `.env` ignorado, sem valores expostos ou alterados.
+
+Resultado inicial: base criada e acesso confirmado; naquele momento schema `app`, tabelas/migrações e acervo de desenvolvimento ainda ausentes/NOT_RUN. Artefacto local ignorado: backend/reports/local-development-database-created.json. A criação não aplicou as migrações.
+
+Atualização2026-10-22 após autorização geral de execução/commits/push: confirmado bible_db/postgres/5432 e zero relações de utilizador antes de provisionar. Acrescentado somente schema=app à DATABASE_URL no `.env`, preservando as demais chaves/valores. CLI Prisma já instalada executou migrate deploy com ambiente explícito development/DATABASE_URL e TEST_DATABASE_URL removida do processo filho; não se reutilizou o comando guardado de teste. Três migrações aplicadas e verificadas em app._prisma_migrations. Prova real Nest/Prisma/Supertest no PostgreSQL16.14: GET /health/ready200 e GET /sources200 com catálogo vazio; PASS. Nenhuma fixture importada para desenvolvimento nem alteração no banco de teste. Log sanitizado e resumo em backend/reports/local-development-migrations.log e local-development-provisioned.json. Essa prova valida o provisionamento/leitura vazia, não substitui os testes de todas as regras S03 no PostgreSQL17. Google/JWT continuam sem implementação até tarefas próprias. Autorização e sequência atual em [execução integral](../roadmap/completion-execution.md).
+
 ## EXT-003 — Cânone e traduções
 
 ID: EXT-003

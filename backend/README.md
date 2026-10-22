@@ -18,13 +18,15 @@ Copiar `.env.example` para `.env` e `.env.test.example` para `.env.test`, preenc
 | .env | NODE_ENV / PORT | development / 3000 |
 | .env | BIBLE_DEV_DB_PASSWORD | Palavra-passe local de desenvolvimento |
 | .env | BIBLE_TEST_DB_PASSWORD | Palavra-passe local de testes |
-| .env | DATABASE_URL | PostgreSQL, utilizador/base biblia_dev, 127.0.0.1:55432, schema=app |
+| .env | DATABASE_URL | PostgreSQL do PC: localhost:5432/bible_db, schema=app; alternativa Compose: biblia_dev em 127.0.0.1:55432 |
 | .env.test | NODE_ENV | test |
 | .env.test | TEST_DATABASE_URL | PostgreSQL, utilizador/base biblia_test, 127.0.0.1:55433, schema=app |
 
 As palavras-passe nas URLs devem ser codificadas para URL. Há exemplos sem segredos nos dois ficheiros `.example`. Se o volume de desenvolvimento já existe, mudar a variável não muda a palavra-passe dentro do PostgreSQL.
 
 O utilizador pode apontar `DATABASE_URL` a outro PostgreSQL local; nesse caso, deve provisionar o schema `app` e as migrações nesse alvo num trabalho próprio. Na revisão S03-T007, o `.env` alterado pelo utilizador foi validado; apenas `BIBLE_TEST_DB_PASSWORD` foi sincronizada com a credencial já validada de `.env.test`, evitando divergência quando o container de teste for recriado. Restantes valores preservados; o alvo de desenvolvimento não foi migrado nem recebeu fixtures. As variáveis adicionais de Google/JWT/PostgreSQL não são consumidas pela aplicação atual. Testes mantêm a configuração isolada de `.env.test`, com guard e identidade real antes de escrever.
+
+Atualização EXT-002 em2026-10-22: bible_db criada no PostgreSQL16.14 instalado no PC/porta5432, DATABASE_URL alinhada com schema=app, três migrações existentes aplicadas e conexão/HTTP de leitura verificados. Nenhuma fixture de teste alimenta esse alvo. Os campos POSTGRES_DB/USER/PORT/PASSWORD são dados auxiliares coerentes com a URL; a aplicação usa DATABASE_URL como fonte da conexão, sem interpolação automática. O Compose continua a usar BIBLE_DEV_DB_PASSWORD/BIBLE_TEST_DB_PASSWORD; o serviço Docker de desenvolvimento é uma alternativa e não é o alvo do `.env` atual.
 
 ```powershell
 docker compose up -d --wait
@@ -37,7 +39,7 @@ O servidor escuta em `127.0.0.1:3000`. `GET /health/live` verifica o processo; `
 
 A migração de teste recusa alvos inseguros antes de ligar e confirma a identidade no servidor. Não há comando de migração de produção nesta sprint. A migração inicial só estabelece o namespace `app`; a tabela `persistence_probe` é uma fixture técnica criada exclusivamente na base de testes. Não contém textos bíblicos fictícios.
 
-S03 acrescenta `app.source_library_source` e `app.source_library_excerpt`, com constraints próprias e pesquisa lexical inglesa calculada, sem GIN persistente. Só o banco de teste foi migrado nesta execução. `npm start` usa desenvolvimento: sem migrações/dados nesse alvo, readiness pode estar saudável e operações de fontes falharem. Não confundir conectividade com esquema/acervo instalado; não há provisionamento automático de desenvolvimento.
+S03 acrescenta `app.source_library_source` e `app.source_library_excerpt`, com constraints próprias e pesquisa lexical inglesa calculada, sem GIN persistente. Na execução S03 só o banco de teste foi migrado; o provisionamento local posterior EXT-002 aplicou as três migrações em bible_db. `npm start` usa desenvolvimento; a base local tem tabelas e catálogo ainda vazio, sem dados de teste. Readiness verifica conectividade e não substitui a verificação das migrações; não há migração automática no arranque.
 
 ## Biblioteca de fontes no alvo de teste
 

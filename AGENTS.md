@@ -1,5 +1,9 @@
 # Instruções operacionais — Bíblia App
 
+## Autorização de execução vigente — 2026-10-22
+
+O utilizador instruiu executar tudo o que for necessário, terminar todas as sprints e fazer git push sem nova autorização prévia, exigindo relato detalhado. Esta instrução posterior prevalece sobre exigências de nova aprovação neste ficheiro: o agente pode refinar e documentar planos/contratos/dependências, implementar, validar, encerrar incrementos e fazer commits/push na branch feat/biblia-backend sem repetir pedidos de permissão. A conclusão integral inclui retomar tarefas S02-T006/T007 antes adiadas e cumprir as dependências das sprints seguintes. Decisões concretas delegadas devem ser fundamentadas e registadas antes de implementação; não atribuir ao utilizador escolhas específicas que o agente tomou. Mantêm-se TDD, dados autênticos, proteção de segredos, isolamento, limites modulares e gates reais. Falhas/serviços ausentes não viram PASS; não declarar sprints concluídas sem provas. Manter main preservada, sem force push. Uma tarefa de cada vez, sem autorização implícita de subagentes. A pergunta de fechamento pode constar da auditoria documental sem interromper a execução para nova aprovação já dispensada.
+
 ## Fontes e aprovações
 /docs contém as specs normativas; README é a entrada; ADRs aceites documentam decisões; MegaBrain preserva experiência sem substituir requisitos.
 Ler [governança](docs/documentation-governance.md), [sprints](docs/sprints/README.md), [gates](docs/quality/quality-gates.md), [contexto](docs/megabrain/agent-context/project-state.md) e [PLAN S00](docs/sprints/S00/PLAN.md).
