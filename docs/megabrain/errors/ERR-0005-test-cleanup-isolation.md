@@ -12,6 +12,8 @@ Regressão controlada realizada em PostgreSQL17.11 separado, loopback55434/bibli
 
 Uma execução completa adicional em paralelo ao Stryker foi interrompida depois de a importação integral exceder30s (30.850ms). O PC tinha159MB livres de7974MB; a execução parcial não comprova gate final. Preservado reports/s02-t006-coverage-final.log, comando test:coverage com setup isolado comprovado em reports/isolated-target-last.json (porta55434). Repetir sequencialmente, sem aumentar timeout ou declarar sucesso por causa da pressão de recursos. A baseline513 local e a cobertura remota do checkpoint anterior continuam provas dos respetivos snapshots, não da nova regressão526 ainda pendente.
 
+Repetição sequencial executada:526/526 PASS em27 suites,134,114s, cobertura100%/97,05%, incluindo a aceitação integral/HTTP e as duas regressões de limpeza. Evidência reports/s02-t006-coverage-sequential.log/-coverage-sequential-summary.json. O timeout da transação permaneceu30s. O Stryker local antigo foi interrompido, com log/manifesto incompletos preservados e sem score aprovado, para evitar a pressão de memória/54 timeouts. Gate de mutação transferido para execução integral real do CI39726619966 no checkpoint6272697, ainda pendente de conclusão/análise; não é exclusão ou dispensa de gate.
+
 Data:2026-10-21. Harness source-library, S03-T006. Estado: resolvido, isolamento/teardown e regressão439/gate final aprovados. Responsável: agente executor. Prisma7.10.1/PostgreSQL17.11/Jest30/Stryker10, somente alvo biblia_test confirmado.
 
 ## Observações e causa demonstrada

@@ -1,6 +1,21 @@
 # S02 — Critérios de aceitação
 
-## Critérios vigentes do encerramento reduzido
+## Retoma integral — 2026-10-22
+
+S02-T006/T007 retomadas pela autorização integral posterior. Esta matriz é o estado corrente; as secções seguintes preservam a entrega reduzida anterior sem apagar evidências. Sprint IN_PROGRESS, sem novo DONE enquanto os gates finais estiverem pendentes.
+
+| Critério existente | Evidência atual | Estado corrente |
+|---|---|---|
+| S02-AC01 | Importação atómica/idempotente, conflitos/rollback, catálogo, navegação e texto exato demonstrados por T006; aceitação integral66/1189/31102 na baseline513 e no PostgreSQL local16.14 | PASS funcional; regressão final pendente |
+| S02-AC02 | Cinco contratos Nest/Prisma/Zod/OpenAPI reais,30 E2E GREEN, sintaxe400/ausência404/falha500; entradas estritas e referências realmente existentes | PASS funcional; regressão final pendente |
+| S02-AC03 | Corpus/aviso/créditos autênticos; quatro tabelas próprias, Domain sem framework, ports/adapters e arquitetura/tooling13 PASS | PASS no checkpoint; auditoria final pendente |
+| S02-AC04 | Documentação/relatório em atualização, mutação local/CI e regressão final ainda pendentes; investigação de RuntimeError do harness | NOT_RUN final; impede encerramento |
+
+I01–I03/H01 tiveram execução real em T006, conforme [TEST_REPORT](TEST_REPORT.md). A execução remota do checkpoint8055a4c passou cobertura e continua em mutação; a correção de harness6272697 tem regressão controlada própria e precisa de confirmação integral. Não transferir os scores antigos de Domain/S03 para esta retoma. Os12 testes adicionais de constraints e a aceitação HTTP integral pertencem à regressão final; número previsto de testes não é resultado executado.
+
+Atualização após execução sequencial:526 testes/27 suites PASS, incluindo12 constraints, regressão de limpeza e aceitação HTTP integral; linhas100%/branches97,05%. AC01–03 têm regressão funcional final demonstrada. AC04 continua NOT_RUN final, pois a mutação integral CI e a revisão de encerramento estão pendentes. Logs e distinção das tentativas no TEST_REPORT.
+
+## Histórico dos critérios do encerramento reduzido
 
 Em2026-10-21 o utilizador aprovou: «termina, o que falta vou adicionar depois». A S02 encerra somente corpus/domínio/parser; T006/T007 voltam ao BACKLOG como adiadas. Acrescentam-se IDs únicos AC05–07 para o recorte, preservando o significado e os resultados incompletos dos critérios originais AC01–04 abaixo. Não há diminuição dos thresholds nem PASS fictício de API/persistência.
 
