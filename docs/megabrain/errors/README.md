@@ -13,6 +13,7 @@
 | [ERR-0009](ERR-0009-mutation-ci-runtime.md) | Resolvido: CI integral72min9s dentro90min e cache guardado após PASS | Mutação integral cancelada pelo limite40min do CI |
 | [ERR-0010](ERR-0010-database-deadline-race.md) | Resolvido: proxy RED/GREEN/regressão3 e551 testes/gates completos PASS | Ligação/leitura do cliente e cancelamento SQL em corrida |
 | [ERR-0011](ERR-0011-shutdown-observation.md) | Resolvido: observação limitada,551 testes e retake equivalente Survived preservado no gate global | pg_stat_activity após fechamento do pool |
+| [ERR-0012](ERR-0012-inherited-availability.md) | Resolvido:667 regressões e mutação própria88,98% PASS | Propriedade herdada no mapa de direitos de study, S04-T005 |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

@@ -32,4 +32,13 @@ describe('local access transport boundary with real JWTs', () => {
       await expect(new LocalAccessGuard(tokens).canActivate(context({ headers: { authorization } }))).rejects.toThrow(AuthenticationError);
     }
   });
+  it('rejects a valid signed token embedded inside an unrecognised authorization value', async () => {
+    const tokens = new LocalAccessTokens(randomBytes(48).toString('base64url'));
+    const header = `Bearer ${await tokens.issue('owner-a')}`;
+    for (const authorization of [`prefix ${header}`, `${header} suffix`]) {
+      const request: OwnerRequest = { headers: { authorization } };
+      await expect(new LocalAccessGuard(tokens).canActivate(context(request))).rejects.toThrow(AuthenticationError);
+      expect(request.ownerId).toBeUndefined();
+    }
+  });
 });

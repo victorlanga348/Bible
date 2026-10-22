@@ -1,5 +1,11 @@
 # S02 — Relatório de testes
 
+## Confirmação remota do próprio commit de fecho
+
+[CI39791599315](https://github.com/victorlanga348/Bible/actions/runs/39791599315), commit cea12891fa00ade7ec52601a6e8e43384385be83, terminou todos os passos com sucesso em2026-10-22. Mutação padrão integral72min1s:604 Killed/20 Timeout/30 Survived/326 CompileError,624/654=95,41284403669725%, zero RuntimeError/NoCoverage. Os33 ficheiros do relatório correspondem byte a byte ao src desse commit, normalizando somente CRLF/LF; as duas optional role válidas continuam Survived. Não atribuir esta execução à implementação S04 posterior.
+
+Artefacto12436162769,632615 bytes, ZIP SHA25621861d2480adba78bfa915b49365ff58640d880ea57d117abe990637e78f7b57 conferido contra GitHub antes de ler membros conhecidos. Originais preservados em reports/ci-39791599315-{mutation-original.json,mutation-original.html,cache-original.json,coverage-original.json}; JSON SHA256f1d744594765f8400ad3170656c03c131bcf8d89ca3d3c4baa04ca872ff9e110. Resumo analysis.json e comparação vs-90793e8.json, sem editar estados ou combinar scores. Quatro Killed têm expectNoApplicationSessions no motivo; excluindo conservadoramente todos eles e todos os20 Timeout,600/654=91,74311926605505%, acima85, preservando denominador. Não se afirma que as quatro deteções são falsas; o limite inferior explicita a incerteza causal. A fonte/score local de fecho abaixo mantém a sua identidade independente.
+
 ## Verificação final integral — 2026-10-22
 
 T006/T007 concluídas tecnicamente, com encerramento delegado pela autorização integral. Código de produto não mudou desde6085489; harness corrente acrescenta isolamento dos runners e observação limitada do shutdown, preservando dados/contratos/deadlines. Esta secção prevalece sobre o histórico abaixo.

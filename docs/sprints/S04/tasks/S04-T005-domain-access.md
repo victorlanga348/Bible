@@ -1,6 +1,6 @@
 # S04-T005 — Domínio do estudo e fronteira de acesso
 
-Estado: IN_PROGRESS após commit documental031f3eb, T004 concluída e ADR-0005/SPEC aceites no âmbito delegado. Instalação JOSE6.2.13 justificada/verificada; iniciar RED antes de comportamento. Autorização de execução delegada2026-10-22, sem nova aprovação. Implementar somente contratos da SPEC, sem LLM ou abstrações para funcionalidades futuras.
+Estado: DONE após IN_PROGRESS→REVIEW→DONE em2026-10-22. T004/ADR-0005/SPEC e delegação satisfeitas, JOSE6.2.13 instalada. RED/GREEN registados,667 testes/34 suites PASS,100% linhas/97,89% branches, estática/build/tooling PASS. Mutação própria323/363=88,98071625344353%, sem RuntimeError/NoCoverage;40 sobreviventes preservados/analisados, sem Timeout87,87878787878788%. Ver TEST_REPORT/MUTATION_ANALYSIS. Checkpoint anterior d10e198 publicado, commit de fecho da tarefa a criar depois da auditoria documental, sem nova permissão. Persistência/HTTP study ainda NOT_RUN e pertencem a T006; não é fecho da sprint. Os parágrafos seguintes conservam o plano executado.
 
 Escopo: entidades imutáveis Study/StudySection/Interpretation/Evidence e invariantes; seleção e evidência identificadas, classificação epistemológica, documentos serializáveis e redigir conteúdo restrito. Infraestrutura técnica JWT/guard separado do domínio; consumo da chave jwtSecret existente, validada sem logs. Acesso privado falha fechado com chave ausente. Biblioteca JOSE evita criptografia manual; versão/instalação só após verificação T004.
 

@@ -2,7 +2,7 @@
 
 ## Preparação vigente — 2026-10-22
 
-Execução delegada pela autorização integral, sem nova aprovação. Sprint IN_PROGRESS, S02/S03 concluídas e commit S02 cea1289 criado. T004 BACKLOG→READY→IN_PROGRESS→REVIEW→DONE documental; T005 READY→IN_PROGRESS, T006 BLOCKED em T005, T007 BLOCKED em T006. [SPEC](SPEC.md)/ADR-0005 e fichas aceites pelo agente no âmbito delegado; domínio imutável/JWT/guard implementados com RED/GREEN,652 testes de regressão PASS e mutação dirigida em execução. Ainda não há persistência/rotas study. [PLAN](PLAN.md) contém escopo, alternativas, riscos e validação. As disposições de S00 abaixo são históricas; a tabela seguinte contém os estados atuais dos mesmos IDs.
+Execução delegada pela autorização integral, sem nova aprovação. Sprint IN_PROGRESS, S02/S03 concluídas e commit S02 cea1289 criado. T004 DONE documental; T005 READY→IN_PROGRESS→REVIEW→DONE, T006 BLOCKED→READY, T007 BLOCKED em T006. [SPEC](SPEC.md)/ADR-0005 e fichas aceites pelo agente no âmbito delegado; domínio imutável/JWT/guard têm RED/GREEN,667 regressões PASS e mutação própria88,98% com sobreviventes analisados. Ainda não há persistência/rotas study. [PLAN](PLAN.md) contém escopo, alternativas, riscos e validação. As disposições de S00 abaixo são históricas; a tabela seguinte contém os estados atuais dos mesmos IDs.
 
 ## Rascunho histórico de S00
 
@@ -12,8 +12,8 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | ID | Título | Trilha | Prioridade | Estado | Dependências | Referência |
 |---|---|---|---|---|---|---|
 | S04-T004 | Aprovar SS-001 e contratos determinísticos de estudo | A/C | Alta | DONE | S02 integral/S03 concluídas, contratos/ADR/JOSE e curadoria confrontados | [Ficha](tasks/S04-T004-contracts.md) |
-| S04-T005 | Implementar Study, StudySection, Interpretation e Evidence | A | Alta | IN_PROGRESS | RED/GREEN e regressão652 PASS; mutação dirigida pendente | [Ficha](tasks/S04-T005-domain-access.md) |
-| S04-T006 | Integrar construção, persistência e versões sem LLM | B | Alta (proposta) | BLOCKED | S04-T005 | [PLAN](PLAN.md) |
+| S04-T005 | Implementar Study, StudySection, Interpretation e Evidence | A | Alta | DONE | RED/GREEN,667 regressões PASS; mutação própria88,98%, análise preservada | [Ficha](tasks/S04-T005-domain-access.md) |
+| S04-T006 | Integrar construção, persistência e versões sem LLM | B | Alta | READY | S04-T005 satisfeita, plano concreto/skills consultados antes de código | [Ficha](tasks/S04-T006-persistence-http.md) |
 | S04-T007 | Verificar distinção epistemológica e gates | C | Alta (proposta) | BLOCKED | S04-T006 | [PLAN](PLAN.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.

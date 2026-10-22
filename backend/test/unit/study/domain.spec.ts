@@ -73,6 +73,25 @@ describe('immutable private study domain with admitted genuine texts', () => {
     const input = studyProps();
     expect(() => new Study({ ...input, content: { ...input.content, reference: { ...input.content.reference, ...change } } })).toThrow(StudyDomainError);
   });
+  it.each([{ bookCode: 'gen', normalized: 'gen 1:1' }, { bookCode: 'G?N', normalized: 'G?N 1:1' }, { chapter: 0, normalized: 'GEN 0:1' }, { chapter: 1.5, normalized: 'GEN 1.5:1' }])('rejects an invalid reference even when its normalized text agrees %j', change => {
+    const input = studyProps();
+    expect(() => new Study({ ...input, content: { ...input.content, reference: { ...input.content.reference, ...change } } })).toThrow(StudyDomainError);
+  });
+  it('rejects an empty reversed selection and a malformed UUID of the exact expected length', () => {
+    const input = studyProps();
+    expect(() => new Study({ ...input, id: 'z'.repeat(36) })).toThrow(StudyDomainError);
+    expect(() => new Study({ ...input, content: { ...input.content,
+      reference: { ...input.content.reference, fromVerse: 2, toVerse: 1, normalized: 'GEN 1:2-1' }, passage: { ...input.content.passage, verses: [] } } })).toThrow(StudyDomainError);
+  });
+  it.each(['inference', 'tradition', 'hypothesis'] as const)('allows an explicitly unsupported %s without labelling it a documented fact', classification => {
+    const input = { classification, text: 'Declaração técnica sem suporte documental; não é um facto histórico.', evidenceIds: [] };
+    expect(new Interpretation(input)).toEqual(input);
+  });
+  it.each(['evidence', 'sections', 'interpretations', 'limitations'] as const)('rejects a malformed rehydrated %s collection with a domain error', key => {
+    const input = studyProps();
+    const malformed = { ...input, content: { ...input.content, [key]: {} } } as unknown as typeof input;
+    expect(() => new Study(malformed)).toThrow(StudyDomainError);
+  });
   it('requires actual selected verse identities, text and credit', () => {
     const input = studyProps(); const passage = input.content.passage;
     for (const invalid of [{ ...passage, verses: [] }, { ...passage, verses: [{ ...passage.verses[0]!, number: 2 }] }, { ...passage, verses: [{ number: 1, text: ' ' }] }, { ...passage, attribution: '' }, { ...passage, licenseUrl: '/relative' }]) {
@@ -91,7 +110,7 @@ describe('immutable private study domain with admitted genuine texts', () => {
   });
   it('requires six unique sections, real evidence references and nonblank limitations', () => {
     const input = studyProps(); const content = input.content;
-    for (const invalid of [{ ...content, sections: content.sections.slice(1) }, { ...content, sections: [...content.sections.slice(0, 5), content.sections[0]!] }, { ...content, evidence: [...content.evidence, content.evidence[0]!] }, { ...content, evidence: [] }, { ...content, limitations: [' '] }]) {
+    for (const invalid of [{ ...content, sections: content.sections.slice(1) }, { ...content, sections: [...content.sections.slice(0, 5), content.sections[0]!] }, { ...content, sections: [...content.sections, content.sections[0]!] }, { ...content, evidence: [...content.evidence, content.evidence[0]!] }, { ...content, evidence: [] }, { ...content, limitations: [' '] }]) {
       expect(() => new Study({ ...input, content: invalid })).toThrow(StudyDomainError);
     }
   });
@@ -132,6 +151,7 @@ describe('immutable private study domain with admitted genuine texts', () => {
     expect(view.interpretations).toEqual([]);
     expect(view.passage).toEqual(study.content.passage);
     expect(view.limitations.length).toBeGreaterThan(study.content.limitations.length);
+    expect(view.limitations.every(message => message.trim().length > 0)).toBe(true);
     expect(study.content.evidence[0]!.quote).toBe(realEvidence().quote);
     expect(JSON.stringify(view)).not.toContain(realEvidence().quote);
   });
@@ -140,5 +160,31 @@ describe('immutable private study domain with admitted genuine texts', () => {
     const available = study.forDelivery({ [id]: 'available' });
     expect(study.forDelivery({}).evidence[0]).toMatchObject({ availability: 'missing', quote: null });
     expect(available.evidence[0]!.quote).toBe(realEvidence().quote);
+  });
+  it('redacts an interpretation with one unavailable dependency while keeping independent content', () => {
+    const rows = JSON.parse(readFileSync('test/fixtures/source-library/josephus-antiquities-pg2848-en/excerpts.json', 'utf8')) as { id: string; locator: string; text: string; textSha256: string }[];
+    const input = studyProps(); const first = realEvidence(); const secondRow = rows[1]!;
+    const second = { ...first, excerptId: secondRow.id, locator: secondRow.locator, quote: secondRow.text, textSha256: secondRow.textSha256 };
+    // Controlled epistemic metadata tests delivery policy, not historical truth.
+    const independent = { classification: 'inference' as const, text: 'Objeto técnico independente; não é uma análise histórica curada.', evidenceIds: [first.excerptId] };
+    const dependent = { classification: 'hypothesis' as const, text: 'Objeto técnico com duas dependências para verificar a entrega.', evidenceIds: [first.excerptId, second.excerptId] };
+    const study = new Study({ ...input, content: { ...input.content, evidence: [first, second], interpretations: [independent, dependent] } });
+    const view = study.forDelivery({ [first.excerptId]: 'available', [second.excerptId]: 'restricted' });
+    expect(view.interpretations).toEqual([independent]);
+    expect(view.evidence.map(row => row.quote)).toEqual([first.quote, null]);
+    expect(view.passage).toEqual(study.content.passage);
+    expect(study.content.interpretations).toEqual([independent, dependent]);
+    expect(study.content.evidence[1]!.quote).toBe(second.quote);
+  });
+  it('treats a valid excerpt id matching an inherited object property as unreported', () => {
+    // Controlled identity variant of the same admitted text; no additional work.
+    const input = studyProps();
+    const excerptId = 'constructor';
+    const content = { ...input.content, evidence: [{ ...realEvidence(), excerptId }],
+      sections: input.content.sections.map(row => ({ ...row, evidenceIds: row.evidenceIds.map(() => excerptId) })),
+      interpretations: input.content.interpretations.map(row => ({ ...row, evidenceIds: [excerptId] })) };
+    const study = new Study({ ...input, content });
+    expect(study.forDelivery({}).evidence[0]).toMatchObject({ excerptId, availability: 'missing', quote: null });
+    expect(study.forDelivery({ constructor: 'available' } as const).evidence[0]!.quote).toBe(realEvidence().quote);
   });
 });

@@ -100,7 +100,7 @@ export class Study implements StudyProps {
   forDelivery(availability: Readonly<Record<string, Availability>>): StudyView {
     const hidden = new Set<string>();
     const evidence = this.content.evidence.map(row => {
-      const state = availability[row.excerptId] ?? 'missing';
+      const state = Object.hasOwn(availability, row.excerptId) ? availability[row.excerptId]! : 'missing';
       requireValue(['available', 'restricted', 'missing'].includes(state));
       if (state !== 'available') hidden.add(row.excerptId);
       return Object.freeze({ ...row, quote: state === 'available' ? row.quote : null, availability: state });

@@ -1,6 +1,6 @@
 # S04 — Estudos determinísticos e acesso local
 
-Refinamento delegado em2026-10-22 pela [autorização integral](../../roadmap/completion-execution.md). Contrato aceite para implementação pelo agente em T004, sprint IN_PROGRESS; domínio/JWT/guard T005 implementados em validação, persistência/HTTP T006 ainda NOT_RUN. S02-T006/T007 concluídas e commitadas cea1289. Decisões são do agente no escopo delegado; não se atribui aprovação individual anterior ao utilizador. SS-001 histórica é preservada e operacionalizada, com BR-01–12 e limites explícitos. [ADR-0005](../../architecture/adr/ADR-0005-estudos-privados-e-versoes.md). Sem LLM nesta sprint.
+Refinamento delegado em2026-10-22 pela [autorização integral](../../roadmap/completion-execution.md). Contrato aceite para implementação pelo agente em T004, sprint IN_PROGRESS; domínio/JWT/guard T005 DONE com667 testes e mutação própria88,98%, persistência/HTTP T006 ainda NOT_RUN/READY. S02-T006/T007 concluídas e commitadas cea1289. Decisões são do agente no escopo delegado; não se atribui aprovação individual anterior ao utilizador. SS-001 histórica é preservada e operacionalizada, com BR-01–12 e limites explícitos. [ADR-0005](../../architecture/adr/ADR-0005-estudos-privados-e-versoes.md). Sem LLM nesta sprint.
 
 ## Resultado e limites
 
