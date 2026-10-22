@@ -8,6 +8,7 @@
 | [ERR-0004](ERR-0004-nest-composition-exit.md) | Resolvido: propagação/guardas exit-abort e gate final aprovados | Bootstrap Nest/process termination, S03-T006 |
 | [ERR-0005](ERR-0005-test-cleanup-isolation.md) | Resolvido: lock/teardown,439 regressões e gate final aprovados | Isolamento da limpeza de teste/RuntimeError, S03-T006 |
 | [ERR-0006](ERR-0006-static-mutation-cache.md) | Resolvido: force/ensaio isolado e confirmação do escopo completo | Cache estático/reavaliação causal, S03-T006 |
+| [ERR-0007](ERR-0007-github-actions-context.md) | Definição corrigida/actionlint PASS; execução remota a acompanhar | Contexto de expressões GitHub Actions/porta PostgreSQL, retoma S02/CI |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

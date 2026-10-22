@@ -26,7 +26,6 @@ jobs:
           --health-interval 2s --health-timeout 3s --health-retries 30
     env:
       NODE_ENV: test
-      TEST_DATABASE_URL: postgresql://biblia_test@127.0.0.1:${{ job.services.postgres.ports[5432] }}/biblia_test?schema=app
     defaults:
       run:
         working-directory: backend
@@ -39,8 +38,24 @@ jobs:
           node-version: '24.16.0'
           cache: npm
           cache-dependency-path: backend/package-lock.json
+      - name: Configure isolated test database
+        shell: bash
+        run: |
+          printf '%s\n' "TEST_DATABASE_URL=postgresql://biblia_test@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/biblia_test?schema=app" >> "$GITHUB_ENV"
       - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
       - run: npm run prisma:generate
+      - name: Provision admitted biblical corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          directory=data/biblical-canon/porbr2018
+          mkdir -p "$directory"
+          original="$(mktemp "$directory/source.zip.XXXXXX")"
+          trap 'rm -f "$original"' EXIT
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$original" 'https://ebible.org/Scriptures/porbr2018_vpl.zip'
+          printf '%s  %s\n' '1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682' "$original" | sha256sum --check --status
+          mv "$original" "$directory/source.zip"
+          python3 scripts/prepare-canon.py
       - name: Provision admitted source original
         shell: bash
         run: |
