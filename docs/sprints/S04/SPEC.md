@@ -1,6 +1,6 @@
 # S04 — Estudos determinísticos e acesso local
 
-Estado operacional atualizado2026-10-22: T006 IN_PROGRESS, contratos abaixo implementados em Application/Prisma/HTTP/CLI por RED/GREEN,830 regressões PASS e percurso real no banco do PC comprovado. Gates integrais de mutação/revisão ainda pendentes; notas de preparação seguintes históricas, sem alterar o contrato aceite.
+Estado operacional atualizado2026-10-23: T006 IN_PROGRESS, contratos abaixo implementados em Application/Prisma/HTTP/CLI por RED/GREEN,907 regressões PASS e percurso real no banco do PC comprovado. Guardas operacionais/teste de URL corrigidas; mutação integral da fonte corrigida/revisão pendentes. Notas seguintes históricas, sem alterar o contrato de negócio aceite.
 
 Refinamento delegado em2026-10-22 pela [autorização integral](../../roadmap/completion-execution.md). Contrato aceite para implementação pelo agente em T004, sprint IN_PROGRESS; domínio/JWT/guard T005 DONE com667 testes e mutação própria88,98%, persistência/HTTP T006 ainda NOT_RUN/READY. S02-T006/T007 concluídas e commitadas cea1289. Decisões são do agente no escopo delegado; não se atribui aprovação individual anterior ao utilizador. SS-001 histórica é preservada e operacionalizada, com BR-01–12 e limites explícitos. [ADR-0005](../../architecture/adr/ADR-0005-estudos-privados-e-versoes.md). Sem LLM nesta sprint.
 

@@ -8,7 +8,7 @@ Consolidação documental aprovada em 2026-10-20, sem aprovação antecipada de 
 | [S01](../sprints/S01/README.md) | Fundação Técnica | DONE | Validação local e aprovação final/commit recebidas em 2026-10-21 |
 | [S02](../sprints/S02/README.md) | Cânone, corpus e integração bíblica | DONE | Complemento T006/T007 concluído/publicado cea1289 e CI integral PASS; fecho reduzido anterior preservado |
 | [S03](../sprints/S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; percurso integrado/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
-| [S04](../sprints/S04/README.md) | Motor de Estudos | IN_PROGRESS | Autorização integral; T004/T005 DONE, T006 com830 regressões/operação PC PASS, mutação integral nova pendente |
+| [S04](../sprints/S04/README.md) | Motor de Estudos | IN_PROGRESS | Autorização integral; T004/T005 DONE, T006 com907 regressões/operação PC PASS, mutação da fonte corrigida pendente em CI |
 | [S05](../sprints/S05/README.md) | IA e RAG | BACKLOG | S04 encerrada e nova aprovação |
 | [S06](../sprints/S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada e nova aprovação |
 | [S07](../sprints/S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada e nova aprovação |

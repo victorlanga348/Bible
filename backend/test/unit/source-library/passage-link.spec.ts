@@ -36,4 +36,8 @@ describe('explicit curated source-to-passage relation', () => {
     expect(() => assertPassageSelection({ translationId, bookCode, chapter, fromVerse, toVerse })).not.toThrow();
     expect(() => assertPassageSelection({ translationId, bookCode, chapter: 0, fromVerse, toVerse })).toThrow(SourceDomainError);
   });
+  it.each((['id', 'excerptId', 'translationId', 'bookCode'] as const).flatMap(key => ['\n', '\r', '\r\n', '\u2028', '\u2029'].map(ending => ({ key, ending }))))('rejects final line terminator $ending in curated $key', ({ key, ending }) => {
+    const valid = passageLinkProps();
+    expect(() => new CuratedPassageLink({ ...valid, [key]: valid[key]+ending })).toThrow(SourceDomainError);
+  });
 });

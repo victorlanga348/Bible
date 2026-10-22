@@ -1,5 +1,23 @@
 import { parseRuntimeConfig, assertTestTarget } from '../../src/config/runtime-config';
 
+describe('test target driver-option isolation', () => {
+  it.each(['host=remote.example', 'user=postgres', 'dbname=bible_db', 'port=5432', 'hostaddr=192.0.2.1', 'options=-c%20search_path%3Dpublic', 'schema=public'])('rejects connection override %s before any connection', option => {
+    expect(() => assertTestTarget({ NODE_ENV: 'test', TEST_DATABASE_URL: `postgresql://biblia_test@127.0.0.1:55433/biblia_test?schema=app&${option}` })).toThrow('Unsafe test database');
+  });
+  it('rejects a fragment on the guarded test URL', () => {
+    expect(() => assertTestTarget({ NODE_ENV: 'test', TEST_DATABASE_URL: 'postgresql://biblia_test@127.0.0.1:55433/biblia_test?schema=app#fragment' })).toThrow('Unsafe test database');
+  });
+  it.each([
+    'postgresql://biblia_dev@127.0.0.1:55433/%62iblia_test?schema=other',
+    'postgresql://biblia_dev@LOCALHOST:55433/biblia_test?schema=other',
+    'postgresql://biblia_dev@127.0.0.1:55432/biblia_dev?schema=app&host=remote.example',
+    'postgresql://biblia_dev@127.0.0.1:55432/biblia_dev?schema=app&port=55433&dbname=biblia_test',
+    'invalid-development-url',
+  ])('refuses an ambiguous development comparison without exposing input', DATABASE_URL => {
+    expect(() => assertTestTarget({ NODE_ENV: 'test', TEST_DATABASE_URL: 'postgresql://biblia_test@127.0.0.1:55433/biblia_test?schema=app', DATABASE_URL })).toThrow('Unsafe test database');
+  });
+});
+
 describe('runtime configuration', () => {
   const dev = { DATABASE_URL: 'postgresql://localhost/biblia_dev' };
   it('uses explicit local development defaults', () => {

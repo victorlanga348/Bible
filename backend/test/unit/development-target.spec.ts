@@ -20,4 +20,12 @@ describe('explicit guarded local development operations', () => {
   ])('rejects ambiguous, non-development, remote or test targets %j', environment => {
     expect(() => assertDevelopmentTarget(environment)).toThrow('Unsafe development database');
   });
+  it.each([
+    'postgresql://user@localhost/%62iblia_test?schema=app',
+    'postgresql://%62iblia_test@localhost/bible_db?schema=app',
+    ...['host=remote.example', 'user=biblia_test', 'dbname=biblia_test', 'port=9', 'hostaddr=192.0.2.1', 'options=-c%20search_path%3Dpublic']
+      .map(option => `${target}&${option}`),
+  ])('refuses encoded test identities and driver option overrides %s', DATABASE_URL => {
+    expect(() => assertDevelopmentTarget({ NODE_ENV: 'development', DATABASE_URL })).toThrow('Unsafe development database');
+  });
 });

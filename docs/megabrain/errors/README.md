@@ -2,6 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
+| [ERR-0015](ERR-0015-postgresql-url-routing.md) | Guardas corrigidas,76 dirigidos e907 regressões PASS; mutação corrigida pendente em CI | Identidade URL/opções de routing PostgreSQL, S04-T006 |
 | [ERR-0014](ERR-0014-local-coverage-heap.md) | Regressão integral resolvida com limite768MB:830/45 suites PASS; tentativa512MB OOM preservada | Heap local Node/Jest, S04-T006 |
 | [ERR-0001](ERR-0001-s01-toolchain.md) | Causas corrigidas; regressões60/60, tooling13/13 e mutação integral95,93%; limites no relatório S01 | Toolchain, descoberta OneDrive e fiscalização arquitetural, S01-T005/T006/T008 |
 | [ERR-0002](ERR-0002-stryker-report-collision.md) | Resolvido: paths distintos, JSON/cache válidos, dry run152 e mutação97,21% | Cache/relatório Stryker concorrentes, S02-T005 |
