@@ -4,6 +4,7 @@ export interface RuntimeConfig {
   readonly environment: 'development' | 'test';
   readonly port: number;
   readonly databaseUrl: string;
+  readonly jwtSecret?: string;
 }
 
 const databaseUrl = z.url({ protocol: /^postgres(ql)?$/ }).refine((value) => (URL.parse(value)?.pathname.length ?? 0) > 1);
@@ -16,7 +17,9 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
   const key = environment.data === 'test' ? 'TEST_DATABASE_URL' : 'DATABASE_URL';
   const url = databaseUrl.safeParse(input[key]);
   if (!url.success) throw new Error(`Invalid configuration: ${key}`);
-  return { environment: environment.data, port: port.data, databaseUrl: url.data };
+  const jwtSecret = input.jwtSecret;
+  if (jwtSecret && new TextEncoder().encode(jwtSecret).byteLength < 32) throw new Error('Invalid configuration: jwtSecret');
+  return { environment: environment.data, port: port.data, databaseUrl: url.data, ...(jwtSecret ? { jwtSecret } : {}) };
 }
 
 export function assertTestTarget(input: NodeJS.ProcessEnv): string {

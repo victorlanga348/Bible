@@ -38,6 +38,22 @@ test('detects import cycles and does not mistake comments for imports', () => {
   assert.equal(errors.length, 1);
   assert.match(errors[0], /cycle/);
 });
+test('rejects global infrastructure/presentation imports from domain and application', () => {
+  for (const layer of ['domain', 'application']) {
+    for (const target of ['infrastructure/access-token', 'presentation/local-access.guard']) {
+      const errors = checkDependencies({ [`modules/study/${layer}/study.ts`]: `import { value } from '../../../${target}';` });
+      assert.equal(errors.length, 1);
+    }
+  }
+});
+
+test('allows shared technical infrastructure in adapters and shared transport guards in controllers', () => {
+  assert.deepEqual(checkDependencies({
+    'modules/study/infrastructure/repository.ts': "import { Database } from '../../../infrastructure/database';",
+    'modules/study/presentation/controller.ts': "import { Guard } from '../../../presentation/local-access.guard';",
+  }), []);
+});
+
 test('checks real source files', () => {
   const { readdirSync, readFileSync } = require('node:fs');
   const { join, relative } = require('node:path');

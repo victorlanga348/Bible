@@ -1,6 +1,6 @@
 # S04-T005 — Domínio do estudo e fronteira de acesso
 
-Estado: READY, T004 concluída e ADR-0005/SPEC aceites no âmbito delegado. Instalação JOSE6.2.13 justificada/verificada; código/testes de comportamento ainda NOT_RUN. Autorização de execução delegada2026-10-22, sem nova aprovação. Implementar somente contratos da SPEC, sem LLM ou abstrações para funcionalidades futuras.
+Estado: IN_PROGRESS após commit documental031f3eb, T004 concluída e ADR-0005/SPEC aceites no âmbito delegado. Instalação JOSE6.2.13 justificada/verificada; iniciar RED antes de comportamento. Autorização de execução delegada2026-10-22, sem nova aprovação. Implementar somente contratos da SPEC, sem LLM ou abstrações para funcionalidades futuras.
 
 Escopo: entidades imutáveis Study/StudySection/Interpretation/Evidence e invariantes; seleção e evidência identificadas, classificação epistemológica, documentos serializáveis e redigir conteúdo restrito. Infraestrutura técnica JWT/guard separado do domínio; consumo da chave jwtSecret existente, validada sem logs. Acesso privado falha fechado com chave ausente. Biblioteca JOSE evita criptografia manual; versão/instalação só após verificação T004.
 

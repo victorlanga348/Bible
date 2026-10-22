@@ -23,9 +23,9 @@ function checkDependencies(files) {
       const resolved = external ? imported : path.normalize(path.join(path.dirname(name), imported));
       const domain = name.includes('/domain/');
       const application = name.includes('/application/');
-      const forbidden = (domain && (external || /\/(application|infrastructure|presentation)(\/|$)/.test(resolved))) ||
-        (application && (external || /\/(infrastructure|presentation)(\/|$)/.test(resolved))) ||
-        (name.split('/')[1] !== resolved.split('/')[1] && name.startsWith('modules/') && /\/(infrastructure|presentation)(\/|$)/.test(resolved));
+      const forbidden = (domain && (external || /(^|\/)(application|infrastructure|presentation)(\/|$)/.test(resolved))) ||
+        (application && (external || /(^|\/)(infrastructure|presentation)(\/|$)/.test(resolved))) ||
+        (name.startsWith('modules/') && resolved.startsWith('modules/') && name.split('/')[1] !== resolved.split('/')[1] && /\/(infrastructure|presentation)(\/|$)/.test(resolved));
       if (forbidden) errors.push(`forbidden dependency: ${name} -> ${imported}`);
       const target = [resolved, `${resolved}.ts`, `${resolved}/index.ts`, resolved.replace(/\.js$/, '.ts')].find((p) => Object.hasOwn(files, p));
       if (target) edges.push(target);

@@ -1,7 +1,8 @@
 # Autenticação e autorização
 
-Estado: pendente DEC-04. Uso pessoal não implica acesso anónimo ou ausência de proteção.
-Não há fornecedor, protocolo, sessão, papel ou modelo de identidade aprovado.
+Atualização2026-10-22: DEC-04 resolvida para acesso pessoal local na [SPEC S04](../sprints/S04/SPEC.md) e [ADR-0005](../architecture/adr/ADR-0005-estudos-privados-e-versoes.md), por decisão do agente sob autorização integral. JWT HS256/JOSE6.2.13 usa jwtSecret existente, mínimo32 bytes UTF-8, issuer biblia-local, audience biblia-backend, sub ASCII estrito, iat/exp inteiros e validade máxima1h. Assinatura/claims são verificados no servidor; ausência de chave falha fechado. T005 tem RED/GREEN criptográfico real e guard técnico; ligação a HTTP privado/persistência permanece T006, sem prova inferida de unitários.
+
+Emissão será apenas por ferramenta local; nenhum endpoint público por username. Owner vem exclusivamente do subject validado e recurso de outro owner devolve404. Rotação da chave invalida tokens anteriores após reinício; sem refresh/revogação seletiva. GOOGLE_CLIENT_ID preservado não implementa login Google. Contas remotas/OAuth não são exigidas neste recorte. Histórico é retido localmente sem expiração automática na S04; gestão/eliminação pertence a S07. As questões seguintes preservam a preparação anterior e continuam pertinentes a ampliações futuras.
 
 ## Questões para decisão
 - Quem pode aceder à aplicação e aos estudos?
