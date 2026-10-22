@@ -6,7 +6,7 @@
 | [ERR-0002](ERR-0002-stryker-report-collision.md) | Resolvido: paths distintos, JSON/cache válidos, dry run152 e mutação97,21% | Cache/relatório Stryker concorrentes, S02-T005 |
 | [ERR-0003](ERR-0003-source-permission-null.md) | Resolvido: migração corretiva e15 testes reais de constraints aprovados | JSON null/CHECK de permissões, S03-T006 |
 | [ERR-0004](ERR-0004-nest-composition-exit.md) | Resolvido: propagação/guardas exit-abort e gate final aprovados | Bootstrap Nest/process termination, S03-T006 |
-| [ERR-0005](ERR-0005-test-cleanup-isolation.md) | Resolvido: lock/teardown,439 regressões e gate final aprovados | Isolamento da limpeza de teste/RuntimeError, S03-T006 |
+| [ERR-0005](ERR-0005-test-cleanup-isolation.md) | Recorrente no CI22/10: ciclo de locks/FK demonstrado; correção em validação, gate pendente | Isolamento da limpeza de teste/RuntimeError, S03-T006 e retoma S02 |
 | [ERR-0006](ERR-0006-static-mutation-cache.md) | Resolvido: force/ensaio isolado e confirmação do escopo completo | Cache estático/reavaliação causal, S03-T006 |
 | [ERR-0007](ERR-0007-github-actions-context.md) | Definição corrigida/actionlint PASS; execução remota a acompanhar | Contexto de expressões GitHub Actions/porta PostgreSQL, retoma S02/CI |
 | [ERR-0008](ERR-0008-fresh-report-directory.md) | Harness cria reports; prova em diretório novo/CI a acompanhar | mkdtemp/clone limpo, bootstrap dos testes |

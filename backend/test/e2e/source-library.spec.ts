@@ -3,7 +3,7 @@ import request from 'supertest';
 import { createApplication } from '../../src/app';
 import { parseRuntimeConfig } from '../../src/config/runtime-config';
 import type { Database } from '../../src/infrastructure/database';
-import { cleanSourceTestData, openSourceTestDatabase, seedCuratedSource, sourceFixture, sourceSnapshot } from '../helpers/source-library';
+import { cleanSourceTestData, openSourceTestDatabase, seedCuratedSource, sourceFixture, excerptFixture, sourceSnapshot } from '../helpers/source-library';
 
 describe('source contracts with real Nest, Prisma and PostgreSQL', () => {
   let app: INestApplication;
@@ -41,7 +41,7 @@ describe('source contracts with real Nest, Prisma and PostgreSQL', () => {
     const result = await request(app.getHttpServer()).get(base).query(query).expect(400);
     expect(result.body).toEqual({ error: { code: 'VALIDATION_ERROR', message: 'Entrada inválida.' } });
   });
-  it.each(['/sources?extra=x', `/source-excerpts/${sourceSnapshot().excerpts[0]!.id}?q=God`, '/sources/INVALID/excerpts', '/source-excerpts/INVALID'])('validates strict query/path input %s', async path => {
+  it.each(['/sources?extra=x', `/source-excerpts/${excerptFixture[0]!.id}?q=God`, '/sources/INVALID/excerpts', '/source-excerpts/INVALID'])('validates strict query/path input %s', async path => {
     expect((await request(app.getHttpServer()).get(path).expect(400)).body).toEqual({ error: { code: 'VALIDATION_ERROR', message: 'Entrada inválida.' } });
   });
   it.each([' 1', '1 ', '1e1'])('requires plain decimal offset text, rejecting %j', async offset => {

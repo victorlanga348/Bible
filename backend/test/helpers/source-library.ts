@@ -29,9 +29,9 @@ export async function openSourceTestDatabase(): Promise<Database> {
 
 export async function cleanSourceTestData(database: Database): Promise<void> {
   await database.client.$transaction(async transaction => {
-    // Serialise with writers left in flight by a failed/timed-out test. Lock
-    // parent then child, and await each delete; only guarded module tables.
-    await transaction.$executeRaw`LOCK TABLE app.source_library_source, app.source_library_excerpt IN EXCLUSIVE MODE`;
+    // Serialise writers and cleanups, while allowing the ROW SHARE parent lock
+    // required by an in-flight child's FK check to complete without deadlock.
+    await transaction.$executeRaw`LOCK TABLE app.source_library_source, app.source_library_excerpt IN SHARE ROW EXCLUSIVE MODE`;
     await transaction.sourceLibraryExcerpt.deleteMany();
     await transaction.sourceLibrarySource.deleteMany();
   });

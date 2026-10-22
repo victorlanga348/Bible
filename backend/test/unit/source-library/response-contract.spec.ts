@@ -1,7 +1,9 @@
 import { catalogueView, excerptDetailView, excerptPageView } from '../../../src/modules/source-library/presentation/schemas';
-import { sourceSnapshot } from '../../helpers/source-library';
+import { sourceFixture, excerptFixture } from '../../helpers/source-library';
 
-const snapshot = sourceSnapshot();
+// Transport fixtures must not execute mutable domain rules while Jest collects
+// the suite. Domain failures belong to test results, not runner startup errors.
+const snapshot = { source: sourceFixture, excerpts: excerptFixture };
 const catalogue = () => JSON.parse(JSON.stringify({ sources: [snapshot.source] }));
 const detail = () => JSON.parse(JSON.stringify({ source: snapshot.source, excerpt: snapshot.excerpts[0] }));
 const page = () => ({ excerpts: snapshot.excerpts, limit: 20, offset: 0, hasMore: false,

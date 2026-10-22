@@ -24,7 +24,7 @@ export async function openCanonTestDatabase(): Promise<Database> {
 }
 export async function cleanCanon(database: Database): Promise<void> {
   await database.client.$transaction(async tx => {
-    await tx.$executeRaw`LOCK TABLE app.canon_translation, app.canon_book, app.canon_chapter, app.canon_verse IN EXCLUSIVE MODE`;
+    await tx.$executeRaw`LOCK TABLE app.canon_translation, app.canon_book, app.canon_chapter, app.canon_verse IN SHARE ROW EXCLUSIVE MODE`;
     await tx.canonVerse.deleteMany(); await tx.canonChapter.deleteMany(); await tx.canonBook.deleteMany(); await tx.canonTranslation.deleteMany();
   });
 }
