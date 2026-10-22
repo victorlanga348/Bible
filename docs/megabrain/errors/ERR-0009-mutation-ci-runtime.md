@@ -1,5 +1,7 @@
 # ERR-0009 — Limite de execução do CI insuficiente para a mutação integral
 
+Estado final2026-10-22: resolvido para o snapshot90793e8. CI39778403173 passou551 testes e mutação integral em72min9s, dentro do limite90min, com95,41284403669725%, zero RuntimeError/NoCoverage; cache só foi guardado depois do sucesso. O relatório bruto foi autenticado/confrontado e a confirmação local atual também passou95,87%. Fonte e limites no TEST_REPORT S02; a tentativa40min abaixo continua incompleta, não foi convertida em PASS.
+
 Data2026-10-22, retoma S02-T006. Estado: configuração corrigida, confirmação remota pendente. Responsável: agente executor. Sem alteração de src, operadores, exclusões ou thresholds de qualidade.
 
 O [run39726619966](https://github.com/victorlanga348/Bible/actions/runs/39726619966), commit6272697, passou526 testes/27 suites e estática/tooling. A mutação iniciada05:12:56 UTC foi cancelada05:51:58 UTC pelo limite40min do job. Não produziu gate integral válido; não é PASS nem demonstra um defeito de negócio. O run anterior teve36min28s de mutação, mostrando que a margem já era curta. Logs reais consultados pelo conector GitHub; preservar a tentativa como incompleta.

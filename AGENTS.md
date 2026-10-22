@@ -81,6 +81,10 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
+Fecho integral2026-10-22: S02-T006/T007 DONE técnico,551 testes/31 suites PASS,100% linhas/97,47% branches; mutação padrão local95,87% e CI39778403173 integral95,41%, ambas sem RuntimeError/NoCoverage, fontes correspondentes. Auditoria causal preservou optional role como Survived; detalhes TEST_REPORT/REVIEW/MUTATION_ANALYSIS S02. Encerramento/commit/push delegados, validação documental antes de commit e hash registado depois. Próxima tarefa S04-T004, já autorizada, planos/SPEC preparados mas código não implementado. Manter uma tarefa de cada vez, sem agentes paralelos. Banco do PC16.14/bible_db completo e separado dos testes; .env preservado. As notas de checkpoints a seguir são históricas.
+
+### Histórico dos checkpoints de validação
+
 Atualização2026-10-22: autorização integral de execução/commit/push vigente, sem novas permissões. S02-T006 IN_PROGRESS/T007 dependente, integração bíblica implementada; src6085489,549 testes/30 suites PASS,100% linhas/97,47% branches. CI39732231940 falhou mutação por19 RuntimeError, sem score aceite. Stryker10 transfere token do checker e cria segundo runner mesmo com concurrency1: isolamento por advisory lock nos hooks raiz de integration/E2E em validação, RED2→GREEN2 real e estática PASS; regressão completa e gate global pendentes. Não retirar checker nem aceitar relatório incompleto. PostgreSQL16.14 do PC/localhost5432/bible_db com quatro migrações e66/1189/31102 registos autênticos, confronto integral/HTTP PASS; .env preservado/ignorado. Testes independentes em PostgreSQL17.11/55433; container temporário55434 já removido após identidade conferida. S04 tem planos/SPEC preparados, código NOT_RUN. Consultar contexto/TEST_REPORT S02 e execução integral para resultados atuais.
 
 ### Histórico antes da autorização integral

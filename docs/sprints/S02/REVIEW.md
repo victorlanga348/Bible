@@ -1,5 +1,17 @@
 # S02 — Revisão e encerramento do escopo reduzido
 
+## Encerramento do complemento integral — 2026-10-22
+
+T006/T007 DONE técnico, extensão da entrega reduzida anterior. Autorização integral do utilizador delega encerramento/commit/push sem nova pergunta. Entregue: quatro tabelas próprias do cânone, importação integral autenticada/transacional/idempotente, conflitos e rollback, catálogo/consultas/navegação, resolução com existência real e cinco operações HTTP estritas. Domain/ports permanecem independentes e nenhum módulo lê tabelas alheias. Não há estudos/IA nesta entrega.
+
+Gates atuais:551 testes/31 suites PASS, estática/build/arquitetura/tooling PASS,100% linhas/97,47% branches; mutação padrão local95,87155963302752% e CI integral95,41284403669725%, ambas sem RuntimeError/NoCoverage. Fontes conferidas, relatórios brutos preservados e análise de sobreviventes/timeouts em [MUTATION_ANALYSIS](MUTATION_ANALYSIS.md). TDD, prazos e falhas históricas estão no [TEST_REPORT](TEST_REPORT.md). A falsa deteção do optional role foi recusada na auditoria; observação limitada corrigiu o teste e retake produziu Survived, mantido na confirmação global.
+
+Ambientes: PostgreSQL16.14 instalado no PC, bible_db/5432, com66/1189/31102 registos autênticos; testes17.11 separados/55433 e CI efémera. Quatro versículos de fixture não foram o seed do corpus integral. .env preservado/ignorado; credenciais não versionadas. Corpus amplo não significa biblioteca histórica ampla: fonte Josefo continua limitada a quatro parágrafos e sem IA. jwtSecret/GOOGLE_CLIENT_ID ainda não são integração de autenticação neste incremento.
+
+Pergunta de fecho auditada: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"** A revisão conferiu alterações de schema/API/deadlines/harness/CI/ambiente e relatórios; foram refletidas. Preparações S04/S05 permanecem identificadas como não implementadas e fora do commit S02. Validação documental final precede commit; hash de fecho será registado depois de criado, sem autorreferência. O commit de implementação8055a4c e o checkpoint de harness90793e8 já estão publicados; main preservada. S04 pode prosseguir sob a autorização vigente depois deste encerramento.
+
+## Histórico das revisões parciais e do recorte anterior
+
 ## Revisão parcial do checkpoint integral — 2026-10-22
 
 Checkpoint de harness posterior:551 testes normais/31 suites PASS,100% linhas/97,47% branches;550 testes/30 suites PASS na configuração específica de mutação. Coordenação de suites por sessão PostgreSQL comprovada com dois processos reais32+32 PASS, espera observada/máximo1 titular em300 amostras. Corrige a transferência do checker para segundo runner do Stryker10 sem alterar node_modules, retirar checker ou excluir integrações/src. Fixture do teste concorrente precede aquisição de recursos; observers distinguem coordenador de clientes da aplicação e continuam a exigir ausência de leaks destes. Typecheck/lint/actionlint PASS; build/tooling do src6085489 continuam aplicáveis porque src não mudou. CI anterior39732231940 e ensaios locais falharam/incompletos preservados, sem gate antecipado. Este commit é checkpoint para nova mutação local/remota, não encerramento; T006 IN_PROGRESS/T007 dependente.

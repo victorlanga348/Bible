@@ -1,5 +1,7 @@
 # Ações externas necessárias
 
+Fecho integral S02 em2026-10-22: EXT-002 comprovada no PostgreSQL16.14 do PC/5432/bible_db e PostgreSQL17.11 de teste/CI, quatro migrações e corpus66/1189/31102 autêntico; CI39778403173 passou todos os gates aplicáveis. Sem ação adicional do utilizador para a base/corpus atuais. Estudo/autenticação local e IA seguem S04/S05, ainda sem afirmar consumo de jwtSecret/GOOGLE_CLIENT_ID ou chamada de IA. Estados históricos abaixo devem ser lidos com as atualizações da respetiva ação e os relatórios atuais.
+
 Execução vigente2026-10-22: autorização geral para terminar sprints/commits/push sem nova permissão, com qualidade e segredos preservados. EXT-002 agora inclui migração/consulta da base local e corpus bíblico integral; IA ainda não implementada e sem credencial externa, com investigação de inferência local gratuita em preparação. Estados de2026-10-21 abaixo são históricos; resultados atuais estão nas atualizações da ação/sprint respetiva.
 
 Atualizado: 2026-10-21. S00–S03 encerradas após os aceites próprios; S03 tem biblioteca independente de fontes implementada e validada no alvo isolado de teste. Corpus S02 local/domínio presentes, integração bíblica adiada e nenhuma integração IA. Configuração e credenciais locais ignoradas pelo Git, sem valores neste registo.

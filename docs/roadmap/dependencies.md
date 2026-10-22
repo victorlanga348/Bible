@@ -1,5 +1,7 @@
 # Dependências do backend
 
+Atualização2026-10-22: autorização integral delega as decisões/execução/commit/push sem novas permissões; uma tarefa de cada vez. O complemento S02-T006/T007 foi efetivamente concluído e verificado, com551 testes e mutação local/CI válidas; as arestas de existência/importação/API bíblica estão satisfeitas por prova real, não inferência. S03 permanece concluída; S04 pode iniciar depois do commit de encerramento S02. As disposições de adiamento abaixo são históricas e não representam o backlog corrente.
+
 Ordem: S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08. Encerramento aprovado e commit da anterior precedem nova autorização. S09/frontend não são dependências deste ciclo.
 
 Decisão de2026-10-21: S02 encerrada com escopo reduzido por «termina, o que falta vou adicionar depois». T006/T007 bíblicas ficam BACKLOG fora desse fecho, sem sprint futura atribuída; suas arestas abaixo são preservadas para retoma, não tarefas ativas ou satisfeitas. S03 foi posteriormente aprovada com biblioteca independente e associação bíblica adiada; T004–T006 DONE tecnicamente, incluindo integração real. T007 tem plano próprio para aceite. O commit principal S02 c0c24b9 precedeu essa preparação/execução; não há contrato de existência bíblica satisfeito por inferência.

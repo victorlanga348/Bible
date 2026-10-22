@@ -1,5 +1,11 @@
 # S02 — Cânone Bíblico
 
+## Complemento integral concluído — 2026-10-22
+
+T006/T007 retomadas e concluídas sob a autorização integral: implementação/provas/dados/contratos/gates descritos no TEST_REPORT/REVIEW finais.551 testes PASS,100%/97,47%, mutação padrão95,87% local e95,41% CI, zero RuntimeError/NoCoverage. Sem reduzir escopo/limiares ou apagar o fecho reduzido anterior. Encerramento/commit/push já delegados; validar documentação e registar depois o hash. S04 é a próxima dependência autorizada, não uma implementação já entregue.
+
+## Histórico do plano de retoma
+
 ## Retoma vigente — 2026-10-22
 
 Autorização integral posterior do utilizador retoma T006/T007; sprint IN_PROGRESS como complemento da entrega reduzida commitada, sem apagar seu histórico. T004/T005 permanecem DONE. [T006](tasks/S02-T006-integration.md) revê contratos/dependências v0.2, preparação JSON integral fiel, quatro tabelas app, importação guardada/transacional e cinco operações HTTP, sem pesquisa por palavra-chave ou serviços novos. TDD e provas PostgreSQL/Nest reais executados; mutação/documentação finais em curso. Nenhum gate futuro é antecipado. T007 fará revisão integrada com ficheiro/plano próprios quando T006 terminar. A nova autorização cobre refinamento/execução/encerramento/commits/push sem novas perguntas, mantendo qualidade/segredos. Ver [execução integral](../../roadmap/completion-execution.md).

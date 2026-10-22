@@ -5,6 +5,7 @@ import { importTestCanonSnapshot } from '../../src/modules/biblical-canon/infras
 import { CanonSnapshotError } from '../../src/modules/biblical-canon/application/errors';
 import type { Database } from '../../src/infrastructure/database';
 import { canonSnapshot, canonVerses, cleanCanon, openCanonTestDatabase } from '../helpers/canon';
+import { expectNoApplicationSessions } from '../helpers/database-observation';
 
 export const canonFiles: CanonFiles = { archive: 'data/biblical-canon/porbr2018/source.zip', snapshot: 'data/biblical-canon/porbr2018/snapshot.json', manifest: 'test/fixtures/biblical-canon/porbr2018/manifest.json' };
 describe('pinned biblical archive and prepared full snapshot', () => {
@@ -42,6 +43,6 @@ describe('pinned biblical archive and prepared full snapshot', () => {
   it('closes its connection on an actual admission failure without writing partial metadata', async () => {
     await expect(importTestCanonSnapshot(process.env, { ...canonFiles, snapshot: 'reports/missing-canon' })).rejects.toThrow(CanonSnapshotError);
     expect(await db.client.canonTranslation.count()).toBe(0);
-    expect(await db.client.$queryRaw`SELECT count(*)::int AS total FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND application_name <> 'biblia-mutation-coordinator'`).toEqual([{ total: 0 }]);
+    await expectNoApplicationSessions(db);
   });
 });

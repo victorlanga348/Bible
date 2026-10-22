@@ -1,6 +1,6 @@
 # Documentação do Bíblia App
 
-Estado vigente2026-10-22: [execução integral autorizada](roadmap/completion-execution.md), sem pausas por novas permissões. [Complemento S02](sprints/S02/README.md) IN_PROGRESS: integração/API bíblica e corpus completo no PostgreSQL do PC implementados e testados, gates finais em curso. S04 tem refinamento documental preparado; S04–S08 ainda não são entregas concluídas. A linha de2026-10-21 a seguir preserva o encerramento reduzido anterior.
+Estado vigente2026-10-22: [execução integral autorizada](roadmap/completion-execution.md), sem pausas por novas permissões. [S02 integral](sprints/S02/README.md) concluída tecnicamente:551 testes, mutação padrão95,87% local/95,41% CI, fontes conferidas e auditoria final. S00/S01/S03 também concluídas; S04 é a próxima execução autorizada, com planos preparados e sem código entregue. S04–S08 ainda não estão concluídas. A linha de2026-10-21 a seguir preserva o fecho reduzido anterior.
 
 
 

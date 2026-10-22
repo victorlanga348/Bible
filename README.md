@@ -1,6 +1,6 @@
 # Bíblia App
 
-Execução vigente2026-10-22: utilizador autorizou terminar todas as sprints, refinar/implementar/validar e fazer commits/push sem novas permissões, com relato detalhado. [Plano de execução](docs/roadmap/completion-execution.md). Banco local PostgreSQL16.14/bible_db provisionado e corpus integral66 livros/1189 capítulos/31102 versículos importado com fidelidade verificada. [Complemento S02](docs/sprints/S02/README.md) IN_PROGRESS: persistência/API bíblica implementadas,513 regressões PASS na primeira validação; mutação/revisão finais pendentes. S04–S08 seguem as dependências reais, sem DONE presumido. O estado datado de2026-10-21 abaixo é histórico.
+Execução vigente2026-10-22: utilizador autorizou terminar todas as sprints, refinar/implementar/validar e fazer commits/push sem novas permissões, com relato detalhado. [Plano de execução](docs/roadmap/completion-execution.md). Banco local PostgreSQL16.14/bible_db provisionado, corpus integral66 livros/1189 capítulos/31102 versículos com fidelidade verificada. [S02 integral](docs/sprints/S02/README.md) concluída tecnicamente:551 testes/31 suites PASS,100% linhas/97,47% branches, mutação padrão95,87% local e95,41% CI, zero RuntimeError/NoCoverage. S00/S01/S03 também concluídas. S04 é a próxima execução autorizada; S04–S08 ainda não estão entregues. Commit/push de encerramento já delegados; hashes/evidências no relatório/revisão. O estado de2026-10-21 abaixo é histórico.
 
 Plataforma de estudo bíblico histórico, contextual e comparativo, com fontes verificáveis, divergências e incertezas explícitas. Uso inicial privado/pessoal; cobertura canónica completa pretendida e biblioteca de fontes progressiva.
 
@@ -10,7 +10,7 @@ S00/S01 DONE e commitadas, principal S01 `1702cc0`. [S02](docs/sprints/S02/READM
 
 ## Entrada
 Ler [índice](docs/README.md), [AGENTS](AGENTS.md), [GEMINI](GEMINI.md), [governança](docs/documentation-governance.md), [sprints](docs/sprints/README.md) e [contexto operacional](docs/megabrain/agent-context/project-state.md).
-Trabalho atual: [PLAN S03](docs/sprints/S03/PLAN.md), [SPEC](docs/sprints/S03/SPEC.md), [tarefas](docs/sprints/S03/TASKS.md) e [relatório](docs/sprints/S03/TEST_REPORT.md). Evidências das sprints anteriores permanecem preservadas.
+Trabalho atual: [PLAN S02](docs/sprints/S02/PLAN.md), [SPEC](docs/sprints/S02/SPEC.md), [tarefas](docs/sprints/S02/TASKS.md) e [relatório](docs/sprints/S02/TEST_REPORT.md), na retoma integral. Evidências das sprints anteriores permanecem preservadas.
 
 ## Backend prescrito
 NestJS, TypeScript strict, Node.js LTS compatível, REST, OpenAPI/Swagger, Zod, Prisma/PostgreSQL; pesquisa textual nativa e pgvector quando necessário. DDD/hexagonal, monólito modular, seis [módulos](docs/architecture/bounded-contexts.md). Domain independente de frameworks/persistência/fornecedor IA.

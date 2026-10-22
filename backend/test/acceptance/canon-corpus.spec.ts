@@ -1,6 +1,7 @@
 import { readCanonSnapshot } from '../../src/modules/biblical-canon/infrastructure/admitted-canon';
 import { importTestCanonSnapshot } from '../../src/modules/biblical-canon/infrastructure/import-test-canon';
 import { cleanCanon, openCanonTestDatabase } from '../helpers/canon';
+import { expectNoApplicationSessions } from '../helpers/database-observation';
 import type { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { createApplication } from '../../src/app';
@@ -21,7 +22,7 @@ it('imports and confronts every authenticated XML verse through guarded real Pos
     const snapshot = await readCanonSnapshot(files);
     const lookup = new Map(snapshot.verses.map(v => [`${v.bookCode}:${v.chapter}:${v.number}`, v.text]));
     for (const row of rows) expect(row.text).toBe(lookup.get(`${row.bookCode}:${row.chapter}:${row.number}`));
-    expect(await db.client.$queryRaw`SELECT count(*)::int AS total FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()`).toEqual([{ total: 0 }]);
+    await expectNoApplicationSessions(db);
     app = await createApplication(parseRuntimeConfig(process.env)); await app.init();
     expect((await request(app.getHttpServer()).get('/translations').expect(200)).body).toEqual({ translations: [snapshot.translation] });
     expect((await request(app.getHttpServer()).get('/translations/porbr2018/books').expect(200)).body.books).toHaveLength(66);

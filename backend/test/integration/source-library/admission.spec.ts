@@ -5,6 +5,7 @@ import { importTestSnapshot } from '../../../src/modules/source-library/infrastr
 import { SourceSnapshotError } from '../../../src/modules/source-library/application/errors';
 import { cleanSourceTestData, openSourceTestDatabase, sourceSnapshot } from '../../helpers/source-library';
 import type { Database } from '../../../src/infrastructure/database';
+import { expectNoApplicationSessions } from '../../helpers/database-observation';
 
 export const admittedFiles: SnapshotFiles = {
   source: 'data/source-library/josephus-antiquities-pg2848-en/source.html',
@@ -37,10 +38,7 @@ describe('admitted local artefacts and guarded test import', () => {
     expect(await importTestSnapshot(process.env, admittedFiles)).toBe('imported');
     expect(await importTestSnapshot(process.env, admittedFiles)).toBe('unchanged');
     expect(await database.client.sourceLibraryExcerpt.count()).toBe(4);
-    const sessions = await database.client.$queryRaw<{ total: number }[]>`
-      SELECT count(*)::int AS total FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid()
-        AND application_name <> 'biblia-mutation-coordinator'`;
-    expect(sessions).toEqual([{ total: 0 }]);
+    await expectNoApplicationSessions(database);
   });
   it.each([{ NODE_ENV: 'development' }, { TEST_DATABASE_URL: 'postgresql://localhost:55432/biblia_dev?schema=app' }])('refuses unsafe test targets before import', async override => {
     await expect(importTestSnapshot({ ...process.env, ...override }, admittedFiles)).rejects.toThrow('Unsafe test database');
@@ -49,6 +47,6 @@ describe('admitted local artefacts and guarded test import', () => {
   it('does not leave a connection or rows after an invalid artefact', async () => {
     await expect(importTestSnapshot(process.env, { ...admittedFiles, notice: 'reports/missing-notice' })).rejects.toThrow(SourceSnapshotError);
     expect(await database.client.sourceLibrarySource.count()).toBe(0);
-    expect(await database.client.$queryRaw`SELECT count(*)::int AS total FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid() AND application_name <> 'biblia-mutation-coordinator'`).toEqual([{ total: 0 }]);
+    await expectNoApplicationSessions(database);
   });
 });

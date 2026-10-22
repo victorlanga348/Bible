@@ -2,6 +2,10 @@
 
 ## Retoma integral — 2026-10-22
 
+Matriz final: S02-AC01/02/03/04 PASS, conforme TEST_REPORT/REVIEW finais.551 testes reais/31 suites, quatro migrações e acervo66/1189/31102 confrontado; estática/build/arquitetura PASS,100% linhas/97,47% branches; mutação padrão local95,87% e CI integral95,41%, zero RuntimeError/NoCoverage. Análise causal/sobreviventes/limitações em MUTATION_ANALYSIS; IA não aplicável, sem a apresentar como PASS. Auditoria documental de encerramento precede commit autorizado. As notas de validação abaixo são históricas.
+
+### Histórico das matrizes de validação
+
 S02-T006/T007 retomadas pela autorização integral posterior. Esta matriz é o estado corrente; as secções seguintes preservam a entrega reduzida anterior sem apagar evidências. Sprint IN_PROGRESS, sem novo DONE enquanto os gates finais estiverem pendentes.
 
 | Critério existente | Evidência atual | Estado corrente |

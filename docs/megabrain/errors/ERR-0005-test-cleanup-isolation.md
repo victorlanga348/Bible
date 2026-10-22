@@ -1,5 +1,7 @@
 # ERR-0005 — Limpeza de testes sem serialização com escritas em curso
 
+Estado final2026-10-22: resolvido no harness corrente, com551 regressões PASS, prova paralela32+32 e mutação padrão atual95,87%/CI95,41%, sem RuntimeError/NoCoverage. O segundo runner originado pelo checker é coordenado sem retirar ferramentas/integrações. O problema adicional de observação de sessões foi tratado em ERR-0011, incluindo retake de equivalência e confirmação global. Candidatos/falhas abaixo permanecem históricos, sem serem convertidos em PASS.
+
 ## Recorrência de recurso retido no teste concorrente — 2026-10-22
 
 Confirmação do harness:551/551 na cobertura normal e550/550 na configuração de mutação,31/30 suites,78,816/61,302s. Dois processos reais de Jest/configuração de mutação executaram32 testes cada, todos PASS;300 observações de pg_locks comprovaram espera e máximo1 titular, reports/s02-mutation-parallel-observed.json. Primeiro ensaio paralelo revelou que o teste de imports contava o coordenador como writer:29/30 e30/30, sem falha de persistência. Coordenador recebe application_name próprio e observações distinguem-no dos clientes da aplicação; contadores de encerramento das admissões excluem só essa sessão técnica, continuando a exigir zero clientes de aplicação vazados. Limpeza observa o LOCK TABLE específico, sem contar qualquer espera não relacionada. Regressões paralelas finais passaram; gate Stryker ainda pendente.

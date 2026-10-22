@@ -1,5 +1,9 @@
 # S02 — Cânone Bíblico: corpus, domínio e parser
 
+Estado atual2026-10-22: complemento integral T006/T007 DONE técnico, juntando importação/Prisma/PostgreSQL/navegação e cinco operações HTTP ao corpus/domínio/parser anteriores.551 testes PASS/31 suites,100% linhas/97,47% branches; mutação padrão local95,87% e CI integral95,41%, sem RuntimeError/NoCoverage. Auditoria/limites em [TEST_REPORT](TEST_REPORT.md), [MUTATION_ANALYSIS](MUTATION_ANALYSIS.md) e [REVIEW](REVIEW.md). Encerramento/commit/push delegados, hash registado posteriormente. Nenhuma nova aprovação pendente; S04 é o próximo incremento, ainda não implementado. .env preservado e banco do PC16.14 com corpus integral autêntico, separado dos testes.
+
+## Histórico da retoma e do fecho reduzido
+
 Estado vigente2026-10-22: IN_PROGRESS, complemento T006/T007 retomado pela autorização geral de terminar todas as sprints. T006 tem persistência/importação/consulta e cinco operações HTTP implementadas por TDD e verificadas em PostgreSQL real; gates finais em curso. Regressão atual:526 testes PASS/27 suites, incluindo confronto integral31.102 versículos e HTTP; linhas536/536=100%, branches231/238=97,05%, estática/build/tooling PASS. Mutação integral CI pendente; não há novo DONE. T007 depende do fecho técnico T006. O encerramento reduzido e adiamento de2026-10-21 abaixo são históricos e permanecem identificados pelo commit original. [Execução autorizada](../../roadmap/completion-execution.md).
 
 Estado: DONE com escopo reduzido em2026-10-21. Encerramento e adiamento do restante aprovados pelo utilizador: «termina, o que falta vou adicionar depois». Esta decisão substitui o escopo integral anterior apenas para o fecho da S02; requisitos e contratos futuros permanecem documentados, sem implementação presumida.

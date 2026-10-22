@@ -1,6 +1,6 @@
 # S02-T007 — Verificação e encerramento da retoma integral
 
-Estado: BLOCKED na conclusão dos gates S02-T006. Plano preparado2026-10-22, execução delegada pela [autorização integral](../../../roadmap/completion-execution.md), sem novo pedido de permissão. Responsável: agente executor. Esta tarefa retoma o significado original de verificação, sem reciclar IDs ou apagar o encerramento reduzido anterior.
+Estado: DONE técnico. BLOCKED→READY→IN_PROGRESS→REVIEW→DONE após gates T006 e revisão integrada2026-10-22, execução delegada pela [autorização integral](../../../roadmap/completion-execution.md), sem novo pedido de permissão.551 testes/31 suites PASS,100% linhas/97,47% branches, estática/build/tooling e integração real PASS; mutação padrão local95,87% e CI integral95,41%, sem RuntimeError/NoCoverage. Fontes/estados/denominadores e sobreviventes auditados, false kill do optional role recusado e corrigido, pergunta de fecho tratada em REVIEW. Documentação final verificada antes do commit; hash registado posteriormente. Responsável: agente executor. Mantém-se o significado original de verificação, sem apagar o recorte anterior; o texto seguinte conserva o plano executado.
 
 Objetivo: confirmar o percurso corpus admitido → importação real → PostgreSQL → consultas/HTTP e resolução de referências, incluindo navegação, idempotência, conflito/rollback, entradas estritas e texto/créditos exatos. Fontes de comportamento: SPEC S02 v0.2 preservada e adenda de retoma v0.4, critérios AC01–04, contratos publicados e plano T006.
 
