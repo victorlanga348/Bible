@@ -1,0 +1,11 @@
+# ERR-0009 — Limite de execução do CI insuficiente para a mutação integral
+
+Data2026-10-22, retoma S02-T006. Estado: configuração corrigida, confirmação remota pendente. Responsável: agente executor. Sem alteração de src, operadores, exclusões ou thresholds de qualidade.
+
+O [run39726619966](https://github.com/victorlanga348/Bible/actions/runs/39726619966), commit6272697, passou526 testes/27 suites e estática/tooling. A mutação iniciada05:12:56 UTC foi cancelada05:51:58 UTC pelo limite40min do job. Não produziu gate integral válido; não é PASS nem demonstra um defeito de negócio. O run anterior teve36min28s de mutação, mostrando que a margem já era curta. Logs reais consultados pelo conector GitHub; preservar a tentativa como incompleta.
+
+Correção proposta/executável: limite90min e script existente test:mutation:incremental, mantendo o padrão completo src/**/*.ts, exclusão somente de gerado, cobertura por teste, checker TypeScript e gate estrito próprio. Cache guarda unicamente backend/reports/mutation/incremental.json; chave inclui SO e hash de lockfile/configs/scripts de mutação/setup/helpers, invalidando reutilização quando o harness muda. Novas fontes/testes continuam a ser comparados pelo Stryker. Não saltar o comando em cache hit, não reutilizar um report como substituto de execução e não baixar limiar. Mudanças de testes estáticos podem exigir force causal conforme ERR-0006.
+
+Dependência CI: [actions/cache6.1.0](https://github.com/actions/cache/releases/tag/v6.1.0), commit55cc8345863c7cc4c66a329aec7e433d2d1c52a9 conferido pelo ref oficial. [Documentação oficial](https://github.com/actions/cache/blob/v6.1.0/README.md) confirma key/restore-keys e gravação automática apenas quando o job termina com sucesso; o verificador de mutação continua a rejeitar RuntimeError/relatórios incompletos antes de qualquer cache aprovado. Nenhum .env/segredo é cacheado. Não há nova dependência npm ou alteração de banco.
+
+Validação local da definição: actionlint1.7.12 oficial exit0, sem shellcheck/pyflakes opcionais. A execução remota posterior deve demonstrar o resultado real; este documento não lhe atribui aprovação antecipada. O orçamento maior evita cancelamento pelo agendador, não garante aprovação da qualidade.

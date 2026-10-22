@@ -9,8 +9,9 @@ export class Database implements OnModuleDestroy {
     const adapter = new PrismaPg({
       connectionString: databaseUrl,
       max: 5,
-      connectionTimeoutMillis: 2000,
-      query_timeout: 2000,
+      connectionTimeoutMillis: 10000,
+      // Let the server's SQL cancellation arrive before the client read limit.
+      query_timeout: 5000,
       statement_timeout: 2000,
     }, { schema: 'app' });
     this.client = new PrismaClient({ adapter });

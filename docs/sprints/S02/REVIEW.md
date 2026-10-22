@@ -1,5 +1,15 @@
 # S02 — Revisão e encerramento do escopo reduzido
 
+## Revisão parcial do checkpoint integral — 2026-10-22
+
+Sprint/T006 IN_PROGRESS, sem encerramento integral. A autorização geral permite este checkpoint/push e dispensa nova aprovação. A entrega agora contém importação integral/persistência/navegação/cinco contratos reais; esta secção atual prevalece sobre a revisão reduzida histórica abaixo. S04 continua somente em preparação.
+
+Código atual: correções de qualidade reforçam integridade de metadados válidos, isolamento de edições, identidade defensiva do importador e schemas/diagnósticos; Database separa ligação10s, leitura5s e execução SQL2s após prova TCP RED2→GREEN2/regressão3. Regressão integral549 PASS/30 suites,92,337s; typecheck/lint/build/tooling PASS. Os thresholds e o escopo de src próprio não foram reduzidos. O relatório TEST_REPORT distingue baselines e fontes anteriores.
+
+Gate de mutação ainda pendente: ensaios dirigidos comprovaram remoção individual dos hashes e defesa de identidade; não são score global. A tentativa CI40min foi cancelada antes do gate, e uma tentativa local de dry run falhou por ligação2s, sem score aceite. Limite CI90min e cache incremental com invalidação do harness foram validados por actionlint; execução remota do checkpoint e confirmação integral local ainda necessárias. Cache/relatórios originais preservados, sem edição de estados.
+
+Riscos em revisão: cache estático, resultados fora da seleção dirigida, concorrência de limpeza/FK e prazos de transporte. Mitigações/testes e falhas reais nos ERR-0005/0006/0009/0010 e TEST_REPORT. Não declarar DONE nem transferir um score antigo ao Database modificado. O commit deste checkpoint documenta trabalho revisável e provas já executadas; o fecho continua dependente de gates completos.
+
 Estado vigente2026-10-22: complemento T006/T007 em execução por autorização geral posterior, com T006 em validação e sprint IN_PROGRESS. Persistência/importação integral/five contratos reais implementados e testados;513 regressões PASS,100% linhas/97,05% branches. Mutação final e revisão integrada T007 pendentes, sem DONE antecipado. A revisão abaixo preserva somente o encerramento reduzido anterior; ver TEST_REPORT e TASKS vigentes.
 
 Data:2026-10-21. Estado: DONE no recorte corpus/domínio/parser. Aprovação de redução de escopo e encerramento: utilizador, «termina, o que falta vou adicionar depois», após relatório de T004/T005 e explicação das pendências T006/T007. Commit principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, realizado após «se terminou pode finalizar e ir para a proxima» em2026-10-21, depois desta revisão/pergunta de fechamento;44 ficheiros do escopo, árvore limpa após commit. Hash registado posteriormente. Continuação para preparação S03 autorizada após commit, sem aprovação implícita de novos contratos/planos. Sem push/merge.

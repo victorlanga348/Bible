@@ -70,12 +70,12 @@ describe('canon application through real Prisma and PostgreSQL', () => {
       expect(await db.client.canonVerse.count()).toBe(4);
     } finally { await other.onModuleDestroy(); }
   });
-  it.each(['book', 'chapter', 'verse', 'foreign-chapter', 'foreign-verse', 'empty-text', 'missing-book', 'missing-chapter', 'book-order'] as const)('refuses inconsistent %s snapshots before persisting', async variation => {
+  it.each(['book', 'chapter', 'verse', 'foreign-book', 'foreign-chapter', 'foreign-verse', 'empty-text', 'missing-book', 'missing-chapter', 'book-order'] as const)('refuses inconsistent %s snapshots before persisting', async variation => {
     await cleanCanon(db);
     const snapshot = canonSnapshot();
     const invalid = { ...snapshot,
-      books: variation === 'book' ? [...snapshot.books, snapshot.books[0]!] : variation === 'missing-book' ? [] : variation === 'book-order' ? [snapshot.books[0]!, { ...snapshot.books[1]!, order: 1 }] : snapshot.books,
-      chapters: variation === 'chapter' ? [...snapshot.chapters, snapshot.chapters[0]!] : variation === 'foreign-chapter' ? [new Chapter({ translationId: 'other', bookCode: 'GEN', number: 1 })] : variation === 'missing-chapter' ? [] : snapshot.chapters,
+      books: variation === 'book' ? [...snapshot.books, snapshot.books[0]!] : variation === 'missing-book' ? [] : variation === 'book-order' ? [snapshot.books[0]!, { ...snapshot.books[1]!, order: 1 }] : variation === 'foreign-book' ? snapshot.books.map((book, index) => index === 0 ? { ...book, translationId: 'other' } : book) : snapshot.books,
+      chapters: variation === 'chapter' ? [...snapshot.chapters, snapshot.chapters[0]!] : variation === 'foreign-chapter' ? snapshot.chapters.map((chapter, index) => index === 0 ? new Chapter({ ...chapter, translationId: 'other' }) : chapter) : variation === 'missing-chapter' ? [] : snapshot.chapters,
       verses: variation === 'verse' ? [...snapshot.verses, snapshot.verses[0]!] : variation === 'foreign-verse' ? [{ ...snapshot.verses[0]!, bookCode: 'EXO' }] : variation === 'empty-text' ? [{ ...snapshot.verses[0]!, text: ' ' }] : snapshot.verses,
     };
     await expect(library.importSnapshot(invalid)).rejects.toThrow(CanonSnapshotError);
@@ -94,6 +94,15 @@ describe('canon application through real Prisma and PostgreSQL', () => {
     await db.client.canonChapter.create({ data: { ...original, number: 2n } });
     expect(await repository.neighbours(id, 'GEN', 1)).toEqual({ previousChapter: null, nextChapter: { bookCode: 'GEN', chapter: 2 } });
     expect(await repository.neighbours(id, 'GEN', 2)).toEqual({ previousChapter: { bookCode: 'GEN', chapter: 1 }, nextChapter: { bookCode: 'JHN', chapter: 3 } });
+    expect((await library.passage(id, 'GEN', 1)).verses).toEqual([{ number: 1, text: canonVerses[0]!.text }]);
+  });
+  it('isolates catalogues, chapter counts and navigation between two technical edition identities', async () => {
+    await seedCanon(db, canonSnapshot({ id: 'other' }));
+    expect((await library.translations()).map(row => row.id)).toEqual(['other', id]);
+    expect((await library.books(id)).map(row => row.code)).toEqual(['GEN', 'JHN']);
+    expect(await library.chapters(id, 'GEN')).toEqual([{ number: 1, verseCount: 1 }]);
+    expect((await library.passage(id, 'JHN', 3)).verses).toEqual(canonVerses.slice(1).map(v => ({ number: v.number, text: v.text })));
+    expect(await repository.neighbours(id, 'GEN', 1)).toEqual({ previousChapter: null, nextChapter: { bookCode: 'JHN', chapter: 3 } });
   });
   it('preserves a real1001-verse selection across the SQL batch boundary', async () => {
     const { readCanonSnapshot } = await import('../../src/modules/biblical-canon/infrastructure/admitted-canon.js');

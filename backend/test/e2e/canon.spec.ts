@@ -53,6 +53,17 @@ describe('five canonical operations with real Nest and PostgreSQL', () => {
     }
     expect(doc.paths['/references/resolve'].post.requestBody.content['application/json'].schema.additionalProperties).toBe(false);
   });
+  it('records only the approved structured code/status for canonical failures', async () => {
+    const logs = jest.spyOn(console, 'info').mockImplementation(() => undefined);
+    try {
+      await request(app.getHttpServer()).get('/translations/missing/books').expect(404);
+      await request(app.getHttpServer()).post('/references/resolve').send({ translationId: 'porbr2018', reference: 'unrecognised reference' }).expect(400);
+      expect(logs.mock.calls.map(call => JSON.parse(String(call[0])))).toEqual([
+        { component: 'http', code: 'NOT_FOUND', status: 404 },
+        { component: 'http', code: 'VALIDATION_ERROR', status: 400 },
+      ]);
+    } finally { logs.mockRestore(); }
+  });
   it('sanitises real database failure as 500, preserving operational distinction', async () => {
     const unavailable = await createApplication({ ...parseRuntimeConfig(process.env), databaseUrl: 'postgresql://localhost:9/biblia_test' });
     try { await unavailable.init(); expect((await request(unavailable.getHttpServer()).get('/translations').expect(500)).body).toEqual({ error: { code: 'INTERNAL_ERROR', message: 'Erro interno.' } }); }

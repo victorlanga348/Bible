@@ -10,6 +10,8 @@
 | [ERR-0006](ERR-0006-static-mutation-cache.md) | Resolvido: force/ensaio isolado e confirmação do escopo completo | Cache estático/reavaliação causal, S03-T006 |
 | [ERR-0007](ERR-0007-github-actions-context.md) | Definição corrigida/actionlint PASS; execução remota a acompanhar | Contexto de expressões GitHub Actions/porta PostgreSQL, retoma S02/CI |
 | [ERR-0008](ERR-0008-fresh-report-directory.md) | Harness cria reports; prova em diretório novo/CI a acompanhar | mkdtemp/clone limpo, bootstrap dos testes |
+| [ERR-0009](ERR-0009-mutation-ci-runtime.md) | Limite90min/cache configurados, actionlint PASS; confirmação remota pendente | Mutação integral cancelada pelo limite40min do CI |
+| [ERR-0010](ERR-0010-database-deadline-race.md) | RED2→GREEN2 e regressão3 PASS; gates integrais pendentes | Ligação/leitura do cliente e cancelamento SQL em corrida |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

@@ -25,6 +25,16 @@ describe('pinned biblical archive and prepared full snapshot', () => {
   it.each(['archive', 'snapshot', 'manifest'] as const)('rejects missing %s', async key => {
     await expect(readCanonSnapshot({ ...canonFiles, [key]: 'reports/no-such-canon-file' })).rejects.toThrow(CanonSnapshotError);
   });
+  it.each(['snapshot', 'manifest'] as const)('rejects modified but still parseable %s metadata', async key => {
+    const directory = await mkdtemp('reports/canon-admission-');
+    const changed = join(directory, 'changed.json');
+    try {
+      const data = JSON.parse(await readFile(canonFiles[key], 'utf8')) as { translation: { attribution: string } };
+      data.translation.attribution += ' changed';
+      await writeFile(changed, JSON.stringify(data));
+      await expect(readCanonSnapshot({ ...canonFiles, [key]: changed })).rejects.toThrow(CanonSnapshotError);
+    } finally { await unlink(changed); await rmdir(directory); }
+  });
   it.each([{ NODE_ENV: 'development' }, { TEST_DATABASE_URL: 'postgresql://localhost:5432/bible_db?schema=app' }])('refuses unsafe import target %j before any write', async override => {
     await expect(importTestCanonSnapshot({ ...process.env, ...override }, canonFiles)).rejects.toThrow('Unsafe test database');
     expect(await db.client.canonTranslation.count()).toBe(0);
