@@ -1,5 +1,30 @@
 # S04 — Motor de Estudos
 
+## Preparação vigente — 2026-10-22
+
+A [autorização integral](../../roadmap/completion-execution.md) delega decisões e execução sem nova permissão. Sprint IN_PROGRESS após fecho S02/commit cea1289. Contratos refinados em [SPEC](SPEC.md) e ADR-0005, T004 concluída documentalmente; T005 ainda sem implementação. As notas históricas de S00 abaixo preservam o seu alcance original, substituído somente pela autorização posterior.
+
+Objetivo: criar e guardar estudos determinísticos privados, com texto bíblico/contexto reais, evidências autorizadas, versões imutáveis e limitações explícitas. Não exigir nem simular LLM; geração real pertence a S05. Cobertura de fontes inicial é uma obra/quatro parágrafos, não investigação académica completa de toda a Bíblia.
+
+| Tarefa | Escopo e saída verificável | Dependência |
+|---|---|---|
+| [S04-T004](tasks/S04-T004-contracts.md) | Refinar SS-001/HTTP/direitos, identidade local JWT e curadoria operacional separada da fixture; justificar/verificar JOSE antes de instalar | S02 integral e S03 fechadas |
+| [S04-T005](tasks/S04-T005-domain-access.md) | Study/Section/Interpretation/Evidence imutáveis, classificação e privacidade, JWT real/guard falha fechado; RED/GREEN/REFACTOR | T004 |
+| [S04-T006](tasks/S04-T006-persistence-http.md) | Construção por contratos públicos Canon/Source, Prisma/transações/versões, três rotas privadas, concorrência e projeção de direitos | T005 |
+| [S04-T007](tasks/S04-T007-verification.md) | Percurso real de ponta a ponta, gates, direitos/owner, documentação e encerramento/commit/push autorizados | T006 |
+
+Ficheiros previstos: módulo study em domain/application/infrastructure/presentation/module.ts; autenticação técnica em infraestrutura partilhada; schema/migração próprios de study; contratos públicos complementares de source-library para associações explícitas; scripts operacionais locais e testes correspondentes; docs/README. Não aceder a tabelas/adapters de módulos alheios, criar serviço externo ou alterar Domain para depender do ambiente.
+
+Dependência nova proposta e justificada: JOSE em versão exata compatível, para assinar/verificar JWT com implementação auditável existente, evitando criptografia própria. Confirmar licença, engines, modo ESM e integração Node24/Jest30 antes de instalar sob a autorização delegada. Usar jwtSecret já existente sem imprimir ou versionar; Google OAuth não é inferido de GOOGLE_CLIENT_ID. Chave ausente fecha acesso privado, preservando contratos públicos existentes.
+
+Riscos e mitigação: falsos factos por mera presença de citação → classificação/limitação explícitas; conteúdo persistido de fonte revogada → revalidação e redação na leitura; conflito concorrente → expectedVersion e transação; fuga entre owners → token validado e404 de recurso alheio; autenticação inválida →401 próprio sem alterar o403 técnico S01. Cada risco tem teste negativo obrigatório. Alternativas de ligação lexical automática, histórico anónimo ou servidor público de tokens por username foram rejeitadas por falsa fundamentação e privacidade.
+
+Validação: testes primeiro, RED de comportamento em contratos compiláveis, GREEN mínimo, refactor com regressão/arquitetura. Application usa Prisma/PostgreSQL real; HTTP usa Nest/Supertest e schemas estritos. Casos de corpus partem de dados autênticos, identidades de teste são técnicas. Scripts reais existentes: typecheck, lint, build, test:tooling, test:coverage, test:mutation/test:mutation:incremental; emissão de token/importação operacional só recebem script npm depois de existir implementação verificada. Uma suite destrutiva por banco; mutação integral pode executar no CI isolado se o PC não tiver recursos, sem aceitar relatório incompleto.
+
+Saída: critérios da SPEC e ACCEPTANCE_CRITERIA verificados, linhas>=90%, branches>=85%, score bruto>85%, zero falha/bloqueio obrigatório, análise de sobreviventes e fontes atuais. Gate IA não aplicável a estudo determinístico, sem afirmar integração futura. Relatórios/revisão/ADRs/MegaBrain e pergunta de fechamento auditados antes de DONE; depois commit identificável/push e registo posterior do hash. O relatório final deve explicar também limites do acervo e configuração efetivamente usada.
+
+## Rascunho histórico de S00
+
 Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
 Branch: feat/biblia-backend. Commit: PENDING. Dependência: S03 encerrada e nova aprovação.
 

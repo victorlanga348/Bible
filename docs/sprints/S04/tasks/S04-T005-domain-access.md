@@ -1,0 +1,13 @@
+# S04-T005 — Domínio do estudo e fronteira de acesso
+
+Estado: READY, T004 concluída e ADR-0005/SPEC aceites no âmbito delegado. Instalação JOSE6.2.13 justificada/verificada; código/testes de comportamento ainda NOT_RUN. Autorização de execução delegada2026-10-22, sem nova aprovação. Implementar somente contratos da SPEC, sem LLM ou abstrações para funcionalidades futuras.
+
+Escopo: entidades imutáveis Study/StudySection/Interpretation/Evidence e invariantes; seleção e evidência identificadas, classificação epistemológica, documentos serializáveis e redigir conteúdo restrito. Infraestrutura técnica JWT/guard separado do domínio; consumo da chave jwtSecret existente, validada sem logs. Acesso privado falha fechado com chave ausente. Biblioteca JOSE evita criptografia manual; versão/instalação só após verificação T004.
+
+TDD: escrever testes antes de cada família, executar RED por comportamento ausente em estrutura compilável, GREEN mínimo e refactor. Casos: identificador/classificação/texto/versão inválidos, factos sem evidência, imutabilidade, quote preservada, conteúdo de origem revogada redigido; JWT assinado real válido, alterado, expirado, alg/iss/aud/sub incorretos e chave ausente. Doubles técnicos locais não são prova de persistência; T006 terá Prisma/HTTP reais. Tokens e chaves de teste são técnicos, não credenciais de produção versionadas.
+
+Riscos: transformar presença de citação em prova semântica, exceção401 sanitizada como500 técnico, vazamento de owner/body ou de segredo. Mitigar tipos de evidência separados, exceção/filtro próprios de acesso e entrada estrita; nunca alterar o403 técnico S01 por atalho. Alternativa de um guard que aceite ownerId fornecido pelo cliente é rejeitada. Vantagem de domain puro e crypto isolada: testes determinísticos e isolamento verificável; custo de mapeamento explícito.
+
+Saída: critérios/invariantes/auth observados em RED/GREEN, arquitetura/typecheck/lint, cobertura e mutação aplicáveis; nenhuma aprovação de integração é inferida de unitários. Registar artefactos/limites no relatório e só então T005 DONE.
+
+Precisão de ficheiros: domínio em modules/study/domain; serviço JOSE em infraestrutura partilhada/access-token.ts, guard/filtro de acesso no transporte global e composição técnica quando T006 ligar HTTP. O checker deve rejeitar imports de infraestrutura global em Domain/Application, mantendo acessos legítimos à infraestrutura partilhada nas implementações; escrever regressão estrutural RED antes de qualquer ajuste. Testes auth usam assinaturas reais, relógio controlado e chave aleatória genuína de teste; não publicar tokens/chaves em logs. Provar claims independentes com JOSE, além do round trip, evitando que emissão/verificação erradas se validem mutuamente.

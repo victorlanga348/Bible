@@ -11,7 +11,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
 | [S02](S02/README.md) | Cânone e integração bíblica | DONE | T006/T007 concluídas;551 testes, mutação95,87% local/95,41% CI e auditoria final; fecho reduzido c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
-| [S04](S04/README.md) | Motor de Estudos | BACKLOG | S02 integral/S03 concluídas; próxima execução já autorizada, planos preparados |
+| [S04](S04/README.md) | Motor de Estudos | IN_PROGRESS | S02 integral/S03 concluídas, fecho S02 cea1289; T004 documental DONE, T005 READY |
 | [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |

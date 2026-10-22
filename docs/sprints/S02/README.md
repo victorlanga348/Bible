@@ -1,5 +1,7 @@
 # S02 — Cânone Bíblico: corpus, domínio e parser
 
+Commit de encerramento integral criado e publicado: `cea12891fa00ade7ec52601a6e8e43384385be83`, `chore(sprint-02): close verified biblical canon integration`,25 ficheiros selecionados. Hash registado neste incremento posterior; main/merge/force push preservados. S04 iniciou T004 depois deste commit sob a autorização integral.
+
 Estado atual2026-10-22: complemento integral T006/T007 DONE técnico, juntando importação/Prisma/PostgreSQL/navegação e cinco operações HTTP ao corpus/domínio/parser anteriores.551 testes PASS/31 suites,100% linhas/97,47% branches; mutação padrão local95,87% e CI integral95,41%, sem RuntimeError/NoCoverage. Auditoria/limites em [TEST_REPORT](TEST_REPORT.md), [MUTATION_ANALYSIS](MUTATION_ANALYSIS.md) e [REVIEW](REVIEW.md). Encerramento/commit/push delegados, hash registado posteriormente. Nenhuma nova aprovação pendente; S04 é o próximo incremento, ainda não implementado. .env preservado e banco do PC16.14 com corpus integral autêntico, separado dos testes.
 
 ## Histórico da retoma e do fecho reduzido

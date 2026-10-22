@@ -81,6 +81,8 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
+Atualização posterior ao fecho: S02 commitada/push cea12891fa00ade7ec52601a6e8e43384385be83. S04 IN_PROGRESS, T004 documental DONE, T005 READY/implementação ainda NOT_RUN; SPEC/ADR-0005 e fichas definem o recorte. JOSE6.2.13 justificada/verificada, instalação só na tarefa de implementação. A autorização integral mantém-se; não repetir pedidos de permissão. Conservar uma tarefa de cada vez, TDD e todos os gates. Hash/registo da S02 e o início documental S04 são posteriores ao commit de fecho.
+
 Fecho integral2026-10-22: S02-T006/T007 DONE técnico,551 testes/31 suites PASS,100% linhas/97,47% branches; mutação padrão local95,87% e CI39778403173 integral95,41%, ambas sem RuntimeError/NoCoverage, fontes correspondentes. Auditoria causal preservou optional role como Survived; detalhes TEST_REPORT/REVIEW/MUTATION_ANALYSIS S02. Encerramento/commit/push delegados, validação documental antes de commit e hash registado depois. Próxima tarefa S04-T004, já autorizada, planos/SPEC preparados mas código não implementado. Manter uma tarefa de cada vez, sem agentes paralelos. Banco do PC16.14/bible_db completo e separado dos testes; .env preservado. As notas de checkpoints a seguir são históricas.
 
 ### Histórico dos checkpoints de validação

@@ -2,6 +2,8 @@
 
 ## Encerramento do complemento integral — 2026-10-22
 
+Commit de fecho publicado após auditoria documental PASS239 links/zero segredos/zero ficheiros proibidos: cea12891fa00ade7ec52601a6e8e43384385be83,25 ficheiros, mensagem chore(sprint-02): close verified biblical canon integration. Este registo é posterior e não pretende referir o próprio hash.
+
 T006/T007 DONE técnico, extensão da entrega reduzida anterior. Autorização integral do utilizador delega encerramento/commit/push sem nova pergunta. Entregue: quatro tabelas próprias do cânone, importação integral autenticada/transacional/idempotente, conflitos e rollback, catálogo/consultas/navegação, resolução com existência real e cinco operações HTTP estritas. Domain/ports permanecem independentes e nenhum módulo lê tabelas alheias. Não há estudos/IA nesta entrega.
 
 Gates atuais:551 testes/31 suites PASS, estática/build/arquitetura/tooling PASS,100% linhas/97,47% branches; mutação padrão local95,87155963302752% e CI integral95,41284403669725%, ambas sem RuntimeError/NoCoverage. Fontes conferidas, relatórios brutos preservados e análise de sobreviventes/timeouts em [MUTATION_ANALYSIS](MUTATION_ANALYSIS.md). TDD, prazos e falhas históricas estão no [TEST_REPORT](TEST_REPORT.md). A falsa deteção do optional role foi recusada na auditoria; observação limitada corrigiu o teste e retake produziu Survived, mantido na confirmação global.

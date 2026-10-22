@@ -1,6 +1,14 @@
 # S04 — Critérios de aceitação
 
-Propostas a detalhar/aprovar antes da implementação. Nenhum critério executado.
+Critérios refinados/aceites pelo agente na autorização integral2026-10-22, conforme SPEC e ADR-0005; implementação ainda NOT_RUN. A prova preparatória de JOSE não satisfaz estes critérios de produto.
+
+| Critério detalhado | Resultado verificável | Estado |
+|---|---|---|
+| S04-AC05 | JWT real HS256/typ/iss/aud/sub/iat/exp, lifetime<=3600s; chave ausente fecha privadas; token ausente/alterado/expirado401, owner alheio404, owner no body rejeitado | NOT_RUN |
+| S04-AC06 | POST cria versão1; GET recupera versão sem geração; revisão com expectedVersion cria snapshot imutável; duas revisões simultâneas geram uma nova versão e um409 | NOT_RUN |
+| S04-AC07 | Contexto bíblico é verdadeiro, seis secções presentes, lacunas explícitas e nenhuma interpretação sem curadoria; citação conserva texto/hash/localizador/crédito/direitos | NOT_RUN |
+| S04-AC08 | Fonte revogada/ausente redige quote e secções/interpretações dependentes na leitura e entrega pós-escrita; falha técnica500 não vira ausência; snapshot guardado fica intacto | NOT_RUN |
+| S04-AC09 | Associação narrativa explícita GEN1:1/Josefo I.1.1 por contratos públicos; owner/versionamento/source links em tabelas próprias e migrações reais, sem SQL entre módulos | NOT_RUN |
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
