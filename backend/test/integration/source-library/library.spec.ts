@@ -178,6 +178,9 @@ describe('source use cases through real Prisma and isolated PostgreSQL', () => {
     finally { await unavailable.onModuleDestroy(); }
   });
   it('serialises simultaneous imports from two real clients without duplicate or partial data', async () => {
+    // Construct before acquiring resources: a domain mutation may reject the
+    // valid fixture, and must not leave a transaction waiting for release.
+    const snapshot = sourceSnapshot();
     const other = await openSourceTestDatabase();
     const otherPort = new PrismaSourceRepository(other);
     const otherLibrary = new SourceLibrary(otherPort, otherPort, otherPort);
@@ -192,24 +195,30 @@ describe('source use cases through real Prisma and isolated PostgreSQL', () => {
       acquired();
       await unblock;
     });
-    await held;
-    const attempts = [library.importSnapshot(sourceSnapshot()), otherLibrary.importSnapshot(sourceSnapshot())].map(promise => promise.catch(error => error as Error));
+    let attempts: Promise<string | Error>[] = [];
     let overlap = false;
     try {
+      await Promise.race([held, locker]);
+      attempts = [library.importSnapshot(snapshot), otherLibrary.importSnapshot(snapshot)].map(promise => promise.catch(error => error as Error));
       for (let attempt = 0; attempt < 40; attempt++) {
         const rows = await database.client.$queryRaw<{ blocked: number }[]>`
           SELECT count(*)::int AS blocked FROM pg_stat_activity
-          WHERE datname = current_database() AND usename = current_user AND wait_event_type = 'Lock' AND pid <> pg_backend_pid()`;
+          WHERE datname = current_database() AND usename = current_user AND wait_event_type = 'Lock' AND pid <> pg_backend_pid()
+            AND application_name <> 'biblia-mutation-coordinator'`;
         if (rows[0]!.blocked === 2) { overlap = true; break; }
         await new Promise(resolve => setTimeout(resolve, 15));
       }
-    } finally { release(); await locker; }
-    try {
+      release();
+      await locker;
       const results = await Promise.all(attempts);
       expect(overlap).toBe(true);
       expect(results.sort()).toEqual(['imported', 'unchanged']);
       expect(await database.client.sourceLibrarySource.count()).toBe(1);
       expect(await database.client.sourceLibraryExcerpt.count()).toBe(4);
-    } finally { await other.onModuleDestroy(); }
+    } finally {
+      release();
+      try { await locker; await Promise.all(attempts); }
+      finally { await other.onModuleDestroy(); }
+    }
   });
 });

@@ -12,6 +12,7 @@
 | [ERR-0008](ERR-0008-fresh-report-directory.md) | Harness cria reports; prova em diretório novo/CI a acompanhar | mkdtemp/clone limpo, bootstrap dos testes |
 | [ERR-0009](ERR-0009-mutation-ci-runtime.md) | Limite90min/cache configurados, actionlint PASS; confirmação remota pendente | Mutação integral cancelada pelo limite40min do CI |
 | [ERR-0010](ERR-0010-database-deadline-race.md) | RED2→GREEN2 e regressão3 PASS; gates integrais pendentes | Ligação/leitura do cliente e cancelamento SQL em corrida |
+| [ERR-0011](ERR-0011-shutdown-observation.md) | Observação tardia reproduzida13/60, limitada a59,94ms; teste em validação | pg_stat_activity após fechamento do pool |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

@@ -7,8 +7,8 @@ describe('deterministic cleanup of the isolated module test tables', () => {
   beforeEach(async () => { await cleanSourceTestData(database); });
   afterAll(async () => { if (database) { try { await cleanSourceTestData(database); } finally { await database.onModuleDestroy(); } } });
   it('lets an in-flight child insert finish its foreign-key read while cleanup waits', async () => {
-    const writer = await openSourceTestDatabase();
     const snapshot = sourceSnapshot({ id: 'cleanup-child-controlled-fixture' });
+    const writer = await openSourceTestDatabase();
     await database.client.sourceLibrarySource.create({ data: { ...snapshot.source, permissions: { ...snapshot.source.permissions } } });
     let release!: () => void;
     let acquired!: () => void;
@@ -47,8 +47,8 @@ describe('deterministic cleanup of the isolated module test tables', () => {
     } finally { release(); await observedWriter; await writer.onModuleDestroy(); }
   });
   it('waits for an in-flight writer before deleting its source and excerpts', async () => {
-    const writer = await openSourceTestDatabase();
     const snapshot = sourceSnapshot({ id: 'cleanup-controlled-fixture' });
+    const writer = await openSourceTestDatabase();
     let release!: () => void;
     let acquired!: () => void;
     const inserted = new Promise<void>(resolve => { acquired = resolve; });
@@ -68,7 +68,8 @@ describe('deterministic cleanup of the isolated module test tables', () => {
         for (let attempt = 0; attempt < 40; attempt++) {
           const rows = await database.client.$queryRaw<{ waiting: number }[]>`
             SELECT count(*)::int AS waiting FROM pg_stat_activity
-            WHERE datname = current_database() AND usename = current_user AND wait_event_type = 'Lock' AND pid <> pg_backend_pid()`;
+            WHERE datname = current_database() AND usename = current_user AND wait_event_type = 'Lock' AND pid <> pg_backend_pid()
+              AND query LIKE 'LOCK TABLE app.source_library_source,%'`;
           if (rows[0]!.waiting > 0) { blocked = true; break; }
           if (finished) break;
           await new Promise(resolve => setTimeout(resolve, 15));

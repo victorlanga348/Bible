@@ -61,7 +61,14 @@ describe('real Prisma, migrations, constraints and transactions', () => {
       expect(identity).toHaveLength(1);
       const pid = identity[0]!.pid;
       await probe.onModuleDestroy();
-      const sessions = await database.client.$queryRaw`SELECT pid FROM pg_stat_activity WHERE pid = ${pid}`;
+      // Client shutdown and the server's activity view are asynchronous. Keep a
+      // finite observation bound; an undisposed pool still fails this check.
+      const deadline = performance.now() + 2000;
+      let sessions = await database.client.$queryRaw<{ pid: number }[]>`SELECT pid FROM pg_stat_activity WHERE pid = ${pid}`;
+      while (sessions.length && performance.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 10));
+        sessions = await database.client.$queryRaw<{ pid: number }[]>`SELECT pid FROM pg_stat_activity WHERE pid = ${pid}`;
+      }
       expect(sessions).toEqual([]);
     } finally { await probe.client.$disconnect(); }
   });

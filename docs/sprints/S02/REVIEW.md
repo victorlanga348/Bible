@@ -2,6 +2,8 @@
 
 ## Revisão parcial do checkpoint integral — 2026-10-22
 
+Checkpoint de harness posterior:551 testes normais/31 suites PASS,100% linhas/97,47% branches;550 testes/30 suites PASS na configuração específica de mutação. Coordenação de suites por sessão PostgreSQL comprovada com dois processos reais32+32 PASS, espera observada/máximo1 titular em300 amostras. Corrige a transferência do checker para segundo runner do Stryker10 sem alterar node_modules, retirar checker ou excluir integrações/src. Fixture do teste concorrente precede aquisição de recursos; observers distinguem coordenador de clientes da aplicação e continuam a exigir ausência de leaks destes. Typecheck/lint/actionlint PASS; build/tooling do src6085489 continuam aplicáveis porque src não mudou. CI anterior39732231940 e ensaios locais falharam/incompletos preservados, sem gate antecipado. Este commit é checkpoint para nova mutação local/remota, não encerramento; T006 IN_PROGRESS/T007 dependente.
+
 Sprint/T006 IN_PROGRESS, sem encerramento integral. A autorização geral permite este checkpoint/push e dispensa nova aprovação. A entrega agora contém importação integral/persistência/navegação/cinco contratos reais; esta secção atual prevalece sobre a revisão reduzida histórica abaixo. S04 continua somente em preparação.
 
 Código atual: correções de qualidade reforçam integridade de metadados válidos, isolamento de edições, identidade defensiva do importador e schemas/diagnósticos; Database separa ligação10s, leitura5s e execução SQL2s após prova TCP RED2→GREEN2/regressão3. Regressão integral549 PASS/30 suites,92,337s; typecheck/lint/build/tooling PASS. Os thresholds e o escopo de src próprio não foram reduzidos. O relatório TEST_REPORT distingue baselines e fontes anteriores.

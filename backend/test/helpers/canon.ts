@@ -28,9 +28,13 @@ export async function cleanCanon(database: Database): Promise<void> {
     await tx.canonVerse.deleteMany(); await tx.canonChapter.deleteMany(); await tx.canonBook.deleteMany(); await tx.canonTranslation.deleteMany();
   });
 }
-export async function seedCanon(database: Database, snapshot = canonSnapshot()): Promise<void> {
-  await database.client.canonTranslation.create({ data: snapshot.translation });
-  await database.client.canonBook.createMany({ data: snapshot.books.map(b => ({ ...b, order: BigInt(b.order) })) });
-  await database.client.canonChapter.createMany({ data: snapshot.chapters.map(c => ({ ...c, number: BigInt(c.number) })) });
-  await database.client.canonVerse.createMany({ data: snapshot.verses.map(v => ({ ...v, translationId: snapshot.translation.id, chapter: BigInt(v.chapter), number: BigInt(v.number) })) });
+export async function seedCanon(database: Database, snapshot?: CanonSnapshot): Promise<void> {
+  const translation = snapshot?.translation ?? manifest.translation;
+  const verses = snapshot?.verses ?? canonVerses;
+  const books = snapshot?.books ?? manifest.catalog.filter(book => canonVerses.some(v => v.bookCode === book.code)).map(({ code, name, order }) => ({ code, name, order, translationId: translation.id }));
+  const chapters = snapshot?.chapters ?? [...new Map(canonVerses.map(v => [`${v.bookCode}:${v.chapter}`, { translationId: translation.id, bookCode: v.bookCode, number: v.chapter }])).values()];
+  await database.client.canonTranslation.create({ data: translation });
+  await database.client.canonBook.createMany({ data: books.map(b => ({ ...b, order: BigInt(b.order) })) });
+  await database.client.canonChapter.createMany({ data: chapters.map(c => ({ ...c, number: BigInt(c.number) })) });
+  await database.client.canonVerse.createMany({ data: verses.map(v => ({ ...v, translationId: translation.id, chapter: BigInt(v.chapter), number: BigInt(v.number) })) });
 }

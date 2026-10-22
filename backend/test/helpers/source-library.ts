@@ -37,8 +37,11 @@ export async function cleanSourceTestData(database: Database): Promise<void> {
   });
 }
 
-export async function seedCuratedSource(database: Database, snapshot = sourceSnapshot()): Promise<void> {
-  const { permissions, ...fields } = snapshot.source;
+export async function seedCuratedSource(database: Database, snapshot?: SourceSnapshot): Promise<void> {
+  // Fixture setup inserts admitted values; domain constructors run in the test
+  // body and actual application, not as static coverage from lifecycle hooks.
+  const { permissions, ...fields } = snapshot?.source ?? sourceFixture;
+  const excerpts = snapshot?.excerpts ?? excerptFixture;
   await database.client.sourceLibrarySource.create({ data: { ...fields, permissions: { ...permissions } } });
-  await database.client.sourceLibraryExcerpt.createMany({ data: snapshot.excerpts.map(row => ({ ...row, order: BigInt(row.order) })) });
+  await database.client.sourceLibraryExcerpt.createMany({ data: excerpts.map(row => ({ ...row, order: BigInt(row.order) })) });
 }
