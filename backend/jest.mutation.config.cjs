@@ -2,6 +2,7 @@
 const regular = require('./jest.config.cjs');
 module.exports = {
   ...regular.projects[0],
+  testTimeout: regular.testTimeout,
   displayName: 'mutation',
   watchman: false,
   setupFilesAfterEnv: ['<rootDir>/test/mutation-database-setup.ts'],

@@ -11,7 +11,9 @@ permissions:
 jobs:
   foundation:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    # S04 preflight:1871 candidates versus1400 in the78m46s complete S04
+    # baseline; fresh cache after harness changes requires a larger job budget.
+    timeout-minutes: 180
     services:
       postgres:
         image: postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
@@ -67,6 +69,12 @@ jobs:
           curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$original" 'https://www.gutenberg.org/files/2848/2848-h/2848-h.htm'
           printf '%s  %s\n' '098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99' "$original" | sha256sum --check --status
           mv "$original" "$directory/source.html"
+          notice="$(mktemp "$directory/source.txt.XXXXXX")"
+          trap 'rm -f "$original" "$notice"' EXIT
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$notice" 'https://www.gutenberg.org/cache/epub/2848/pg2848.txt'
+          printf '%s  %s\n' 'bb2e32da8ba3adc109b7694e6a8f2f11570462af2bedd55798da70b754c6e440' "$notice" | sha256sum --check --status
+          mv "$notice" "$directory/source.txt"
+          python3 scripts/prepare-sources.py "$directory/source.html" "$directory/source.txt" "$directory/operational"
       - run: npm run db:migrate:test
       - run: npm run typecheck
       - run: npm run lint

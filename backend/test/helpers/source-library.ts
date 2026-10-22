@@ -31,7 +31,8 @@ export async function cleanSourceTestData(database: Database): Promise<void> {
   await database.client.$transaction(async transaction => {
     // Serialise writers and cleanups, while allowing the ROW SHARE parent lock
     // required by an in-flight child's FK check to complete without deadlock.
-    await transaction.$executeRaw`LOCK TABLE app.source_library_source, app.source_library_excerpt IN SHARE ROW EXCLUSIVE MODE`;
+    await transaction.$executeRaw`LOCK TABLE app.source_library_source, app.source_library_excerpt, app.source_library_passage_link IN SHARE ROW EXCLUSIVE MODE`;
+    await transaction.sourceLibraryPassageLink.deleteMany();
     await transaction.sourceLibraryExcerpt.deleteMany();
     await transaction.sourceLibrarySource.deleteMany();
   });

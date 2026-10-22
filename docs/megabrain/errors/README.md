@@ -2,6 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
+| [ERR-0014](ERR-0014-local-coverage-heap.md) | Regressão integral resolvida com limite768MB:830/45 suites PASS; tentativa512MB OOM preservada | Heap local Node/Jest, S04-T006 |
 | [ERR-0001](ERR-0001-s01-toolchain.md) | Causas corrigidas; regressões60/60, tooling13/13 e mutação integral95,93%; limites no relatório S01 | Toolchain, descoberta OneDrive e fiscalização arquitetural, S01-T005/T006/T008 |
 | [ERR-0002](ERR-0002-stryker-report-collision.md) | Resolvido: paths distintos, JSON/cache válidos, dry run152 e mutação97,21% | Cache/relatório Stryker concorrentes, S02-T005 |
 | [ERR-0003](ERR-0003-source-permission-null.md) | Resolvido: migração corretiva e15 testes reais de constraints aprovados | JSON null/CHECK de permissões, S03-T006 |
@@ -14,6 +15,7 @@
 | [ERR-0010](ERR-0010-database-deadline-race.md) | Resolvido: proxy RED/GREEN/regressão3 e551 testes/gates completos PASS | Ligação/leitura do cliente e cancelamento SQL em corrida |
 | [ERR-0011](ERR-0011-shutdown-observation.md) | Resolvido: observação limitada,551 testes e retake equivalente Survived preservado no gate global | pg_stat_activity após fechamento do pool |
 | [ERR-0012](ERR-0012-inherited-availability.md) | Resolvido:667 regressões e mutação própria88,98% PASS | Propriedade herdada no mapa de direitos de study, S04-T005 |
+| [ERR-0013](ERR-0013-jest-global-deadline.md) | Configuração corrigida/17 tooling PASS; latência SQL distinta preservada sem causa atribuída | testTimeout global de Jest, S04-T006 |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

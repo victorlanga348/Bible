@@ -92,9 +92,51 @@ model SourceLibraryExcerpt {
   textSha256 String @map("text_sha256")
   originUrl  String? @map("origin_url")
   source     SourceLibrarySource @relation(fields: [sourceId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  passageLinks SourceLibraryPassageLink[]
 
   @@unique([sourceId, locator], map: "source_library_excerpt_source_locator_key")
   @@unique([sourceId, order], map: "source_library_excerpt_source_order_key")
   @@map("source_library_excerpt")
+  @@schema("app")
+}
+
+model SourceLibraryPassageLink {
+  id String @id
+  excerptId String @map("excerpt_id")
+  translationId String @map("translation_id")
+  bookCode String @map("book_code")
+  chapter BigInt
+  fromVerse BigInt @map("from_verse")
+  toVerse BigInt @map("to_verse")
+  nature String
+  rationale String
+  excerpt SourceLibraryExcerpt @relation(fields: [excerptId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([translationId, bookCode, chapter, fromVerse, toVerse], map: "source_library_passage_link_selection_idx")
+  @@map("source_library_passage_link")
+  @@schema("app")
+}
+
+model StudyRecord {
+  id String @id @db.Uuid
+  ownerId String @map("owner_id")
+  currentVersion BigInt @map("current_version")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  versions StudyVersion[]
+
+  @@index([ownerId, createdAt(sort: Desc), id(sort: Desc)], map: "study_record_owner_created_id_idx")
+  @@map("study_record")
+  @@schema("app")
+}
+
+model StudyVersion {
+  studyId String @map("study_id") @db.Uuid
+  number BigInt
+  document Json @db.JsonB
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  study StudyRecord @relation(fields: [studyId], references: [id], onDelete: Cascade, onUpdate: Restrict)
+
+  @@id([studyId, number])
+  @@map("study_version")
   @@schema("app")
 }

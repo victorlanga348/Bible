@@ -2,7 +2,7 @@
 
 ## Preparação vigente — 2026-10-22
 
-A [autorização integral](../../roadmap/completion-execution.md) delega decisões e execução sem nova permissão. Sprint IN_PROGRESS após fecho S02/commit cea1289. Contratos refinados em [SPEC](SPEC.md) e ADR-0005, T004/T005 DONE; T005 tem RED/GREEN,667 regressões PASS e mutação própria88,98%. Persistência/rotas study aguardam T006 READY. As notas históricas de S00 abaixo preservam o seu alcance original, substituído somente pela autorização posterior.
+A [autorização integral](../../roadmap/completion-execution.md) delega decisões e execução sem nova permissão. Sprint IN_PROGRESS, T004/T005 DONE/T006 IN_PROGRESS. [SPEC](SPEC.md)/ADR-0005 implementadas em persistência/versões/adapters/HTTP/CLI com RED/GREEN;830 regressões PASS,100% linhas/97,94% branches e operação real no PC comprovada. Mutação integral atual pendente/T007 dependente; não inferir o gate novo da mutação T00588,98%. As notas históricas de S00 abaixo preservam o seu alcance original, substituído somente pela autorização posterior.
 
 Objetivo: criar e guardar estudos determinísticos privados, com texto bíblico/contexto reais, evidências autorizadas, versões imutáveis e limitações explícitas. Não exigir nem simular LLM; geração real pertence a S05. Cobertura de fontes inicial é uma obra/quatro parágrafos, não investigação académica completa de toda a Bíblia.
 
