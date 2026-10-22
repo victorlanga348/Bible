@@ -9,6 +9,7 @@
 | [ERR-0005](ERR-0005-test-cleanup-isolation.md) | Resolvido: lock/teardown,439 regressões e gate final aprovados | Isolamento da limpeza de teste/RuntimeError, S03-T006 |
 | [ERR-0006](ERR-0006-static-mutation-cache.md) | Resolvido: force/ensaio isolado e confirmação do escopo completo | Cache estático/reavaliação causal, S03-T006 |
 | [ERR-0007](ERR-0007-github-actions-context.md) | Definição corrigida/actionlint PASS; execução remota a acompanhar | Contexto de expressões GitHub Actions/porta PostgreSQL, retoma S02/CI |
+| [ERR-0008](ERR-0008-fresh-report-directory.md) | Harness cria reports; prova em diretório novo/CI a acompanhar | mkdtemp/clone limpo, bootstrap dos testes |
 Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-curta.md`.
 
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.

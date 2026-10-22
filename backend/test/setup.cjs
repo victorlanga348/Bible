@@ -1,4 +1,5 @@
-const { existsSync, readFileSync } = require('node:fs');
+const { existsSync, readFileSync, mkdirSync } = require('node:fs');
+mkdirSync('reports', { recursive: true });
 if (existsSync('.env.test')) Object.assign(process.env, require('node:util').parseEnv(readFileSync('.env.test', 'utf8')));
 process.env.NODE_ENV = 'test';
 // Only this Jest environment's process object is guarded. A defective provider
