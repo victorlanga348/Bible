@@ -1,5 +1,7 @@
 # S02 — Revisão e encerramento do escopo reduzido
 
+Estado vigente2026-10-22: complemento T006/T007 em execução por autorização geral posterior, com T006 em validação e sprint IN_PROGRESS. Persistência/importação integral/five contratos reais implementados e testados;513 regressões PASS,100% linhas/97,05% branches. Mutação final e revisão integrada T007 pendentes, sem DONE antecipado. A revisão abaixo preserva somente o encerramento reduzido anterior; ver TEST_REPORT e TASKS vigentes.
+
 Data:2026-10-21. Estado: DONE no recorte corpus/domínio/parser. Aprovação de redução de escopo e encerramento: utilizador, «termina, o que falta vou adicionar depois», após relatório de T004/T005 e explicação das pendências T006/T007. Commit principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, realizado após «se terminou pode finalizar e ir para a proxima» em2026-10-21, depois desta revisão/pergunta de fechamento;44 ficheiros do escopo, árvore limpa após commit. Hash registado posteriormente. Continuação para preparação S03 autorizada após commit, sem aprovação implícita de novos contratos/planos. Sem push/merge.
 
 ## Entrega e decisão

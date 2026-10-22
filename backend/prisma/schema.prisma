@@ -9,6 +9,58 @@ datasource db {
   schemas = ["app"]
 }
 
+model CanonTranslation {
+  id String @id
+  name String
+  language String
+  canonId String @map("canon_id")
+  sourceUrl String @map("source_url")
+  sourceSha256 String @map("source_sha256")
+  retrievedAt String @map("retrieved_at")
+  licenseId String @map("license_id")
+  licenseUrl String @map("license_url")
+  attribution String
+  books CanonBook[]
+  @@map("canon_translation")
+  @@schema("app")
+}
+
+model CanonBook {
+  translationId String @map("translation_id")
+  code String
+  name String
+  order BigInt
+  translation CanonTranslation @relation(fields: [translationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  chapters CanonChapter[]
+  @@id([translationId, code])
+  @@unique([translationId, order])
+  @@map("canon_book")
+  @@schema("app")
+}
+
+model CanonChapter {
+  translationId String @map("translation_id")
+  bookCode String @map("book_code")
+  number BigInt
+  book CanonBook @relation(fields: [translationId, bookCode], references: [translationId, code], onDelete: Restrict, onUpdate: Cascade)
+  verses CanonVerse[]
+  @@id([translationId, bookCode, number])
+  @@map("canon_chapter")
+  @@schema("app")
+}
+
+model CanonVerse {
+  translationId String @map("translation_id")
+  bookCode String @map("book_code")
+  chapter BigInt
+  number BigInt
+  text String
+  chapterRecord CanonChapter @relation(fields: [translationId, bookCode, chapter], references: [translationId, bookCode, number], onDelete: Restrict, onUpdate: Cascade)
+  @@id([translationId, bookCode, chapter, number])
+  @@map("canon_verse")
+  @@schema("app")
+}
+
 model SourceLibrarySource {
   id             String @id
   title          String

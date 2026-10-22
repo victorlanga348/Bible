@@ -23,7 +23,8 @@
     "test:mutation:incremental": "node scripts/mutation-incremental.cjs",
     "prisma:generate": "prisma generate",
     "db:migrate:test": "npm run build && node scripts/migrate-test.cjs",
-    "db:import:sources:test": "npm run build && node scripts/import-sources-test.cjs"
+    "db:import:sources:test": "npm run build && node scripts/import-sources-test.cjs",
+    "db:import:canon:test": "npm run build && node scripts/import-canon-test.cjs"
   },
   "dependencies": {
     "@nestjs/common": "12.2.0",

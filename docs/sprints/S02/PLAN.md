@@ -1,6 +1,10 @@
 # S02 — Cânone Bíblico
 
-## Decisão vigente de encerramento — escopo reduzido
+## Retoma vigente — 2026-10-22
+
+Autorização integral posterior do utilizador retoma T006/T007; sprint IN_PROGRESS como complemento da entrega reduzida commitada, sem apagar seu histórico. T004/T005 permanecem DONE. [T006](tasks/S02-T006-integration.md) revê contratos/dependências v0.2, preparação JSON integral fiel, quatro tabelas app, importação guardada/transacional e cinco operações HTTP, sem pesquisa por palavra-chave ou serviços novos. TDD e provas PostgreSQL/Nest reais executados; mutação/documentação finais em curso. Nenhum gate futuro é antecipado. T007 fará revisão integrada com ficheiro/plano próprios quando T006 terminar. A nova autorização cobre refinamento/execução/encerramento/commits/push sem novas perguntas, mantendo qualidade/segredos. Ver [execução integral](../../roadmap/completion-execution.md).
+
+## Decisão histórica de encerramento — escopo reduzido
 
 Em2026-10-21 o utilizador determinou: «termina, o que falta vou adicionar depois». Aprova a redução do escopo de fecho a T004/T005 (corpus admitido, entidades/referência/parser puros e seus gates) e o encerramento dessa entrega. Sprint DONE após revisão documental; evidências no TEST_REPORT/REVIEW. Não altera gramática, invariantes ou texto implementados.
 

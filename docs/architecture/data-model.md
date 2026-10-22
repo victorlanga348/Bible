@@ -1,5 +1,7 @@
 # Modelo de dados
 
+Atualização2026-10-22: o complemento S02 implementa app.canon_translation/book/chapter/verse com chaves compostas, relações e constraints da SPEC. Migração/importação integral e consultas reais verificadas em teste PostgreSQL17 e desenvolvimento PostgreSQL16.14;66/1189/31102 e todos os textos confrontados com snapshot autenticado. Gates finais em curso, sem afirmar encerramento antes da mutação/revisão. Source-library continua proprietário das suas duas tabelas, sem acesso SQL cruzado. Os estados de preparação abaixo são históricos; detalhes canónicos em [S02](../sprints/S02/SPEC.md) e [relatório](../sprints/S02/TEST_REPORT.md).
+
 Estado: mapa conceptual para os restantes módulos; responsabilidades consolidadas em S00 por ADR-0003. Modelo lógico das quatro tabelas biblical-canon aprovado na SPEC v0.2 S02; transposição Prisma/migração ainda não implementada.
 As designações abaixo não são contratos de persistência.
 

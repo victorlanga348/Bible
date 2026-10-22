@@ -1,5 +1,7 @@
 # Bíblia App
 
+Execução vigente2026-10-22: utilizador autorizou terminar todas as sprints, refinar/implementar/validar e fazer commits/push sem novas permissões, com relato detalhado. [Plano de execução](docs/roadmap/completion-execution.md). Banco local PostgreSQL16.14/bible_db provisionado e corpus integral66 livros/1189 capítulos/31102 versículos importado com fidelidade verificada. [Complemento S02](docs/sprints/S02/README.md) IN_PROGRESS: persistência/API bíblica implementadas,513 regressões PASS na primeira validação; mutação/revisão finais pendentes. S04–S08 seguem as dependências reais, sem DONE presumido. O estado datado de2026-10-21 abaixo é histórico.
+
 Plataforma de estudo bíblico histórico, contextual e comparativo, com fontes verificáveis, divergências e incertezas explícitas. Uso inicial privado/pessoal; cobertura canónica completa pretendida e biblioteca de fontes progressiva.
 
 ## Estado real — 2026-10-21

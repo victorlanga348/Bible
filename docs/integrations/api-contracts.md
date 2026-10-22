@@ -1,5 +1,7 @@
 # Contratos de API
 
+Atualização2026-10-22: cinco contratos bíblicos da SPEC S02 agora têm handlers, validação estrita, OpenAPI e provas reais200/400/404/500; preservam a gramática e não acrescentam pesquisa por palavra-chave. O complemento está IN_PROGRESS nos gates finais, não apenas no estado de proposta descrito historicamente abaixo. Banco local bible_db também foi migrado/importado a partir do corpus integral e verificado via Nest/Prisma/HTTP. Contratos/DTOs canónicos na [SPEC S02](../sprints/S02/SPEC.md), evidências no [relatório](../sprints/S02/TEST_REPORT.md). S04 tem refinamento documental preparado, sem handlers de estudo implementados ainda.
+
 Estado: contratos HTTP técnicos implementados e aceites na revisão final S01 em 2026-10-21, definidos na [SPEC S01](../sprints/S01/SPEC.md) e publicados pela aplicação em `/openapi.json`. Liveness, readiness, Swagger e erros técnicos têm testes NestJS/Supertest reais; evidências no [relatório](../sprints/S01/TEST_REPORT.md).
 Cinco contratos bíblicos aprovados na SPEC v0.2 S02; restantes capacidades de negócio continuam por especificar/aprovar. As capacidades abaixo não criam métodos, rotas, payloads ou campos por inferência.
 

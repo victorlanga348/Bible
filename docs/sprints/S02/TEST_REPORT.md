@@ -1,5 +1,43 @@
 # S02 — Relatório de testes
 
+## Retoma2026-10-22 — T006 em validação
+
+Checkpoint de implementação autorizado para CI: sprint/T006 continuam IN_PROGRESS, T007 dependente; não é encerramento nem PASS antecipado do gate de mutação. A matriz513 abaixo é a primeira validação completa; testes adicionais de constraints e percurso HTTP integral escritos depois ainda terão execução própria. Sem nova funcionalidade implementada depois do RED/GREEN; acrescentam verificações do comportamento existente.
+
+Autorização geral posterior retomou T006/T007. Estado IN_PROGRESS; critérios finais/mutação ainda não aprovados por antecipação. Ambiente mantido: Node24.16/npm11.13, Nest12/Zod4/Prisma7/Jest30/Stryker10 e PostgreSQL17.11 isolado no Docker, identidade biblia_test/biblia_test confirmada antes de limpezas próprias. Desenvolvimento PC16.14 permanece separado. Sem dependência npm nova nesta tarefa. Branch feat/biblia-backend, base operacional ed03dc5; commits anteriores S02/S03 preservados.
+
+Preparação real: python scripts/prepare-canon.py confirmou ZIP1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682, XML5e2845e9d5551b86aaffef56d689a77946fdf8eabfb672b15d15fa8a23e627db, aviso admitido e inventário66/1189/31102. JSON integral UTF-8/LF:14c2103dc8fedc80007b4c37a05f09c43926f05e8a0dc8ccd62b3443dccd0a27; round trip integral de todos os textos/identidades, incluindo espaços. Manifesto canónico JSON.stringify: b3a9b624e175f5a6870d3e52f8ccd905b4a94232dc3e627eb74486c513d6a19e; esta comparação tolera somente formatação de JSON/CRLF, sem trocar metadados. Originais/fixtures S02 não foram regravados. Derivado e raw ignorados pelo Git.
+
+| Etapa/comando real em backend/ | Resultado observado | Artefacto local reports/ |
+|---|---|---|
+| test:integration -- --runTestsByPath test/integration/canon-schema.spec.ts | FAIL esperado de configuração: tabelas ainda ausentes; não é RED de negócio | s02-t006-schema-before.log |
+| prisma:generate e db:migrate:test | PASS; migração202610220001_biblical_canon aplicada, quatro tabelas em app | s02-t006-migrate.log |
+| test:integration -- --runTestsByPath test/integration/canon-library.spec.ts | RED:28 falhas de comportamento em contratos compiláveis,2 casos genéricos já passavam | s02-t006-application-red.log |
+| test:integration -- --runTestsByPath test/integration/canon-library.spec.ts test/integration/canon-schema.spec.ts | GREEN31 PASS,5,808s | s02-t006-application-green.log |
+| test:e2e -- --runTestsByPath test/e2e/canon.spec.ts | RED26 falhas/4 casos já passavam pela validação global; rotas válidas retornavam404 | s02-t006-http-red.log |
+| Mesmo comando E2E após implementação | GREEN30 PASS,6,381s; cinco contratos/Zod/OpenAPI e200/400/404/500 reais | s02-t006-http-green.log |
+| test:integration -- --runTestsByPath test/integration/canon-admission.spec.ts | RED11 falhas: admissão/importador ainda ausentes em stubs compiláveis | s02-t006-admission-red.log |
+| Mesmo comando após implementação | GREEN11 PASS,26,08s; importação integral/transação/repetição e confronto de todos os textos persistidos | s02-t006-admission-green.log |
+| Refactor: batches SQL explícitos de1000 versículos, mesmo comando | PASS11,20,643s; evita agendamento concorrente de batches internos no mesmo cliente pg | s02-t006-admission-refactor.log |
+| test:coverage | PASS513 em26 suites/4 projetos,72,052s;319 unit/109 integração/84 E2E/1 aceitação integral | s02-t006-coverage.log/-coverage-summary.json |
+| Cobertura do src próprio | Linhas536/536=100%; branches231/238=97,05%; statements645/647=99,69%; funções116/116=100% | json-summary real |
+| typecheck inicial | FAIL: ApiBodyOptions não aceita standardSchema; import dinâmico exigia extensão .js | s02-t006-typecheck.log |
+| typecheck após correção e lint/build finais | PASS; metadata do Body já publica schema sem decorator incompatível, teste OpenAPI mantido | -typecheck-fixed.log/-lint-final.log/-build-final.log |
+| test:tooling | PASS13, incluindo fronteiras/imports/ciclos reais | s02-t006-test-tooling.log |
+| Provisionamento CI em diretório temporário | PASS3: download HTTPS real, falha HTTP e bytes alterados recusados; JSON derivado com mesmo hash | s02-t006-ci.json |
+
+Os scripts npm acima foram invocados com rtk npm run; transformação JSON/checks estruturados usam ferramentas nativas por parsing UTF-8/JSON e necessidade de prova exata. Nenhum dado de desenvolvimento foi limpo. Primária de Application é Prisma/PostgreSQL real, sem doubles de repositório. Todos os textos dirigidos são os excertos autênticos admitidos; caso de fronteira usa1001 registos reais do mesmo snapshot, sem escritura fabricada.
+
+A aceitação integral foi separada em test/acceptance/canon-corpus.spec.ts, obrigatória em test/test:coverage e CI. Mutação mantém todo src e usa projetos unit/integration/e2e com casos reais dirigidos, inclusive fronteira1000/1001. Não repetir31.102 inserts para cada mutante é refinamento de execução previsto no plano, não exclusão de comportamento/código ou troca de integração por fake. O score só será reportado após conclusão válida. Checker TypeScript/denominador/exclusões permanecem os prescritos.
+
+Falha CI remota do primeiro push operacional: workflow não iniciou jobs, pois job.services foi usado no env do job, onde o contexto job não está disponível. Evidência [run39718273703](https://github.com/victorlanga348/Bible/actions/runs/39718273703). Correção move a resolução para um step que escreve GITHUB_ENV; parser YAML local sozinho não deteta erro de contexto de GitHub Actions. Validação semântica com actionlint oficial e nova execução remota serão registadas antes de afirmar CI PASS.
+
+Validação adicional CI: actionlint1.7.12 oficial, arquivo SHA2566e7241b51e6817ea6a047693d8e6fed13b31819c9a0dd6c5a726e1592d22f6e9, reproduziu falha do workflow antigo e aprovou a correção (exit0). Run39721380203 passou setup/downloads/migração/estática/tooling, mas falhou4/440 por reports ausente no clone limpo. Harness passou a criar o diretório: prova Node em diretórios novos confirmou ausência antes e presença depois. Run39722420996 passou440 testes remotos e está a executar mutação no snapshot S03 anterior, sem API bíblica nova ainda. ERR-0007/0008 preservam causas/provas; não confundir esse run com validação do checkpoint S02.
+
+Desenvolvimento real verificado: operação reports/provision-local-canon.cjs confirmou bible_db/postgres/localhost5432/schema app, aplicou a quarta migração e importou o snapshot integral vindo do ZIP/XML pinados (não os quatro excertos). PASS66/1189/31102, confronto de todo texto persistido, repetição unchanged e Nest/Supertest para readiness/catalogue/passagem/referência200 no PostgreSQL16.14. Ambiente preservado e banco de testes não tocado. Resumo reports/local-canon-provisioned.json, log de migração sanitizado. O score de mutação continua pendente, sem declarar release.
+
+## Histórico da entrega reduzida — 2026-10-21
+
 Data: 2026-10-21. Sprint DONE com escopo reduzido a corpus/domínio/parser T004/T005 por decisão explícita «termina, o que falta vou adicionar depois». SPEC v0.2/plano T005 aprovados antes do código; revisão de escopo v0.3 registada. T006/T007 adiadas no BACKLOG; consultas/importação/HTTP bíblicos ainda não implementados.
 Branch feat/biblia-backend; base d0036ab, após commit principal S01 1702cc0. Encerramento do recorte e commit aprovados; principal S02 `c0c24b9f48aba7926dea05207a7263a97b7fc7b0`, `feat(sprint-02): implement biblical canon`,44 ficheiros selecionados e árvore limpa após commit. Hash registado posteriormente; menções PENDING abaixo são históricas. Sem push/merge. Resultados abaixo são da árvore de trabalho, não de uma release ou CI remota.
 

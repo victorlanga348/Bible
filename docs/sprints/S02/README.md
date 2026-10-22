@@ -1,5 +1,7 @@
 # S02 — Cânone Bíblico: corpus, domínio e parser
 
+Estado vigente2026-10-22: IN_PROGRESS, complemento T006/T007 retomado pela autorização geral de terminar todas as sprints. T006 tem persistência/importação/consulta e cinco operações HTTP implementadas por TDD e verificadas em PostgreSQL real; gates finais em curso. Evidência intermediária:513 testes PASS, incluindo confronto integral31.102 versículos; linhas536/536=100%, branches231/238=97,05%. T007 depende do fecho técnico T006. O encerramento reduzido e adiamento de2026-10-21 abaixo são históricos e permanecem identificados pelo commit original. [Execução autorizada](../../roadmap/completion-execution.md).
+
 Estado: DONE com escopo reduzido em2026-10-21. Encerramento e adiamento do restante aprovados pelo utilizador: «termina, o que falta vou adicionar depois». Esta decisão substitui o escopo integral anterior apenas para o fecho da S02; requisitos e contratos futuros permanecem documentados, sem implementação presumida.
 
 Entregue: corpus Bíblia Livre/porbr2018 admitido e rastreável; fixtures autênticas; Translation, Book, Chapter, Verse, PassageReference e parser estrutural puros. T004/T005 DONE. Evidência:152 testes PASS, estática/build/tooling aprovados, linhas100%, branches96,62%, mutação global97,21%/Domain98,91%.

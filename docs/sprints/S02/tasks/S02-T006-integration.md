@@ -1,5 +1,11 @@
 # S02-T006 — Importação, consultas e API com infraestrutura real
 
+Estado vigente2026-10-22: IN_PROGRESS, retoma delegada pelo pedido de terminar todas as sprints sem novas permissões. BACKLOG → READY → IN_PROGRESS; T004/T005 e corpus admitido satisfeitos. Mantêm-se os cinco contratos e invariantes v0.2. Plano abaixo revisto, dependências existentes e sem instalação nova. O estado BACKLOG de2026-10-21 a seguir é histórico.
+
+Execução refinada: preparar JSON integral reproduzível com Python stdlib a partir do ZIP/XML fixos, confirmar todos os textos/identidades e publicar hashes reais do derivado após conversão. Importador verifica archive+snapshot+manifesto; manifesto é comparado por hash de JSON canónico (JSON.stringify do objeto), tolerando somente diferenças de formato/finais de linha entre Windows/Linux. Snapshot derivado tem bytes UTF-8/LF pinados; nenhuma flexibilização do texto bíblico. Não alterar os artefactos originais S02.
+
+TDD por etapas: migração de quatro tabelas com verificações reais de namespace/constraints; depois casos Application/repositório dirigidos com fixture autêntica e testes HTTP contra Nest real, comprovando RED de comportamento após estrutura compilável. Prova integral31.102 registos executada separadamente para não repetir carga integral para cada mutante; todo src do importador fica no escopo de mutação e é exercitado pelas fixtures dirigidas. Critérios e limiares originais preservados. Falhas de importação nunca dão coleção vazia; sem importação pública HTTP. Desenvolvimento local só receberá migração após prova de teste; corpus de uso, se importado, vem do snapshot integral e nunca das quatro fixtures.
+
 Data: 2026-10-21. Trilha B, prioridade alta. Estado: BACKLOG, adiada fora do fecho S02 por «termina, o que falta vou adicionar depois» em2026-10-21; T004/T005 concluídas. Responsável proposto: agente executor; aprovador: utilizador. Branch feat/biblia-backend, uma tarefa por vez. Plano preservado para o utilizador adicionar depois, sem aprovação de execução agora e sem sprint/data futura atribuída. Sem código/migração/importação T006 executados. Commit S02 PENDING.
 
 ## Objetivo e fontes

@@ -1,5 +1,7 @@
 # Documentação do Bíblia App
 
+Estado vigente2026-10-22: [execução integral autorizada](roadmap/completion-execution.md), sem pausas por novas permissões. [Complemento S02](sprints/S02/README.md) IN_PROGRESS: integração/API bíblica e corpus completo no PostgreSQL do PC implementados e testados, gates finais em curso. S04 tem refinamento documental preparado; S04–S08 ainda não são entregas concluídas. A linha de2026-10-21 a seguir preserva o encerramento reduzido anterior.
+
 
 
 Fonte normativa e estado real. S00/S01 DONE e commitadas; [S02](sprints/S02/README.md) DONE com escopo reduzido a corpus/domínio/parser por decisão do utilizador, principal `c0c24b9`; integração/API bíblica e IA continuam futuras. [S03](sprints/S03/README.md) DONE, T004–T007 DONE tecnicamente: biblioteca independente com importação/pesquisa/HTTP reais no alvo de teste, revisão integrada e CI local com original verificado. Resultados atuais e limites no [TEST_REPORT](sprints/S03/TEST_REPORT.md). [T007](sprints/S03/tasks/S03-T007-verification.md) aprovada/concluída; encerramento/commit S03 aprovados pelo «pode usar» após revisão final, sem push/merge.

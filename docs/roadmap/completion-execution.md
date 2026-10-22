@@ -25,3 +25,5 @@ PG16 local difere do PG17 testado: executar migrações/provas reais, não infer
 ## Registo detalhado
 
 Cada sprint conserva PLAN/TASKS/ACCEPTANCE_CRITERIA/TEST_REPORT/REVIEW e evidências locais ignoradas com comandos, ambiente, data, resultados e limitações. Este documento agrega ordem e autorização; não duplica os resultados canónicos. Commits identificam os incrementos; hashes registados posteriormente sem autorreferência impossível. Push autorizado na branch existente, sem force push/main/merge automático.
+
+Checkpoints de implementação podem ser publicados sob a autorização geral para obter validação no runner, com relatório/revisão parciais explícitos e estado IN_PROGRESS. Um checkpoint não encerra a sprint nem transforma gate pendente em PASS. O fecho exige evidências válidas do snapshot correspondente, local ou CI, com comparação das fontes e análise dos relatórios. Esta distinção permite usar CI para verificação completa sem afirmar conclusão antecipada.

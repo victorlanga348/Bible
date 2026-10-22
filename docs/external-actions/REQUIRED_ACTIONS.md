@@ -1,5 +1,7 @@
 # Ações externas necessárias
 
+Execução vigente2026-10-22: autorização geral para terminar sprints/commits/push sem nova permissão, com qualidade e segredos preservados. EXT-002 agora inclui migração/consulta da base local e corpus bíblico integral; IA ainda não implementada e sem credencial externa, com investigação de inferência local gratuita em preparação. Estados de2026-10-21 abaixo são históricos; resultados atuais estão nas atualizações da ação/sprint respetiva.
+
 Atualizado: 2026-10-21. S00–S03 encerradas após os aceites próprios; S03 tem biblioteca independente de fontes implementada e validada no alvo isolado de teste. Corpus S02 local/domínio presentes, integração bíblica adiada e nenhuma integração IA. Configuração e credenciais locais ignoradas pelo Git, sem valores neste registo.
 Responsável por cada ação/decisão: utilizador; agente prepara e valida apenas no escopo aprovado. Não enviar segredos pelo chat, commit ou log. Estados de ações: ACTION_REQUIRED até evidência de desbloqueio; resultados de testes são separados.
 
@@ -66,6 +68,8 @@ Em2026-10-21, após o utilizador indicar o PostgreSQL instalado no PC e pedir «
 Resultado inicial: base criada e acesso confirmado; naquele momento schema `app`, tabelas/migrações e acervo de desenvolvimento ainda ausentes/NOT_RUN. Artefacto local ignorado: backend/reports/local-development-database-created.json. A criação não aplicou as migrações.
 
 Atualização2026-10-22 após autorização geral de execução/commits/push: confirmado bible_db/postgres/5432 e zero relações de utilizador antes de provisionar. Acrescentado somente schema=app à DATABASE_URL no `.env`, preservando as demais chaves/valores. CLI Prisma já instalada executou migrate deploy com ambiente explícito development/DATABASE_URL e TEST_DATABASE_URL removida do processo filho; não se reutilizou o comando guardado de teste. Três migrações aplicadas e verificadas em app._prisma_migrations. Prova real Nest/Prisma/Supertest no PostgreSQL16.14: GET /health/ready200 e GET /sources200 com catálogo vazio; PASS. Nenhuma fixture importada para desenvolvimento nem alteração no banco de teste. Log sanitizado e resumo em backend/reports/local-development-migrations.log e local-development-provisioned.json. Essa prova valida o provisionamento/leitura vazia, não substitui os testes de todas as regras S03 no PostgreSQL17. Google/JWT continuam sem implementação até tarefas próprias. Autorização e sequência atual em [execução integral](../roadmap/completion-execution.md).
+
+Atualização complementar S02 em2026-10-22: quarta migração biblical_canon aplicada em bible_db/5432, corpus integral ZIP/XML autenticado importado (não os excertos de teste),66 livros/1189 capítulos/31102 versículos e todos os textos persistidos verificados. Nest/Prisma/Supertest reais confirmaram readiness, catálogo, passagem e resolução200 no PostgreSQL16.14. Não altera env nem banco de teste nessa operação. Resumo reports/local-canon-provisioned.json e log local-canon-migrations.log sanitizado; score final de mutação do incremento ainda em curso, sem aceitação antecipada de release.
 
 ## EXT-003 — Cânone e traduções
 

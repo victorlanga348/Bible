@@ -4,5 +4,7 @@ module.exports = {
   ...regular.projects[0],
   displayName: 'mutation',
   watchman: false,
-  testMatch: ['**/test/**/*.spec.ts'],
+  // Full31k acceptance remains mandatory in regular/coverage CI. Directed real
+  // corpus cases exercise the whole src scope during each mutant evaluation.
+  testMatch: ['**/test/{unit,integration,e2e}/**/*.spec.ts'],
 };

@@ -9,9 +9,9 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 |---|---|---|---|
 | [S00](S00/README.md) | Governança e Planeamento | DONE | Antecedente DOC-0001 |
 | [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
-| [S02](S02/README.md) | Cânone: corpus, domínio e parser | DONE | Encerramento com escopo reduzido aprovado; T004/T005 entregues, T006/T007 adiadas; commit principal c0c24b9 |
+| [S02](S02/README.md) | Cânone e integração bíblica | IN_PROGRESS | Complemento T006/T007 retomado pela autorização integral2026-10-22; fecho reduzido anterior c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
-| [S04](S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada |
+| [S04](S04/README.md) | Motor de Estudos | BACKLOG | S03 encerrada; aguarda gates do complemento bíblico S02; execução já autorizada |
 | [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |

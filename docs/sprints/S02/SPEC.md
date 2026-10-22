@@ -1,5 +1,9 @@
 # S02 — Especificação de cânone e consulta bíblica
 
+## Retoma v0.4 — 2026-10-22
+
+Autorização geral posterior do utilizador retoma T006/T007 antes adiadas. Os cinco contratos HTTP, DTOs, corpus/direitos e semântica v0.2 permanecem vigentes; o complemento implementa esses contratos e não adiciona pesquisa por palavra-chave. A composição poderá exportar o serviço Application de leitura/existência para outros módulos, sem acesso às tabelas alheias. Transformação JSON integral e hashes/manifesto canónico especificados no plano T006 refinado; histórico v0.3 abaixo preservado. Resultado desta retoma depende de gates reais, não da autorização.
+
 ## Revisão de escopo v0.3 — encerramento em2026-10-21
 
 Decisão explícita do utilizador: «termina, o que falta vou adicionar depois». Escopo de entrega/encerramento S02 reduzido a admissão do corpus e Domain/parser T004/T005, com seus critérios/gates reais. Sem alteração de comportamento/invariantes/gramática já aprovados em v0.2. PLAN/TASKS/ACCEPTANCE_CRITERIA/TEST_REPORT/REVIEW registam impactos/evidências.

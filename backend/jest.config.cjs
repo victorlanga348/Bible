@@ -1,6 +1,6 @@
 const transform = { '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.json' }] };
 module.exports = {
-  projects: ['unit', 'integration', 'e2e'].map((name) => ({
+  projects: ['unit', 'integration', 'e2e', 'acceptance'].map((name) => ({
     displayName: name,
     haste: { enableSymlinks: true },
     testEnvironment: 'node',

@@ -2,6 +2,10 @@
 
 Fundação NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL da S01, Domain/parser bíblico S02 e biblioteca independente de fontes S03. As três operações de leitura de fontes estão implementadas; API/importação bíblica e IA continuam adiadas. Estado e evidências: [S03](../docs/sprints/S03/README.md).
 
+Atualização2026-10-22: API/importação bíblica foram retomadas e implementadas no complemento S02, com gates finais em curso. A base local bible_db contém o corpus integral autenticado da Bíblia Livre/porbr2018; fixtures de quatro versículos continuam exclusivas de teste. `GET /translations`, `GET /translations/:translationId/books`, `GET /translations/:translationId/books/:bookCode/chapters`, `GET /translations/:translationId/books/:bookCode/chapters/:chapter/verses` (from/to opcionais juntos) e `POST /references/resolve` seguem a [SPEC](../docs/sprints/S02/SPEC.md). IA/estudos ainda em tarefas seguintes.
+
+Preparação reproduzível do corpus de teste: obter o ZIP oficial em `data/biblical-canon/porbr2018/source.zip`, conferir SHA2561f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682 e executar `python scripts/prepare-canon.py`. O JSON derivado pinado é `data/biblical-canon/porbr2018/snapshot.json`. `npm run db:import:canon:test -- data/biblical-canon/porbr2018/source.zip data/biblical-canon/porbr2018/snapshot.json test/fixtures/biblical-canon/porbr2018/manifest.json` exige os três caminhos e o alvo de teste guardado; não é comando de importação de desenvolvimento. CI obtém o mesmo ZIP/hash e prepara o JSON antes das suites. Testes normais/cobertura incluem projeto acceptance obrigatório para confronto integral; mutação mantém todo src e usa casos reais dirigidos de unit/integration/e2e, incluindo fronteira de batch1000/1001.
+
 ## Preparação local
 
 Usar Node 24.16.0, npm 11.13.0 e Docker Desktop com motor Linux operacional. Executar os comandos nesta pasta.

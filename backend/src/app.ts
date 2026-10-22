@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { RuntimeConfig } from './config/runtime-config';
 import { DatabaseModule } from './infrastructure/database.module';
 import { SourceLibraryModule } from './modules/source-library/module';
+import { BiblicalCanonModule } from './modules/biblical-canon/module';
 import { HealthController } from './presentation/health.controller';
 import { ErrorFilter } from './presentation/error.filter';
 
@@ -15,7 +16,7 @@ export function configureTransport(app: INestApplication): void {
 export async function createApplication(config: RuntimeConfig): Promise<INestApplication> {
   @Module({
     controllers: [HealthController],
-    imports: [DatabaseModule.register(config.databaseUrl), SourceLibraryModule],
+    imports: [DatabaseModule.register(config.databaseUrl), SourceLibraryModule, BiblicalCanonModule],
   })
   class ApplicationModule {}
   const app = await NestFactory.create(ApplicationModule, { logger: false, abortOnError: false });
