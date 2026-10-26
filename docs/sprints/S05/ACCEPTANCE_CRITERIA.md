@@ -1,6 +1,6 @@
 # S05 — Critérios de aceitação
 
-Propostas a detalhar/aprovar antes da implementação. Nenhum critério executado.
+Critérios concretizados/aceites pelo agente na autorização integral, S05-T004, antes de produto, conforme [SPEC](SPEC.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[rubrica](EVALUATION_PLAN.md). Viabilidade local10 casos comprovada separadamente; critérios de produto abaixo continuam NOT_RUN e não recebem PASS por probes.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
@@ -8,6 +8,10 @@ Propostas a detalhar/aprovar antes da implementação. Nenhum critério executad
 | S05-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
 | S05-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
 | S05-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| S05-AC05 | Adapter local real aplica perfil/pins/autenticação/loopback/um processo/limites/cancelamento, rejeita protocolos/resultados inválidos e distingue timeout/indisponibilidade. | RED/GREEN e protocolo técnico identificado mais chamadas reais do adapter T005; nenhuma resposta gravada como IA | NOT_RUN |
+| S05-AC06 | Índice próprio pgvector1024/ordenação exata/transação/offsets/digests e revalidação de direitos antes de inferir/entregar, inclusive revogação, sem SQL transversal. | PostgreSQL/Prisma/fontes reais T006 e avaliações integradas T007; desenvolvimento/teste isolados | NOT_RUN |
+| S05-AC07 | Análise privada aponta para versão real do estudo, grava atomicamente e não revela recurso/quote a outro owner ou fonte agora restrita; entradas/saídas estritas e erros da SPEC. | NestJS/Supertest/DB reais, acesso válido/inválido/negado e prova pós-gravação/GET | NOT_RUN |
+| S05-AC08 | Dez casos EV e quatro RG reservados conformes, zero citações irrelevantes/inventadas/injeção/violação, limitações de uma frase/uma obra explícitas. | Catorze chamadas reais pelo produto com perfil efetivo, originais/uso/tempo/proveniência e revisão por caso do agente contra fontes; sem alegar revisão humana | NOT_RUN |
 
 ## Sete gates
 | Gate | Obrigação |

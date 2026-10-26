@@ -1,5 +1,7 @@
 # Integração com fornecedor de IA
 
+Atualização S05-T0042026-10-26: [SPEC](../sprints/S05/SPEC.md)/[perfil](../ai/profiles/local-extractive-v1.json)/[ADR-0006](../architecture/adr/ADR-0006-ia-local-e-indice-reconstruivel.md) aceites pelo agente delegado antes de produto. Engine local assinada/modelos/pins/licenças/loopback/credencial própria reais e dez casos de viabilidade comprovados, sem conta/chave paga ou envio remoto. Port/adapter por TDD começa T005; integração/avaliação14casos de produto continuam obrigatórias. Estado seguinte histórico, sem necessidade de nova permissão.
+
 Estado: fornecedor, modelos, SDK e configuração pendentes em DEC-02.
 Nenhuma conta, credencial, custo ou disponibilidade foi verificada.
 

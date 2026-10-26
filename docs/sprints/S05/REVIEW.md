@@ -1,5 +1,13 @@
 # S05 — Revisão técnica
 
+Revisão parcial S05-T0042026-10-26: preparação local concluída tecnicamente, sem código de produto. Decisor/revisor é o agente sob autorização integral, não aprovação individual adicional do utilizador. Runtime assinado/modelos reais/pins/licenças/ambiente/pgvector isolado/desenvolvimento persistente e direitos locais comprovados; perfil v6 satisfez dez casos semânticos e limites. Falhas v1–v5 preservadas, fontes genuínas/fixture legada pending intacta. [SPEC](SPEC.md)/[ADR-0006](../../architecture/adr/ADR-0006-ia-local-e-indice-reconstruivel.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[revisão dos ensaios](PREFLIGHT_REVIEW.md) anteriores a produto.
+
+Auditoria de configuração node reports/audit-s05-preflight.cjs PASS2026-10-26T17:22:39Z:41 artefactos/igualdade de prefixo e sampling dez pedidos/contextos/IDs/digests/SQL/embeddings/limites. Perfil9704 bytes/SHA cf12565112a0c5b84a7065200ee01362052f1ae3dee6296c16a8dccabbc5dc0f. Revisão semântica é do agente, todos os IDs/quotes conferidos; qualquer causa isolada do ganho entre variantes permanece não demonstrada. Não há chamadas a fornecedor remoto, API key paga fictícia, mudança de política Windows, .env alterado, fonte de produção importada de fixture ou alteração de main/domus/bible_db.
+
+Gates da preparação: plano/contratos/destino PASS; RED/GREEN não aplicável a pesquisa/configuração documental (motivo, não PASS de TDD de produto); probes reais de runtime/pgvector/desenvolvimento PASS; gate semântico de viabilidade PASS10/10 nesta amostra; mutação de comportamento próprio ainda não aplicável porque src/test/package não mudaram. Gates de produto/integração/14casos/cobertura/mutação S05 continuam NOT_RUN, sem herdar score S04 como se fosse S05. Auditoria documental final antes de commit/saída T004 é obrigatória.
+
+S05 permanece IN_PROGRESS e sem encerramento/commit principal. Próxima tarefa sequencial T005 implementará ports/adapter/limites por TDD, com ficha própria antes de código. Commit de checkpoint documental/fecho de preparação autorizado, sem nova permissão e sem afirmar sprint pronta. Pergunta de fecho integral fica para T007; texto seguinte é o template histórico, sem exigência de interromper a autorização vigente.
+
 Estado: NOT_RUN; sprint não executada, sem aprovação de encerramento. Commit PENDING.
 A decomposição documental não comprova implementação, testes ou conformidade arquitetural executável.
 Antes da revisão final verificar [critérios](ACCEPTANCE_CRITERIA.md), [relatório](TEST_REPORT.md), imports/fronteiras, migrações reais, segredos, ações externas, direitos e limitações. Evidenciar todos os gates aplicáveis e tratar falhas antes de pedir aprovação.

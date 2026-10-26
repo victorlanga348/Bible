@@ -1,6 +1,6 @@
 # ERR-0015 — Identidade codificada e opções de routing na URL PostgreSQL
 
-Estado: correção,76 testes dirigidos e907 regressões integrais PASS; mutação da fonte corrigida pendente em CI. Área: S04-T006, guardas de desenvolvimento e isolamento de testes.
+Estado: resolvido,76 testes dirigidos/907 regressões integrais e CI40338249693/fonte912c600/mutação corrigida verificadas em2026-10-26, S04 encerrada. Área: S04-T006, guardas de desenvolvimento e isolamento de testes. Originais/score global90,69% e recorte87,71% no relatório S04; limites dos sobreviventes preservados, sem afirmar sensibilidade completa.
 
 Revisão do checkpoint fda125f confirmou que validar hostname/username/path de URL não basta se a query puder sobrescrever opções no driver. Probe parse-only com pg8.23.1, sem abrir conexão, mostrou host remoto e user de teste obtidos da query apesar de host/user diferentes na autoridade. O [parser oficial](https://github.com/brianc/node-postgres/blob/master/packages/pg-connection-string/index.js) confirma leitura de searchParams. Nome codificado %62iblia_test também contornava a recusa literal em desenvolvimento; comparação da base de desenvolvimento/teste não descodificava path nem normalizava caixa dos aliases.
 

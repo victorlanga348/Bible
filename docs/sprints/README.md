@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Transição2026-10-26: S05-T004 IN_PROGRESS→REVIEW→DONE após runtime/modelos/pgvector/desenvolvimento/direitos/contratos/perfil e dez casos locais conformes; auditorias de artefactos/documentos aprovadas. T005 BLOCKED→READY para plano/TDD sequencial, T006/T007 dependentes. S05 permanece IN_PROGRESS, produto/14casos/gates ainda NOT_RUN. [Preparação/revisão](S05/PREFLIGHT_REVIEW.md), [SPEC](S05/SPEC.md). Sem nova permissão ou agentes paralelos.
+
 Atualização2026-10-26: S04 IN_PROGRESS→REVIEW→DONE após T006/T007, revisão/auditoria e fecho delegado.907 regressões/46 suites locais e CI40338249693 PASS; mutação fonte corrigida global90,69%/recorte24 ficheiros87,71%, originais/fontes/sobreviventes conferidos. [Relatório S04](S04/TEST_REPORT.md). Próxima tarefa S05-T004, decisões/execução autorizadas sem nova permissão, predecessora satisfeita; contratos/viabilidade de IA ainda por comprovar. Uma tarefa de cada vez. Notas seguintes históricas.
 
 Commit principal S03 criado em2026-10-21: `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`,77 ficheiros selecionados, mensagem `feat(sprint-03): implement source library`. Hash registado neste incremento documental posterior; nenhuma alteração de main ou push/merge.
@@ -14,7 +16,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S02](S02/README.md) | Cânone e integração bíblica | DONE | T006/T007 concluídas;551 testes, mutação95,87% local/95,41% CI e auditoria final; fecho reduzido c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
 | [S04](S04/README.md) | Motor de Estudos | DONE | T004–T007 DONE,907 testes/CI40338249693, mutação corrigida90,69%/recorte87,71%, fecho delegado |
-| [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
+| [S05](S05/README.md) | IA e RAG | IN_PROGRESS | S04 encerrada90241d5; T004 DONE/viabilidade10casos/perfil/contratos, T005 READY |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |
 | [S08](S08/README.md) | Hardening e Release | BACKLOG | S07 encerrada |
