@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Atualização2026-10-26: S04 IN_PROGRESS→REVIEW→DONE após T006/T007, revisão/auditoria e fecho delegado.907 regressões/46 suites locais e CI40338249693 PASS; mutação fonte corrigida global90,69%/recorte24 ficheiros87,71%, originais/fontes/sobreviventes conferidos. [Relatório S04](S04/TEST_REPORT.md). Próxima tarefa S05-T004, decisões/execução autorizadas sem nova permissão, predecessora satisfeita; contratos/viabilidade de IA ainda por comprovar. Uma tarefa de cada vez. Notas seguintes históricas.
+
 Commit principal S03 criado em2026-10-21: `604c45a29e78b5fb4d705ca4be95cbf77c1bc942`,77 ficheiros selecionados, mensagem `feat(sprint-03): implement source library`. Hash registado neste incremento documental posterior; nenhuma alteração de main ou push/merge.
 
 Ciclo canónico S00–S08 do pedido mestre, consolidado com aprovação documental em 2026-10-20. Aprovação do planeamento não aprova execução das sprints futuras.
@@ -11,7 +13,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S01](S01/README.md) | Fundação Técnica | DONE | S00 encerrada; validação local e aprovação final/commit recebidas em 2026-10-21 |
 | [S02](S02/README.md) | Cânone e integração bíblica | DONE | T006/T007 concluídas;551 testes, mutação95,87% local/95,41% CI e auditoria final; fecho reduzido c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
-| [S04](S04/README.md) | Motor de Estudos | IN_PROGRESS | T004/T005 DONE; T006 IN_PROGRESS, persistência/HTTP/CLI/PC e907 regressões PASS; mutação da fonte corrigida pendente em CI |
+| [S04](S04/README.md) | Motor de Estudos | DONE | T004–T007 DONE,907 testes/CI40338249693, mutação corrigida90,69%/recorte87,71%, fecho delegado |
 | [S05](S05/README.md) | IA e RAG | BACKLOG | S04 encerrada |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |

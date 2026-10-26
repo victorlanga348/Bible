@@ -1,5 +1,7 @@
 # ADR-0005 — Estudos privados, tokens locais e snapshots imutáveis
 
+Implementação verificada2026-10-26: decisão abaixo mantida, S04-T005/T006/T007 concluídas,907 testes locais/CI40338249693 e gates/revisão aprovados. [Relatório S04](../../sprints/S04/TEST_REPORT.md). A decisão foi do agente delegado, sem nova escolha específica atribuída ao utilizador. Registo de aceite preparatório seguinte preservado como histórico.
+
 Estado: aceite para implementação por decisão do agente no âmbito da autorização integral do utilizador2026-10-22. Não é uma aprovação individual do utilizador a cada escolha. Responsável/decisor: agente executor. Tarefa S04-T004; implementação ainda NOT_RUN.
 
 ## Contexto

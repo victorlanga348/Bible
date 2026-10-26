@@ -1,5 +1,7 @@
 # S04 — Motor de Estudos
 
+Execução verificada2026-10-26: T004–T007 DONE, sprint DONE no fecho delegado após revisão/auditoria.907 regressões/CI corrigida, estática/build/tooling e mutação global90,69%/própria87,71% aprovadas com fontes/originais correspondentes. Sem alteração do escopo/contratos nesta revisão; limitações e evidências no [TEST_REPORT](TEST_REPORT.md)/[REVIEW](REVIEW.md). Commit principal a criar e hash a registar posteriormente. Preparação seguinte histórica.
+
 ## Preparação vigente — 2026-10-22
 
 A [autorização integral](../../roadmap/completion-execution.md) delega decisões e execução sem nova permissão. Sprint IN_PROGRESS, T004/T005 DONE/T006 IN_PROGRESS. [SPEC](SPEC.md)/ADR-0005 implementadas em persistência/versões/adapters/HTTP/CLI com RED/GREEN;907 regressões PASS,100% linhas/97,98% branches e operação real no PC comprovada. Guardas de URL corrigidas e dados preservados; mutação integral da fonte corrigida pendente em CI/T007 dependente. Ensaios locais incompletos não são score e não dispensam o gate; não inferir o gate novo da mutação T00588,98%. Notas seguintes históricas.

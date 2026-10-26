@@ -1,5 +1,7 @@
 # Dependências do backend
 
+Atualização2026-10-26: S04-T006/T007 concluídas, sprint encerrada com revisão/CI40338249693/907 testes/mutação fonte corrigida conferidas. A dependência S04→S05 está satisfeita; S05-T004 continua a exigir contratos/rubrica/direitos/destino/modelos e viabilidade real definidos antes de implementação. A autorização integral delega essas decisões, não prova inferência/qualidade futura. Uma tarefa de cada vez, sem nova aprovação ou subagentes.
+
 Atualização2026-10-22: autorização integral delega as decisões/execução/commit/push sem novas permissões; uma tarefa de cada vez. O complemento S02-T006/T007 foi efetivamente concluído e verificado, com551 testes e mutação local/CI válidas; as arestas de existência/importação/API bíblica estão satisfeitas por prova real, não inferência. S03 permanece concluída; S04 pode iniciar depois do commit de encerramento S02. As disposições de adiamento abaixo são históricas e não representam o backlog corrente.
 
 Ordem: S00 → S01 → S02 → S03 → S04 → S05 → S06 → S07 → S08. Encerramento aprovado e commit da anterior precedem nova autorização. S09/frontend não são dependências deste ciclo.

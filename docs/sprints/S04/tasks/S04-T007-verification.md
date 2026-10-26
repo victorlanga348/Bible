@@ -1,5 +1,11 @@
 # S04-T007 — Verificação integral e encerramento
 
+Estado final2026-10-26: DONE após gates/percurso/revisão e auditoria documental real sem segredo/link/whitespace/proibido; fecho da sprint delegado, sem pergunta de aprovação adicional. Commit/push autorizados, hash principal registado somente depois de criado. [Relatório](../TEST_REPORT.md)/[revisão](../REVIEW.md). Entradas seguintes históricas.
+
+Atualização final2026-10-26: IN_PROGRESS→REVIEW, percurso e gates técnicos aprovados com evidência no [TEST_REPORT](../TEST_REPORT.md)/[REVIEW](../REVIEW.md).907 testes locais/CI, estática/build/tooling e mutação da fonte912c600 conferidos; nenhum comportamento novo nesta tarefa, TDD novo não aplicável. Aguarda somente auditoria documental final do fecho autorizado. A preparação/cronologia seguinte é histórica.
+
+Estado vigente2026-10-26: READY→IN_PROGRESS após T006 DONE,907 regressões/CI corrigida, mutação global90,69% e própria87,71% com originais/fontes conferidos. Uma tarefa ativa. Plano seguinte executado sob autorização integral reafirmada pelo utilizador; não requer nova pergunta. Revisão do percurso já coberto em HTTP/integration e provas operacionais, sem reconstruir RED de comportamento existente. Relatório e encerramento dependem da auditoria final.
+
 Estado: BLOCKED na predecessora; plano preparado, depende de T006 concluída. Autorização integral dispensa nova pergunta de permissão, não os gates.
 
 Revisar a SPEC/contratos/ADRs/propriedade e confrontar dados/autorização/associações/quote com artefactos primários. Executar percurso seleção real → serviços de cânone/fontes → Study persistido → versão/owner/direitos → resposta HTTP. Acrescentar teste composto somente se as provas existentes não cobrirem o percurso; não reconstruir RED para comportamento já implementado.

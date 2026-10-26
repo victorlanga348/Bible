@@ -1,5 +1,7 @@
 # S04-T006 — Construção, persistência, versões e HTTP
 
+Estado vigente2026-10-26: DONE técnico.907 regressões locais e CI40338249693 PASS; fonte corrigida912c600 conferida com originais, mutação global90,6885758998435% e recorte24 ficheiros87,70685579196217%, sem RuntimeError/NoCoverage. Limites dos sobreviventes preservados. [Relatório](../TEST_REPORT.md), [análise](../MUTATION_ANALYSIS.md). IN_PROGRESS→REVIEW→DONE; T007 READY, sprint ainda IN_PROGRESS. Notas seguintes preservam a preparação/execução anterior.
+
 Estado: IN_PROGRESS depois de T005 DONE e commit/push de9d29b891540317c6f8a860a29c679898e6ecb2,667 regressões e mutação própria88,98% PASS. READY→IN_PROGRESS, execução delegada, sem nova permissão. Plano/decisões abaixo precedem comportamento. Stack existente mais JOSE já justificada; código em study/{application,infrastructure,presentation}, module.ts, infraestrutura técnica auth e tabelas próprias em app. Sem serviço ou tabela alheia por acesso direto.
 
 ## Contratos internos antes de RED

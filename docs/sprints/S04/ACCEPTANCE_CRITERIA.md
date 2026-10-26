@@ -1,6 +1,6 @@
 # S04 — Critérios de aceitação
 
-Critérios refinados/aceites pelo agente na autorização integral2026-10-22, conforme SPEC e ADR-0005. Implementação e provas reais na T006; sprint IN_PROGRESS enquanto a mutação/revisão não terminam. PASS de comportamento abaixo apoia-se em PostgreSQL/Nest/CLI reais no [relatório](TEST_REPORT.md), não na prova preparatória de JOSE nem em unidade isolada. Correção de isolamento de URLs tem76 casos dirigidos PASS e nova regressão integral em execução; não atribuir ao snapshot corrigido o gate integral da versão anterior.
+Critérios refinados/aceites pelo agente na autorização integral2026-10-22, conforme SPEC e ADR-0005. Provas de comportamento PostgreSQL/Nest/CLI e fonte corrigida912c600 verificadas em2026-10-26:907 regressões/CI40338249693 PASS, cobertura100%/97,98%, estática/build/23 tooling, mutação global90,69%/recorte87,71% e análise dos sobreviventes. Revisão T007/auditoria documental aprovadas; S04 DONE por fecho delegado, sem atribuir gate da fonte anterior ao fix.
 
 | Critério detalhado | Resultado verificável | Estado |
 |---|---|---|
@@ -15,7 +15,7 @@ Critérios refinados/aceites pelo agente na autorização integral2026-10-22, co
 | S04-AC01 | Estudo estruturado determinístico é construído e guardado com versões a partir de evidências existentes. | AC06/07 e percurso HTTP real na bible_db, s04-native-study-verification.json | PASS |
 | S04-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | AC05/06/08 e OpenAPI32 HTTP; falha de INSERT real500/rollback | PASS |
 | S04-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | AC09,23 tooling, admissão operacional distinta de fixtures, hashes/avisos e revalidação | PASS |
-| S04-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| S04-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | T007, CI40338249693/907 testes, mutação global90,69%/própria87,71%, auditoria de links/segredos/whitespace real | PASS |
 
 ## Sete gates
 | Gate | Obrigação |
