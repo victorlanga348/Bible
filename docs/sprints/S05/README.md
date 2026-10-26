@@ -1,5 +1,7 @@
 # S05 — IA e RAG
 
+Tarefa ativa: S05-T005 IN_PROGRESS, [plano de ports/adapter/TDD](tasks/S05-T005-provider.md) antes de código. Preparação T004 publicada9ba970aa0035b7ef4a0a49920cf633891d109e00; é checkpoint documental, sem implementar nem encerrar a sprint. T006/T007 continuam dependentes. Notas seguintes históricas.
+
 Estado atual2026-10-26: IN_PROGRESS, T004 DONE após viabilidade/revisão/auditorias; T005 READY para TDD com plano próprio, T006/T007 dependentes. Perfil extrativo local v6 passou dez casos da preparação dentro dos limites, contratos/pins/direitos no ficheiro normativo; adapter/produto/14casos/gates S05 ainda NOT_RUN. Não é sprint concluída. Autorização integral/sem nova permissão/uma tarefa/sem subagentes mantidas. Entradas seguintes históricas.
 
 Estado vigente2026-10-26: IN_PROGRESS, T004 ativa depois do fecho/publicação S04(90241d5). [PLAN](PLAN.md)/[ficha](tasks/S05-T004-feasibility-contracts.md) definem prova local gratuita antes de produto, sem integração/qualidade de IA ainda aprovada. T005–T007 dependentes, autorização integral vigente; nenhuma nova permissão necessária. Rascunho seguinte histórico.

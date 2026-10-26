@@ -10,7 +10,7 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | ID | Título | Trilha | Prioridade | Estado | Dependências | Referência |
 |---|---|---|---|---|---|---|
 | S05-T004 | Aprovar fornecedor, modelos, embeddings, orçamento e rubrica | A/B/C | Alta | DONE | S04 encerrada90241d5; protocolo/pgvector/desenvolvimento/10casos/perfil/contratos/direitos/auditorias reais | [Ficha](tasks/S05-T004-feasibility-contracts.md) |
-| S05-T005 | Implementar ports, adapter real, limites e falhas | B | Alta | READY | S05-T004 DONE, plano próprio antes de código | [PLAN](PLAN.md) |
+| S05-T005 | Implementar ports, adapter real, limites e falhas | B | Alta | IN_PROGRESS | S05-T004 DONE/9ba970a, plano registado antes de código | [Ficha](tasks/S05-T005-provider.md) |
 | S05-T006 | Integrar pgvector, recuperação e citações verificáveis | B | Alta (proposta) | BLOCKED | S05-T005 | [PLAN](PLAN.md) |
 | S05-T007 | Executar integração real, avaliações e gates | C | Alta (proposta) | BLOCKED | S05-T006; credenciais autorizadas | [PLAN](PLAN.md) |
 

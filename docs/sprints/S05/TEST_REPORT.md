@@ -1,5 +1,15 @@
 # S05 — Relatório de testes
 
+## T005 — Domain inicial por TDD, em execução
+
+Plano/ficha anterior ao código, preparação T004 publicada9ba970aa0035b7ef4a0a49920cf633891d109e00. RED pergunta: npm run test:unit -- --runTestsByPath test/unit/ai-assistant/question.spec.ts,25 falhas esperadas/3,633s por ausência de normalização/limite/negação/imutabilidade num shell executável; nenhum import/sintaxe/serviço em falta contado como RED. GREEN25/25/1,206s. Artefactos reports/s05-t005-question-{red,green}.log.
+
+RED contexto/seleção: npm run test:unit -- --runTestsByPath test/unit/ai-assistant/sentence.spec.ts test/unit/ai-assistant/selection.spec.ts,45 FAIL/1 PASS2,057s; expansão de casos antes de implementar49 FAIL/1 PASS1,939s. O único PASS inicial era a aceitação de um contexto válido no shell sem validação, não demonstra regra implementada; negativos e preservação/seleção falharam pelo motivo de negócio esperado. GREEN posterior dos três ficheiros75/75/3suites/1,942s, incluindo pergunta/regressão. Originais s05-t005-context-{red,expanded-red}.log e s05-t005-domain-green.log.
+
+Revisão/refactor sem mudança adicional necessária: objetos/seleção imutáveis, contexto único/limitado, quote autêntica e offsets por codepoints, Domain sem imports técnicos. npm run typecheck PASS, npm run lint PASS, npm run test:architecture9 verificações PASS; npm run test:unit641/641/20suites PASS11,319s, logs s05-t005-domain-{typecheck,lint,architecture}.log e s05-t005-unit-regression.log. Ainda não se executou regressão completa de integração/HTTP/cobertura/mutação desta fonte; não herdar métricas de S04. Ports/protocolo/processo/adapter real continuam por implementar, T005 IN_PROGRESS/T006/T007 dependentes.
+
+Não há modelo/mock estático contado como IA nesta etapa: os testes novos exercitam apenas regras puras. Os dados de frase genuína vêm da fixture S03 para leitura local, sem enviar conteúdo pending a modelo. Dados técnicos/unicode não são narrativa histórica inventada. .env/main/bible_db/domus preservados; nenhuma dependência instalada.
+
 ## T004 — Viabilidade em execução, 2026-10-26
 
 Pré-avaliação v6 PASS10/10 nesta amostra, revisão por caso em PREFLIGHT_REVIEW: quotes únicas pertinentes/literais nos cinco positivos (EV08 variante de EV01), null nos cinco negativos, zero referência inventada/injeção/violação de direitos. Dez gerações reais novas/readiness9,770s/5,170–21,516s por chamada/pico1994240000 bytes/stop/auth401/ambiente mínimo/offline/no-context-shift, processo4632 fechado. Modelo Ollama Q4_K_M SHA3d0b7905…/output citationId nullable; embeddings/SQL v4 reutilizados com origem explícita, não novos nesta comparação. Produto/HTTP/adapter/migrações de IA e gate integrado S05 continuam NOT_RUN. Fixar perfil local-extractive-v1/prompt6 e contratos antes de T005; quatro regressões RG01–04 reservadas antes de v6 permanecem NOT_RUN para T007. Nenhum resultado falhado anterior foi apagado.
