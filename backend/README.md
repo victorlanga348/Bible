@@ -1,5 +1,7 @@
 # Backend Bíblia App
 
+Checkpoint correnteS05-T006: repository pgvector/config set completo/top3/cosseno/rollback, policy11spans/metadata-only, adapters só StudyLibrary/SourceLibrary públicos e lease global600s/cancelamento/shutdown verificados.1549/72suites PASS100%linhas/98,38%branches; estática/build/38tooling PASS. Ainda faltam orquestração/indexação pelo modelo, Nest/HTTP/CLI de produto e percurso real/14avaliações; mutação corrente pendente. [Provas](../docs/sprints/S05/TEST_REPORT.md). ModelId real preserva ponto/underscore, sem alteração do perfil; fonte/estudo/segredos nativos preservados. Notas seguintes históricas.
+
 S05-T006 IN_PROGRESS: checkpoint Domain011c824 publicado (CI40482111370 ainda em mutação); admissões local-ai/test-ai próprias, configuração protegida, clientes/migrações Prisma separados e storage de análises por owner implementados por testes anteriores. Provas SQL reais:28 constraints/extensão/cosseno,11 casos de storage e lifecycle do cliente AI. Desenvolvimento continua bible_db16.14 intacto + bible_ai17.11/pgvector0.8.7 próprio; só índice dev recebeu migration ai, sem fonte/estudo importado. API/RAG/percurso real/14 avaliações integradas ainda pendentes. [Operação atual](../docs/integrations/local-ai.md), [evidência e limites](../docs/sprints/S05/TEST_REPORT.md). Nenhuma alteração .env/segredo ou dispensa de gates.
 
 Regressão corrente PASS1441/65suites/100%linhas/98,21%branches, estática/build/38tooling/actionlint PASS. Mutação corrente ainda pendente; T006 não encerrada. Notas seguintes históricas.

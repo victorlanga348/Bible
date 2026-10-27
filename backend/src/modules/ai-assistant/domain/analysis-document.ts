@@ -24,7 +24,8 @@ export class AnalysisProvenance implements AnalysisProvenanceProps {
       requireAnalysisValue(input.modelSha256 === null && input.embeddingModelSha256 === null && input.runtimeVersion === null && input.dimensions === null);
       requireAnalysisValue(counts.every(value => value === 0) && segments.length === 0);
     } else {
-      requireAnalysisIdentity(input.modelId); requireAnalysisDigest(input.modelSha256!); requireAnalysisDigest(input.embeddingModelSha256!); requireAnalysisText(input.runtimeVersion!);
+      requireAnalysisText(input.modelId); requireAnalysisValue(input.modelId === input.modelId.trim() && /^[a-z0-9][a-z0-9._-]*$/.test(input.modelId));
+      requireAnalysisDigest(input.modelSha256!); requireAnalysisDigest(input.embeddingModelSha256!); requireAnalysisText(input.runtimeVersion!);
       requireAnalysisValue(input.dimensions === 1024 && segments.length > 0 && counts.every(value => value > 0));
       requireAnalysisValue(input.totalTokens === input.promptTokens + input.completionTokens && input.completionTokens <= input.outputLimit && input.promptTokens + input.outputLimit <= input.contextLimit);
     }

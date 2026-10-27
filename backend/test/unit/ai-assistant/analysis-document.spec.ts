@@ -1,9 +1,18 @@
+import { readFileSync } from 'node:fs';
 import { AnalysisDocument, AnalysisProvenance, type AnalysisDocumentProps, type AnalysisProvenanceProps } from '../../../src/modules/ai-assistant/domain/analysis-document';
 import { AnalysisDomainError } from '../../../src/modules/ai-assistant/domain/analysis-values';
 import { AiModelInputError } from '../../../src/modules/ai-assistant/domain/model-input';
 import { analysisDocument, analysisProvenance, analysisQuote, noInferenceProvenance, resolvedAnalysisEvidence } from '../../helpers/ai-analysis';
 
 describe('actual-use provenance and explicit absence of inference', () => {
+  it('preserves the actually pinned model identifier with dots and underscore without renaming it (metadata only, no inference)', () => {
+    const profile = JSON.parse(readFileSync('admissions/local-extractive-v1.json', 'utf8')) as { generation: { id: string } };
+    expect(profile.generation.id).toBe('ollama-qwen3-1.7b-q4_k_m');
+    expect(new AnalysisProvenance({ ...analysisProvenance(), modelId: profile.generation.id }).modelId).toBe(profile.generation.id);
+  });
+  it.each(['.leading', '../model', 'model/path', 'with space', 'model\n', '-leading', 'UPPER', ''])('rejects unsafe model identifier %p', modelId => {
+    expect(() => new AnalysisProvenance({ ...analysisProvenance(), modelId })).toThrow(AnalysisDomainError);
+  });
   it('deep copies known fields and freezes provenance/segments, dropping raw responses and vectors', () => {
     const input = { ...analysisProvenance(), rawResponse: 'technical forbidden' }; const value = new AnalysisProvenance(input);
     expect(value).toEqual(analysisProvenance()); expect(Object.isFrozen(value)).toBe(true); expect(Object.isFrozen(value.consultedSegments)).toBe(true); expect(Object.isFrozen(value.consultedSegments[0])).toBe(true);
