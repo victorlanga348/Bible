@@ -21,7 +21,12 @@ if (argv.includes('--version')) {
     const key = readFileSync(option('--api-key-file'), 'utf8').trim();
     const server = createServer(async (request, response) => {
       response.setHeader('Content-Type', 'application/json');
-      if (request.url === '/health') { response.statusCode = mode === 'health-invalid' ? 500 : mode === 'unhealthy' ? 503 : 200; response.end('{"status":"ok"}'); return; }
+      if (request.url === '/health') {
+        response.statusCode = mode === 'health-invalid' ? 500 : mode === 'unhealthy' ? 503 : 200;
+        if (mode === 'late-health') setTimeout(() => response.end('{"status":"ok"}'), 600);
+        else response.end('{"status":"ok"}');
+        return;
+      }
       const authenticated = request.headers.authorization === 'Bearer ' + key;
       if (!authenticated) { response.statusCode = 401; response.end('{}'); return; }
       const chunks = []; for await (const chunk of request) chunks.push(chunk);
@@ -31,7 +36,9 @@ if (argv.includes('--version')) {
     });
     server.listen(port, '127.0.0.1', () => {
       const output = mode === 'listen-stdout' ? process.stdout : process.stderr;
-      output.write(mode === 'unconfirmed-listener' ? 'technical startup without ownership confirmation\n' : `technical harness listening on http://127.0.0.1:${port}\n`);
+      const announce = () => output.write(mode === 'unconfirmed-listener' ? 'technical startup without ownership confirmation\n' : `technical harness listening on http://127.0.0.1:${port}\n`);
+      if (mode === 'late-health') setTimeout(announce, 650);
+      else announce();
     });
   }
 }

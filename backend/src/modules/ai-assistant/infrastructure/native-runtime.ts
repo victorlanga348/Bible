@@ -107,16 +107,18 @@ export class NativeRuntime implements ModelRuntimePort {
       for (;;) {
         signal.throwIfAborted();
         if (failed) throw new AiUnavailableError('AI_RUNTIME_EXITED');
-        if (performance.now() - started >= this.timing.readinessMs) throw new AiTimeoutError();
+        const remaining = this.timing.readinessMs - (performance.now() - started);
+        if (remaining <= 0) throw new AiTimeoutError();
         if (listening) {
           try {
-            const response = await fetch(`http://127.0.0.1:${port}/health`, { redirect: 'error', signal: AbortSignal.any([signal, AbortSignal.timeout(Math.min(1000, this.timing.readinessMs))]) });
+            const response = await fetch(`http://127.0.0.1:${port}/health`, { redirect: 'error', signal: AbortSignal.any([signal, AbortSignal.timeout(Math.min(1000, Math.ceil(remaining)))]) });
             await response.body?.cancel();
+            if (performance.now() - started >= this.timing.readinessMs) throw new AiTimeoutError();
             if (response.status === 200 && !failed) break;
             if (response.status !== 503) throw new AiUnavailableError('AI_RUNTIME_HEALTH_INVALID');
-          } catch (error) { if (error instanceof AiUnavailableError) throw error; }
+          } catch (error) { if (error instanceof AiUnavailableError || error instanceof AiTimeoutError) throw error; }
         }
-        await pause(this.timing.pollMs, undefined, { signal });
+        await pause(Math.max(1, Math.min(this.timing.pollMs, this.timing.readinessMs - (performance.now() - started))), undefined, { signal });
       }
       const client = new NativeModelHttpClient(`http://127.0.0.1:${port}`, files.key, files.engineCommit, this.timing.requestMs, signal);
       return await abortable(execute(client), signal);

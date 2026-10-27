@@ -1,6 +1,6 @@
 # S05 — Relatório de testes
 
-Estado2026-10-27: CI40449032546/81a89a4 completou1165 testes/55suites/99,91%linhas/96,32%branches e mutação global85,6186%, mas recorte próprio75,8308% FAIL para fechar T005.59 fontes/digests conferidos,148Survived/12NoCoverage/8Timeout próprios/zeroRuntimeError. Regressões reforçadas854unitários/26suites/24tooling/estática PASS; fonte de produção inalterada, nova CI necessária. [Auditoria e plano corretivo de testes](T005_MUTATION_RUNTIME_REVIEW.md). Prova real do adapter154,23159s continua válida; T005/S05 IN_PROGRESS, T006/T007 dependentes.
+Correção atual2026-10-27: ERR-0019 confirmou health200 aceite depois do deadline, RED1FAIL29não selecionados3,377s. GREEN1PASS2,823s após limitar restante absoluto/rever prazo pós-response;855unitários/26suites24,136s/estática/build PASS. [Provas e causa](../../megabrain/errors/ERR-0019-late-readiness-health.md). Produção mudou; prova real CLI corrigido em execução e nova CI obrigatória, sem herdar scores antigos. T005 IN_PROGRESS/T006/T007 dependentes; resultados seguintes são checkpoints históricos.
 
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 

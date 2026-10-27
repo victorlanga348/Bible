@@ -102,6 +102,12 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
     await expect(runtime.run('generation', async () => { called = true; })).rejects.toBeInstanceOf(AiTimeoutError);
     expect(called).toBe(false); await childStopped(home);
   });
+  it('rejects a successful health response arriving after the absolute readiness deadline', async () => {
+    const { home, runtime } = await make('late-health', { readinessMs: 1000 }); let called = false;
+    await expect(runtime.run('generation', async () => { called = true; return 'late success'; })).rejects.toBeInstanceOf(AiTimeoutError);
+    expect(called).toBe(false); await childStopped(home);
+    expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
+  });
   it('accepts ownership confirmation on stdout as well as stderr and records a unique PID lease', async () => {
     const { home, runtime } = await make('listen-stdout');
     await runtime.run('generation', async () => {
