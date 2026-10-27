@@ -1,5 +1,7 @@
 # S05-T005 — Revisão causal final dos mutantes
 
+Revisão de aceite corrigida: este registo preserva os74Survived/4NoCoverage da fonte b47cd23, mas não autoriza fecho T005. A SPEC exige zeroNoCoverage, pelo que os quatro caminhos precisam de prova automatizada, não só inspeção/denominador. [ERR-0020 e ação](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Novos unitários cobrem esses estados; estados originais abaixo não são editados e o novo relatório será separado.
+
 Fonte b47cd2345224bd0c69807aef5dc8db14827d7bd5, CI40456053750.74 Survived e4 NoCoverage próprios, todos conservados no denominador673. Cada um tem análise/responsável/tarefa no [registo individual](evidence/T005-runtime-mutation-b47cd23.json). Não se identificou defeito crítico remanescente no código efetivo; lacunas de observação/falhas raras estão explicitadas, sem lhes atribuir PASS ou equivalência automática. O aceite respeita limiares aprovados e não é prova de todos os fault paths.
 
 | Grupo | IDs deste relatório | Análise causal |

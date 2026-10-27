@@ -1,6 +1,6 @@
 # S05 — IA e RAG
 
-Estado2026-10-27: S05 IN_PROGRESS, T004/T005 DONE técnico delegado. T005 fonte b47cd23/CI40456053750 PASS1196 testes/55suites/100%linhas/97,60%branches, própria88,41%/global89,90%; CLI real corrigido143,20s, sem RuntimeError/quatroNoCoverage contabilizados. [Fecho/provas/limites](T005_COMPLETION_REPORT.md). T006 READY para plano/implementação real de índice/persistência/HTTP; T007/14casos integrados dependentes. Nenhuma API de análise/RAG entregue ainda. Notas seguintes históricas.
+Estado corrigido2026-10-27: T005 IN_PROGRESS/T006 BLOCKED, fecho7406a0f revogado por requisito específico zeroNoCoverage da SPEC. As quatro ocorrências antigas permanecem no denominador/história; novos unitários4PASS, regressão/CI pendentes. [ERR-0020](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Adapter real143,20s e gates quantitativos anteriores são autênticos, mas não dispensam zeroNoCoverage. T004 DONE/S05 IN_PROGRESS, nenhuma implementação T006 iniciada.
 
 Estado atual2026-10-26: IN_PROGRESS, T004 DONE após viabilidade/revisão/auditorias; T005 READY para TDD com plano próprio, T006/T007 dependentes. Perfil extrativo local v6 passou dez casos da preparação dentro dos limites, contratos/pins/direitos no ficheiro normativo; adapter/produto/14casos/gates S05 ainda NOT_RUN. Não é sprint concluída. Autorização integral/sem nova permissão/uma tarefa/sem subagentes mantidas. Entradas seguintes históricas.
 

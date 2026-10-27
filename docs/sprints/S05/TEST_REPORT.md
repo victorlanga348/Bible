@@ -1,6 +1,6 @@
 # S05 — Relatório de testes
 
-Fecho técnico T0052026-10-27: fonte b47cd2345224bd0c69807aef5dc8db14827d7bd5/CI40456053750 PASS1196testes/55suites/100%linhas/97,60%branches/estática/build/24tooling. Mutação global1754/1951=89,90261404407995%, própria595/673=88,41010401188707%, zeroRuntimeError;74Survived/4NoCoverage próprios conservados no denominador e78 analisados individualmente. CLI real corrigido PASS143,1954761s/12pedidos/modelos+lock fechados, ERR0019 resolvido por RED/GREEN. [Fecho com comandos/artefactos/digests/limites](T005_COMPLETION_REPORT.md), [revisão dos mutantes](T005_MUTANT_REVIEW_FINAL.md). T005 DONE técnico/fecho delegado; T006 READY após commit documental, S05 IN_PROGRESS e14casos/API/RAG ainda pendentes. Notas seguintes históricas.
+Correção de gate2026-10-27: T005 IN_PROGRESS. Fonte b47cd23/CI40456053750 passou1196testes/100%linhas/97,60%branches/própria88,41%, mas seus quatroNoCoverage violam requisito específico zero da SPEC. Fecho7406a0f revogado, sem reescrever métricas ou estados antigos. Novos unitários de falhas de processo4PASS2,628s; primeira falha de namespace era erro do harness, não RED de negócio. [ERR-0020](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Nova CI/zeroNoCoverage obrigatórios antes de DONE; T006 BLOCKED.
 
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 

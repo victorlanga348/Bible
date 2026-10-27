@@ -1,5 +1,7 @@
 # S05-T005 — Encerramento técnico
 
+**Fecho revogado antes de iniciar implementação T006.** A SPEC exige zeroNoCoverage, e esta execução conserva quatro. Os scores/execuções abaixo são autênticos, mas não satisfazem esse gate adicional: T005 volta a IN_PROGRESS e T006 a BLOCKED. [ERR-0020](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Não houve dispensa do utilizador; requisito não é alterado. Quatro testes de falhas raras foram acrescentados/PASS; nova CI integral precisa comprovar zero. Texto seguinte preserva o relatório publicado prematuramente, sem o aceitar como fecho atual.
+
 2026-10-27, responsável/revisor: agente na autorização integral. T005 IN_PROGRESS→REVIEW→DONE após provas abaixo e auditoria documental; commit/push de fecho delegados, hash registado posteriormente. T006 BLOCKED→READY para plano próprio antes de código. S05 continua IN_PROGRESS: persistência/recuperação/API de análise e14 avaliações integradas ainda não estão entregues.
 
 ## Resultado e fonte

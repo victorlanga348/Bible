@@ -1,6 +1,6 @@
 # S05 — Análise incremental de mutação
 
-Resultado vigente T005: CI40456053750/b47cd23/default2814mutantes/59fontes correspondentes. Global1715Killed+39Timeout/1951=89,90261404407995%; próprio586Killed+9Timeout/673=88,41010401188707%,74Survived/4NoCoverage/246CompileError, zeroRuntimeError. [Análise individual completa](T005_MUTANT_REVIEW_FINAL.md), [originais/digests/limites](T005_COMPLETION_REPORT.md). Todos os78 remanescentes revistos e conservados no denominador; sem renomear falhas raras como PASS ou retirar código. Fontes anteriores abaixo são históricas, não aprovam ERR0019.
+Gate atual T005 FAIL por quatroNoCoverage na fonte b47cd23, apesar dos scores brutos reais88,41%próprio/89,90%global. SPEC exige zero; fórmula genérica não dispensa essa obrigação. [Reabertura/contraexemplos](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Quatro testes de falhas raras adicionados/PASS, fonte inalterada; nova CI precisa comprovar zero. Relatórios antigos conservam todos os estados/denominadores e não aprovam fecho.
 
 ## Checkpoint Domain f04e1ad, CI40371545025
 

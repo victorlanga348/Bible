@@ -22,6 +22,7 @@
     "test:mutation": "stryker run && node scripts/check-mutation.cjs",
     "test:mutation:dry-run": "stryker run --dryRunOnly",
     "test:mutation:incremental": "node scripts/mutation-incremental.cjs",
+    "test:mutation:ai-gate": "node scripts/check-ai-mutation.cjs",
     "prisma:generate": "prisma generate",
     "db:migrate:test": "npm run build && node scripts/migrate-test.cjs",
     "db:migrate:dev": "npm run build && node --env-file-if-exists=.env scripts/migrate-development.cjs",
