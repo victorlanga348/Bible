@@ -2,6 +2,8 @@
 
 T005 IN_PROGRESS. Checkpoint autorizado para publicação/CI sob delegação vigente, sem encerrar a tarefa ou S05. Planos anteriores ao código na [ficha](tasks/S05-T005-provider.md). Novos HTTP/provider/artifacts/native têm RED/GREEN e prova real; cobertura/mutação da fonte final ainda NOT_RUN. T006/T007 dependentes.
 
+Publicado posteriormente como81a89a4ba710715d04114aa7374038c64394a037, `feat(sprint-05): manage authenticated local model execution`, push normal na feat/biblia-backend. [CI40449032546](https://github.com/victorlanga348/Bible/actions/runs/40449032546) em execução; resultado ainda não presumido.
+
 ## Prova real pelo adapter novo
 
 `npm run ai:verify:local` PASS em154,23159s, relatório ignorado `reports/ai-provider-local-147JgU/report.json`, data2026-10-27T04:05:18.936Z. Runtime assinado/pins do perfil cf125651… e fonte raw/aviso admitidos, sem fixture para inferência ou respostas gravadas. Resultados:
@@ -22,9 +24,15 @@ CLI operacional usa contexto direto do parágrafo autêntico, sem recuperação 
 
 Cliente HTTP técnico real RED41→RED48→GREEN48/1,349s; provider com sessão técnica gravada RED27→RED30→GREEN30/1,752s. Artefactos FS técnicos RED17→RED19→GREEN19, cancelamento posterior RED1FAIL19PASS antes de suporte ao sinal, depois GREEN20. São provas determinísticas identificadas, não inferência real.
 
-NativeRuntime: testes prévios de lifecycle/processo técnico GREEN22; caso adicional de substituição do lock encontrou erro não classificado, RED1FAIL21PASS antes da correção de finishLease, depois GREEN22. Watchdog independente10s no filho técnico evita órfãos quando mutantes removem cleanup; teste adicional confere o harness, total23. Não é watchdog do modelo real nem substituto da prova acima. Cleanup preserva lock alheio e só liberta a sua lease depois de parar filho próprio.
+NativeRuntime: `npm run test:unit -- --runTestsByPath test/unit/ai-assistant/native-runtime.spec.ts`, RED13FAIL1,945s e expansão antes da implementação RED20FAIL1,646s, shell executável sem comportamento, logs `s05-t005-native-runtime-{red,final-red}.log`; GREEN20/8,26s em `s05-t005-native-runtime-green.log`. Caso adicional de lease desaparecida encontrou erro não classificado, RED1FAIL21PASS9,17s antes da correção de finishLease, depois GREEN22; o caso de substituição preserva o lock alheio. Logs `s05-t005-native-lease-{red,green}.log`. Watchdog independente10s no filho técnico evita órfãos quando mutantes removem cleanup; teste adicional confere o harness, total23. Não é watchdog do modelo real nem substituto da prova acima. Cleanup só liberta a sua lease depois de parar filho próprio.
 
 `npm run test:unit`:824 testes/26suites PASS20,478s; typecheck/lint/build e24 tooling PASS, logs `s05-t005-pre-gates-*`. Seis testes de prompt/protocolo são regressões pós-mutação sobre regras já corretas, não RED inicial. Fonte completa precisa de novos gates, sem herdar resultado anterior.
+
+Regressão integral local posterior do mesmo código81a89a4: PostgreSQL de teste próprio fa533936a0a4/project biblia-backend/service postgres-test confirmado antes de start; cinco migrações reaplicadas no tmpfs, identidade guardada pelo script. `npm run db:migrate:test` PASS e `NODE_OPTIONS=--expose-gc --max-old-space-size=768 npm run test:coverage` PASS1165 testes/55suites/130,523s, linhas1135/1138=99,73%, branches679/707=96,03%. Módulo próprio270/273 linhas e242/261branches. Logs `s05-t005-local-test-migrations.log` e `s05-t005-local-full-coverage.log`. Sem mudanças de .env/banco nativo; NODE_OPTIONS removida depois. Medição anterior `npm run test:coverage -- --selectProjects unit` passou824 casos, mas saiu FAIL pelos limiares globais ao omitir integration/E2E:60,54% linhas/68,74%branches, diagnóstico `s05-t005-unit-only-coverage.log`, nunca gate aprovado.
+
+Revisão posterior acrescentou três regressões e reforçou argumentos de CPU/contexto/offline: health inesperado não chama callback, erro arbitrário do callback é sanitizado e perfil com tamanho idêntico/digest alterado é recusado. Regras de produção inalteradas, não RED fictício. `npm run test:unit -- --runTestsByPath test/unit/ai-assistant/native-runtime.spec.ts test/unit/ai-assistant/runtime-artifacts.spec.ts` PASS46/2suites/11,421s; typecheck/lint PASS, logs `s05-t005-review-{regressions,typecheck,lint}.log`. Nova CI dos testes finais ainda pendente.
+
+Relatório real original SHA256 bc394df232925c23a6d07232a627262c96cc4f50d0dbc50632f7cb7944a98e94. Revalidar digests/contagens e fontes do relatório de mutação final antes de qualquer DONE; estes resultados locais não substituem o score obrigatório.
 
 ## CI do empacotamento, fonte anterior
 

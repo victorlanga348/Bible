@@ -21,7 +21,7 @@ if (argv.includes('--version')) {
     const key = readFileSync(option('--api-key-file'), 'utf8').trim();
     const server = createServer(async (request, response) => {
       response.setHeader('Content-Type', 'application/json');
-      if (request.url === '/health') { response.statusCode = mode === 'unhealthy' ? 503 : 200; response.end('{"status":"ok"}'); return; }
+      if (request.url === '/health') { response.statusCode = mode === 'health-invalid' ? 500 : mode === 'unhealthy' ? 503 : 200; response.end('{"status":"ok"}'); return; }
       const authenticated = request.headers.authorization === 'Bearer ' + key;
       if (!authenticated) { response.statusCode = 401; response.end('{}'); return; }
       const chunks = []; for await (const chunk of request) chunks.push(chunk);

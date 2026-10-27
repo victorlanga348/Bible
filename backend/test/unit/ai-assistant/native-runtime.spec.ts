@@ -44,6 +44,11 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
       expect(output.authenticated).toBe(true); expect(output.envLeaked).toBe(false);
       expect(output.argv.includes(key)).toBe(false);
       expect(output.argv).toEqual(expect.arrayContaining(['--offline', '--no-context-shift', '--no-webui', '--no-agent', '--api-key-file', join(home, 'runtime.key')]));
+      const options = ['--model', '--alias', '--host', '--ctx-size', '--parallel', '--threads', '--threads-batch', '--batch-size', '--ubatch-size', '--n-gpu-layers', '--timeout', '--chat-template-kwargs'];
+      expect(Object.fromEntries(options.map(name => [name, output.argv[output.argv.indexOf(name) + 1]]))).toEqual({
+        '--model': join(home, 'technical-not-a-model.fixture'), '--alias': 'biblia-generation', '--host': '127.0.0.1', '--ctx-size': '2048', '--parallel': '1', '--threads': '2', '--threads-batch': '2', '--batch-size': '512', '--ubatch-size': '512', '--n-gpu-layers': '0', '--timeout': '120', '--chat-template-kwargs': '{"enable_thinking":false}',
+      });
+      expect(output.argv).not.toContain('--embedding');
       await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
     } finally { if (prior === undefined) delete process.env.BIBLE_TECH_PRIVATE_MARKER; else process.env.BIBLE_TECH_PRIVATE_MARKER = prior; }
   });
@@ -59,6 +64,19 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
     const { home, runtime } = await make(); const error = new AiResultRejectedError();
     await expect(runtime.run('generation', async () => { throw error; })).rejects.toBe(error);
     await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
+  });
+  it('sanitizes unexpected callback diagnostics and still tears down its owned child', async () => {
+    const { home, runtime } = await make();
+    const error: unknown = await runtime.run('generation', async () => { throw new Error('technical private callback diagnostic'); }).catch((value: unknown) => value);
+    expect(error).toBeInstanceOf(AiUnavailableError);
+    expect((error as Error).message).toBe('AI_RUNTIME_PROCESS_FAILED');
+    await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
+  });
+  it('rejects an unexpected health status before invoking the session callback', async () => {
+    const { home, runtime } = await make('health-invalid'); let called = false;
+    await expect(runtime.run('generation', async () => { called = true; return true; })).rejects.toMatchObject({ message: 'AI_RUNTIME_HEALTH_INVALID' });
+    expect(called).toBe(false); await childStopped(home);
+    expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
   });
   it.each(['bad-version', 'exit-early'])('fails closed for %s rather than reporting model readiness', async mode => {
     const { home, runtime } = await make(mode);

@@ -42,6 +42,14 @@ describe('pinned profile and technical artifact files; no executable or model is
   it('sanitizes missing profile paths', async () => {
     await expect(readPinnedRuntimeProfile(join(await temporary(), 'missing.json'))).rejects.toBeInstanceOf(AiUnavailableError);
   });
+  it('rejects same-length tampering so the size guard cannot mask the profile hash check', async () => {
+    const root = await temporary(); const path = join(root, 'profile.json');
+    const original = await readFile('admissions/local-extractive-v1.json');
+    const changed = Buffer.from(original.toString('utf8').replace('local-extractive-v1', 'local-extractive-v2'));
+    expect(changed.byteLength).toBe(original.byteLength); expect(changed.equals(original)).toBe(false);
+    await writeFile(path, changed);
+    await expect(readPinnedRuntimeProfile(path)).rejects.toBeInstanceOf(AiUnavailableError);
+  });
   it.each(['embedding', 'generation'] as const)('verifies %s file pins without executing the technical fixtures', async kind => {
     const { home, key, policy, artifacts } = await prepare(); const files = await artifacts.verify(kind);
     expect(files.executable).toBe(join(home, 'runtime/server.fixture'));

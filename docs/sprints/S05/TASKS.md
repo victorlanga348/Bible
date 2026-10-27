@@ -1,6 +1,6 @@
 # S05 — Tarefas
 
-Estado vigente2026-10-26: IN_PROGRESS, S05-T004 READY→IN_PROGRESS, depois de S04 encerrada/publicada90241d5. Plano/decisões preparatórias registados antes de instalar; execução delegada sem nova permissão. T005/T006/T007 permanecem BLOCKED nas predecessoras. Texto de S00 seguinte histórico.
+Estado vigente2026-10-27: S05 IN_PROGRESS/T004 DONE/T005 IN_PROGRESS. Runtime81a89a4 real verificado,1165 testes locais PASS; mutação final em CI, T006/T007 BLOCKED nas predecessoras. [Checkpoint e limites](T005_RUNTIME_CHECKPOINT.md). Execução/commit/push delegados, uma tarefa/sem agentes/nova permissão. Transições seguintes preservam histórico.
 
 Transição vigente após provas/revisão/auditoria documental: T004 IN_PROGRESS→REVIEW→DONE delegado; T005 BLOCKED→READY. Só T005 poderá ficar ativa depois do seu plano concreto, sem tarefa/agente paralelo. Viabilidade v6dez casos/perfil cf125651… não é implementação nem gate integrado S05; T006/T007 mantêm dependências.
 
