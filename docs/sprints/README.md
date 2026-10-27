@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Checkpoint atual2026-10-27: S05-T006 IN_PROGRESS, Application/HTTP/CLI e prova nativa real publicados em7f7809508fc97d05ecb2b0efdb60ccc2aba39910. Indexação11vetores/1911tokens e análise HTTP95s/quote literal/owner/GET/DELETE PASS; regressões locais posteriores falharam por prazos, não aceites. CI40563697363 valida a fonte estável; mutação atual/14avaliações T007 continuam pendentes. Estado breve e histórico separado em [contexto](../megabrain/agent-context/project-state.md), [provas atuais](S05/TEST_REPORT.md). Uma tarefa/sem agentes/nova permissão; S00–S04 DONE, S06–S08 pendentes autorizadas.
+
 Transição atual2026-10-27: S05-T006 READY→IN_PROGRESS depois do fecho válido T00541d1e6a e plano concreto anterior à implementação. Checkpoint Domain011c824 publicado, restante persistência/admissão/configuração em validação real; T007 BLOCKED/T006, sem fechar gates pendentes. [Ficha](S05/tasks/S05-T006-rag-persistence-http.md), [relatório](S05/TEST_REPORT.md). Uma tarefa, autorização integral vigente, sem agentes/perguntas. Histórico seguinte preservado.
 
 Transição corrigida2026-10-27: T005 REVIEW→DONE técnico sob delegação após CI40471991297/f798f31/1200testes/100%linhas/98,03%branches/própria90,34%/zeroRuntimeError/NoCoverage. T006 BLOCKED→READY, S05 IN_PROGRESS/T007 dependente. [Fecho T005](S05/T005_COMPLETION_REPORT.md). Fecho7406a0f foi revogado e requisito zero passou a ser gate automático; não há dispensa da SPEC ou nova aprovação exigida.
