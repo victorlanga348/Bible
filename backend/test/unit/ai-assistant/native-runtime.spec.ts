@@ -170,7 +170,10 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
   });
   it('finishes teardown when the technical child ignores graceful termination', async () => {
     const { home, runtime } = await make('ignore-term');
+    const started = performance.now();
     await expect(runtime.run('generation', async () => 'technical complete')).resolves.toBe('technical complete');
+    // A mutant must not obtain a false cleanup proof from the 10s watchdog.
+    expect(performance.now() - started).toBeLessThan(4000);
     await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
   });
   it.each([{ readinessMs: 180001 }, { requestMs: 120001 }, { operationMs: 600001 }, { stopMs: 10001 }, { pollMs: 251 }, { pollMs: 0 }, { requestMs: 0.5 }])('does not allow an internal timing override to expand the approved limits %j', async override => {
