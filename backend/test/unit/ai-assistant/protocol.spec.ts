@@ -7,7 +7,7 @@ import type { LocalModelProfile } from '../../../src/modules/ai-assistant/infras
 
 const path = 'test/fixtures/ai-assistant/protocol/';
 const read = (name: string) => JSON.parse(readFileSync(path + name + '.json', 'utf8'));
-const profile = JSON.parse(readFileSync('../docs/ai/profiles/local-extractive-v1.json', 'utf8')) as LocalModelProfile;
+const profile = JSON.parse(readFileSync('admissions/local-extractive-v1.json', 'utf8')) as LocalModelProfile;
 const context = () => [new SourceSentence({ id: 'p1-s11', paragraph: 1, start: 0, end: 9, text: 'technical' })];
 const parseSelection = (raw: unknown) => decodeGeneratedSelection(raw, context(), profile, '9ff0d7e90');
 const parseEmbedding = (raw: unknown) => decodeEmbeddingBatch(raw, 2, profile, '9ff0d7e90');

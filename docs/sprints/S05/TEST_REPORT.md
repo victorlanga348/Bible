@@ -1,5 +1,11 @@
 # S05 — Relatório de testes
 
+## Retoma2026-10-27 — isolamento e runtime, T005 ativa
+
+Protocolo36c2ffcaa82b1ec6f08d05d50e110fd371e9feda publicado. CI40439892332 FAIL no dry run de mutação:1038 testes/51suites e estática/tooling PASS, mas perfil fora do backend não existe no sandbox, ENOENT confirmado no job121977452896. Sem score aceite dessa execução. Correção empacota cópia byte-idêntica/SHA cf125651… em admissions e tooling compara fonte normativa, mantendo checker/mutate/limiares. Verificação de configuração antes da cópia FAIL por ausência, depois PASS; Jest prompt/protocolo em backend temporário sem /docs externo PASS, sem chamar isso de gate integral. [ERR-0018](../../megabrain/errors/ERR-0018-profile-package-isolation.md). Nova CI obrigatória ainda pendente.
+
+Componentes locais novos ainda não incluídos no checkpoint de protocolo: cliente HTTP técnico real RED41→RED48→GREEN48/1,349s, limites/redirect/auth/streaming/timeout/cancelamento; adapter de ports com sessão técnica gravada RED27→RED30→GREEN30/1,752s; ficheiros/pins com dados técnicos não executados RED17→RED19→GREEN19, cancelamento posterior RED1FAIL19PASS antes de implementar sinal. Regressão pós-correção/cancelamento795/25suites PASS13,258s, typecheck/lint/build PASS. Logs s05-t005-{http-client,provider,artifacts,artifact-cancellation,pre-native}-*. Não são inferência real nem prova de NativeRuntime ainda ausente; T005/T006/T007 não encerradas.
+
 ## T005 — Domain inicial por TDD, em execução
 
 Checkpoint f04e1ad5c89a34ec68f6fd5935f20a381b9c83e3 publicado e CI40371545025 PASS:982 testes/49suites, build/typecheck/lint/tooling23, linhas100%/branches98,16%, mutação bruta global1261/1384=91,11271676300578% e Domain102/106=96,22641509433963%, zero RuntimeError/NoCoverage.53 fontes do JSON conferidas com commit e ficheiros atuais correspondentes; componentes novos de infraestrutura ainda ausentes desse snapshot não ficam aprovados por esta CI. Originais/digests e quatro sobreviventes causais em [MUTATION_ANALYSIS](MUTATION_ANALYSIS.md). Lacuna do teste de start negativo isolado recebeu regressão sem alteração de regra; é teste pós-mutação, não novo RED de implementação, confirmação de kill no próximo relatório pendente.

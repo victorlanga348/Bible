@@ -3,7 +3,7 @@ import { AiModelInputError, AiQuestion, SourceSentence } from '../../../src/modu
 import { generationRequest } from '../../../src/modules/ai-assistant/infrastructure/prompt';
 import type { LocalModelProfile } from '../../../src/modules/ai-assistant/infrastructure/profile';
 
-const profile = JSON.parse(readFileSync('../docs/ai/profiles/local-extractive-v1.json', 'utf8')) as LocalModelProfile;
+const profile = JSON.parse(readFileSync('admissions/local-extractive-v1.json', 'utf8')) as LocalModelProfile;
 const sentence = () => new SourceSentence({ id: 'technical-s1', paragraph: 1, start: 0, end: 5, text: 'green' });
 describe('exact controlled prompt and untrusted JSON context', () => {
   it('preserves the accepted prefix, sampling, limits and nullable enum grammar', () => {
