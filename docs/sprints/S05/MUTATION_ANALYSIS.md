@@ -1,6 +1,6 @@
 # S05 — Análise incremental de mutação
 
-Gate atual T005 FAIL por quatroNoCoverage na fonte b47cd23, apesar dos scores brutos reais88,41%próprio/89,90%global. SPEC exige zero; fórmula genérica não dispensa essa obrigação. [Reabertura/contraexemplos](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Quatro testes de falhas raras adicionados/PASS, fonte inalterada; nova CI precisa comprovar zero. Relatórios antigos conservam todos os estados/denominadores e não aprovam fecho.
+Resultado atual T005 aprovado: fonte f798f31/CI40471991297/default2814mutantes/59fontes. Global1728Killed+39Timeout/1951=90,56893900563813%; próprio599Killed+9Timeout/673=90,34175334323923%,65Survived/246CompileError/zeroRuntimeError e zeroNoCoverage. [Revisão de todos65](T005_MUTANT_REVIEW_FINAL.md), [originais/digests](T005_COMPLETION_REPORT.md), [registo individual](evidence/T005-runtime-mutation-f798f31.json). Requisito específico agora automático: test:mutation:ai-gate. QuatroNoCov anteriores tornam-se Killed, sem editar relatórios/código ou reduzir escopo; aceite7406a0f revogado permanece histórico.
 
 ## Checkpoint Domain f04e1ad, CI40371545025
 

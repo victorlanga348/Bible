@@ -1,6 +1,6 @@
 # S05 — Relatório de testes
 
-Correção de gate2026-10-27: T005 IN_PROGRESS. Fonte b47cd23/CI40456053750 passou1196testes/100%linhas/97,60%branches/própria88,41%, mas seus quatroNoCoverage violam requisito específico zero da SPEC. Fecho7406a0f revogado, sem reescrever métricas ou estados antigos. Novos unitários de falhas de processo4PASS2,628s; primeira falha de namespace era erro do harness, não RED de negócio. [ERR-0020](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Nova CI/zeroNoCoverage obrigatórios antes de DONE; T006 BLOCKED.
+Fecho corrigido T005: CI40471991297/f798f31 PASS1200testes/56suites/100%linhas/98,03%branches/estática/build/33tooling e gate específico da SPEC. Global1767/1951=90,56893900563813%, próprio608/673=90,34175334323923%, zeroRuntimeError e zeroNoCoverage.59fontes/919chaves/digests conferidos, quatroNoCov→Killed e noveSurvived→Killed sem mudar produção. [Fecho completo](T005_COMPLETION_REPORT.md), [65sobreviventes revistos](T005_MUTANT_REVIEW_FINAL.md), [registo atual](evidence/T005-runtime-mutation-f798f31.json). CLI real143,20s continua válido. T005 DONE/T006 READY; fecho7406a0f revogado fica no histórico, produto/14casos seguem pendentes.
 
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 

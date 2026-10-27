@@ -2,7 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
-| [ERR-0020](ERR-0020-premature-nocoverage-closure.md) | Confirmado: fecho7406a0f revogado, T005 reaberta/T006 bloqueada; quatro unitários novos PASS, nova CI pendente | Gate específico zeroNoCoverage da SPEC S05 |
+| [ERR-0020](ERR-0020-premature-nocoverage-closure.md) | Resolvido: fecho7406a0f revogado, CI40471991297 comprova zeroRuntimeError/NoCoverage; gate específico automático PASS | Gate específico zeroNoCoverage da SPEC S05 |
 | [ERR-0019](ERR-0019-late-readiness-health.md) | Resolvido: RED→GREEN/CLI real143,20s/CI40456053750/1196testes e fonte corrigida auditados | Deadline absoluto de readiness, S05-T005 |
 | [ERR-0018](ERR-0018-profile-package-isolation.md) | Resolvido: CI40444290178 integral PASS,1038 testes e mutação91,33%, fontes/digests auditados | Perfil normativo e sandbox Stryker, S05-T005 |
 | [ERR-0017](ERR-0017-protocol-fixture-newlines.md) | Resolvido: cópias LF com hashes bruto/normalizado distintos, JSON idêntico e auditoria/testes PASS | Reprodutibilidade de fixtures de protocolo Python/Windows/Git, S05-T005 |

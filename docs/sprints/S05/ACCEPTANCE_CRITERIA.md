@@ -1,6 +1,6 @@
 # S05 — Critérios de aceitação
 
-Critérios concretizados/aceites pelo agente antes de produto conforme [SPEC](SPEC.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[rubrica](EVALUATION_PLAN.md). AC05 PASS após T005/CI40456053750 e CLI real corrigido, com [provas e limites](T005_COMPLETION_REPORT.md). Demais critérios de produto continuam NOT_RUN, sem receber PASS por adapter/viabilidade; S05 ainda IN_PROGRESS.
+Critérios concretizados/aceites pelo agente antes de produto conforme [SPEC](SPEC.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[rubrica](EVALUATION_PLAN.md). AC05 PASS após T005/CI40471991297/zeroRuntimeError+NoCoverage e CLI real corrigido, com [provas e limites](T005_COMPLETION_REPORT.md). Demais critérios de produto continuam NOT_RUN, sem receber PASS por adapter/viabilidade; S05 ainda IN_PROGRESS.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|

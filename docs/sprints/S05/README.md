@@ -1,6 +1,6 @@
 # S05 — IA e RAG
 
-Estado corrigido2026-10-27: T005 IN_PROGRESS/T006 BLOCKED, fecho7406a0f revogado por requisito específico zeroNoCoverage da SPEC. As quatro ocorrências antigas permanecem no denominador/história; novos unitários4PASS, regressão/CI pendentes. [ERR-0020](../../megabrain/errors/ERR-0020-premature-nocoverage-closure.md). Adapter real143,20s e gates quantitativos anteriores são autênticos, mas não dispensam zeroNoCoverage. T004 DONE/S05 IN_PROGRESS, nenhuma implementação T006 iniciada.
+Estado2026-10-27: T004/T005 DONE técnico com gate específico integralmente cumprido na fonte f798f31/CI40471991297:1200testes/56suites/100%linhas/98,03%branches, própria90,34%/global90,57%, zeroRuntimeError/NoCoverage. T006 READY para plano e TDD; T007/14casos dependentes, S05 IN_PROGRESS/sem API de análise entregue. [Fecho corrigido](T005_COMPLETION_REPORT.md). Aceite7406a0f revogado permanece histórico; nova CI e gate automatizado resolvem ERR-0020 sem dispensa da SPEC.
 
 Estado atual2026-10-26: IN_PROGRESS, T004 DONE após viabilidade/revisão/auditorias; T005 READY para TDD com plano próprio, T006/T007 dependentes. Perfil extrativo local v6 passou dez casos da preparação dentro dos limites, contratos/pins/direitos no ficheiro normativo; adapter/produto/14casos/gates S05 ainda NOT_RUN. Não é sprint concluída. Autorização integral/sem nova permissão/uma tarefa/sem subagentes mantidas. Entradas seguintes históricas.
 

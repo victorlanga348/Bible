@@ -1,0 +1,3036 @@
+{
+  "run": "40471991297",
+  "sha": "f798f31ebd41069ee7a6caf8a8681404d7f61ad8",
+  "reportSha256": "626a50ef5e0d01c3bdc66325d6b1773caa3bca5f712767209a3f7cc00793f510",
+  "sourceFilesMatchedCommitAndCurrent": 59,
+  "global": {
+    "counts": {
+      "Killed": 1728,
+      "CompileError": 863,
+      "Survived": 184,
+      "Timeout": 39
+    },
+    "detected": 1767,
+    "valid": 1951,
+    "rawScore": 90.56893900563813,
+    "runtimeErrors": 0,
+    "noCoverage": 0
+  },
+  "moduleOwn": {
+    "counts": {
+      "CompileError": 246,
+      "Killed": 599,
+      "Survived": 65,
+      "Timeout": 9
+    },
+    "detected": 608,
+    "valid": 673,
+    "rawScore": 90.34175334323923,
+    "runtimeErrors": 0,
+    "noCoverage": 0
+  },
+  "perFile": {
+    "src/modules/ai-assistant/domain/model-input.ts": {
+      "CompileError": 24,
+      "Killed": 103,
+      "Survived": 3
+    },
+    "src/modules/ai-assistant/infrastructure/http-client.ts": {
+      "Killed": 98,
+      "CompileError": 54,
+      "Survived": 10,
+      "Timeout": 1
+    },
+    "src/modules/ai-assistant/infrastructure/local-model-provider.ts": {
+      "CompileError": 33,
+      "Killed": 56,
+      "Survived": 1
+    },
+    "src/modules/ai-assistant/infrastructure/native-runtime.ts": {
+      "CompileError": 57,
+      "Killed": 188,
+      "Survived": 41,
+      "Timeout": 8
+    },
+    "src/modules/ai-assistant/infrastructure/prompt.ts": {
+      "CompileError": 6,
+      "Killed": 26
+    },
+    "src/modules/ai-assistant/infrastructure/protocol.ts": {
+      "CompileError": 41,
+      "Killed": 66,
+      "Survived": 1
+    },
+    "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts": {
+      "Killed": 62,
+      "CompileError": 31,
+      "Survived": 9
+    }
+  },
+  "coverage": {
+    "lines": {
+      "total": 1140,
+      "covered": 1140,
+      "skipped": 0,
+      "pct": 100
+    },
+    "statements": {
+      "total": 1502,
+      "covered": 1496,
+      "skipped": 0,
+      "pct": 99.6
+    },
+    "functions": {
+      "total": 266,
+      "covered": 265,
+      "skipped": 0,
+      "pct": 99.62
+    },
+    "branches": {
+      "total": 711,
+      "covered": 697,
+      "skipped": 0,
+      "pct": 98.03
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "moduleCoverage": {
+    "lines": {
+      "covered": 275,
+      "total": 275
+    },
+    "branches": {
+      "covered": 260,
+      "total": 265
+    }
+  },
+  "artifactId": 12719906797,
+  "artifactBytes": 1459618,
+  "artifactSha256": "48679f05ede8486dba47326cd52266387ea53b426127a275613e1073c18820fe",
+  "comparisonFromB47": {
+    "oldRun": "40456053750",
+    "newRun": "40471991297",
+    "matchingOwnMutantKeys": 919,
+    "transitions": {
+      "Survived->Survived": 65,
+      "NoCoverage->Killed": 4,
+      "Survived->Killed": 9
+    }
+  },
+  "ownSurvivorsWithReview": [
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "360",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "status": "Survived",
+      "testsCompleted": 40,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "196",
+        "197",
+        "198",
+        "199",
+        "200",
+        "201",
+        "202",
+        "203",
+        "204",
+        "205",
+        "206",
+        "207",
+        "208",
+        "209",
+        "210",
+        "880",
+        "881",
+        "882",
+        "883",
+        "884",
+        "1094",
+        "1095",
+        "1096",
+        "1097",
+        "1103",
+        "1104",
+        "1105",
+        "1106",
+        "1109",
+        "1110",
+        "1111",
+        "1112",
+        "1113",
+        "1114",
+        "1115",
+        "1116",
+        "1117",
+        "1118"
+      ],
+      "location": {
+        "end": {
+          "column": 116,
+          "line": 6
+        },
+        "start": {
+          "column": 114,
+          "line": 6
+        }
+      },
+      "category": "D1",
+      "assessment": "Equivalência do predicado Cc: ambos os substitutos intermediários não contêm Cc; pergunta original preservada.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "411",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 72,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "126",
+        "127",
+        "128",
+        "129",
+        "130",
+        "131",
+        "132",
+        "133",
+        "134",
+        "135",
+        "136",
+        "137",
+        "138",
+        "139",
+        "140",
+        "141",
+        "142",
+        "143",
+        "144",
+        "145",
+        "146",
+        "147",
+        "148",
+        "149",
+        "150",
+        "151",
+        "152",
+        "196",
+        "197",
+        "198",
+        "199",
+        "200",
+        "201",
+        "202",
+        "203",
+        "204",
+        "205",
+        "206",
+        "207",
+        "208",
+        "209",
+        "210",
+        "645",
+        "646",
+        "667",
+        "668",
+        "673",
+        "675",
+        "676",
+        "677",
+        "678",
+        "679",
+        "680",
+        "681",
+        "682",
+        "880",
+        "881",
+        "882",
+        "883",
+        "884",
+        "1082",
+        "1083",
+        "1084",
+        "1085",
+        "1086",
+        "1087",
+        "1088",
+        "1089",
+        "1090",
+        "1091"
+      ],
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 21
+        },
+        "start": {
+          "column": 168,
+          "line": 21
+        }
+      },
+      "category": "D2",
+      "assessment": "Texto não branco tem comprimento positivo; end-start igual ao comprimento já implica end>start. Guarda redundante, conservada no denominador.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "412",
+      "mutatorName": "EqualityOperator",
+      "replacement": "input.end < input.start",
+      "status": "Survived",
+      "testsCompleted": 72,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "126",
+        "127",
+        "128",
+        "129",
+        "130",
+        "131",
+        "132",
+        "133",
+        "134",
+        "135",
+        "136",
+        "137",
+        "138",
+        "139",
+        "140",
+        "141",
+        "142",
+        "143",
+        "144",
+        "145",
+        "146",
+        "147",
+        "148",
+        "149",
+        "150",
+        "151",
+        "152",
+        "196",
+        "197",
+        "198",
+        "199",
+        "200",
+        "201",
+        "202",
+        "203",
+        "204",
+        "205",
+        "206",
+        "207",
+        "208",
+        "209",
+        "210",
+        "645",
+        "646",
+        "667",
+        "668",
+        "673",
+        "675",
+        "676",
+        "677",
+        "678",
+        "679",
+        "680",
+        "681",
+        "682",
+        "880",
+        "881",
+        "882",
+        "883",
+        "884",
+        "1082",
+        "1083",
+        "1084",
+        "1085",
+        "1086",
+        "1087",
+        "1088",
+        "1089",
+        "1090",
+        "1091"
+      ],
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 21
+        },
+        "start": {
+          "column": 168,
+          "line": 21
+        }
+      },
+      "category": "D2",
+      "assessment": "Texto não branco tem comprimento positivo; end-start igual ao comprimento já implica end>start. Guarda redundante, conservada no denominador.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "574",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 29,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "20",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "282",
+        "299",
+        "309",
+        "310",
+        "311",
+        "312",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "318",
+        "319",
+        "320",
+        "321",
+        "322",
+        "323",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 85,
+          "line": 17
+        },
+        "start": {
+          "column": 71,
+          "line": 17
+        }
+      },
+      "category": "H2",
+      "assessment": "Observação de ref/limpeza do timer não é isolada pelos asserts atuais. Fonte mantém unref/clearTimeout e deadline real é testado; não se declara equivalência de recursos.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "601",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 7,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "312",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "318"
+      ],
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 26
+        },
+        "start": {
+          "column": 9,
+          "line": 26
+        }
+      },
+      "category": "H3",
+      "assessment": "Corpos técnicos de erro/oversize terminam; falta distinguir cancelamento imediato de EOF posterior. Fonte cancela body e processo próprio encerra; mutação continua Survived.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "603",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 16,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "299",
+        "319",
+        "320",
+        "321",
+        "322",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 76,
+          "line": 28
+        },
+        "start": {
+          "column": 11,
+          "line": 28
+        }
+      },
+      "category": "H4",
+      "assessment": "Guarda de tamanho no streaming também rejeita corpo conhecido excessivo. Precheck Content-Length evita leitura antecipada; consumo/latência não equivalentes universalmente, lacuna contabilizada.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "607",
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "testsCompleted": 1,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "321"
+      ],
+      "location": {
+        "end": {
+          "column": 144,
+          "line": 28
+        },
+        "start": {
+          "column": 78,
+          "line": 28
+        }
+      },
+      "category": "H4",
+      "assessment": "Guarda de tamanho no streaming também rejeita corpo conhecido excessivo. Precheck Content-Length evita leitura antecipada; consumo/latência não equivalentes universalmente, lacuna contabilizada.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "609",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 1,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "321"
+      ],
+      "location": {
+        "end": {
+          "column": 142,
+          "line": 28
+        },
+        "start": {
+          "column": 111,
+          "line": 28
+        }
+      },
+      "category": "H3",
+      "assessment": "Corpos técnicos de erro/oversize terminam; falta distinguir cancelamento imediato de EOF posterior. Fonte cancela body e processo próprio encerra; mutação continua Survived.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "629",
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "testsCompleted": 15,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "299",
+        "319",
+        "320",
+        "322",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 40
+        },
+        "start": {
+          "column": 17,
+          "line": 40
+        }
+      },
+      "category": "H5",
+      "assessment": "releaseLock posterior ao consumo não é observado isoladamente; reader não é exposto pelo port. Limitação de observação de recurso, sem retirar mutante.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "630",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 15,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "299",
+        "319",
+        "320",
+        "322",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 40
+        },
+        "start": {
+          "column": 19,
+          "line": 40
+        }
+      },
+      "category": "H5",
+      "assessment": "releaseLock posterior ao consumo não é observado isoladamente; reader não é exposto pelo port. Limitação de observação de recurso, sem retirar mutante.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "639",
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "testsCompleted": 29,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "20",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "282",
+        "299",
+        "309",
+        "310",
+        "311",
+        "312",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "318",
+        "319",
+        "320",
+        "321",
+        "322",
+        "323",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 46
+        },
+        "start": {
+          "column": 15,
+          "line": 46
+        }
+      },
+      "category": "H2",
+      "assessment": "Observação de ref/limpeza do timer não é isolada pelos asserts atuais. Fonte mantém unref/clearTimeout e deadline real é testado; não se declara equivalência de recursos.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "640",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 29,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "0",
+        "1",
+        "20",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "282",
+        "299",
+        "309",
+        "310",
+        "311",
+        "312",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "318",
+        "319",
+        "320",
+        "321",
+        "322",
+        "323",
+        "324",
+        "326"
+      ],
+      "location": {
+        "end": {
+          "column": 37,
+          "line": 46
+        },
+        "start": {
+          "column": 17,
+          "line": 46
+        }
+      },
+      "category": "H2",
+      "assessment": "Observação de ref/limpeza do timer não é isolada pelos asserts atuais. Fonte mantém unref/clearTimeout e deadline real é testado; não se declara equivalência de recursos.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "516",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 72,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "267",
+        "268",
+        "269",
+        "270",
+        "271",
+        "272",
+        "273",
+        "274",
+        "275",
+        "276",
+        "277",
+        "278",
+        "279",
+        "280",
+        "281",
+        "282",
+        "288",
+        "289",
+        "290",
+        "292",
+        "293",
+        "294",
+        "295",
+        "296",
+        "297",
+        "298",
+        "299",
+        "300",
+        "301",
+        "302",
+        "303",
+        "304",
+        "305",
+        "306",
+        "307",
+        "308",
+        "309",
+        "310",
+        "311",
+        "312",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "318",
+        "319",
+        "320",
+        "321",
+        "322",
+        "323",
+        "324",
+        "325",
+        "326",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 166,
+          "line": 10
+        },
+        "start": {
+          "column": 146,
+          "line": 10
+        }
+      },
+      "category": "H1",
+      "assessment": "Origem literal/canonical já só admite origin ou origin+/; ambos têm pathname /. Equivalência da guarda de pathname nesse conjunto.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/local-model-provider.ts",
+      "id": "713",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "testsCompleted": 17,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "196",
+        "197",
+        "198",
+        "199",
+        "200",
+        "201",
+        "202",
+        "203",
+        "204",
+        "205",
+        "206",
+        "207",
+        "208",
+        "209",
+        "210"
+      ],
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 34
+        }
+      },
+      "category": "P1",
+      "assessment": "generationRequest repete validação antes de runtime.run para arrays de Domain. Não se prova equivalência universal: remover guarda anterior muda erro para entrada JS não iterável antes do spread.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "830",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 7,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28"
+      ],
+      "location": {
+        "end": {
+          "column": 228,
+          "line": 57
+        },
+        "start": {
+          "column": 201,
+          "line": 57
+        }
+      },
+      "category": "N1",
+      "assessment": "Texto do diagnóstico operacional não é comparado nestes casos. Categoria tipada/sanitização/falha fechada mantidas; mensagem vazia é diferença observável, não equivalência.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "838",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 3,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "15",
+        "19",
+        "20"
+      ],
+      "location": {
+        "end": {
+          "column": 128,
+          "line": 60
+        },
+        "start": {
+          "column": 101,
+          "line": 60
+        }
+      },
+      "category": "N1",
+      "assessment": "Texto do diagnóstico operacional não é comparado nestes casos. Categoria tipada/sanitização/falha fechada mantidas; mensagem vazia é diferença observável, não equivalência.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "863",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 2,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "17",
+        "18"
+      ],
+      "location": {
+        "end": {
+          "column": 84,
+          "line": 79
+        },
+        "start": {
+          "column": 44,
+          "line": 79
+        }
+      },
+      "category": "N1",
+      "assessment": "Texto do diagnóstico operacional não é comparado nestes casos. Categoria tipada/sanitização/falha fechada mantidas; mensagem vazia é diferença observável, não equivalência.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "889",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 1,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "5"
+      ],
+      "location": {
+        "end": {
+          "column": 133,
+          "line": 95
+        },
+        "start": {
+          "column": 105,
+          "line": 95
+        }
+      },
+      "category": "N1",
+      "assessment": "Texto do diagnóstico operacional não é comparado nestes casos. Categoria tipada/sanitização/falha fechada mantidas; mensagem vazia é diferença observável, não equivalência.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "734",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 17
+        },
+        "start": {
+          "column": 62,
+          "line": 17
+        }
+      },
+      "category": "N2",
+      "assessment": "Erros de bind e endereço do socket efémero de reserva não são observados isoladamente. Modelo só recebe127.0.0.1, versão/pins permanecem; fonte mantém bind/reject corretos. Lacuna de teste de socket.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "736",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 108,
+          "line": 17
+        },
+        "start": {
+          "column": 97,
+          "line": 17
+        }
+      },
+      "category": "N2",
+      "assessment": "Erros de bind e endereço do socket efémero de reserva não são observados isoladamente. Modelo só recebe127.0.0.1, versão/pins permanecem; fonte mantém bind/reject corretos. Lacuna de teste de socket.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "764",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 123,
+          "line": 28
+        },
+        "start": {
+          "column": 109,
+          "line": 28
+        }
+      },
+      "category": "N4",
+      "assessment": "Ref/limpeza do timer e remoção do listener do helper não são isolados. Não confundir com761/762: estes foram Killed por duração10s>4s, evitando watchdog como prova falsa.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "767",
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 30
+        },
+        "start": {
+          "column": 11,
+          "line": 30
+        }
+      },
+      "category": "N4",
+      "assessment": "Ref/limpeza do timer e remoção do listener do helper não são isolados. Não confundir com761/762: estes foram Killed por duração10s>4s, evitando watchdog como prova falsa.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "768",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 30
+        },
+        "start": {
+          "column": 13,
+          "line": 30
+        }
+      },
+      "category": "N4",
+      "assessment": "Ref/limpeza do timer e remoção do listener do helper não são isolados. Não confundir com761/762: estes foram Killed por duração10s>4s, evitando watchdog como prova falsa.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "770",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 30
+        },
+        "start": {
+          "column": 55,
+          "line": 30
+        }
+      },
+      "category": "N4",
+      "assessment": "Ref/limpeza do timer e remoção do listener do helper não são isolados. Não confundir com761/762: estes foram Killed por duração10s>4s, evitando watchdog como prova falsa.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "779",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 21,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 45,
+          "line": 33
+        },
+        "start": {
+          "column": 22,
+          "line": 33
+        }
+      },
+      "category": "N5",
+      "assessment": "Estados de filho já encerrado/repetição de kill não são distinguidos pelos asserts de resultado; ChildProcess mantém identidade própria. Fonte preserva guardas, sem alegar equivalência para todo estado do SO.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "781",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 20,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 33
+        },
+        "start": {
+          "column": 49,
+          "line": 33
+        }
+      },
+      "category": "N5",
+      "assessment": "Estados de filho já encerrado/repetição de kill não são distinguidos pelos asserts de resultado; ChildProcess mantém identidade própria. Fonte preserva guardas, sem alegar equivalência para todo estado do SO.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "801",
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 14,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "11",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 43
+        },
+        "start": {
+          "column": 47,
+          "line": 43
+        }
+      },
+      "category": "N7",
+      "assessment": "Opção once/remoção do listener após work não são observadas isoladamente; AbortSignal dispara uma vez. Cancelamento e callback pendente são efetivamente testados; ciclo de retenção não é declarado equivalente.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "802",
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 14,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "11",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 43
+        },
+        "start": {
+          "column": 55,
+          "line": 43
+        }
+      },
+      "category": "N7",
+      "assessment": "Opção once/remoção do listener após work não são observadas isoladamente; AbortSignal dispara uma vez. Cancelamento e callback pendente são efetivamente testados; ciclo de retenção não é declarado equivalente.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "804",
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 14,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "11",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 90,
+          "line": 44
+        },
+        "start": {
+          "column": 40,
+          "line": 44
+        }
+      },
+      "category": "N7",
+      "assessment": "Opção once/remoção do listener após work não são observadas isoladamente; AbortSignal dispara uma vez. Cancelamento e callback pendente são efetivamente testados; ciclo de retenção não é declarado equivalente.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "805",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 13,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "11",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 80,
+          "line": 44
+        },
+        "start": {
+          "column": 73,
+          "line": 44
+        }
+      },
+      "category": "N7",
+      "assessment": "Opção once/remoção do listener após work não são observadas isoladamente; AbortSignal dispara uma vez. Cancelamento e callback pendente são efetivamente testados; ciclo de retenção não é declarado equivalente.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "842",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 24,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 65,
+          "line": 65
+        },
+        "start": {
+          "column": 43,
+          "line": 65
+        }
+      },
+      "category": "N8",
+      "assessment": "Invariante alcançável: run recusa nova sessão enquanto active existe e close não substitui active. Ao finalizar a sessão, active ainda é o objeto daquela chamada; comparação defensiva é redundante nesse desenho.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "866",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 24,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 94,
+          "line": 83
+        },
+        "start": {
+          "column": 80,
+          "line": 83
+        }
+      },
+      "category": "N9",
+      "assessment": "Ref/clear do timer global não são inspecionados separadamente. Fonte aplica ambos; prazo/cancelamento comprovados. Retenção de timer não é equivalência universal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "871",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 24,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 89
+        },
+        "start": {
+          "column": 7,
+          "line": 89
+        }
+      },
+      "category": "N10",
+      "assessment": "Checkpoints de abort sobrepõem-se a verify/sinais de execFile/fetch/pause/ciclo; cancelamento em janelas exatas entre awaits não é distinguido. Fonte mantém todos, sem afirmar equivalência temporal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "873",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 23,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 88,
+          "line": 91
+        },
+        "start": {
+          "column": 64,
+          "line": 91
+        }
+      },
+      "category": "N10",
+      "assessment": "Checkpoints de abort sobrepõem-se a verify/sinais de execFile/fetch/pause/ciclo; cancelamento em janelas exatas entre awaits não é distinguido. Fonte mantém todos, sem afirmar equivalência temporal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "881",
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 23,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 228,
+          "line": 94
+        },
+        "start": {
+          "column": 98,
+          "line": 94
+        }
+      },
+      "category": "N11",
+      "assessment": "Opções do comando de versão não são observadas integralmente; processo Jest tem env sandbox distinta do env padrão do Node host. Fonte usa allowlist/windowsHide; não afirmar que teste do modelo comprova todas as opções da versão.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "882",
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 23,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 161,
+          "line": 94
+        },
+        "start": {
+          "column": 157,
+          "line": 94
+        }
+      },
+      "category": "N11",
+      "assessment": "Opções do comando de versão não são observadas integralmente; processo Jest tem env sandbox distinta do env padrão do Node host. Fonte usa allowlist/windowsHide; não afirmar que teste do modelo comprova todas as opções da versão.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "890",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 96
+        },
+        "start": {
+          "column": 43,
+          "line": 96
+        }
+      },
+      "category": "N10",
+      "assessment": "Checkpoints de abort sobrepõem-se a verify/sinais de execFile/fetch/pause/ciclo; cancelamento em janelas exatas entre awaits não é distinguido. Fonte mantém todos, sem afirmar equivalência temporal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "940",
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 122,
+          "line": 101
+        },
+        "start": {
+          "column": 118,
+          "line": 101
+        }
+      },
+      "category": "N12",
+      "assessment": "windowsHide é específico Windows e CI é Linux; stdio vazio usa pipes padrão para saídas, stdin não é usado pelo harness. Fonte especifica stdin ignore/saídas pipe; diferença de UI/descriptor não comprovada pelo resultado.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "941",
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 157,
+          "line": 101
+        },
+        "start": {
+          "column": 131,
+          "line": 101
+        }
+      },
+      "category": "N12",
+      "assessment": "windowsHide é específico Windows e CI é Linux; stdio vazio usa pipes padrão para saídas, stdin não é usado pelo harness. Fonte especifica stdin ignore/saídas pipe; diferença de UI/descriptor não comprovada pelo resultado.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "947",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 63,
+          "line": 102
+        },
+        "start": {
+          "column": 61,
+          "line": 102
+        }
+      },
+      "category": "N13",
+      "assessment": "Prefixo inicial Stryker não contém confirmação de ownership e não muda esse predicado; já retirar slice permite retenção ilimitada de logs e não é equivalente em memória. Fonte mantém cauda limitada8192 unidades de string; limite de retenção não é isolado no teste.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "949",
+      "mutatorName": "MethodExpression",
+      "replacement": "tail + chunk.toString('utf8')",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 19,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 94,
+          "line": 103
+        },
+        "start": {
+          "column": 50,
+          "line": 103
+        }
+      },
+      "category": "N13",
+      "assessment": "Prefixo inicial Stryker não contém confirmação de ownership e não muda esse predicado; já retirar slice permite retenção ilimitada de logs e não é equivalente em memória. Fonte mantém cauda limitada8192 unidades de string; limite de retenção não é isolado no teste.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "971",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 108
+        },
+        "start": {
+          "column": 9,
+          "line": 108
+        }
+      },
+      "category": "N10",
+      "assessment": "Checkpoints de abort sobrepõem-se a verify/sinais de execFile/fetch/pause/ciclo; cancelamento em janelas exatas entre awaits não é distinguido. Fonte mantém todos, sem afirmar equivalência temporal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "975",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 2,
+      "coveredBy": [
+        "6",
+        "542"
+      ],
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 109
+        },
+        "start": {
+          "column": 50,
+          "line": 109
+        }
+      },
+      "category": "N1",
+      "assessment": "Texto do diagnóstico operacional não é comparado nestes casos. Categoria tipada/sanitização/falha fechada mantidas; mensagem vazia é diferença observável, não equivalência.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "980",
+      "mutatorName": "EqualityOperator",
+      "replacement": "remaining < 0",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 27,
+          "line": 111
+        },
+        "start": {
+          "column": 13,
+          "line": 111
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "988",
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 114
+        },
+        "start": {
+          "column": 77,
+          "line": 114
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "990",
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 189,
+          "line": 114
+        },
+        "start": {
+          "column": 122,
+          "line": 114
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "994",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 17,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 116
+        },
+        "start": {
+          "column": 17,
+          "line": 116
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "991",
+      "mutatorName": "MethodExpression",
+      "replacement": "Math.max(1000, Math.ceil(remaining))",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 18,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 187,
+          "line": 114
+        },
+        "start": {
+          "column": 151,
+          "line": 114
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "995",
+      "mutatorName": "EqualityOperator",
+      "replacement": "performance.now() - started > this.timing.readinessMs",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 17,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 116
+        },
+        "start": {
+          "column": 17,
+          "line": 116
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1014",
+      "mutatorName": "MethodExpression",
+      "replacement": "Math.min(1, Math.min(this.timing.pollMs, this.timing.readinessMs - (performance.now() - started)))",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 119,
+          "line": 121
+        },
+        "start": {
+          "column": 21,
+          "line": 121
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1016",
+      "mutatorName": "ArithmeticOperator",
+      "replacement": "this.timing.readinessMs + (performance.now() - started)",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 117,
+          "line": 121
+        },
+        "start": {
+          "column": 62,
+          "line": 121
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1017",
+      "mutatorName": "ArithmeticOperator",
+      "replacement": "performance.now() + started",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 116,
+          "line": 121
+        },
+        "start": {
+          "column": 89,
+          "line": 121
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1018",
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 22,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 142,
+          "line": 121
+        },
+        "start": {
+          "column": 132,
+          "line": 121
+        }
+      },
+      "category": "N14",
+      "assessment": "Sobreposições entre restante absoluto, abort de health e check pós-response; limites subms/redirect/probe que nunca responde/poll imediato não são todos distinguidos. Fonte mantém redirect:error/sinal/restante/ceil/pós-check/poll limitado. RED de health tardio foi corrigido e GREEN real; não declarar todas estas mutações equivalentes.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1043",
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 24,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 136
+        },
+        "start": {
+          "column": 19,
+          "line": 136
+        }
+      },
+      "category": "N9",
+      "assessment": "Ref/clear do timer global não são inspecionados separadamente. Fonte aplica ambos; prazo/cancelamento comprovados. Retenção de timer não é equivalência universal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1044",
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "static": false,
+      "testsCompleted": 24,
+      "coveredBy": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "542",
+        "543",
+        "544",
+        "545"
+      ],
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 136
+        },
+        "start": {
+          "column": 21,
+          "line": 136
+        }
+      },
+      "category": "N9",
+      "assessment": "Ref/clear do timer global não são inspecionados separadamente. Fonte aplica ambos; prazo/cancelamento comprovados. Retenção de timer não é equivalência universal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/protocol.ts",
+      "id": "1177",
+      "mutatorName": "EqualityOperator",
+      "replacement": "Math.abs(norm - 1) >= 0.0001",
+      "status": "Survived",
+      "testsCompleted": 15,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "153",
+        "158",
+        "159",
+        "165",
+        "166",
+        "173",
+        "174",
+        "179",
+        "180",
+        "181",
+        "182",
+        "183",
+        "184",
+        "185",
+        "194"
+      ],
+      "location": {
+        "end": {
+          "column": 116,
+          "line": 47
+        },
+        "start": {
+          "column": 89,
+          "line": 47
+        }
+      },
+      "category": "R1",
+      "assessment": "Igualdade abs(norm-1)==literal binary64 de0.0001 é impossível, conforme prova rational/Sterbenz e vizinhos preservada no checkpoint. Mutante permanece Survived no bruto.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1200",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 3,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "243",
+        "244",
+        "246"
+      ],
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 9,
+          "line": 22
+        }
+      },
+      "category": "A1",
+      "assessment": "Hash/leitura também recusam ficheiro inválido/tipo incompatível, mascarando prechecks stat/size. A pré-leitura é diferente em IO/memória; não afirmar equivalência universal. Fonte conserva prechecks, hash exato e testes de tamper com tamanho igual.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1201",
+      "mutatorName": "LogicalOperator",
+      "replacement": "!metadata.isFile() && metadata.size !== 9704",
+      "status": "Survived",
+      "testsCompleted": 3,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "243",
+        "244",
+        "246"
+      ],
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 9,
+          "line": 22
+        }
+      },
+      "category": "A1",
+      "assessment": "Hash/leitura também recusam ficheiro inválido/tipo incompatível, mascarando prechecks stat/size. A pré-leitura é diferente em IO/memória; não afirmar equivalência universal. Fonte conserva prechecks, hash exato e testes de tamper com tamanho igual.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1203",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 3,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "243",
+        "244",
+        "246"
+      ],
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 31,
+          "line": 22
+        }
+      },
+      "category": "A1",
+      "assessment": "Hash/leitura também recusam ficheiro inválido/tipo incompatível, mascarando prechecks stat/size. A pré-leitura é diferente em IO/memória; não afirmar equivalência universal. Fonte conserva prechecks, hash exato e testes de tamper com tamanho igual.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1216",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 3,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "244",
+        "245",
+        "246"
+      ],
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 27
+        },
+        "start": {
+          "column": 42,
+          "line": 27
+        }
+      },
+      "category": "A2",
+      "assessment": "Código de diagnóstico constante não é assertado textualmente; classe/falha fechada/sanitização mantidas. Diferença operacional observável permanece no denominador.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1223",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 20,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "247",
+        "248",
+        "249",
+        "250",
+        "251",
+        "252",
+        "256",
+        "257",
+        "258",
+        "259",
+        "260",
+        "261",
+        "262",
+        "263",
+        "264",
+        "265",
+        "266"
+      ],
+      "location": {
+        "end": {
+          "column": 20,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "category": "A3",
+      "assessment": "path==.. designa diretório pai, também recusado por isFile/hash; path vazio designa próprio diretório na configuração operacional. Guarda redundante para targets regulares deste port; traversal por ficheiro/symlink com bytes válidos tem contraexemplos detetados.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1225",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 20,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "247",
+        "248",
+        "249",
+        "250",
+        "251",
+        "252",
+        "256",
+        "257",
+        "258",
+        "259",
+        "260",
+        "261",
+        "262",
+        "263",
+        "264",
+        "265",
+        "266"
+      ],
+      "location": {
+        "end": {
+          "column": 20,
+          "line": 31
+        },
+        "start": {
+          "column": 16,
+          "line": 31
+        }
+      },
+      "category": "A3",
+      "assessment": "path==.. designa diretório pai, também recusado por isFile/hash; path vazio designa próprio diretório na configuração operacional. Guarda redundante para targets regulares deste port; traversal por ficheiro/symlink com bytes válidos tem contraexemplos detetados.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1234",
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "testsCompleted": 20,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "247",
+        "248",
+        "249",
+        "250",
+        "251",
+        "252",
+        "256",
+        "257",
+        "258",
+        "259",
+        "260",
+        "261",
+        "262",
+        "263",
+        "264",
+        "265",
+        "266"
+      ],
+      "location": {
+        "end": {
+          "column": 25,
+          "line": 37
+        },
+        "start": {
+          "column": 7,
+          "line": 37
+        }
+      },
+      "category": "A1",
+      "assessment": "Hash/leitura também recusam ficheiro inválido/tipo incompatível, mascarando prechecks stat/size. A pré-leitura é diferente em IO/memória; não afirmar equivalência universal. Fonte conserva prechecks, hash exato e testes de tamper com tamanho igual.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1239",
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "testsCompleted": 20,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "247",
+        "248",
+        "249",
+        "250",
+        "251",
+        "252",
+        "256",
+        "257",
+        "258",
+        "259",
+        "260",
+        "261",
+        "262",
+        "263",
+        "264",
+        "265",
+        "266"
+      ],
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 42
+        },
+        "start": {
+          "column": 52,
+          "line": 42
+        }
+      },
+      "category": "A4",
+      "assessment": "Cancelamento de stream durante hash não é isolado de throwIfAborted inicial/readFile(key) com mesmo sinal. Latência de abort no meio de ficheiro grande é lacuna; fonte transmite signal ao stream e ao readFile, sem equivalência universal.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1288",
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "testsCompleted": 18,
+      "static": false,
+      "killedBy": [],
+      "coveredBy": [
+        "249",
+        "250",
+        "251",
+        "252",
+        "253",
+        "254",
+        "255",
+        "259",
+        "260",
+        "261",
+        "262",
+        "263",
+        "264",
+        "265",
+        "266"
+      ],
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 61
+        },
+        "start": {
+          "column": 44,
+          "line": 61
+        }
+      },
+      "category": "A2",
+      "assessment": "Código de diagnóstico constante não é assertado textualmente; classe/falha fechada/sanitização mantidas. Diferença operacional observável permanece no denominador.",
+      "responsible": "agente executor delegado",
+      "task": "S05-T005"
+    }
+  ]
+}
