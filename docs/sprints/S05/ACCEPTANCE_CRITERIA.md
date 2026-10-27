@@ -1,16 +1,16 @@
 # S05 — Critérios de aceitação
 
-Critérios concretizados/aceites pelo agente antes de produto conforme [SPEC](SPEC.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[rubrica](EVALUATION_PLAN.md). AC05 PASS após T005/CI40471991297/zeroRuntimeError+NoCoverage e CLI real corrigido, com [provas e limites](T005_COMPLETION_REPORT.md). Demais critérios de produto continuam NOT_RUN, sem receber PASS por adapter/viabilidade; S05 ainda IN_PROGRESS.
+Critérios concretizados/aceites pelo agente antes de produto conforme [SPEC](SPEC.md)/[perfil](../../ai/profiles/local-extractive-v1.json)/[rubrica](EVALUATION_PLAN.md). AC05 PASS após T005/CI40471991297/zeroRuntimeError+NoCoverage e CLI real corrigido, com [provas e limites](T005_COMPLETION_REPORT.md). Atualização T006: prova composta nativa real e contratos privados demonstrados; gates integrais da fonte atual e14casos ainda pendentes/falhados, impedindo fecho. [Execuções por critério](TEST_REPORT.md), [revisão](REVIEW.md); não transferir PASS individual para sprint inteira.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
-| S05-AC01 | Estudo gerado por fornecedor real é fundamentado em fontes recuperadas e verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S05-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S05-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S05-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| S05-AC01 | Estudo gerado por fornecedor real é fundamentado em fontes recuperadas e verificáveis. | Percurso nativo95s/quote literal PASS; catorze casos T007 ainda NOT_RUN | BLOCKED |
+| S05-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Contratos selecionados/HTTP PASS; regressão integral da fonte atual requer CI após falhas locais | BLOCKED |
+| S05-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Tooling43 inclui9 arquitetura; admissões/curadorias/bancos reais e revisão T006 no TEST_REPORT | PASS |
+| S05-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Últimas regressões locais falharam; mutação atual e gate semântico pendentes, nenhum fecho | FAIL |
 | S05-AC05 | Adapter local real aplica perfil/pins/autenticação/loopback/um processo/limites/cancelamento, rejeita protocolos/resultados inválidos e distingue timeout/indisponibilidade. | RED/GREEN e protocolo técnico identificado mais chamadas reais do adapter T005; nenhuma resposta gravada como IA | PASS |
-| S05-AC06 | Índice próprio pgvector1024/ordenação exata/transação/offsets/digests e revalidação de direitos antes de inferir/entregar, inclusive revogação, sem SQL transversal. | PostgreSQL/Prisma/fontes reais T006 e avaliações integradas T007; desenvolvimento/teste isolados | NOT_RUN |
-| S05-AC07 | Análise privada aponta para versão real do estudo, grava atomicamente e não revela recurso/quote a outro owner ou fonte agora restrita; entradas/saídas estritas e erros da SPEC. | NestJS/Supertest/DB reais, acesso válido/inválido/negado e prova pós-gravação/GET | NOT_RUN |
+| S05-AC06 | Índice próprio pgvector1024/ordenação exata/transação/offsets/digests e revalidação de direitos antes de inferir/entregar, inclusive revogação, sem SQL transversal. | SQL/rights/rollback e11vetores nativos PASS; avaliações integradas T007 dependentes | BLOCKED |
+| S05-AC07 | Análise privada aponta para versão real do estudo, grava atomicamente e não revela recurso/quote a outro owner ou fonte agora restrita; entradas/saídas estritas e erros da SPEC. | Contratos HTTP32/rollback13/versões/rights técnicos e percurso HTTP nativo95s; TEST_REPORT distingue doubles e inferência | PASS |
 | S05-AC08 | Dez casos EV e quatro RG reservados conformes, zero citações irrelevantes/inventadas/injeção/violação, limitações de uma frase/uma obra explícitas. | Catorze chamadas reais pelo produto com perfil efetivo, originais/uso/tempo/proveniência e revisão por caso do agente contra fontes; sem alegar revisão humana | NOT_RUN |
 
 ## Sete gates

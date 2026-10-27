@@ -9,6 +9,7 @@ import { HealthController } from './presentation/health.controller';
 import { ErrorFilter } from './presentation/error.filter';
 import { AccessModule } from './infrastructure/access.module';
 import { StudyModule } from './modules/study/module';
+import { AiAssistantModule } from './modules/ai-assistant/module';
 
 export function configureTransport(app: INestApplication): void {
   app.useGlobalFilters(new ErrorFilter());
@@ -18,7 +19,7 @@ export function configureTransport(app: INestApplication): void {
 export async function createApplication(config: RuntimeConfig): Promise<INestApplication> {
   @Module({
     controllers: [HealthController],
-    imports: [DatabaseModule.register(config.databaseUrl), AccessModule.register(config.jwtSecret), SourceLibraryModule, BiblicalCanonModule, StudyModule],
+    imports: [DatabaseModule.register(config.databaseUrl), AccessModule.register(config.jwtSecret), SourceLibraryModule, BiblicalCanonModule, StudyModule, AiAssistantModule.register(config)],
   })
   class ApplicationModule {}
   const app = await NestFactory.create(ApplicationModule, { logger: false, abortOnError: false });

@@ -3,7 +3,7 @@ import type { ConsultedSegmentProps } from '../domain/analysis-values';
 import type { AnalysisReferenceProps } from '../domain/analysis-values';
 
 export interface AnalysisStorePort {
-  create(document: AnalysisDocument): Promise<void>;
+  create(document: AnalysisDocument, signal?: AbortSignal): Promise<void>;
   find(ownerId: string, id: string): Promise<AnalysisDocument | null>;
   delete(ownerId: string, id: string): Promise<boolean>;
 }
@@ -31,3 +31,9 @@ export interface AiStudyEvidenceRef extends EligibleAiSourceRef { readonly locat
 export interface AiStudyContext { readonly id: string; readonly version: number; readonly reference: AnalysisReferenceProps; readonly evidenceRefs: readonly AiStudyEvidenceRef[] }
 export interface StudyContextPort { read(ownerId: string, studyId: string, version: number): Promise<AiStudyContext> }
 export interface AiOperationPort { run<T>(execute: (signal: AbortSignal) => Promise<T>, signal?: AbortSignal): Promise<T> }
+export interface AiIdentityClockPort { newId(): string; now(): string }
+export interface AiAnalysisSettings {
+  readonly profileId: string; readonly promptVersion: string; readonly modelId: string; readonly modelSha256: string;
+  readonly embeddingModelId: string; readonly embeddingModelSha256: string; readonly embeddingContextLimit: number;
+  readonly contextLimit: number; readonly outputLimit: number; readonly indexProfile: AiIndexProfile;
+}

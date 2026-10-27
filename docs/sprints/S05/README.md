@@ -1,5 +1,7 @@
 # S05 — IA e RAG
 
+Estado corrente2026-10-27: T004/T005 DONE válidas; **T006 IN_PROGRESS**, código de Application/HTTP/CLI integrado e percurso nativo real PASS (11vetores/1911tokens; análise HTTP95s/quote literal/owner/GET/DELETE). Últimos gates integrais locais falharam por prazos sob pressão de recursos; checkpoint estável vai à CI sem aceite antecipado. Mutação atual/14avaliações T007 continuam pendentes. [Estado breve](../../megabrain/agent-context/project-state.md), [relatório](TEST_REPORT.md), [revisão](REVIEW.md). Entradas seguintes históricas; nenhuma nova permissão necessária.
+
 Estado2026-10-27: T004/T005 DONE técnico com gate específico integralmente cumprido na fonte f798f31/CI40471991297:1200testes/56suites/100%linhas/98,03%branches, própria90,34%/global90,57%, zeroRuntimeError/NoCoverage. T006 READY para plano e TDD; T007/14casos dependentes, S05 IN_PROGRESS/sem API de análise entregue. [Fecho corrigido](T005_COMPLETION_REPORT.md). Aceite7406a0f revogado permanece histórico; nova CI e gate automatizado resolvem ERR-0020 sem dispensa da SPEC.
 
 Estado atual2026-10-26: IN_PROGRESS, T004 DONE após viabilidade/revisão/auditorias; T005 READY para TDD com plano próprio, T006/T007 dependentes. Perfil extrativo local v6 passou dez casos da preparação dentro dos limites, contratos/pins/direitos no ficheiro normativo; adapter/produto/14casos/gates S05 ainda NOT_RUN. Não é sprint concluída. Autorização integral/sem nova permissão/uma tarefa/sem subagentes mantidas. Entradas seguintes históricas.

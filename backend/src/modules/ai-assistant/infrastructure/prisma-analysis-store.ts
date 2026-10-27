@@ -3,12 +3,18 @@ import type { AnalysisStorePort } from '../application/analysis-ports';
 import { AnalysisDocument, type AnalysisDocumentProps } from '../domain/analysis-document';
 import { requireAnalysisValue } from '../domain/analysis-values';
 import type { Prisma } from '../../../generated/prisma/client';
+import { AiUnavailableError } from '../application/errors';
 
 export class PrismaAnalysisStore implements AnalysisStorePort {
   constructor(private readonly database: Database) {}
-  async create(input: AnalysisDocument): Promise<void> {
+  async create(input: AnalysisDocument, signal?: AbortSignal): Promise<void> {
+    if (signal?.aborted) throw new AiUnavailableError();
     const document = new AnalysisDocument(input);
-    await this.database.client.aiAnalysis.create({ data: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), document: JSON.parse(JSON.stringify(document)) as Prisma.InputJsonValue, createdAt: new Date(document.createdAt) } });
+    await this.database.client.$transaction(async transaction => {
+      if (signal?.aborted) throw new AiUnavailableError();
+      await transaction.aiAnalysis.create({ data: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), document: JSON.parse(JSON.stringify(document)) as Prisma.InputJsonValue, createdAt: new Date(document.createdAt) } });
+      if (signal?.aborted) throw new AiUnavailableError();
+    });
   }
   async find(ownerId: string, id: string): Promise<AnalysisDocument | null> {
     const row = await this.database.client.aiAnalysis.findFirst({ where: { id, ownerId } });

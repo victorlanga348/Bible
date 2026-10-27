@@ -4,6 +4,7 @@ import { PrismaVectorIndex } from '../../../src/modules/ai-assistant/infrastruct
 import { AiResultRejectedError, AiUnavailableError } from '../../../src/modules/ai-assistant/application/errors';
 import type { AiIndexProfile, IndexedAiChunk } from '../../../src/modules/ai-assistant/application/analysis-ports';
 import { technicalAiIndex, technicalVector } from '../../helpers/ai-index';
+import { createServer } from 'node:net';
 
 const at = '2026-10-27T00:00:00.000Z';
 describe('actual Prisma/pgvector index, technical vectors only; no inference', () => {
@@ -14,6 +15,12 @@ describe('actual Prisma/pgvector index, technical vectors only; no inference', (
   });
   beforeEach(async () => { await database.client.embeddingProfile.deleteMany(); });
   afterAll(async () => { if (database?.client) { try { await database.client.embeddingProfile.deleteMany(); } finally { await database.client.$disconnect(); } } });
+  it.each(['readiness', 'search', 'replace'] as const)('maps actual index connection refusal to unavailability for %s without stopping any service', async operation => {
+    const socket = createServer(); await new Promise<void>(resolve => socket.listen(0, '127.0.0.1', resolve)); const address = socket.address(); if (!address || typeof address === 'string') throw new Error('Missing controlled port'); await new Promise<void>((resolve, reject) => socket.close(error => error ? reject(error) : resolve()));
+    const target = new URL(assertAiTestTarget(process.env)); target.hostname = '127.0.0.1'; target.port = String(address.port); const offline = new AiIndexDatabase(target.href); const index = new PrismaVectorIndex(offline); const { profile, chunks, eligible } = technicalAiIndex();
+    try { const call = operation === 'readiness' ? index.readiness(profile) : operation === 'search' ? index.search(profile, technicalVector(), eligible) : index.replace(profile, chunks, at); await expect(call).rejects.toThrow(AiUnavailableError); }
+    finally { await offline.onModuleDestroy(); }
+  });
   it('atomically builds the full expected metadata set and persists only profile/chunks/vectors', async () => {
     const { profile, chunks } = technicalAiIndex(); const index = new PrismaVectorIndex(database);
     expect(await index.readiness(profile)).toBe(false);

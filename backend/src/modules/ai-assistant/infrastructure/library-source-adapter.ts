@@ -17,8 +17,9 @@ export class LibraryAiSourcesAdapter implements AiSourcesPort {
       const { source, excerpt } = await this.library.getExcerpt(excerptId);
       const { permissions, ...metadata } = source;
       if ((['store', 'index', 'display', 'quote', 'sendToAi'] as const).some(right => permissions[right] !== 'allowed')) return null;
-      if (this.hash.sha256(excerpt.text) !== excerpt.textSha256) throw new AiSourceIntegrityError();
-      if (!isDeepStrictEqual(metadata, this.policy.source) || excerpt.id !== expected.excerptId || excerpt.sourceId !== expected.sourceId || excerpt.textSha256 !== expected.textSha256 || excerpt.locator !== expected.locator || excerpt.order !== expected.paragraph) return null;
+      const textSha256 = excerpt.textSha256.toLowerCase();
+      if (this.hash.sha256(excerpt.text) !== textSha256) throw new AiSourceIntegrityError();
+      if (!isDeepStrictEqual({ ...metadata, snapshotSha256: metadata.snapshotSha256.toLowerCase() }, this.policy.source) || excerpt.id !== expected.excerptId || excerpt.sourceId !== expected.sourceId || textSha256 !== expected.textSha256 || excerpt.locator !== expected.locator || excerpt.order !== expected.paragraph) return null;
       return Object.freeze({ ...expected, text: excerpt.text, attribution: source.attribution, rightsStatement: source.rightsStatement, rightsUrl: source.rightsUrl });
     } catch (error) {
       if (error instanceof SourceAccessError || error instanceof SourceNotFoundError) return null;

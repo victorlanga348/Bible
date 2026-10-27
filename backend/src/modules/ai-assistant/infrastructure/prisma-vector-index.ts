@@ -8,6 +8,14 @@ import { AiResultRejectedError, AiUnavailableError } from '../application/errors
 const key = (row: ConsultedSegmentProps): string => `${row.excerptId}/${row.id}`;
 const canonical = (rows: readonly ConsultedSegmentProps[]): ConsultedSegmentProps[] => rows.map(row => ({ ...new ConsultedSegment(row) })).sort((left, right) => key(left).localeCompare(key(right)));
 
+function indexFailure(error: unknown): never {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const metadata = error.meta as { driverAdapterError?: { cause?: { kind?: string } } } | undefined;
+    if (error.code === 'P1001' || error.code === 'P2010' && metadata?.driverAdapterError?.cause?.kind === 'DatabaseNotReachable') throw new AiUnavailableError();
+  }
+  throw error;
+}
+
 function ownedProfile(input: AiIndexProfile): AiIndexProfile {
   requireAnalysisIdentity(input.id);
   const config = input.configuration;
@@ -51,9 +59,9 @@ export class PrismaVectorIndex implements VectorIndexPort {
         INSERT INTO ai.source_chunk(profile_id,id,source_id,excerpt_id,source_digest,text_digest,start_offset,end_offset,embedding)
         VALUES(${profile.id},${row.id},${row.sourceId},${row.excerptId},${row.sourceDigest},${row.textDigest},${BigInt(row.startOffset)},${BigInt(row.endOffset)},${vector}::public.vector)`;
       return 'indexed';
-    }, { isolationLevel: 'Serializable', timeout: 10000 });
+    }, { isolationLevel: 'Serializable', timeout: 10000 }).catch(indexFailure);
   }
-  async readiness(profile: AiIndexProfile): Promise<boolean> { return ready(this.database.client, ownedProfile(profile)); }
+  async readiness(profile: AiIndexProfile): Promise<boolean> { return ready(this.database.client, ownedProfile(profile)).catch(indexFailure); }
   async search(input: AiIndexProfile, vector: readonly number[], eligible: readonly EligibleAiSourceRef[]): Promise<readonly RetrievedAiChunk[]> {
     const literal = vectorLiteral(vector); const profile = ownedProfile(input);
     if (eligible.length === 0) return Object.freeze([]);
@@ -68,6 +76,6 @@ export class PrismaVectorIndex implements VectorIndexPort {
         if (!Number.isFinite(row.distance)) throw new AiUnavailableError();
         return Object.freeze({ ...new ConsultedSegment(row), distance: row.distance });
       }));
-    }, { isolationLevel: 'RepeatableRead', timeout: 10000 });
+    }, { isolationLevel: 'RepeatableRead', timeout: 10000 }).catch(indexFailure);
   }
 }

@@ -11,9 +11,9 @@ permissions:
 jobs:
   foundation:
     runs-on: ubuntu-24.04
-    # S04 preflight:1871 candidates versus1400 in the78m46s complete S04
-    # baseline; fresh cache after harness changes requires a larger job budget.
-    timeout-minutes: 180
+    # S05 fresh-cache3273 candidates reached3215 before180min cancellation.
+    # Preserve the complete scope/checker; allow the full hosted-runner budget.
+    timeout-minutes: 360
     services:
       postgres:
         image: pgvector/pgvector:0.8.7-pg17-bookworm@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d

@@ -82,4 +82,10 @@ describe('public SourceLibrary adapter with actual PostgreSQL and authenticated 
     await database.client.sourceLibraryExcerpt.update({ where: { id: aiExcerptFixtures[0]!.id }, data: { sourceId: 'technical-unadmitted-source' } });
     expect(await (await adapter()).read(aiExcerptFixtures[0]!.id)).toBeNull();
   });
+  it.each(['snapshot', 'excerpt'] as const)('accepts case-equivalent hexadecimal %s SHA without changing the actual pinned digest or source text', async field => {
+    if (field === 'snapshot') await database.client.sourceLibrarySource.update({ where: { id: aiSourceFixture.id }, data: { snapshotSha256: aiSourceFixture.snapshotSha256.toUpperCase() } });
+    else await database.client.sourceLibraryExcerpt.update({ where: { id: aiExcerptFixtures[0]!.id }, data: { textSha256: aiExcerptFixtures[0]!.textSha256.toUpperCase() } });
+    const result = await (await adapter()).read(aiExcerptFixtures[0]!.id);
+    expect(result).not.toBeNull(); expect(result!.textSha256).toBe(aiExcerptFixtures[0]!.textSha256); expect(result!.text).toBe(aiExcerptFixtures[0]!.text);
+  });
 });

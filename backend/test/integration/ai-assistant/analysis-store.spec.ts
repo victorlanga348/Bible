@@ -4,6 +4,7 @@ import { AnalysisDocument } from '../../../src/modules/ai-assistant/domain/analy
 import { AnalysisDomainError } from '../../../src/modules/ai-assistant/domain/analysis-values';
 import { PrismaAnalysisStore } from '../../../src/modules/ai-assistant/infrastructure/prisma-analysis-store';
 import { analysisDocument, analysisQuote } from '../../helpers/ai-analysis';
+import { AiUnavailableError } from '../../../src/modules/ai-assistant/application/errors';
 
 describe('owned analysis storage, actual PostgreSQL/Prisma and no cross-module access', () => {
   let database: Database;
@@ -62,5 +63,24 @@ describe('owned analysis storage, actual PostgreSQL/Prisma and no cross-module a
     const input = analysisDocument(); const document = new AnalysisDocument({ ...input, id: input.id.toUpperCase(), studyId: input.studyId.toUpperCase() });
     const store = new PrismaAnalysisStore(database); await store.create(document);
     expect(await store.find(document.ownerId, document.id.toLowerCase())).toEqual(document);
+  });
+  it('refuses an already-cancelled write without inserting a private analysis', async () => {
+    const controller = new AbortController(); controller.abort(); const store = new PrismaAnalysisStore(database);
+    await expect(store.create(new AnalysisDocument(analysisDocument()), controller.signal)).rejects.toThrow(AiUnavailableError);
+    expect(await database.client.aiAnalysis.count()).toBe(0);
+  });
+  it('rolls back an INSERT actually started before cancellation rather than confirming a late private analysis', async () => {
+    const controller = new AbortController(); const store = new PrismaAnalysisStore(database);
+    await database.client.$executeRawUnsafe('CREATE SEQUENCE app.ai_test_insert_started');
+    await database.client.$executeRawUnsafe("CREATE FUNCTION app.ai_test_pause_insert() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN PERFORM nextval('app.ai_test_insert_started'); PERFORM pg_sleep(0.5); RETURN NEW; END $$");
+    await database.client.$executeRawUnsafe('CREATE TRIGGER ai_test_pause_insert BEFORE INSERT ON app.ai_analysis FOR EACH ROW EXECUTE FUNCTION app.ai_test_pause_insert()');
+    try {
+      const writing = store.create(new AnalysisDocument(analysisDocument()), controller.signal); const completed = writing.then(() => null, (error: unknown) => error);
+      let started = false;
+      for (let attempt = 0; attempt < 100; attempt++) { const [row] = await database.client.$queryRaw<{ is_called: boolean }[]>`SELECT is_called FROM app.ai_test_insert_started`; if (row!.is_called) { started = true; break; } await new Promise(resolve => setTimeout(resolve, 5)); }
+      controller.abort(); const failure = await completed; expect(started).toBe(true); expect(failure).toBeInstanceOf(AiUnavailableError); expect(await database.client.aiAnalysis.count()).toBe(0);
+    } finally {
+      await database.client.$executeRawUnsafe('DROP TRIGGER ai_test_pause_insert ON app.ai_analysis'); await database.client.$executeRawUnsafe('DROP FUNCTION app.ai_test_pause_insert()'); await database.client.$executeRawUnsafe('DROP SEQUENCE app.ai_test_insert_started');
+    }
   });
 });

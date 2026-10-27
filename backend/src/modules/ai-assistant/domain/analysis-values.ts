@@ -14,6 +14,9 @@ export interface EvidenceRefProps {
 export interface ConsultedSegmentProps {
   readonly id: string; readonly sourceId: string; readonly excerptId: string; readonly sourceDigest: string; readonly textDigest: string; readonly startOffset: number; readonly endOffset: number;
 }
+export function sameConsultedSegment(left: ConsultedSegmentProps, right: ConsultedSegmentProps): boolean {
+  return left.id === right.id && left.sourceId === right.sourceId && left.excerptId === right.excerptId && left.sourceDigest === right.sourceDigest && left.textDigest === right.textDigest && left.startOffset === right.startOffset && left.endOffset === right.endOffset;
+}
 export class AnalysisReference implements AnalysisReferenceProps {
   declare readonly translationId: string; declare readonly bookCode: string; declare readonly chapter: number;
   declare readonly fromVerse: number; declare readonly toVerse: number; declare readonly normalized: string;

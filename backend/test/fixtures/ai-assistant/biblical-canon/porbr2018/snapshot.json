@@ -1,0 +1,65 @@
+{
+  "translation": {
+    "id": "porbr2018",
+    "name": "Bíblia Livre",
+    "language": "pt-BR",
+    "canonId": "protestant-66",
+    "sourceUrl": "https://ebible.org/Scriptures/porbr2018_vpl.zip",
+    "sourceSha256": "1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682",
+    "retrievedAt": "2026-10-21T13:35:20.764Z",
+    "licenseId": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Bíblia Livre (BLIVRE), copyright © 2018 Diego Santos, Mario Sérgio e Marco Teles. https://ebible.org/porbr2018/ . CC BY 4.0. Aviso editorial 2022-03-08; snapshot identificado pelo SHA-256 da fonte."
+  },
+  "books": [
+    {
+      "translationId": "porbr2018",
+      "code": "GEN",
+      "name": "Gênesis",
+      "order": 1
+    }
+  ],
+  "chapters": [
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 1
+    },
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 2
+    },
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 3
+    }
+  ],
+  "verses": [
+    {
+      "bookCode": "GEN",
+      "chapter": 1,
+      "number": 1,
+      "text": "No princípio criou Deus os céus e a terra. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 7,
+      "text": "Formou, pois, o SENHOR Deus ao homem do pó da terra, e assoprou em seu nariz sopro de vida; e foi o homem em alma vivente. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 10,
+      "text": "E saía de Éden um rio para regar o jardim, e dali se repartia em quatro ramificações. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 3,
+      "number": 1,
+      "text": "Porém a serpente era astuta, mais que todos os animais do campo que o SENHOR Deus havia feito. E ela disse à mulher: Deus vos disse: Não comais de toda árvore do jardim? "
+    }
+  ]
+}
