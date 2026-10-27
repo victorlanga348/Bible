@@ -1,8 +1,8 @@
 # S05-T005 — Checkpoint de runtime, 2026-10-27
 
-T005 IN_PROGRESS. Checkpoint autorizado para publicação/CI sob delegação vigente, sem encerrar a tarefa ou S05. Planos anteriores ao código na [ficha](tasks/S05-T005-provider.md). Novos HTTP/provider/artifacts/native têm RED/GREEN e prova real; cobertura/mutação da fonte final ainda NOT_RUN. T006/T007 dependentes.
+T005 IN_PROGRESS. Checkpoint autorizado para publicação/CI sob delegação vigente, sem encerrar a tarefa ou S05. Planos anteriores ao código na [ficha](tasks/S05-T005-provider.md). Novos HTTP/provider/artifacts/native têm RED/GREEN e prova real; cobertura completa passou, mas mutação própria75,83% exige reforço e nova execução. T006/T007 dependentes.
 
-Publicado posteriormente como81a89a4ba710715d04114aa7374038c64394a037, `feat(sprint-05): manage authenticated local model execution`, push normal na feat/biblia-backend. [CI40449032546](https://github.com/victorlanga348/Bible/actions/runs/40449032546) em execução; resultado ainda não presumido.
+Publicado posteriormente como81a89a4ba710715d04114aa7374038c64394a037, `feat(sprint-05): manage authenticated local model execution`, push normal na feat/biblia-backend. [CI40449032546](https://github.com/victorlanga348/Bible/actions/runs/40449032546) concluída: global85,62%, mas própria75,83% FAIL para fecho. [Auditoria e reforços atuais](T005_MUTATION_RUNTIME_REVIEW.md).
 
 ## Prova real pelo adapter novo
 

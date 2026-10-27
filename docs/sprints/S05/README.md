@@ -1,6 +1,6 @@
 # S05 — IA e RAG
 
-Tarefa ativa2026-10-27: S05-T005 IN_PROGRESS, runtime81a89a4 real verificado,1165 testes locais/55suites PASS,99,73%linhas/96,03%branches. Mutação final em CI; T006/T007 dependentes, sem API de IA/14casos integrados ainda. [Checkpoint/provas/limites](T005_RUNTIME_CHECKPOINT.md), [plano anterior ao código](tasks/S05-T005-provider.md). T004 DONE/publicada9ba970a; autorização integral vigente. Notas seguintes históricas.
+Tarefa ativa2026-10-27: S05-T005 IN_PROGRESS, runtime81a89a4 real verificado,1165 testes locais/55suites PASS,99,73%linhas/96,03%branches. Mutação própria75,83% FAIL para fecho, reforços854unitários/estática/tooling PASS e nova CI pendente; T006/T007 dependentes, sem API de IA/14casos integrados ainda. [Checkpoint/provas/limites](T005_RUNTIME_CHECKPOINT.md), [plano anterior ao código](tasks/S05-T005-provider.md). T004 DONE/publicada9ba970a; autorização integral vigente. Notas seguintes históricas.
 
 Estado atual2026-10-26: IN_PROGRESS, T004 DONE após viabilidade/revisão/auditorias; T005 READY para TDD com plano próprio, T006/T007 dependentes. Perfil extrativo local v6 passou dez casos da preparação dentro dos limites, contratos/pins/direitos no ficheiro normativo; adapter/produto/14casos/gates S05 ainda NOT_RUN. Não é sprint concluída. Autorização integral/sem nova permissão/uma tarefa/sem subagentes mantidas. Entradas seguintes históricas.
 

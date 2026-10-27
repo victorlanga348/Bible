@@ -43,6 +43,13 @@ describe('provider coordination with an explicitly recorded technical session do
     expect(runtime.calls[0]!.body).toEqual({ content: profile.embedding.queryPrefix + 'first', add_special: true, parse_special: false });
     expect(runtime.calls[2]!.body).toEqual({ model: 'biblia-embedding', input: [profile.embedding.queryPrefix + 'first', profile.embedding.queryPrefix + 'second'] });
   });
+  it('accepts a single question embedding using an identified one-vector recording variant', async () => {
+    const runtime = new TechnicalRecordedRuntime();
+    const raw = fixture('embedding-actual') as { data: { index: number }[] }; raw.data = [raw.data[0]!];
+    runtime.responses['/v1/embeddings'] = raw;
+    await expect(new LocalModelProvider(profile, runtime).embed({ purpose: 'question', texts: ['technical query'] })).resolves.toMatchObject({ vectors: [expect.any(Array)] });
+    expect(runtime.calls.filter(call => call.endpoint === '/tokenize')).toHaveLength(1);
+  });
   it('snapshots source inputs before asynchronous tokenizer work', async () => {
     const runtime = new TechnicalRecordedRuntime(); const texts = ['first', 'second'];
     const pending = new LocalModelProvider(profile, runtime).embed({ purpose: 'source', texts });
@@ -109,7 +116,7 @@ describe('provider coordination with an explicitly recorded technical session do
     await expect(new LocalModelProvider(profile, runtime).select(new AiQuestion('technical'), [source()])).rejects.toBeInstanceOf(AiResultRejectedError);
     expect(runtime.calls.map(call => call.endpoint)).toEqual(['/apply-template', '/tokenize']);
   });
-  it.each([{}, { prompt: '' }, { prompt: 12 }])('rejects invalid rendered template %j', async response => {
+  it.each([{}, { prompt: '' }, { prompt: ' \t\r\n' }, { prompt: 12 }])('rejects invalid rendered template %j', async response => {
     const runtime = new TechnicalRecordedRuntime(); runtime.responses['/apply-template'] = response;
     await expect(new LocalModelProvider(profile, runtime).select(new AiQuestion('technical'), [source()])).rejects.toBeInstanceOf(AiUnavailableError);
     expect(runtime.calls).toHaveLength(1);

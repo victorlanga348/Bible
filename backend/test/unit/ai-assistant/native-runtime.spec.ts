@@ -15,7 +15,7 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
     const home = await mkdtemp(join(reports, 'native-runtime-test-')); homes.push(home);
     const key = randomBytes(36).toString('base64url'); await writeFile(join(home, 'runtime.key'), key + '\n');
     const original = JSON.parse(await readFile('admissions/local-extractive-v1.json', 'utf8')) as InstalledRuntimeProfile;
-    const profile: InstalledRuntimeProfile = { ...original, id: 'technical-process-policy', runtime: { ...original.runtime, engineCommit: 'technical-native-runtime-1' } };
+    const profile: InstalledRuntimeProfile = { ...original, id: 'technical-process-policy', runtime: { ...original.runtime, engineCommit: 'technical-native-runtime-1', environmentAllowlist: [...original.runtime.environmentAllowlist, 'BiBlE_TeCh_AlLoWeD_MaRkEr'] } };
     let verifications = 0;
     const artifacts: RuntimeArtifactPort = { home, profile, verify: async (): Promise<VerifiedModelFiles> => {
       verifications++;
@@ -35,13 +35,15 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
     }
   });
   it('loads only its own child, authenticates, sanitizes env/argv and stops it before releasing the lock', async () => {
-    const { home, runtime, key } = await make(); const prior = process.env.BIBLE_TECH_PRIVATE_MARKER;
+    const { home, runtime, key } = await make(); const prior = process.env.BIBLE_TECH_PRIVATE_MARKER; const priorAllowed = process.env.BIBLE_TECH_ALLOWED_MARKER;
     process.env.BIBLE_TECH_PRIVATE_MARKER = 'technical-private-value';
+    process.env.BIBLE_TECH_ALLOWED_MARKER = 'technical-allowed-value';
     try {
       const value = await runtime.run('generation', async session => ({ version: session.runtimeVersion, response: await session.post('/tokenize', { content: 'technical' }, 8192) }));
       expect(value.version).toBe('technical-native-runtime-1');
-      const output = value.response as { authenticated: boolean; envLeaked: boolean; argv: string[] };
+      const output = value.response as { authenticated: boolean; envLeaked: boolean; allowedMarker: string; argv: string[] };
       expect(output.authenticated).toBe(true); expect(output.envLeaked).toBe(false);
+      expect(output.allowedMarker).toBe('technical-allowed-value');
       expect(output.argv.includes(key)).toBe(false);
       expect(output.argv).toEqual(expect.arrayContaining(['--offline', '--no-context-shift', '--no-webui', '--no-agent', '--api-key-file', join(home, 'runtime.key')]));
       const options = ['--model', '--alias', '--host', '--ctx-size', '--parallel', '--threads', '--threads-batch', '--batch-size', '--ubatch-size', '--n-gpu-layers', '--timeout', '--chat-template-kwargs'];
@@ -50,13 +52,18 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
       });
       expect(output.argv).not.toContain('--embedding');
       await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
-    } finally { if (prior === undefined) delete process.env.BIBLE_TECH_PRIVATE_MARKER; else process.env.BIBLE_TECH_PRIVATE_MARKER = prior; }
+    } finally {
+      if (prior === undefined) delete process.env.BIBLE_TECH_PRIVATE_MARKER; else process.env.BIBLE_TECH_PRIVATE_MARKER = prior;
+      if (priorAllowed === undefined) delete process.env.BIBLE_TECH_ALLOWED_MARKER; else process.env.BIBLE_TECH_ALLOWED_MARKER = priorAllowed;
+    }
   });
   it('selects dedicated embedding flags and can start another session after cleanup', async () => {
     const { home, runtime } = await make();
     for (let pass = 0; pass < 2; pass++) {
       const data = await runtime.run('embedding', session => session.post('/tokenize', {}, 8192)) as { argv: string[] };
       expect(data.argv).toEqual(expect.arrayContaining(['--embedding', '--pooling', 'last', '--ctx-size', '1024']));
+      expect(data.argv[data.argv.indexOf('--alias') + 1]).toBe('biblia-embedding');
+      expect(data.argv).not.toContain('--chat-template-kwargs');
       await childStopped(home);
     }
   });
@@ -85,8 +92,34 @@ describe('owned native lifecycle using a technical Node child, never AI', () => 
   });
   it.each(['never-listen', 'unhealthy'])('bounds readiness for %s and stops only the created child', async mode => {
     const { home, runtime } = await make(mode, { readinessMs: 1000 });
+    const started = performance.now();
     await expect(runtime.run('generation', async () => true)).rejects.toBeInstanceOf(AiTimeoutError);
+    expect(performance.now() - started).toBeLessThan(4000);
     await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
+  });
+  it('requires ownership confirmation even when an unconfirmed technical child can answer health', async () => {
+    const { home, runtime } = await make('unconfirmed-listener', { readinessMs: 500 }); let called = false;
+    await expect(runtime.run('generation', async () => { called = true; })).rejects.toBeInstanceOf(AiTimeoutError);
+    expect(called).toBe(false); await childStopped(home);
+  });
+  it('accepts ownership confirmation on stdout as well as stderr and records a unique PID lease', async () => {
+    const { home, runtime } = await make('listen-stdout');
+    await runtime.run('generation', async () => {
+      const lease: unknown = JSON.parse(await readFile(join(home, '.biblia-ai.lock'), 'utf8'));
+      expect(lease).toMatchObject({ pid: process.pid, nonce: expect.stringMatching(/^[0-9a-f-]{36}$/) });
+    });
+    await childStopped(home);
+  });
+  it('honors caller cancellation during the callback before it installs its response listener', async () => {
+    const { home, runtime } = await make(); const controller = new AbortController();
+    await expect(runtime.run('generation', async () => { controller.abort('technical private reason'); return new Promise<never>(() => {}); }, controller.signal)).rejects.toMatchObject({ message: 'AI_RUNTIME_CANCELLED' });
+    await childStopped(home); expect(await missing(join(home, '.biblia-ai.lock'))).toBe(true);
+  });
+  it('accepts the approved default timing limits and the positive lower boundary without launching a child', async () => {
+    const { artifacts } = await make();
+    for (const timing of [undefined, { readinessMs: 1, requestMs: 1, operationMs: 1, stopMs: 1, pollMs: 1 }]) {
+      const runtime = new NativeRuntime(artifacts, timing); runtimes.push(runtime); await runtime.close();
+    }
   });
   it('bounds even an uncooperative asynchronous callback and cleans up its child', async () => {
     const { home, runtime } = await make('normal', { operationMs: 1200 });

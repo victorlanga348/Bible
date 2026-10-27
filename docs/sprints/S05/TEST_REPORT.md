@@ -1,6 +1,6 @@
 # S05 — Relatório de testes
 
-Checkpoint2026-10-27: runtime implementado,824 unitários/26suites/estática/build/24tooling PASS e CLI real PASS154,23159s/12 pedidos. CI40444290178 resolveu empacotamento,1038 testes e mutação global91,3338%/própria95,4774%, mas não cobre os novos ficheiros. T005 IN_PROGRESS/gates finais pendentes. [Provas, comandos, fontes, contagens e limites](T005_RUNTIME_CHECKPOINT.md). Notas seguintes históricas.
+Estado2026-10-27: CI40449032546/81a89a4 completou1165 testes/55suites/99,91%linhas/96,32%branches e mutação global85,6186%, mas recorte próprio75,8308% FAIL para fechar T005.59 fontes/digests conferidos,148Survived/12NoCoverage/8Timeout próprios/zeroRuntimeError. Regressões reforçadas854unitários/26suites/24tooling/estática PASS; fonte de produção inalterada, nova CI necessária. [Auditoria e plano corretivo de testes](T005_MUTATION_RUNTIME_REVIEW.md). Prova real do adapter154,23159s continua válida; T005/S05 IN_PROGRESS, T006/T007 dependentes.
 
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 

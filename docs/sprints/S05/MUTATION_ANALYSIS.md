@@ -1,6 +1,6 @@
 # S05 — Análise incremental de mutação
 
-Atualização2026-10-27: CI40444290178/fonte2daad433 PASS, global1349/1477=91,33378469871361%, próprio190/199=95,47738693467336%, zero RuntimeError/NoCoverage.55 fontes/digests conferidos, nove sobreviventes analisados, cinco lacunas com regressões pós-mutação e quatro equivalentes conservados. [Auditoria e análise causal completas](T005_RUNTIME_CHECKPOINT.md). Novos ficheiros HTTP/native/provider/artifacts ainda precisam de mutação própria; não herdar estes scores. Histórico Domain abaixo preservado.
+Fonte81a89a4/CI40449032546: global1661/1940=85,61855670103093%, própria502/662=75,83081570996978%, esta última FAIL para fecho T005.148Survived/12NoCoverage/8Timeout próprios, zeroRuntimeError;59 fontes/ZIP/digests conferidos. [Revisão corrente](T005_MUTATION_RUNTIME_REVIEW.md), [estados originais por mutante](evidence/T005-runtime-mutation-81a89a4.json). Novas regressões854unitários/estática/tooling PASS ainda precisam de Stryker; nenhuma exclusão/edição de cache/estado ou redução de limiar. Histórico Domain abaixo preservado.
 
 ## Checkpoint Domain f04e1ad, CI40371545025
 

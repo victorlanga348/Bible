@@ -1,0 +1,3146 @@
+{
+  "run": "40449032546",
+  "sha": "81a89a4ba710715d04114aa7374038c64394a037",
+  "reportSha256": "09280e337d58e4ca06ea12a33dd793ef3df4506f9e86a956c41d04bcc5718c2b",
+  "sourceFilesMatchedCommitAndCurrent": 59,
+  "global": {
+    "counts": {
+      "Killed": 1623,
+      "CompileError": 862,
+      "Survived": 267,
+      "Timeout": 38,
+      "NoCoverage": 12
+    },
+    "detected": 1661,
+    "valid": 1940,
+    "rawScore": 85.61855670103093,
+    "runtimeErrors": 0,
+    "noCoverage": 12
+  },
+  "moduleOwn": {
+    "counts": {
+      "Killed": 494,
+      "CompileError": 245,
+      "Survived": 148,
+      "NoCoverage": 12,
+      "Timeout": 8
+    },
+    "detected": 502,
+    "valid": 662,
+    "rawScore": 75.83081570996978,
+    "runtimeErrors": 0,
+    "noCoverage": 12
+  },
+  "perFile": {
+    "src/modules/ai-assistant/domain/model-input.ts": {
+      "Killed": 103,
+      "CompileError": 24,
+      "Survived": 3
+    },
+    "src/modules/ai-assistant/infrastructure/prompt.ts": {
+      "Killed": 26,
+      "CompileError": 6
+    },
+    "src/modules/ai-assistant/infrastructure/protocol.ts": {
+      "CompileError": 41,
+      "Killed": 66,
+      "Survived": 1
+    },
+    "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts": {
+      "Killed": 46,
+      "CompileError": 31,
+      "Survived": 25
+    },
+    "src/modules/ai-assistant/infrastructure/http-client.ts": {
+      "Killed": 81,
+      "CompileError": 54,
+      "Survived": 24,
+      "NoCoverage": 3,
+      "Timeout": 1
+    },
+    "src/modules/ai-assistant/infrastructure/local-model-provider.ts": {
+      "CompileError": 33,
+      "Killed": 54,
+      "Survived": 3
+    },
+    "src/modules/ai-assistant/infrastructure/native-runtime.ts": {
+      "CompileError": 56,
+      "NoCoverage": 9,
+      "Timeout": 7,
+      "Survived": 92,
+      "Killed": 118
+    }
+  },
+  "coverage": {
+    "lines": {
+      "total": 1138,
+      "covered": 1137,
+      "skipped": 0,
+      "pct": 99.91
+    },
+    "statements": {
+      "total": 1499,
+      "covered": 1485,
+      "skipped": 0,
+      "pct": 99.06
+    },
+    "functions": {
+      "total": 266,
+      "covered": 264,
+      "skipped": 0,
+      "pct": 99.24
+    },
+    "branches": {
+      "total": 707,
+      "covered": 681,
+      "skipped": 0,
+      "pct": 96.32
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "moduleCoverage": {
+    "lines": {
+      "covered": 272,
+      "total": 273
+    },
+    "branches": {
+      "covered": 244,
+      "total": 261
+    }
+  },
+  "artifactId": 12710278245,
+  "artifactBytes": 1417770,
+  "artifactSha256": "c403ba97d5b10683ea980eaf9ac19b5f1503d6662bc8d1361372e184d47c4eb6",
+  "reviewState": "Original statuses preserved. Own scope FAIL; final survivor review and re-evaluation pending.",
+  "ownNonKilledValidMutants": [
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "360",
+      "location": {
+        "end": {
+          "column": 116,
+          "line": 6
+        },
+        "start": {
+          "column": 114,
+          "line": 6
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "411",
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 21
+        },
+        "start": {
+          "column": 168,
+          "line": 21
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/domain/model-input.ts",
+      "id": "412",
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 21
+        },
+        "start": {
+          "column": 168,
+          "line": 21
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "input.end < input.start",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/protocol.ts",
+      "id": "1165",
+      "location": {
+        "end": {
+          "column": 116,
+          "line": 47
+        },
+        "start": {
+          "column": 89,
+          "line": 47
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "Math.abs(norm - 1) >= 0.0001",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1188",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 9,
+          "line": 22
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1189",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 9,
+          "line": 22
+        }
+      },
+      "mutatorName": "LogicalOperator",
+      "replacement": "!metadata.isFile() && metadata.size !== 9704",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1191",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 22
+        },
+        "start": {
+          "column": 31,
+          "line": 22
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1195",
+      "location": {
+        "end": {
+          "column": 128,
+          "line": 24
+        },
+        "start": {
+          "column": 9,
+          "line": 24
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1204",
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 27
+        },
+        "start": {
+          "column": 42,
+          "line": 27
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1205",
+      "location": {
+        "end": {
+          "column": 2,
+          "line": 32
+        },
+        "start": {
+          "column": 53,
+          "line": 29
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1207",
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1208",
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "mutatorName": "LogicalOperator",
+      "replacement": "(path === '..' || path.startsWith('..' + sep)) && isAbsolute(path)",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1209",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1210",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "mutatorName": "LogicalOperator",
+      "replacement": "path === '..' && path.startsWith('..' + sep)",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1211",
+      "location": {
+        "end": {
+          "column": 20,
+          "line": 31
+        },
+        "start": {
+          "column": 7,
+          "line": 31
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1213",
+      "location": {
+        "end": {
+          "column": 20,
+          "line": 31
+        },
+        "start": {
+          "column": 16,
+          "line": 31
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1214",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 31
+        },
+        "start": {
+          "column": 24,
+          "line": 31
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "path.endsWith('..' + sep)",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1215",
+      "location": {
+        "end": {
+          "column": 44,
+          "line": 31
+        },
+        "start": {
+          "column": 40,
+          "line": 31
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1218",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 34
+        },
+        "start": {
+          "column": 42,
+          "line": 34
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1219",
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 35
+        },
+        "start": {
+          "column": 43,
+          "line": 35
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1222",
+      "location": {
+        "end": {
+          "column": 25,
+          "line": 37
+        },
+        "start": {
+          "column": 7,
+          "line": 37
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1227",
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 42
+        },
+        "start": {
+          "column": 52,
+          "line": 42
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1242",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 51
+        },
+        "start": {
+          "column": 52,
+          "line": 51
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1244",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 51
+        },
+        "start": {
+          "column": 52,
+          "line": 51
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "file.path !== this.profile.runtime.executable",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1252",
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 57
+        },
+        "start": {
+          "column": 11,
+          "line": 57
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1253",
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 57
+        },
+        "start": {
+          "column": 11,
+          "line": 57
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "keyFile.bytes >= 1024",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1265",
+      "location": {
+        "end": {
+          "column": 26,
+          "line": 59
+        },
+        "start": {
+          "column": 11,
+          "line": 59
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "key.length <= 32",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1268",
+      "location": {
+        "end": {
+          "column": 46,
+          "line": 59
+        },
+        "start": {
+          "column": 30,
+          "line": 59
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "key.length >= 128",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/runtime-artifacts.ts",
+      "id": "1276",
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 61
+        },
+        "start": {
+          "column": 44,
+          "line": 61
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "480",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 4
+        },
+        "start": {
+          "column": 49,
+          "line": 4
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "481",
+      "location": {
+        "end": {
+          "column": 84,
+          "line": 4
+        },
+        "start": {
+          "column": 68,
+          "line": 4
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "482",
+      "location": {
+        "end": {
+          "column": 108,
+          "line": 4
+        },
+        "start": {
+          "column": 86,
+          "line": 4
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "514",
+      "location": {
+        "end": {
+          "column": 110,
+          "line": 10
+        },
+        "start": {
+          "column": 90,
+          "line": 10
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "Number(url.port) <= 1",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "523",
+      "location": {
+        "end": {
+          "column": 245,
+          "line": 10
+        },
+        "start": {
+          "column": 220,
+          "line": 10
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "524",
+      "location": {
+        "end": {
+          "column": 245,
+          "line": 10
+        },
+        "start": {
+          "column": 220,
+          "line": 10
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "base === url.origin + '/'",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "525",
+      "location": {
+        "end": {
+          "column": 245,
+          "line": 10
+        },
+        "start": {
+          "column": 242,
+          "line": 10
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "516",
+      "location": {
+        "end": {
+          "column": 166,
+          "line": 10
+        },
+        "start": {
+          "column": 146,
+          "line": 10
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "519",
+      "location": {
+        "end": {
+          "column": 245,
+          "line": 10
+        },
+        "start": {
+          "column": 197,
+          "line": 10
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "539",
+      "location": {
+        "end": {
+          "column": 24,
+          "line": 11
+        },
+        "start": {
+          "column": 9,
+          "line": 11
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "key.length <= 32",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "542",
+      "location": {
+        "end": {
+          "column": 44,
+          "line": 11
+        },
+        "start": {
+          "column": 28,
+          "line": 11
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "key.length >= 128",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "547",
+      "location": {
+        "end": {
+          "column": 127,
+          "line": 11
+        },
+        "start": {
+          "column": 114,
+          "line": 11
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "timeoutMs <= 1",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "550",
+      "location": {
+        "end": {
+          "column": 149,
+          "line": 11
+        },
+        "start": {
+          "column": 131,
+          "line": 11
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "timeoutMs >= 120000",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "566",
+      "location": {
+        "end": {
+          "column": 100,
+          "line": 15
+        },
+        "start": {
+          "column": 80,
+          "line": 15
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "maxResponseBytes <= 1",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "574",
+      "location": {
+        "end": {
+          "column": 85,
+          "line": 17
+        },
+        "start": {
+          "column": 71,
+          "line": 17
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "578",
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 21
+        },
+        "start": {
+          "column": 11,
+          "line": 21
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "586",
+      "location": {
+        "end": {
+          "column": 140,
+          "line": 22
+        },
+        "start": {
+          "column": 122,
+          "line": 22
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "601",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 26
+        },
+        "start": {
+          "column": 9,
+          "line": 26
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "603",
+      "location": {
+        "end": {
+          "column": 76,
+          "line": 28
+        },
+        "start": {
+          "column": 11,
+          "line": 28
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "604",
+      "location": {
+        "end": {
+          "column": 76,
+          "line": 28
+        },
+        "start": {
+          "column": 11,
+          "line": 28
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "Number(response.headers.get('content-length')) >= maxResponseBytes",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "607",
+      "location": {
+        "end": {
+          "column": 144,
+          "line": 28
+        },
+        "start": {
+          "column": 78,
+          "line": 28
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "609",
+      "location": {
+        "end": {
+          "column": 142,
+          "line": 28
+        },
+        "start": {
+          "column": 111,
+          "line": 28
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "618",
+      "location": {
+        "end": {
+          "column": 10,
+          "line": 39
+        },
+        "start": {
+          "column": 18,
+          "line": 33
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Timeout",
+      "statusReason": "Hit limit reached (2009/2000)"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "624",
+      "location": {
+        "end": {
+          "column": 38,
+          "line": 37
+        },
+        "start": {
+          "column": 15,
+          "line": 37
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "size >= maxResponseBytes",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "629",
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 40
+        },
+        "start": {
+          "column": 17,
+          "line": 40
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "630",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 40
+        },
+        "start": {
+          "column": 19,
+          "line": 40
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "639",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 46
+        },
+        "start": {
+          "column": 15,
+          "line": 46
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/http-client.ts",
+      "id": "640",
+      "location": {
+        "end": {
+          "column": 37,
+          "line": 46
+        },
+        "start": {
+          "column": 17,
+          "line": 46
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/local-model-provider.ts",
+      "id": "649",
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 11
+        },
+        "start": {
+          "column": 63,
+          "line": 11
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "text",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/local-model-provider.ts",
+      "id": "672",
+      "location": {
+        "end": {
+          "column": 119,
+          "line": 22
+        },
+        "start": {
+          "column": 95,
+          "line": 22
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "request.texts.length <= 1",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/local-model-provider.ts",
+      "id": "713",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 34
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "755",
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 24
+        },
+        "start": {
+          "column": 68,
+          "line": 24
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "793",
+      "location": {
+        "end": {
+          "column": 107,
+          "line": 37
+        },
+        "start": {
+          "column": 79,
+          "line": 37
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "839",
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 62
+        },
+        "start": {
+          "column": 47,
+          "line": 62
+        }
+      },
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "732",
+      "location": {
+        "end": {
+          "column": 121,
+          "line": 17
+        },
+        "start": {
+          "column": 48,
+          "line": 17
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "734",
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 17
+        },
+        "start": {
+          "column": 62,
+          "line": 17
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "736",
+      "location": {
+        "end": {
+          "column": 108,
+          "line": 17
+        },
+        "start": {
+          "column": 97,
+          "line": 17
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "737",
+      "location": {
+        "end": {
+          "column": 104,
+          "line": 19
+        },
+        "start": {
+          "column": 27,
+          "line": 19
+        }
+      },
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "963",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 105
+        },
+        "start": {
+          "column": 33,
+          "line": 105
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "964",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 105
+        },
+        "start": {
+          "column": 44,
+          "line": 105
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1002",
+      "location": {
+        "end": {
+          "column": 98,
+          "line": 116
+        },
+        "start": {
+          "column": 71,
+          "line": 116
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1003",
+      "location": {
+        "end": {
+          "column": 84,
+          "line": 117
+        },
+        "start": {
+          "column": 27,
+          "line": 117
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1004",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 117
+        },
+        "start": {
+          "column": 33,
+          "line": 117
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1005",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 117
+        },
+        "start": {
+          "column": 33,
+          "line": 117
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "NoCoverage",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "738",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 19
+        },
+        "start": {
+          "column": 61,
+          "line": 19
+        }
+      },
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "749",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 24
+        },
+        "start": {
+          "column": 7,
+          "line": 24
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "750",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 24
+        },
+        "start": {
+          "column": 7,
+          "line": 24
+        }
+      },
+      "mutatorName": "LogicalOperator",
+      "replacement": "child.exitCode !== null && child.signalCode !== null",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "751",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 24
+        },
+        "start": {
+          "column": 7,
+          "line": 24
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "753",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 24
+        },
+        "start": {
+          "column": 34,
+          "line": 24
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "761",
+      "location": {
+        "end": {
+          "column": 125,
+          "line": 28
+        },
+        "start": {
+          "column": 51,
+          "line": 28
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "764",
+      "location": {
+        "end": {
+          "column": 123,
+          "line": 28
+        },
+        "start": {
+          "column": 109,
+          "line": 28
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "762",
+      "location": {
+        "end": {
+          "column": 92,
+          "line": 28
+        },
+        "start": {
+          "column": 72,
+          "line": 28
+        }
+      },
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "767",
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 30
+        },
+        "start": {
+          "column": 11,
+          "line": 30
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "768",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 30
+        },
+        "start": {
+          "column": 13,
+          "line": 30
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "770",
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 30
+        },
+        "start": {
+          "column": 55,
+          "line": 30
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "779",
+      "location": {
+        "end": {
+          "column": 45,
+          "line": 33
+        },
+        "start": {
+          "column": 22,
+          "line": 33
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "781",
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 33
+        },
+        "start": {
+          "column": 49,
+          "line": 33
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "786",
+      "location": {
+        "end": {
+          "column": 47,
+          "line": 35
+        },
+        "start": {
+          "column": 7,
+          "line": 35
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "791",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 37
+        },
+        "start": {
+          "column": 7,
+          "line": 37
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "796",
+      "location": {
+        "end": {
+          "column": 21,
+          "line": 40
+        },
+        "start": {
+          "column": 7,
+          "line": 40
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "766",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 29
+        },
+        "start": {
+          "column": 35,
+          "line": 29
+        }
+      },
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "797",
+      "location": {
+        "end": {
+          "column": 4,
+          "line": 45
+        },
+        "start": {
+          "column": 46,
+          "line": 41
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "801",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 43
+        },
+        "start": {
+          "column": 47,
+          "line": 43
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "802",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 43
+        },
+        "start": {
+          "column": 55,
+          "line": 43
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "804",
+      "location": {
+        "end": {
+          "column": 90,
+          "line": 44
+        },
+        "start": {
+          "column": 40,
+          "line": 44
+        }
+      },
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "805",
+      "location": {
+        "end": {
+          "column": 80,
+          "line": 44
+        },
+        "start": {
+          "column": 73,
+          "line": 44
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "824",
+      "location": {
+        "end": {
+          "column": 134,
+          "line": 57
+        },
+        "start": {
+          "column": 114,
+          "line": 57
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "this.timing[key] <= 1",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "830",
+      "location": {
+        "end": {
+          "column": 228,
+          "line": 57
+        },
+        "start": {
+          "column": 201,
+          "line": 57
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "827",
+      "location": {
+        "end": {
+          "column": 169,
+          "line": 57
+        },
+        "start": {
+          "column": 138,
+          "line": 57
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "this.timing[key] >= maximum[key]",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "838",
+      "location": {
+        "end": {
+          "column": 128,
+          "line": 60
+        },
+        "start": {
+          "column": 101,
+          "line": 60
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "842",
+      "location": {
+        "end": {
+          "column": 65,
+          "line": 65
+        },
+        "start": {
+          "column": 43,
+          "line": 65
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "853",
+      "location": {
+        "end": {
+          "column": 18,
+          "line": 75
+        },
+        "start": {
+          "column": 11,
+          "line": 75
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "863",
+      "location": {
+        "end": {
+          "column": 84,
+          "line": 79
+        },
+        "start": {
+          "column": 44,
+          "line": 79
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "866",
+      "location": {
+        "end": {
+          "column": 94,
+          "line": 83
+        },
+        "start": {
+          "column": 80,
+          "line": 83
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "869",
+      "location": {
+        "end": {
+          "column": 76,
+          "line": 86
+        },
+        "start": {
+          "column": 35,
+          "line": 86
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "871",
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 89
+        },
+        "start": {
+          "column": 7,
+          "line": 89
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "873",
+      "location": {
+        "end": {
+          "column": 88,
+          "line": 91
+        },
+        "start": {
+          "column": 64,
+          "line": 91
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "875",
+      "location": {
+        "end": {
+          "column": 113,
+          "line": 92
+        },
+        "start": {
+          "column": 95,
+          "line": 92
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "name.toLowerCase()",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "877",
+      "location": {
+        "end": {
+          "column": 124,
+          "line": 93
+        },
+        "start": {
+          "column": 81,
+          "line": 93
+        }
+      },
+      "mutatorName": "ArrowFunction",
+      "replacement": "() => undefined",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "878",
+      "location": {
+        "end": {
+          "column": 123,
+          "line": 93
+        },
+        "start": {
+          "column": 105,
+          "line": 93
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "name.toLowerCase()",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "881",
+      "location": {
+        "end": {
+          "column": 228,
+          "line": 94
+        },
+        "start": {
+          "column": 98,
+          "line": 94
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "882",
+      "location": {
+        "end": {
+          "column": 161,
+          "line": 94
+        },
+        "start": {
+          "column": 157,
+          "line": 94
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "889",
+      "location": {
+        "end": {
+          "column": 133,
+          "line": 95
+        },
+        "start": {
+          "column": 105,
+          "line": 95
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "890",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 96
+        },
+        "start": {
+          "column": 43,
+          "line": 96
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "891",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 97
+        },
+        "start": {
+          "column": 23,
+          "line": 97
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "896",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 98
+        },
+        "start": {
+          "column": 42,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "897",
+      "location": {
+        "end": {
+          "column": 75,
+          "line": 98
+        },
+        "start": {
+          "column": 66,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "898",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 98
+        },
+        "start": {
+          "column": 77,
+          "line": 98
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "899",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 98
+        },
+        "start": {
+          "column": 77,
+          "line": 98
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "900",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 98
+        },
+        "start": {
+          "column": 77,
+          "line": 98
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "kind !== 'embedding'",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "902",
+      "location": {
+        "end": {
+          "column": 118,
+          "line": 98
+        },
+        "start": {
+          "column": 100,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "903",
+      "location": {
+        "end": {
+          "column": 140,
+          "line": 98
+        },
+        "start": {
+          "column": 121,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "904",
+      "location": {
+        "end": {
+          "column": 150,
+          "line": 98
+        },
+        "start": {
+          "column": 142,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "905",
+      "location": {
+        "end": {
+          "column": 163,
+          "line": 98
+        },
+        "start": {
+          "column": 152,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "879",
+      "location": {
+        "end": {
+          "column": 96,
+          "line": 94
+        },
+        "start": {
+          "column": 62,
+          "line": 94
+        }
+      },
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Timeout",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "909",
+      "location": {
+        "end": {
+          "column": 265,
+          "line": 98
+        },
+        "start": {
+          "column": 253,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "910",
+      "location": {
+        "end": {
+          "column": 270,
+          "line": 98
+        },
+        "start": {
+          "column": 267,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "911",
+      "location": {
+        "end": {
+          "column": 283,
+          "line": 98
+        },
+        "start": {
+          "column": 272,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "912",
+      "location": {
+        "end": {
+          "column": 288,
+          "line": 98
+        },
+        "start": {
+          "column": 285,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "913",
+      "location": {
+        "end": {
+          "column": 307,
+          "line": 98
+        },
+        "start": {
+          "column": 290,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "914",
+      "location": {
+        "end": {
+          "column": 312,
+          "line": 98
+        },
+        "start": {
+          "column": 309,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "915",
+      "location": {
+        "end": {
+          "column": 328,
+          "line": 98
+        },
+        "start": {
+          "column": 314,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "916",
+      "location": {
+        "end": {
+          "column": 335,
+          "line": 98
+        },
+        "start": {
+          "column": 330,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "917",
+      "location": {
+        "end": {
+          "column": 352,
+          "line": 98
+        },
+        "start": {
+          "column": 337,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "918",
+      "location": {
+        "end": {
+          "column": 359,
+          "line": 98
+        },
+        "start": {
+          "column": 354,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "919",
+      "location": {
+        "end": {
+          "column": 377,
+          "line": 98
+        },
+        "start": {
+          "column": 361,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "920",
+      "location": {
+        "end": {
+          "column": 382,
+          "line": 98
+        },
+        "start": {
+          "column": 379,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "921",
+      "location": {
+        "end": {
+          "column": 395,
+          "line": 98
+        },
+        "start": {
+          "column": 384,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "922",
+      "location": {
+        "end": {
+          "column": 402,
+          "line": 98
+        },
+        "start": {
+          "column": 397,
+          "line": 98
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "927",
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 99
+        },
+        "start": {
+          "column": 11,
+          "line": 99
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "936",
+      "location": {
+        "end": {
+          "column": 46,
+          "line": 100
+        },
+        "start": {
+          "column": 22,
+          "line": 100
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "937",
+      "location": {
+        "end": {
+          "column": 132,
+          "line": 100
+        },
+        "start": {
+          "column": 63,
+          "line": 100
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "938",
+      "location": {
+        "end": {
+          "column": 159,
+          "line": 101
+        },
+        "start": {
+          "column": 45,
+          "line": 101
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "940",
+      "location": {
+        "end": {
+          "column": 122,
+          "line": 101
+        },
+        "start": {
+          "column": 118,
+          "line": 101
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "941",
+      "location": {
+        "end": {
+          "column": 157,
+          "line": 101
+        },
+        "start": {
+          "column": 131,
+          "line": 101
+        }
+      },
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "946",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 102
+        },
+        "start": {
+          "column": 43,
+          "line": 102
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "947",
+      "location": {
+        "end": {
+          "column": 63,
+          "line": 102
+        },
+        "start": {
+          "column": 61,
+          "line": 102
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "949",
+      "location": {
+        "end": {
+          "column": 94,
+          "line": 103
+        },
+        "start": {
+          "column": 50,
+          "line": 103
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "tail + chunk.toString('utf8')",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "953",
+      "location": {
+        "end": {
+          "column": 154,
+          "line": 103
+        },
+        "start": {
+          "column": 100,
+          "line": 103
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "955",
+      "location": {
+        "end": {
+          "column": 153,
+          "line": 103
+        },
+        "start": {
+          "column": 114,
+          "line": 103
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "``",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "958",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 104
+        },
+        "start": {
+          "column": 24,
+          "line": 104
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "962",
+      "location": {
+        "end": {
+          "column": 25,
+          "line": 105
+        },
+        "start": {
+          "column": 18,
+          "line": 105
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "970",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 120
+        },
+        "start": {
+          "column": 16,
+          "line": 107
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Timeout",
+      "statusReason": "Hit limit reached (13212/13200)"
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "971",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 108
+        },
+        "start": {
+          "column": 9,
+          "line": 108
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "975",
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 109
+        },
+        "start": {
+          "column": 50,
+          "line": 109
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "978",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 110
+        },
+        "start": {
+          "column": 13,
+          "line": 110
+        }
+      },
+      "mutatorName": "EqualityOperator",
+      "replacement": "performance.now() - started > this.timing.readinessMs",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "982",
+      "location": {
+        "end": {
+          "column": 22,
+          "line": 111
+        },
+        "start": {
+          "column": 13,
+          "line": 111
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "977",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 110
+        },
+        "start": {
+          "column": 13,
+          "line": 110
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "987",
+      "location": {
+        "end": {
+          "column": 195,
+          "line": 113
+        },
+        "start": {
+          "column": 77,
+          "line": 113
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "989",
+      "location": {
+        "end": {
+          "column": 192,
+          "line": 113
+        },
+        "start": {
+          "column": 122,
+          "line": 113
+        }
+      },
+      "mutatorName": "ArrayDeclaration",
+      "replacement": "[]",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "990",
+      "location": {
+        "end": {
+          "column": 190,
+          "line": 113
+        },
+        "start": {
+          "column": 151,
+          "line": 113
+        }
+      },
+      "mutatorName": "MethodExpression",
+      "replacement": "Math.max(1000, this.timing.readinessMs)",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "999",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 116
+        },
+        "start": {
+          "column": 17,
+          "line": 116
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1006",
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 119
+        },
+        "start": {
+          "column": 52,
+          "line": 119
+        }
+      },
+      "mutatorName": "ObjectLiteral",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1015",
+      "location": {
+        "end": {
+          "column": 78,
+          "line": 125
+        },
+        "start": {
+          "column": 56,
+          "line": 125
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1013",
+      "location": {
+        "end": {
+          "column": 25,
+          "line": 125
+        },
+        "start": {
+          "column": 11,
+          "line": 125
+        }
+      },
+      "mutatorName": "ConditionalExpression",
+      "replacement": "false",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1022",
+      "location": {
+        "end": {
+          "column": 63,
+          "line": 127
+        },
+        "start": {
+          "column": 36,
+          "line": 127
+        }
+      },
+      "mutatorName": "StringLiteral",
+      "replacement": "\"\"",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1024",
+      "location": {
+        "end": {
+          "column": 26,
+          "line": 129
+        },
+        "start": {
+          "column": 21,
+          "line": 129
+        }
+      },
+      "mutatorName": "BooleanLiteral",
+      "replacement": "true",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1031",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 134
+        },
+        "start": {
+          "column": 19,
+          "line": 134
+        }
+      },
+      "mutatorName": "BlockStatement",
+      "replacement": "{}",
+      "status": "Survived",
+      "statusReason": null
+    },
+    {
+      "file": "src/modules/ai-assistant/infrastructure/native-runtime.ts",
+      "id": "1032",
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 134
+        },
+        "start": {
+          "column": 21,
+          "line": 134
+        }
+      },
+      "mutatorName": "CallExpression",
+      "replacement": ";",
+      "status": "Survived",
+      "statusReason": null
+    }
+  ]
+}

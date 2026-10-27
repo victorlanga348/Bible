@@ -77,6 +77,23 @@ describe('pinned profile and technical artifact files; no executable or model is
     const { home, policy } = await prepare();
     await expect(new VerifiedRuntimeArtifacts({ ...policy, runtime: { ...policy.runtime, files: [] } }, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
   });
+  it('requires the executable pin even when a different valid library pin remains', async () => {
+    const { home, policy } = await prepare();
+    const files = policy.runtime.files.filter(file => file.path !== policy.runtime.executable);
+    expect(files).toHaveLength(1);
+    await expect(new VerifiedRuntimeArtifacts({ ...policy, runtime: { ...policy.runtime, files } }, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
+  });
+  it.each([32, 128])('accepts exactly %p credential characters', async size => {
+    const { home, artifacts } = await prepare(); const key = 'x'.repeat(size);
+    await writeFile(join(home, 'runtime.key'), key);
+    expect((await artifacts.verify('embedding')).key).toBe(key);
+  });
+  it.each([1024, 1025])('enforces credential file byte boundary independently of trimmed key length: %p', async size => {
+    const { home, artifacts } = await prepare(); const key = 'x'.repeat(32);
+    await writeFile(join(home, 'runtime.key'), key + '\n'.repeat(size - key.length));
+    if (size === 1024) expect((await artifacts.verify('embedding')).key).toBe(key);
+    else await expect(artifacts.verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
+  });
   it('rejects a model with a mismatched declared size before hashing', async () => {
     const { home, policy } = await prepare();
     await expect(new VerifiedRuntimeArtifacts({ ...policy, embedding: { ...policy.embedding, bytes: policy.embedding.bytes + 1 } }, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
@@ -97,15 +114,21 @@ describe('pinned profile and technical artifact files; no executable or model is
   });
   it('rejects a path outside its own artifact directory even if its bytes match', async () => {
     const { home, policy } = await prepare(); const outside = await temporary();
-    await writeFile(join(outside, 'external.fixture'), 'technical external');
-    const altered: InstalledRuntimeProfile = { ...policy, embedding: { ...policy.embedding, file: join(outside, 'external.fixture'), sha256: digest('technical external') } };
+    await writeFile(join(outside, 'external.fixture'), await readFile(join(home, policy.embedding.file)));
+    const altered: InstalledRuntimeProfile = { ...policy, embedding: { ...policy.embedding, file: join(outside, 'external.fixture') } };
     await expect(new VerifiedRuntimeArtifacts(altered, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
   });
   it('checks real paths through a directory junction/symlink before reading an external model', async () => {
     const { home, policy } = await prepare(); const outside = await temporary();
-    await writeFile(join(outside, 'external.fixture'), 'technical external');
+    await writeFile(join(outside, 'external.fixture'), await readFile(join(home, policy.embedding.file)));
     await symlink(outside, join(home, 'linked-models'), 'junction');
-    const altered: InstalledRuntimeProfile = { ...policy, embedding: { ...policy.embedding, file: 'linked-models/external.fixture', sha256: digest('technical external') } };
+    const altered: InstalledRuntimeProfile = { ...policy, embedding: { ...policy.embedding, file: 'linked-models/external.fixture' } };
+    await expect(new VerifiedRuntimeArtifacts(altered, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
+  });
+  it('rejects an external pathname resolving back to a valid internal model', async () => {
+    const { home, policy } = await prepare(); const outside = await temporary();
+    await symlink(home, join(outside, 'back-inside'), 'junction');
+    const altered: InstalledRuntimeProfile = { ...policy, embedding: { ...policy.embedding, file: join(outside, 'back-inside', policy.embedding.file) } };
     await expect(new VerifiedRuntimeArtifacts(altered, home).verify('embedding')).rejects.toBeInstanceOf(AiUnavailableError);
   });
 });

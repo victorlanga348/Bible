@@ -13,8 +13,12 @@ describe('real HTTP transport to a clearly identified technical loopback server,
       if (request.url === '/private-sink') { sinkRequests++; response.end('{}'); return; }
       if (request.headers.authorization !== 'Bearer ' + key) { response.writeHead(401); response.end('technical confidential body'); return; }
       const chunks: Buffer[] = []; for await (const chunk of request) chunks.push(chunk as Buffer);
-      const body = JSON.parse(Buffer.concat(chunks).toString()) as { scenario?: string };
+      let body: { scenario?: string };
+      try { body = JSON.parse(Buffer.concat(chunks).toString()) as { scenario?: string }; }
+      catch { response.writeHead(422); response.end('{}'); return; }
       response.setHeader('Content-Type', 'application/json');
+      if (body.scenario === 'small-known') { response.end('0'); return; }
+      if (body.scenario === 'small-stream') { response.write('0'); response.end(); return; }
       const later = (work: () => void) => { const timer = setTimeout(() => { timers.delete(timer); if (!response.destroyed) work(); }, 250); timers.add(timer); };
       if (body.scenario === 'delay-headers') { later(() => response.end('{}')); return; }
       if (body.scenario === 'delay-body') { response.write('{"tokens":'); later(() => response.end('[1]}')); return; }
@@ -25,7 +29,7 @@ describe('real HTTP transport to a clearly identified technical loopback server,
       if (body.scenario === 'large-known') { response.end(JSON.stringify({ value: 'x'.repeat(100) })); return; }
       if (body.scenario === 'large-stream') { response.write('{"value":"' + 'x'.repeat(20)); response.end('x'.repeat(80) + '"}'); return; }
       if (body.scenario?.startsWith('status-')) { response.writeHead(Number(body.scenario.slice(7))); response.end('technical confidential body'); return; }
-      response.end(JSON.stringify({ tokens: [1, 2], method: request.method, path: request.url }));
+      response.end(JSON.stringify({ tokens: [1, 2], method: request.method, path: request.url, mediaType: request.headers['content-type'] }));
     });
     await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
     const address = server.address(); if (!address || typeof address === 'string') throw new Error('Technical HTTP server did not bind');
@@ -39,7 +43,30 @@ describe('real HTTP transport to a clearly identified technical loopback server,
   it('authenticates and sends only a POST to the specified native endpoint', async () => {
     const session = client();
     expect(session.runtimeVersion).toBe('technical-protocol-only');
-    await expect(session.post('/tokenize', { content: 'technical' }, 1024)).resolves.toEqual({ tokens: [1, 2], method: 'POST', path: '/tokenize' });
+    await expect(session.post('/tokenize', { content: 'technical' }, 1024)).resolves.toEqual({ tokens: [1, 2], method: 'POST', path: '/tokenize', mediaType: 'application/json' });
+  });
+  it.each(['/tokenize', '/apply-template', '/v1/embeddings', '/v1/chat/completions'] as const)('admits the internal endpoint %s with JSON media type', async endpoint => {
+    await expect(client().post(endpoint, {}, 1024)).resolves.toMatchObject({ path: endpoint, mediaType: 'application/json' });
+  });
+  it.each(['small-known', 'small-stream'])('accepts a one-byte response at the exact budget for %s and a canonical trailing slash', async scenario => {
+    await expect(new NativeModelHttpClient(base + '/', key, 'technical').post('/tokenize', { scenario }, 1)).resolves.toBe(0);
+  });
+  it.each([32, 128])('admits an internal key of exactly %p characters', length => {
+    expect(() => new NativeModelHttpClient(base, 'x'.repeat(length), 'technical')).not.toThrow();
+  });
+  it.each([1, 120000])('admits the exact deadline boundary %p without sending a request', timeout => {
+    expect(() => client(timeout)).not.toThrow();
+  });
+  it('admits canonical port one without trying to bind or connect to it', () => {
+    expect(() => new NativeModelHttpClient('http://127.0.0.1:1', key, 'technical')).not.toThrow();
+  });
+  it.each(['http://127.0.0.1:3000/.', 'http://127.0.0.1:03000', 'HTTP://127.0.0.1:3000'])('rejects a normalized but noncanonical spelling %s', url => {
+    expect(() => new NativeModelHttpClient(url, key, 'technical')).toThrow(AiUnavailableError);
+  });
+  it('rejects an absent request body before any packet or credential is sent', async () => {
+    const prior = packets;
+    await expect(client().post('/tokenize', undefined, 1024)).rejects.toBeInstanceOf(AiUnavailableError);
+    expect(packets).toBe(prior);
   });
   it.each(['http://example.com:3000', 'http://localhost:3000', 'https://127.0.0.1:3000', 'http://127.0.0.1:0', 'http://user@127.0.0.1:3000', 'http://127.0.0.1:3000/path', 'http://127.0.0.1:3000?query=1', 'http://127.0.0.1:3000#fragment', 'not-url'])('rejects unowned/noncanonical base %s', url => {
     expect(() => new NativeModelHttpClient(url, key, 'technical')).toThrow(AiUnavailableError);

@@ -10,7 +10,7 @@ const mode = argv.find(value => value.startsWith('--technical-mode='))?.split('=
 const watchdog = Number(option('--technical-watchdog-ms')) || 10000;
 setTimeout(() => process.exit(91), watchdog).unref();
 if (argv.includes('--version')) {
-  process.stdout.write(mode === 'bad-version' ? 'technical-wrong-version\n' : 'technical-native-runtime-1\n');
+  process.stdout.write(mode === 'bad-version' || process.env.BIBLE_TECH_PRIVATE_MARKER ? 'technical-wrong-version\n' : 'technical-native-runtime-1\n');
 } else {
   writeFileSync(option('--technical-pid-file'), String(process.pid));
   if (mode === 'exit-early') process.exitCode = 3;
@@ -27,8 +27,11 @@ if (argv.includes('--version')) {
       const chunks = []; for await (const chunk of request) chunks.push(chunk);
       const body = JSON.parse(Buffer.concat(chunks).toString());
       if (body.pending) { response.write('{'); return; }
-      response.end(JSON.stringify({ tokens: [1, 2], ownPid: process.pid, authenticated, envLeaked: Object.hasOwn(process.env, 'BIBLE_TECH_PRIVATE_MARKER'), argv }));
+      response.end(JSON.stringify({ tokens: [1, 2], ownPid: process.pid, authenticated, envLeaked: Object.hasOwn(process.env, 'BIBLE_TECH_PRIVATE_MARKER'), allowedMarker: process.env.BIBLE_TECH_ALLOWED_MARKER, argv }));
     });
-    server.listen(port, '127.0.0.1', () => process.stderr.write(`technical harness listening on http://127.0.0.1:${port}\n`));
+    server.listen(port, '127.0.0.1', () => {
+      const output = mode === 'listen-stdout' ? process.stdout : process.stderr;
+      output.write(mode === 'unconfirmed-listener' ? 'technical startup without ownership confirmation\n' : `technical harness listening on http://127.0.0.1:${port}\n`);
+    });
   }
 }
