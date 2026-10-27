@@ -1,6 +1,6 @@
 # S05 — Tarefas
 
-Estado vigente2026-10-27: S05 IN_PROGRESS/T004 DONE/T005 IN_PROGRESS. Runtime81a89a4 real verificado,1165 testes locais PASS; mutação final em CI, T006/T007 BLOCKED nas predecessoras. [Checkpoint e limites](T005_RUNTIME_CHECKPOINT.md). Execução/commit/push delegados, uma tarefa/sem agentes/nova permissão. Transições seguintes preservam histórico.
+Transição2026-10-27: T005 IN_PROGRESS→REVIEW→DONE técnico/fecho delegado após CI40456053750/fonte b47cd23, CLI real corrigido143,20s, análise78remanescentes e auditoria documental. T006 BLOCKED→READY para ficha/plano antes de código; T007 continua BLOCKED em T006. [Fecho T005](T005_COMPLETION_REPORT.md). S05 IN_PROGRESS, uma tarefa/sem agentes/nova permissão. Histórico seguinte preservado.
 
 Transição vigente após provas/revisão/auditoria documental: T004 IN_PROGRESS→REVIEW→DONE delegado; T005 BLOCKED→READY. Só T005 poderá ficar ativa depois do seu plano concreto, sem tarefa/agente paralelo. Viabilidade v6dez casos/perfil cf125651… não é implementação nem gate integrado S05; T006/T007 mantêm dependências.
 
@@ -10,8 +10,8 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | ID | Título | Trilha | Prioridade | Estado | Dependências | Referência |
 |---|---|---|---|---|---|---|
 | S05-T004 | Aprovar fornecedor, modelos, embeddings, orçamento e rubrica | A/B/C | Alta | DONE | S04 encerrada90241d5; protocolo/pgvector/desenvolvimento/10casos/perfil/contratos/direitos/auditorias reais | [Ficha](tasks/S05-T004-feasibility-contracts.md) |
-| S05-T005 | Implementar ports, adapter real, limites e falhas | B | Alta | IN_PROGRESS | S05-T004 DONE/9ba970a, plano registado antes de código | [Ficha](tasks/S05-T005-provider.md) |
-| S05-T006 | Integrar pgvector, recuperação e citações verificáveis | B | Alta (proposta) | BLOCKED | S05-T005 | [PLAN](PLAN.md) |
+| S05-T005 | Implementar ports, adapter real, limites e falhas | B | Alta | DONE | S05-T004 DONE/9ba970a, plano registado antes de código | [Ficha](tasks/S05-T005-provider.md) |
+| S05-T006 | Integrar pgvector, recuperação e citações verificáveis | B | Alta | READY | S05-T005 DONE/CI40456053750; plano próprio antes de código | [PLAN](PLAN.md) |
 | S05-T007 | Executar integração real, avaliações e gates | C | Alta (proposta) | BLOCKED | S05-T006; credenciais autorizadas | [PLAN](PLAN.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.

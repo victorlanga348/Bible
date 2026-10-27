@@ -1,6 +1,6 @@
 # S05 — Relatório de testes
 
-Correção atual2026-10-27: ERR-0019 confirmou health200 aceite depois do deadline, RED1FAIL29não selecionados3,377s. GREEN1PASS2,823s após limitar restante absoluto/rever prazo pós-response;855unitários/26suites24,136s/estática/build PASS. [Provas e causa](../../megabrain/errors/ERR-0019-late-readiness-health.md). Produção mudou; prova real CLI corrigido em execução e nova CI obrigatória, sem herdar scores antigos. T005 IN_PROGRESS/T006/T007 dependentes; resultados seguintes são checkpoints históricos.
+Fecho técnico T0052026-10-27: fonte b47cd2345224bd0c69807aef5dc8db14827d7bd5/CI40456053750 PASS1196testes/55suites/100%linhas/97,60%branches/estática/build/24tooling. Mutação global1754/1951=89,90261404407995%, própria595/673=88,41010401188707%, zeroRuntimeError;74Survived/4NoCoverage próprios conservados no denominador e78 analisados individualmente. CLI real corrigido PASS143,1954761s/12pedidos/modelos+lock fechados, ERR0019 resolvido por RED/GREEN. [Fecho com comandos/artefactos/digests/limites](T005_COMPLETION_REPORT.md), [revisão dos mutantes](T005_MUTANT_REVIEW_FINAL.md). T005 DONE técnico/fecho delegado; T006 READY após commit documental, S05 IN_PROGRESS e14casos/API/RAG ainda pendentes. Notas seguintes históricas.
 
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 

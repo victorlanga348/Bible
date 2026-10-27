@@ -2,7 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
-| [ERR-0019](ERR-0019-late-readiness-health.md) | Defeito confirmado RED→GREEN,855 unitários/estática/build PASS; prova real e CI corrigida pendentes | Deadline absoluto de readiness, S05-T005 |
+| [ERR-0019](ERR-0019-late-readiness-health.md) | Resolvido: RED→GREEN/CLI real143,20s/CI40456053750/1196testes e fonte corrigida auditados | Deadline absoluto de readiness, S05-T005 |
 | [ERR-0018](ERR-0018-profile-package-isolation.md) | Resolvido: CI40444290178 integral PASS,1038 testes e mutação91,33%, fontes/digests auditados | Perfil normativo e sandbox Stryker, S05-T005 |
 | [ERR-0017](ERR-0017-protocol-fixture-newlines.md) | Resolvido: cópias LF com hashes bruto/normalizado distintos, JSON idêntico e auditoria/testes PASS | Reprodutibilidade de fixtures de protocolo Python/Windows/Git, S05-T005 |
 | [ERR-0016](ERR-0016-windows-runtime-trust.md) | WinError4551/NotSigned confirmado; distribuição oficial assinada em investigação, sem alterar proteção | Runtime local, S05-T004 |
