@@ -1,0 +1,49 @@
+{
+  "purpose": "test-only-protocol-recordings",
+  "newInference": false,
+  "sendFixtureToAi": false,
+  "productionSeed": false,
+  "license": "Models Apache-2.0; no source text in these protocol response files. Original source admission/notice retained separately in docs/sprints/S05/DATA_ADMISSION.md.",
+  "limitations": "Recorded outputs prove parsing only; never count as a current provider call, integration or semantic gate.",
+  "files": [
+    {
+      "file": "embedding-actual.json",
+      "bytes": 62141,
+      "sha256": "9b5dc7441771697106e7850d2cc01f2a46191b6b120114d21f79241f580d13c2",
+      "originalBytes": 64211,
+      "originalSha256": "1dcd139f08e96dff52be66189df053922392d45904ab0076bdef963e7b69dd7a",
+      "transformation": "Only physical CRLF normalized to LF for cross-platform fixture digests; parsed JSON identical; original artifact preserved in reports.",
+      "recordedAt": "2026-10-26T15:10:40Z",
+      "modelSha256": "06507c7b42688469c4e7298b0a1e16deff06caf291cf0a5b278c308249c3e439",
+      "runtimeCommit": "9ff0d7e90",
+      "originArtifact": "s05-embedding-protocol-original.json",
+      "inputScope": "technical sentences only"
+    },
+    {
+      "file": "selection-actual.json",
+      "bytes": 858,
+      "sha256": "5f0963378d5c3b1409282e036cf13fe6427d3b714f175e3ae654bc738967f2a8",
+      "originalBytes": 894,
+      "originalSha256": "700f2ac95cd835dce198d1eaaac397ca971325e28a47a699217bf72c9c4c0167",
+      "transformation": "Only physical CRLF normalized to LF for cross-platform fixture digests; parsed JSON identical; original artifact preserved in reports.",
+      "recordedAt": "2026-10-26T17:13:42Z",
+      "modelSha256": "3d0b790534fe4b79525fc3692950408dca41171676ed7e21db57af5c65ef6ab6",
+      "runtimeCommit": "9ff0d7e90",
+      "originArtifact": "s05-preflight-v6-ev01-protocol-original.json",
+      "inputScope": "local-ai-v1 source-admitted preflight; recording contains ID/null only, no source quote"
+    },
+    {
+      "file": "abstention-actual.json",
+      "bytes": 844,
+      "sha256": "0c5e72d6473b287a12a1c12467fe439c94c887e0f5677dbb73f9ed6dd4622143",
+      "originalBytes": 880,
+      "originalSha256": "f5a180ad8a928008616f9e00de9714adaf9fc79505c9525a5bc9b5a18cf8cfb0",
+      "transformation": "Only physical CRLF normalized to LF for cross-platform fixture digests; parsed JSON identical; original artifact preserved in reports.",
+      "recordedAt": "2026-10-26T17:14:59Z",
+      "modelSha256": "3d0b790534fe4b79525fc3692950408dca41171676ed7e21db57af5c65ef6ab6",
+      "runtimeCommit": "9ff0d7e90",
+      "originArtifact": "s05-preflight-v6-ev05-protocol-original.json",
+      "inputScope": "local-ai-v1 source-admitted preflight; recording contains ID/null only, no source quote"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S02](S02/README.md) | Cânone e integração bíblica | DONE | T006/T007 concluídas;551 testes, mutação95,87% local/95,41% CI e auditoria final; fecho reduzido c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
 | [S04](S04/README.md) | Motor de Estudos | DONE | T004–T007 DONE,907 testes/CI40338249693, mutação corrigida90,69%/recorte87,71%, fecho delegado |
-| [S05](S05/README.md) | IA e RAG | IN_PROGRESS | S04 encerrada90241d5; T004 DONE/viabilidade10casos/perfil/contratos, T005 READY |
+| [S05](S05/README.md) | IA e RAG | IN_PROGRESS | S04 encerrada90241d5; T004 DONE/9ba970a, T005 ativa/Domain f04e1ad em CI, adapter por concluir |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |
 | [S08](S08/README.md) | Hardening e Release | BACKLOG | S07 encerrada |

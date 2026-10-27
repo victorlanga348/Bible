@@ -3,3 +3,6 @@ backend/test/fixtures/source-library/josephus-antiquities-pg2848-en/NOTICE.sourc
 # Fixture digests refer to UTF-8 JSON serialized with LF endings.
 backend/test/fixtures/source-library/josephus-antiquities-pg2848-en/*.json text eol=lf
 backend/admissions/*.json text eol=lf
+# AI profile and protocol recordings have audited byte digests across checkouts.
+docs/ai/profiles/*.json text eol=lf
+backend/test/fixtures/ai-assistant/protocol/*.json text eol=lf

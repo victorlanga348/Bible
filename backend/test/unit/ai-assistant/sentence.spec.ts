@@ -34,6 +34,9 @@ describe('unchanged source spans and bounded model context', () => {
   it('rejects a span whose offsets cannot identify its exact text', () => {
     expect(() => new SourceSentence({ ...props(), end: props().end + 1 })).toThrow(AiModelInputError);
   });
+  it('rejects a negative start even when the span length is otherwise coherent (mutation regression)', () => {
+    expect(() => new SourceSentence({ ...props(), start: -1, end: props().end - 1 })).toThrow(AiModelInputError);
+  });
   it('counts original offsets in codepoints instead of UTF-16 units for technical Unicode text', () => {
     const input = { id: 'technical-s1', paragraph: 1, start: 7, end: 9, text: '😀x' };
     expect(new SourceSentence(input)).toEqual(input);

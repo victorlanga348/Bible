@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"citationId\":\"p1-s11\"}"
+      }
+    }
+  ],
+  "created": 1793034822,
+  "model": "biblia-generation",
+  "system_fingerprint": "b1-9ff0d7e90",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 11,
+    "prompt_tokens": 818,
+    "total_tokens": 829,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-CeqjSllq2M2yyRCs60KSwyBVlzW3LYIq",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 818,
+    "prompt_ms": 19481.177,
+    "prompt_per_token_ms": 23.815619804400978,
+    "prompt_per_second": 41.989249417527496,
+    "predicted_n": 11,
+    "predicted_ms": 1942.888,
+    "predicted_per_token_ms": 194.28879999999998,
+    "predicted_per_second": 5.146977077422888
+  }
+}

@@ -2,6 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
+| [ERR-0017](ERR-0017-protocol-fixture-newlines.md) | Resolvido: cópias LF com hashes bruto/normalizado distintos, JSON idêntico e auditoria/testes PASS | Reprodutibilidade de fixtures de protocolo Python/Windows/Git, S05-T005 |
 | [ERR-0016](ERR-0016-windows-runtime-trust.md) | WinError4551/NotSigned confirmado; distribuição oficial assinada em investigação, sem alterar proteção | Runtime local, S05-T004 |
 | [ERR-0015](ERR-0015-postgresql-url-routing.md) | Resolvido:76 dirigidos/907 regressões e CI40338249693/mutação corrigida verificadas, S04 encerrada | Identidade URL/opções de routing PostgreSQL, S04-T006 |
 | [ERR-0014](ERR-0014-local-coverage-heap.md) | Regressão integral resolvida com limite768MB:830/45 suites PASS; tentativa512MB OOM preservada | Heap local Node/Jest, S04-T006 |
