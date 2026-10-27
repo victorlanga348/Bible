@@ -1,5 +1,7 @@
 # S05 — Relatório de testes
 
+Checkpoint2026-10-27: runtime implementado,824 unitários/26suites/estática/build/24tooling PASS e CLI real PASS154,23159s/12 pedidos. CI40444290178 resolveu empacotamento,1038 testes e mutação global91,3338%/própria95,4774%, mas não cobre os novos ficheiros. T005 IN_PROGRESS/gates finais pendentes. [Provas, comandos, fontes, contagens e limites](T005_RUNTIME_CHECKPOINT.md). Notas seguintes históricas.
+
 ## Retoma2026-10-27 — isolamento e runtime, T005 ativa
 
 Protocolo36c2ffcaa82b1ec6f08d05d50e110fd371e9feda publicado. CI40439892332 FAIL no dry run de mutação:1038 testes/51suites e estática/tooling PASS, mas perfil fora do backend não existe no sandbox, ENOENT confirmado no job121977452896. Sem score aceite dessa execução. Correção empacota cópia byte-idêntica/SHA cf125651… em admissions e tooling compara fonte normativa, mantendo checker/mutate/limiares. Verificação de configuração antes da cópia FAIL por ausência, depois PASS; Jest prompt/protocolo em backend temporário sem /docs externo PASS, sem chamar isso de gate integral. [ERR-0018](../../megabrain/errors/ERR-0018-profile-package-isolation.md). Nova CI obrigatória ainda pendente.

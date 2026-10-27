@@ -11,3 +11,9 @@ export interface LocalModelProfile {
   };
   readonly limits: { readonly generationOutputTokens: number; readonly generationContextTokens: number; readonly embeddingContextTokens: number };
 }
+export interface InstalledRuntimeProfile extends LocalModelProfile {
+  readonly runtime: { readonly executable: string; readonly engineCommit: string; readonly files: readonly { readonly path: string; readonly sha256: string }[]; readonly environmentAllowlist: readonly string[] };
+  readonly embedding: LocalModelProfile['embedding'] & { readonly file: string; readonly bytes: number };
+  readonly generation: LocalModelProfile['generation'] & { readonly file: string; readonly bytes: number };
+  readonly limits: LocalModelProfile['limits'] & { readonly readinessSeconds: number; readonly inferenceSeconds: number; readonly operationSeconds: number };
+}

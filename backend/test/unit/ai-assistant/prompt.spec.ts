@@ -32,4 +32,9 @@ describe('exact controlled prompt and untrusted JSON context', () => {
   it('rejects ambiguous context before constructing a request', () => {
     expect(() => generationRequest(new AiQuestion('technical question'), [sentence(), sentence()], profile)).toThrow(AiModelInputError);
   });
+  it('serializes more than one authorized sentence as valid JSON in the supplied order (mutation regression)', () => {
+    const second = new SourceSentence({ id: 'technical-s2', paragraph: 2, start: 0, end: 4, text: 'blue' });
+    const request = generationRequest(new AiQuestion('technical'), [sentence(), second], profile);
+    expect(JSON.parse(request.messages[5]!.content)).toEqual({ question: 'technical', source_sentences: [{ id: 'technical-s1', paragraph: 1, text: 'green' }, { id: 'technical-s2', paragraph: 2, text: 'blue' }] });
+  });
 });

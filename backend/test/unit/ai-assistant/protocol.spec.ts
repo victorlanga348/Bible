@@ -64,6 +64,14 @@ describe('recorded native protocol is a parser fixture, never live AI proof', ()
     const raw = read('selection-actual'); raw.usage = { prompt_tokens: 1920, completion_tokens: 128, total_tokens: 2048 };
     expect(parseSelection(raw).usage).toEqual({ promptTokens: 1920, completionTokens: 128, totalTokens: 2048 });
   });
+  it('accepts the lower positive completion-token boundary as a controlled usage variant', () => {
+    const raw = read('selection-actual'); raw.usage = { prompt_tokens: 818, completion_tokens: 1, total_tokens: 819 };
+    expect(parseSelection(raw).usage.completionTokens).toBe(1);
+  });
+  it('classifies invalid supplied context as a domain input failure before parsing a model result', () => {
+    expect(() => decodeGeneratedSelection(read('selection-actual'), [], profile, 'technical')).toThrow(AiModelInputError);
+    expect(() => decodeGeneratedSelection(read('selection-actual'), [...context(), ...context()], profile, 'technical')).toThrow(AiModelInputError);
+  });
   it('decodes actual normalized technical embeddings by index and protects the returned vectors', () => {
     const raw = read('embedding-actual'); raw.data.reverse();
     const output = parseEmbedding(raw);
@@ -81,6 +89,10 @@ describe('recorded native protocol is a parser fixture, never live AI proof', ()
     raw.data = Array.from({ length: 16 }, (_, index) => ({ ...vector, index }));
     expect(decodeEmbeddingBatch(raw, 16, profile, '9ff0d7e90').vectors).toHaveLength(16);
   });
+  it('supports a single-vector response for a query using controlled fixture shape', () => {
+    const raw = read('embedding-actual'); raw.data = [raw.data[0]];
+    expect(decodeEmbeddingBatch(raw, 1, profile, 'technical').vectors).toHaveLength(1);
+  });
   it.each([
     ['missing data', () => ({})],
     ['different model', () => ({ ...read('embedding-actual'), model: 'other-model' })],
@@ -92,6 +104,7 @@ describe('recorded native protocol is a parser fixture, never live AI proof', ()
     ['negative index', () => { const raw = read('embedding-actual'); raw.data[0].index = -1; return raw; }],
     ['fractional index', () => { const raw = read('embedding-actual'); raw.data[0].index = 0.5; return raw; }],
     ['wrong dimensions', () => { const raw = read('embedding-actual'); raw.data[0].embedding.pop(); return raw; }],
+    ['normalized wrong dimensions', () => { const raw = read('embedding-actual'); raw.data[0].embedding = [1]; return raw; }],
     ['non-number', () => { const raw = read('embedding-actual'); raw.data[0].embedding[0] = '0'; return raw; }],
     ['non-finite', () => { const raw = read('embedding-actual'); raw.data[0].embedding[0] = Infinity; return raw; }],
     ['zero norm', () => { const raw = read('embedding-actual'); raw.data[0].embedding.fill(0); return raw; }],
@@ -106,5 +119,13 @@ describe('recorded native protocol is a parser fixture, never live AI proof', ()
   it('accepts the exact aggregate embedding context budget with controlled technical usage', () => {
     const raw = read('embedding-actual'); raw.usage = { prompt_tokens: 2048, total_tokens: 2048 };
     expect(parseEmbedding(raw).usage.totalTokens).toBe(2048);
+  });
+  it('applies the normalization tolerance to controlled mathematical vectors', () => {
+    for (const norm of [0.9999, 1.0001]) {
+      const raw = read('embedding-actual'); raw.data[0].embedding = Array(1024).fill(0); raw.data[0].embedding[0] = norm;
+      expect(parseEmbedding(raw).vectors).toHaveLength(2);
+    }
+    const raw = read('embedding-actual'); raw.data[0].embedding = Array(1024).fill(0); raw.data[0].embedding[0] = 1.0001000000000002;
+    expect(() => parseEmbedding(raw)).toThrow(AiUnavailableError);
   });
 });

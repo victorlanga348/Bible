@@ -1,5 +1,7 @@
 # S05 — Análise incremental de mutação
 
+Atualização2026-10-27: CI40444290178/fonte2daad433 PASS, global1349/1477=91,33378469871361%, próprio190/199=95,47738693467336%, zero RuntimeError/NoCoverage.55 fontes/digests conferidos, nove sobreviventes analisados, cinco lacunas com regressões pós-mutação e quatro equivalentes conservados. [Auditoria e análise causal completas](T005_RUNTIME_CHECKPOINT.md). Novos ficheiros HTTP/native/provider/artifacts ainda precisam de mutação própria; não herdar estes scores. Histórico Domain abaixo preservado.
+
 ## Checkpoint Domain f04e1ad, CI40371545025
 
 Fonte exata f04e1ad5c89a34ec68f6fd5935f20a381b9c83e3; todas as53 fontes presentes no JSON correspondem ao commit e aos ficheiros atuais equivalentes. Novos ficheiros de ports/prompt/protocolo ainda não existiam nesse snapshot e não são validados pelo resultado. Padrão src/checker/limiares intactos, sem nova configuração reduzida. 1894/2025 resultados reutilizados pelo Stryker real,131 reavaliados. [Execução](https://github.com/victorlanga348/Bible/actions/runs/40371545025).
