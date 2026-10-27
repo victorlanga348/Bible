@@ -1,5 +1,7 @@
 # ERR-0006 — Resultados estáticos antigos persistiam no incremental
 
+Recorrência confirmada2026-10-27 em S05-T005: CI40452080219/ed53ce5 passou1195 testes e score próprio88,0665%, mas IDs480–482/http-client.ts:4 conservam static=true/coveredBy=[]/testsCompleted71, iguais à CI40449032546 antes de novos testes dos endpoints. São os únicos sobreviventes estáticos próprios. Relatório atual e anterior mantidos sem edição. Plano registado antes da pipeline: forçar cinco candidatos da linha4 e depois confirmar padrão completo sem argumentos, checker/limiares intactos; prova nova ainda pendente. Não herdar este score como se tivesse reexecutado cada estático. Notas seguintes preservam a resolução histórica e a prevenção.
+
 Data:2026-10-21. Stryker10/Jest30, S03-T006. Estado: resolvido, reavaliação forçada e confirmação final do escopo completo aprovadas no TEST_REPORT. Responsável: agente executor. Sem alteração de operadores/thresholds/ignoreStatic ou exclusões do src próprio.
 
 ## Causa e evidência confirmadas

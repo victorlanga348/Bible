@@ -87,6 +87,11 @@ jobs:
           key: mutation-${{ runner.os }}-${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/scripts/mutation-incremental.cjs', 'backend/scripts/check-mutation.cjs', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') }}-${{ github.sha }}
           restore-keys: |
             mutation-${{ runner.os }}-${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/scripts/mutation-incremental.cjs', 'backend/scripts/check-mutation.cjs', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') }}-
+      # Temporary S05-T005 diagnostic for ERR-0006: static results can survive
+      # test changes in incremental analysis. Recheck five candidates, then
+      # validate the full default scope below. Remove after source/status audit.
+      - name: Reevaluate static AI endpoint admission
+        run: npm run test:mutation:incremental -- --force --mutate src/modules/ai-assistant/infrastructure/http-client.ts:4-4
       - run: npm run test:mutation:incremental
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
