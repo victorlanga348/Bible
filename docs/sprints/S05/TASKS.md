@@ -12,7 +12,7 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | S05-T004 | Aprovar fornecedor, modelos, embeddings, orçamento e rubrica | A/B/C | Alta | DONE | S04 encerrada90241d5; protocolo/pgvector/desenvolvimento/10casos/perfil/contratos/direitos/auditorias reais | [Ficha](tasks/S05-T004-feasibility-contracts.md) |
 | S05-T005 | Implementar ports, adapter real, limites e falhas | B | Alta | DONE | S05-T004 DONE/9ba970a, plano registado antes de código | [Ficha](tasks/S05-T005-provider.md) |
 | S05-T006 | Integrar pgvector, recuperação e citações verificáveis | B | Alta | IN_PROGRESS | S05-T005 DONE/41d1e6a/zeroNoCoverage, plano prévio | [Ficha](tasks/S05-T006-rag-persistence-http.md) |
-| S05-T007 | Executar integração real, avaliações e gates | C | Alta (proposta) | BLOCKED | S05-T006; credenciais autorizadas | [PLAN](PLAN.md) |
+| S05-T007 | Executar integração real, avaliações e gates | C | Alta (proposta) | BLOCKED | S05-T006; recursos locais reais já disponíveis; plano apenas preparado, sem execução | [Ficha](tasks/S05-T007-integrated-evaluation.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.
 Uma tarefa por vez. Estados e execução são distintos: BACKLOG/READY/IN_PROGRESS/BLOCKED/REVIEW/DONE para trabalho; PASS/FAIL/BLOCKED/NOT_RUN para evidência.
