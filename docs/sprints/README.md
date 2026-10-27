@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Transição atual2026-10-27: S05-T006 READY→IN_PROGRESS depois do fecho válido T00541d1e6a e plano concreto anterior à implementação. Checkpoint Domain011c824 publicado, restante persistência/admissão/configuração em validação real; T007 BLOCKED/T006, sem fechar gates pendentes. [Ficha](S05/tasks/S05-T006-rag-persistence-http.md), [relatório](S05/TEST_REPORT.md). Uma tarefa, autorização integral vigente, sem agentes/perguntas. Histórico seguinte preservado.
+
 Transição corrigida2026-10-27: T005 REVIEW→DONE técnico sob delegação após CI40471991297/f798f31/1200testes/100%linhas/98,03%branches/própria90,34%/zeroRuntimeError/NoCoverage. T006 BLOCKED→READY, S05 IN_PROGRESS/T007 dependente. [Fecho T005](S05/T005_COMPLETION_REPORT.md). Fecho7406a0f foi revogado e requisito zero passou a ser gate automático; não há dispensa da SPEC ou nova aprovação exigida.
 
 Atualização2026-10-26: S04 IN_PROGRESS→REVIEW→DONE após T006/T007, revisão/auditoria e fecho delegado.907 regressões/46 suites locais e CI40338249693 PASS; mutação fonte corrigida global90,69%/recorte24 ficheiros87,71%, originais/fontes/sobreviventes conferidos. [Relatório S04](S04/TEST_REPORT.md). Próxima tarefa S05-T004, decisões/execução autorizadas sem nova permissão, predecessora satisfeita; contratos/viabilidade de IA ainda por comprovar. Uma tarefa de cada vez. Notas seguintes históricas.
@@ -16,7 +18,7 @@ Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documenta
 | [S02](S02/README.md) | Cânone e integração bíblica | DONE | T006/T007 concluídas;551 testes, mutação95,87% local/95,41% CI e auditoria final; fecho reduzido c0c24b9 preservado |
 | [S03](S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; revisão integrada/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
 | [S04](S04/README.md) | Motor de Estudos | DONE | T004–T007 DONE,907 testes/CI40338249693, mutação corrigida90,69%/recorte87,71%, fecho delegado |
-| [S05](S05/README.md) | IA e RAG | IN_PROGRESS | T004/T005 DONE/f798f31/CI40471991297/zeroRuntimeError+NoCoverage; T006 READY/T007 dependente |
+| [S05](S05/README.md) | IA e RAG | IN_PROGRESS | T004/T005 DONE/f798f31/CI40471991297/zeroRuntimeError+NoCoverage; T006 IN_PROGRESS/011c824/T007 dependente |
 | [S06](S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada |
 | [S07](S07/README.md) | Referências Cruzadas e Workspace | BACKLOG | S06 encerrada |
 | [S08](S08/README.md) | Hardening e Release | BACKLOG | S07 encerrada |

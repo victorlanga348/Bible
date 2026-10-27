@@ -16,6 +16,6 @@
     "rootDir": ".",
     "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "prisma.config.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "prisma.config.ts", "prisma-ai.config.ts"],
   "exclude": ["node_modules", "dist", "reports", ".stryker-tmp"]
 }

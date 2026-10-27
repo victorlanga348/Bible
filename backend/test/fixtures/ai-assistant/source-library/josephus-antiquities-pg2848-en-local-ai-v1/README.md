@@ -1,0 +1,7 @@
+# Fixture autêntica de admissão de IA
+
+Identificada exclusivamente para testes, nunca seed de desenvolvimento. Textos e aviso derivam diretamente dos mesmos HTML/TXT originais autenticados usados pela [admissão operacional](../../../../../admissions/josephus-antiquities-pg2848-en-local-ai-v1/README.md), sem conteúdo histórico inventado. São os quatro parágrafos da mesma obra/edição Josefo/Whiston, não quatro testemunhos.
+
+Reprodução no backend: `python scripts/prepare-ai-sources.py test-ai data/source-library/josephus-antiquities-pg2848-en/source.html data/source-library/josephus-antiquities-pg2848-en/source.txt test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1`. A ferramenta recebe originais, não fixtures. manifesto SHA25646469116db968afc44f32d4e6cc5fecc5890910c038cbaac5363aa80dacb66d4; excertos79228666d0b6d552d6a5dc7ac3072acb7781c73f63af54119dab1495abff92d8; aviso integral18bc5c6f86b23ade32c4d711e765328b0c642c383a993c8d7f11c7ee21da4bf1.
+
+O propósito test-ai e o pin próprio impedem usar o manifesto como local-ai. Testes de integração importam só para biblia_test identificado, nunca bible_db. CI usa doubles determinísticos identificados; esta fixture não autoriza inferência a provedores de CI/remotos. Fixture S03 permanece intacta/pending. Não enviar texto bíblico ao modelo. Direitos/atribuição/limitações e curadoria narrativa estão no manifesto/aviso; a entrega deve revalidar direitos/digests atuais.

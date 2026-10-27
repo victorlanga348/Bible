@@ -17,5 +17,7 @@ async function migrate() {
     stdio: 'inherit', env: { ...process.env, TEST_DATABASE_URL: target },
   });
   if (result.error || result.status !== 0) throw new Error('Migration failed');
+  const ai = spawnSync(process.execPath, ['scripts/migrate-ai.cjs', 'test'], { stdio: 'inherit', env: { ...process.env, TEST_DATABASE_URL: target } });
+  if (ai.error || ai.status !== 0) throw new Error('AI migration failed');
 }
 migrate().catch(() => { console.error('Test migration failed; verify the isolated local test configuration.'); process.exitCode = 1; });

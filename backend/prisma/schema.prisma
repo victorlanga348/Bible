@@ -9,6 +9,18 @@ datasource db {
   schemas = ["app"]
 }
 
+model AiAnalysis {
+  id String @id @db.Uuid
+  ownerId String @map("owner_id")
+  studyId String @map("study_id") @db.Uuid
+  studyVersion BigInt @map("study_version")
+  document Json @db.JsonB
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  @@index([ownerId,id], map: "ai_analysis_owner_id_idx")
+  @@map("ai_analysis")
+  @@schema("app")
+}
+
 model CanonTranslation {
   id String @id
   name String

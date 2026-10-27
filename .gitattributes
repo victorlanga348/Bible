@@ -6,3 +6,8 @@ backend/admissions/*.json text eol=lf
 # AI profile and protocol recordings have audited byte digests across checkouts.
 docs/ai/profiles/*.json text eol=lf
 backend/test/fixtures/ai-assistant/protocol/*.json text eol=lf
+# Separate local AI admissions retain exact UTF-8 JSON and the unchanged full notice.
+backend/admissions/josephus-antiquities-pg2848-en-local-ai-v1/*.json text eol=lf
+backend/admissions/josephus-antiquities-pg2848-en-local-ai-v1/NOTICE.source.txt -text whitespace=-blank-at-eol,-blank-at-eof
+backend/test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1/*.json text eol=lf
+backend/test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1/NOTICE.source.txt -text whitespace=-blank-at-eol,-blank-at-eof

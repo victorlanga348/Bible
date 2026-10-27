@@ -1,0 +1,111 @@
+{
+  "purpose": "local-ai",
+  "source": {
+    "id": "josephus-antiquities-pg2848-en-local-ai-v1",
+    "title": "Antiquities of the Jews",
+    "author": "Flavius Josephus",
+    "translator": "William Whiston",
+    "language": "en",
+    "edition": "William Whiston translation; Project Gutenberg eBook 2848; HTML snapshot identified by SHA-256",
+    "kind": "historical-work",
+    "originUrl": "https://www.gutenberg.org/ebooks/2848",
+    "snapshotSha256": "098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99",
+    "retrievedAt": "2026-10-21T17:05:40.441948Z",
+    "rightsStatement": "Original work and Whiston translation: supplier declares public domain in USA. Local development use reviewed against Mozambique Law 9/2022 art.47(1), expiry of economic rights 70 years after death; author/translator dates in official catalogue, Whiston died 1752. This scope-limited inference grants no worldwide or public service permission. Moral attribution/integrity and Project Gutenberg notice retained. This admission of the same work permits only local personal embeddings and one-sentence extractive selection in the pinned authenticated loopback runtime; no training, remote provider, public service or commercial redistribution.",
+    "rightsUrl": "https://www.gutenberg.org/policy/license.html",
+    "attribution": "Flavius Josephus, Antiquities of the Jews, translated by William Whiston. Source acknowledgement: Project Gutenberg eBook 2848, produced by David Reed and David Widger. Text-only excerpt extraction; formatting and note-marker omissions documented in admission.",
+    "permissions": {
+      "ingest": "allowed",
+      "store": "allowed",
+      "index": "allowed",
+      "display": "allowed",
+      "quote": "allowed",
+      "sendToAi": "allowed"
+    },
+    "limitations": "Book I, chapter 1 only: four numbered paragraphs in an English historical translation. A claim made by this work is not independent verification or modern scholarly consensus. A curated narrative parallel is not independent historical proof."
+  },
+  "sourceFileUrl": "https://www.gutenberg.org/files/2848/2848-h/2848-h.htm",
+  "sourceBytes": 3561835,
+  "sourceEncoding": "Strict UTF-8 bytes despite historical ISO-8859-1 declaration",
+  "noticeFileUrl": "https://www.gutenberg.org/cache/epub/2848/pg2848.txt",
+  "noticeContainerSha256": "bb2e32da8ba3adc109b7694e6a8f2f11570462af2bedd55798da70b754c6e440",
+  "noticeSha256": "18bc5c6f86b23ade32c4d711e765328b0c642c383a993c8d7f11c7ee21da4bf1",
+  "excerptsSha256": "79228666d0b6d552d6a5dc7ac3072acb7781c73f63af54119dab1495abff92d8",
+  "legalEvidence": {
+    "url": "https://inicc.gov.mz/download/legislacao/69bfd67d3f6f7/lei42001.pdf",
+    "sha256": "7a631ce26da371f69eb96f316d650c458542dcd8200797499f7e066182429900",
+    "actualTitle": "Lei 9/2022, 29 June 2022; filename is historical",
+    "reviewedProvision": "Article 47(1) economic term; 47(2) continuing non-economic protection",
+    "scope": "Same limited original-text review; local personal AI only, retained attribution/integrity/full notice; no remote provider, public service or commercial exploitation."
+  },
+  "coverage": {
+    "book": 1,
+    "chapter": 1,
+    "paragraphs": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "excerptCount": 4
+  },
+  "transformations": [
+    "Read only main paragraphs between link2HCH0001 and link2HCH0002 using stdlib HTMLParser",
+    "Remove ordinal prefixes into locator/order and omit five footnote anchor markers",
+    "Decode HTML entities and collapse layout whitespace only; retain wording, punctuation, brackets and Unicode",
+    "Preserve full sibling TXT notice from START: FULL LICENSE verbatim; TXT is not the canonical paragraph source",
+    "No generated historical content, translation, inferred biblical link or fixture input",
+    "Rename source and excerpt identities for a separate local-ai-v1 admission without changing text, digest, locator, order or attribution",
+    "Declare separately reviewed narrative parallels; no additional witness, historical confirmation or transmission of biblical text to AI"
+  ],
+  "omittedFootnoteMarkers": 5,
+  "rawExcerptsSha256": "2171bd34f61e74b22d61e58e6c71caa336716b8ad15e2c60f8210ce2e35d7f63",
+  "runtimeProfileSha256": "cf12565112a0c5b84a7065200ee01362052f1ae3dee6296c16a8dccabbc5dc0f",
+  "scope": "Scoped local personal AI processing only; raw original derivative, never a fixture seed or an independent witness.",
+  "curatedPassageLinks": [
+    {
+      "id": "local-ai-v1-gen-creation",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p1",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 1,
+      "fromVerse": 1,
+      "toVerse": 1,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate creation of heaven and earth; narrative parallel only, no independent historical confirmation."
+    },
+    {
+      "id": "local-ai-v1-gen-human-formation",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p2",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 2,
+      "fromVerse": 7,
+      "toVerse": 7,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate formation of the human from earth and the giving of life; narrative parallel only, not independent geological evidence."
+    },
+    {
+      "id": "local-ai-v1-gen-eden-rivers",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p3",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 2,
+      "fromVerse": 10,
+      "toVerse": 10,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate the river of Eden and four branches; narrative parallel only, not independent geographical verification."
+    },
+    {
+      "id": "local-ai-v1-gen-serpent",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p4",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 3,
+      "fromVerse": 1,
+      "toVerse": 1,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate the serpent addressing the woman; narrative parallel only, not independent historical confirmation."
+    }
+  ]
+}

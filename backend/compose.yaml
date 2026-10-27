@@ -14,7 +14,7 @@ services:
       timeout: 3s
       retries: 30
   postgres-test:
-    image: postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    image: pgvector/pgvector:0.8.7-pg17-bookworm@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
     environment:
       POSTGRES_DB: biblia_test
       POSTGRES_USER: biblia_test

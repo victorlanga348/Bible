@@ -2,6 +2,7 @@
 
 | ID | Estado | Área/tarefa |
 |---|---|---|
+| [ERR-0021](ERR-0021-rtk-whitespace-status.md) | Resolvido por fallback nativo, whitespace corrigido/status0 | RTK0.43.0/git diff --check, S05-T006 |
 | [ERR-0020](ERR-0020-premature-nocoverage-closure.md) | Resolvido: fecho7406a0f revogado, CI40471991297 comprova zeroRuntimeError/NoCoverage; gate específico automático PASS | Gate específico zeroNoCoverage da SPEC S05 |
 | [ERR-0019](ERR-0019-late-readiness-health.md) | Resolvido: RED→GREEN/CLI real143,20s/CI40456053750/1196testes e fonte corrigida auditados | Deadline absoluto de readiness, S05-T005 |
 | [ERR-0018](ERR-0018-profile-package-isolation.md) | Resolvido: CI40444290178 integral PASS,1038 testes e mutação91,33%, fontes/digests auditados | Perfil normativo e sandbox Stryker, S05-T005 |

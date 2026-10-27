@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma-ai"
+  moduleFormat = "cjs"
+}
+datasource db {
+  provider = "postgresql"
+  schemas = ["ai"]
+}
+model EmbeddingProfile {
+  id String @id
+  configuration Json @db.JsonB
+  completedAt DateTime @map("completed_at") @db.Timestamptz(3)
+  chunks SourceChunk[]
+  @@map("embedding_profile")
+  @@schema("ai")
+}
+model SourceChunk {
+  profileId String @map("profile_id")
+  id String
+  sourceId String @map("source_id")
+  excerptId String @map("excerpt_id")
+  sourceDigest String @map("source_digest")
+  textDigest String @map("text_digest")
+  startOffset BigInt @map("start_offset")
+  endOffset BigInt @map("end_offset")
+  embedding Unsupported("vector(1024)")
+  profile EmbeddingProfile @relation(fields: [profileId],references: [id],onDelete: Cascade,onUpdate: Restrict)
+  @@id([profileId,excerptId,id])
+  @@map("source_chunk")
+  @@schema("ai")
+}
