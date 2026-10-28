@@ -156,6 +156,8 @@ Fontes/usos/corpus aprovados e disponíveis, com testes/avaliações reais execu
 
 ## EXT-005 — Acesso e política de dados
 
+Atualização de recorte2026-10-28/S06-T004: decisões de autenticação local/owner JWT já implementadas e comprovadas em S04/S05; retenção/eliminação/limites privados de conversa aceites pelo agente delegado na [SPEC S06](../sprints/S06/SPEC.md). Nenhuma chave, conta ou decisão adicional do utilizador para esta entrada local. Contratos de acesso/retention de conversa estão decididos antes de código; testes reais de conversa/eliminações S06-T006/T007 ainda pendentes e exposição/deployment S08 continuam por verificar. ACTION_REQUIRED histórico abaixo refere-se às condições futuras ainda não demonstradas, não a nova aprovação necessária para T005.
+
 ID: EXT-005
 Componente: proteção do uso privado, histórico, conversas e envio a fornecedores
 Estado: ACTION_REQUIRED

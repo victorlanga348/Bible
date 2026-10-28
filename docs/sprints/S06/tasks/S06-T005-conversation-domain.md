@@ -1,5 +1,7 @@
 # S06-T005 — Domínio de conversa e contexto
 
+Estado vigente: DONE técnico2026-10-28 após fontecc157ea/CI40670440360/gates e revisão de sobreviventes, [fecho](../T005_COMPLETION_REPORT.md). T006 READY após auditoria/commit. Restante texto preserva plano anterior e problemas reais.
+
 IN_PROGRESS depois de T004 documental d7c93d1. Agente delegado,2026-10-28. [SPEC](../SPEC.md) fixa critérios/limites/erros antes de código, [FQ-001](../../../specs/free-questions.md)/S05/ADR-0006 consultados. Estado não é prova de implementação.
 
 Decisão de eficiência antes da alteração do harness: inventário real mediu209mutantes novos,63ficheiros/2657mutantes antigos deslocados entre partes. Adicionar seed completo já aprovado61a9429/CI40660972664, digest fixo do relatório b5e6eb36… e harness c7420005… idêntico, baixado pela action pinada. Escolher relatório inteiro (local ou seed) com mais mutantes/fontes exatamente coincidentes na parte; em empate manter local. Não misturar IDs/fontes/testes nem mudar estados. Stryker10 incremental-differ instalado identifica testes/mutantes por conteúdo/posição, não IDs administrativos; continua responsável por revalidar mudanças/testes novos. Preservar cache substituído+digest/ledger e originais; seed é entrada, nunca relatório/gate atual. RED/GREEN em testes do seletor antes da implementação; agregador integral/limiares/zeroRuntimeError+NoCoverage permanecem obrigatórios. Alternativa de repetir2657casos intactos custa CI sem nova cobertura; compatibilidade ausente deixa fluxo normal existente, sem herdar PASS.

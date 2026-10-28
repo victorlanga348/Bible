@@ -8,8 +8,8 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | ID | Título | Trilha | Prioridade | Estado | Dependências | Referência |
 |---|---|---|---|---|---|---|
 | S06-T004 | Aprovar FQ-001, contexto, acesso e retenção | A/C | Alta (proposta) | DONE | S05 encerrada; EXT-005 | [SPEC](SPEC.md) |
-| S06-T005 | Implementar conversas, mensagens e controlo de contexto | A | Alta (proposta) | IN_PROGRESS | S06-T004 | [Ficha](tasks/S06-T005-conversation-domain.md) |
-| S06-T006 | Integrar perguntas livres, persistência e evidências | B | Alta (proposta) | BLOCKED | S06-T005 | [PLAN](PLAN.md) |
+| S06-T005 | Implementar conversas, mensagens e controlo de contexto | A | Alta (proposta) | DONE | S06-T004 | [Fecho](T005_COMPLETION_REPORT.md) |
+| S06-T006 | Integrar perguntas livres, persistência e evidências | B | Alta (proposta) | READY | S06-T005 | [PLAN](PLAN.md) |
 | S06-T007 | Verificar conversas reais, referências e gates | C | Alta (proposta) | BLOCKED | S06-T006; EXT-001 | [PLAN](PLAN.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.

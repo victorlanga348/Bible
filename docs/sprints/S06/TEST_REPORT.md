@@ -1,5 +1,7 @@
 # S06 — Relatório de testes
 
+Estado vigente2026-10-28: T005 DONE técnico após CI40670440360/cc157ea,1759testes75tooling/100%linhas97,82%branches/mutação90,37%global89,59%AI98,28%domínio/zeroRuntimeError+NoCoverage. [Fecho T005](T005_COMPLETION_REPORT.md) reúne digests/327sobreviventes (324históricos+3guards revistos). Auditoria documental antes de commit; T006 READY/T007dependente, S06 IN_PROGRESS. Entradas seguintes históricas.
+
 ## T005 — domínio/contexto, checkpoint2026-10-28
 
 T004 publicada d7c93d1. RED `npm run test:unit -- --runTestsByPath test/unit/ai-assistant/conversation.spec.ts`:48falhas por construtor sem validação/imutabilidade e métodos não implementados, sem erro de sintaxe/ambiente. GREEN49/49após implementação e fronteira hexadecimal/owner128/versão safe. Primeiro GREEN47PASS1FAIL era asserção a um acento existente também no cabeçalho; falha preservada e asserção ajustada à ausência da linha anterior. Não houve alteração funcional para mascarar falha.
@@ -45,3 +47,5 @@ Correção decidida na ficha: guardar entrada usada antes de Stryker e bruto fin
 Diagnóstico do domínio novo:209mutantes156Killed35CompileError18Survived/89,6552%, não gate integral. Revisão dos18 detetou lacunas de fronteira UUID, tipo/null, tempo entre turnos, contexto válido de dois anteriores e asserts negativos mascarados por omittedTurns incorreto. Fortalecidos sem alterar src:53/53PASS1,893s; novas verificações são regressões de mutação, não RED retroativo de comportamento já implementado. Saídas anteriores preservadas. Nova CI determinará o score/gate efetivo e sobreviventes finais; T005 ainda IN_PROGRESS/T006 dependente. [Lição confirmada](../../megabrain/pitfalls/PITFALL-0002-incremental-report-history.md).
 
 Validação final da correção: tooling75/75PASS8,578s, typecheck/lint/actionlint PASS; auditoria documental2026-10-28T10:13:07.913Z PASS10ficheiros/12links/zero missing,segredos,whitespace,prohibited,staged. Logs s06-t005-{scope-tooling,final-typecheck,final-lint,cache-scope-red,cache-scope-green}.log. Commit de checkpoint antes da nova CI; produto byte-idêntico7ac3538.
+
+Fecho T005: auditoria documental PASS2026-10-28T10:23:54.126Z14Markdown/80links/zero missing,secretHits,whitespace,prohibited,staged. Agente revê/encerra sob delegação vigente; Gate4/6 não aplicáveis ao domínio novo, não PASS de persistência ou IA S06. Fonte/gates/sobreviventes/digests em T005_COMPLETION_REPORT.
