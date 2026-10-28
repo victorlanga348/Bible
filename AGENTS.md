@@ -81,6 +81,6 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
-S00–S04 DONE; S05-T006 DONE (CI40651025107/gates reais), T007 READY/14avaliações NOT_RUN; S06–S08 pendentes e autorizadas. Fonte breve de retoma: [project-state](docs/megabrain/agent-context/project-state.md). Histórico preservado em [arquivo](docs/megabrain/agent-context/AGENTS-state-history-2026-10-27.md).
+S00–S04 DONE; S05-T006 DONE (CI40651025107/gates reais/27d7e37), T007 IN_PROGRESS/14avaliações NOT_RUN; S06–S08 pendentes e autorizadas. Fonte breve de retoma: [project-state](docs/megabrain/agent-context/project-state.md). Histórico preservado em [arquivo](docs/megabrain/agent-context/AGENTS-state-history-2026-10-27.md).
 
 Pedido2026-10-27: reduzir consumo por contexto/releituras e validações repetidas, preservando TDD, requisitos, integrações e todos os gates. Consultar documentos pertinentes à tarefa, usar testes afetados durante RED/GREEN e regressões/gates completos nos marcos exigidos. Não alterar main, serviços alheios ou segredos, nem usar agentes. Autorização integral acima permanece vigente.

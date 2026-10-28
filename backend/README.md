@@ -1,6 +1,6 @@
 # Backend Bíblia App
 
-NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; integração IA/RAG T006 verificada, T007 READY para14avaliações reais.
+NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; integração IA/RAG T006 verificada, T007 IN_PROGRESS para14avaliações reais.
 
 POST /studies/:studyId/ai-analyses, GET/DELETE /ai-analyses/:analysisId implementados com Bearer/owner, fontes atuais autorizadas, citações literais e persistência de referências/proveniência. Não há conversa/S06 nem release de IA aprovado. Sem runtime/índice configurados, criação503; leitura/eliminação próprias continuam disponíveis.
 
@@ -89,3 +89,5 @@ Cobertura: `reports/coverage/`; mutação: `reports/mutation/`. Limites: linhas 
 O workflow GitHub Actions prepara um PostgreSQL descartável no runner e executa os mesmos scripts. O serviço efémero de CI usa trust sem uma palavra-passe versionada; essa opção não é usada no Docker Compose local nem serve para deployment. Só uma execução remota comprova o workflow. Não foi feito push nesta sprint.
 
 Para parar os serviços locais, usar `docker compose stop`. A base de testes usa tmpfs e pode perder dados quando o container é recriado; voltar a aplicar a migração. O volume de desenvolvimento é persistente; não executar `down -v` para limpar testes.
+
+Avalia??o integrada: `npm run ai:evaluate:local` exige os recursos locais reais j? admitidos e n?o aceita overrides. Executa uma tentativa por caso congelado, guarda relat?rio em `reports/ai-evaluation-local-*` (ignorado), verifica isolamento e remove somente as an?lises t?cnicas novas; quatro estudos t?cnicos pr?prios s?o conservados. Resultado REVIEW requer revis?o sem?ntica expl?cita; n?o ? PASS autom?tico.

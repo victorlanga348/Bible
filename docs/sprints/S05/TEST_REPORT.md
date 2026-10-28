@@ -1,5 +1,11 @@
 # S05 — Relatório de testes
 
+## T007 ? runner de avalia??o integrado, 2026-10-28
+
+T006 encerrada no commit27d7e37; T007 IN_PROGRESS. Corpus14perguntas/4refer?ncias/offsets aut?nticos congelados antes da infer?ncia. Runner `npm run ai:evaluate:local` faz POST/GET/owner404/DELETE reais, guarda resposta original antes de valida??o/limpeza e n?o transmite expectativas ao modelo. Valida origem/direitos/cita??o literal/codepoints/proveni?ncia/usage/budgets/recupera??o; falhas n?o s?o convertidas em sucesso. REVIEW exige14casos determin?sticos aprovados, recursos pr?prios fechados e revis?o sem?ntica posterior independente.
+
+TDD: valida??o positiva/guard CLI RED, finaliza??o incompleta RED3; GREEN10/10. `npm run test:tooling`70/70 PASS8,606s; `npm run lint`, `npm run build`, guard final e sintaxe PASS. Evid?ncias locais ignoradas `reports/s05-t007-{evaluation-red,finalization-red,evaluation-green,evaluation-tooling,evaluation-lint,cli-final,build}.log`. Testes t?cnicos identificados n?o s?o infer?ncia. Src/prompt/modelos/depend?ncias intactos; gates completos v?lidos T006/CI40651025107 n?o repetidos localmente sem mudan?a pertinente. Nova CI do runner pendente. As14infer?ncias e rubrica sem?ntica permanecem NOT_RUN neste checkpoint, sem fecho S05.
+
 ## Aceite T006 — 2026-10-28
 
 [Fecho verificado](T006_COMPLETION_REPORT.md), fonte4a9143e1bc4a3ba8f018948f38d2c975a1313592/CI40651025107: oito jobsSUCCESS,1706testes/78suites69,76s,60tooling, typecheck/lint/build/migrações PASS, linhas1681/1681=100%/branches1127/1153=97,74%. Stryker4483:2855Killed43Timeout324Survived1261CompileError0RuntimeError0NoCoverage; global2898/3222=89,94413407821229%, AI1654/1863=88,78153515834676%. Os dois erros de conexão foram efetivamente reexecutados e detetados após invalidação apenas de cache; relatórios anteriores continuamFAIL. Zip/digests/fonte82mutável+inventário98src completo conferidos e gate estrito repetido exit0.324sobreviventes revistos/ledger com localização/operador/comportamento/lacuna/responsável,164idênticos históricos e160revistos novos; estados não alterados, nenhuma exclusão nova. Prova nativa real95s/11vetores fonte-byte-idêntica permanece válida,14casos pertencem aT007 e ainda NOT_RUN. Decisão de fecho T006 delegada; S05 não encerrada. Originais/métricas/limites e tabela de gates no relatório de fecho.
