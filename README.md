@@ -2,7 +2,7 @@
 
 Backend modular para leitura bíblica, biblioteca de fontes e estudos privados versionados, com IA local em integração. Frontend fora do ciclo atual.
 
-S00–S05 concluídas tecnicamente; S06–S08 pendentes e autorizadas. IA/RAG com14/14avaliações nativas e revisão semântica PASS, CI40660972664/1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage. [Fecho e limites S05](docs/sprints/S05/T007_COMPLETION_REPORT.md): seleção local de uma frase, uma obra, sem release público presumido. Próxima tarefa: contratos de conversas contextuais S06-T004.
+S00–S05 concluídas tecnicamente; S06–S08 pendentes e autorizadas. IA/RAG com14/14avaliações nativas e revisão semântica PASS, CI40660972664/1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage. [Fecho e limites S05](docs/sprints/S05/T007_COMPLETION_REPORT.md): seleção local de uma frase, uma obra, sem release público presumido. S06-T004 contratos publicada d7c93d1; T005 domínio/contexto em validação, sem conversas HTTP entregues ainda.
 
 Estado e próximo passo: [contexto breve](docs/megabrain/agent-context/project-state.md). Provas/falhas por execução: [relatório S05](docs/sprints/S05/TEST_REPORT.md). Uso/configuração: [backend](backend/README.md), [IA local](docs/integrations/local-ai.md). Histórico das entradas anteriores preservado em [arquivo](docs/megabrain/agent-context/README-history-2026-10-27.md).
 
