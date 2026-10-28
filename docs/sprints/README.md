@@ -1,6 +1,6 @@
 # Sprints — Backend Bíblia App
 
-Checkpoint vigente2026-10-28: S05-T006 IN_PROGRESS. CI40632374321 terminou4483mutantes auditados; global88,20%/AI85,71% mas gateFAIL por6NoCoverage/2RuntimeError. Regressões/correções do gate e fixtures verificadas, nova CI pendente; T007/14avaliações BLOCKED e S06–S08 autorizadas/pendentes. [Retoma breve](../megabrain/agent-context/project-state.md), [provas](S05/TEST_REPORT.md). Uma tarefa/sem agentes/nova permissão. Entradas seguintes são históricas.
+Checkpoint vigente2026-10-28: S05-T006 DONE, [fecho](S05/T006_COMPLETION_REPORT.md)/CI40651025107/1706testes/global89,94%/AI88,78%/zeroRuntimeError+NoCoverage. T007 READY/14avaliações NOT_RUN; S05 IN_PROGRESS, S06–S08 autorizadas/pendentes. [Retoma breve](../megabrain/agent-context/project-state.md), [provas](S05/TEST_REPORT.md). Uma tarefa/sem agentes/nova permissão. Entradas seguintes históricas.
 
 Checkpoint atual2026-10-27: S05-T006 IN_PROGRESS, Application/HTTP/CLI e prova nativa real publicados em7f7809508fc97d05ecb2b0efdb60ccc2aba39910. Indexação11vetores/1911tokens e análise HTTP95s/quote literal/owner/GET/DELETE PASS; regressões locais posteriores falharam por prazos, não aceites. CI40563697363 valida a fonte estável; mutação atual/14avaliações T007 continuam pendentes. Estado breve e histórico separado em [contexto](../megabrain/agent-context/project-state.md), [provas atuais](S05/TEST_REPORT.md). Uma tarefa/sem agentes/nova permissão; S00–S04 DONE, S06–S08 pendentes autorizadas.
 

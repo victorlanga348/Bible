@@ -1,6 +1,6 @@
 # S05-T007 — Avaliação integrada e fecho
 
-Estado: BLOCKED na saída da T006. Plano documental preparado sob autorização integral enquanto CI40563697363 valida a fonte7f78095; nenhuma implementação, inferência ou transição IN_PROGRESS desta tarefa começou. Uma tarefa por vez, sem agentes/nova permissão. Decisões abaixo são do agente delegado, anteriores às chamadas; não foram escolhas individuais adicionais do utilizador.
+Estado2026-10-28: READY após [fecho válido T006](../T006_COMPLETION_REPORT.md), fonte4a9143e/CI40651025107/zeroRuntimeError+NoCoverage. Plano preparado antes de chamadas e preservado; nenhuma implementação/inferência T007 começou. Iniciar após commit de fecho T006. Uma tarefa por vez, sem agentes/nova permissão; decisões são do agente delegado, não escolhas individuais adicionais do utilizador.
 
 Objetivo: executar os dez EV e quatro RG já fixados em [EVALUATION_PLAN](../EVALUATION_PLAN.md), pelo produto HTTP/índice/modelos reais, rever cada resultado contra o original e concluir os gates/revisão S05. Pré-requisito: T006 encerrada com mutação integral da fonte efetiva, score bruto global/próprio>85%, zeroRuntimeError/NoCoverage e sobreviventes/fontes auditados. Specs/ADR-0006/perfil v6/admissões/T006 continuam normativos; não alterar modelo/prompt/limiares ou corpus para fazer um caso passar.
 

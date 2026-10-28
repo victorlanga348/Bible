@@ -1,5 +1,7 @@
 # S05-T006 — Recuperação, persistência e HTTP privado
 
+Fecho2026-10-28: IN_PROGRESS→REVIEW→DONE delegado, fonte4a9143e/CI40651025107,1706testes/60tooling/100%linhas/97,74%branches/global89,9441%/AI88,7815%, zeroRuntimeError/NoCoverage, inventário/fontes/digests/sobreviventes revistos. [Provas/limites](../T006_COMPLETION_REPORT.md). T007 READY depois do commit de fecho; S05 continua IN_PROGRESS e14casos NOT_RUN. Planos/execuções anteriores abaixo preservados.
+
 ## Recuperação do gate de mutação — 2026-10-28, antes da alteração
 
 Partição2 da CI40632374321 terminou em62min56s: score92,1875% parcial,3NoCoverage em ai-error.filter.ts:11 (array/status/code/message de AiModelInputError); gate global ainda não aprovado. Artefacto autêntico conferido, fonte de produto intacta. Plano antes da regressão: acrescentar caso de falha técnica de provider no teste HTTP real existente, lançando AiModelInputError pelo double já identificado e exigindo400/VALIDATION_ERROR/Entrada inválida/zero gravações. Não inventar erro de utilizador para contornar Zod, não remover ramo defensivo e não alegar inferência real. Comportamento de produto já existe: RED são3NoCoverage reais, alteração só de cobertura; GREEN HTTP afetado e nova mutação obrigatórios antes de aceite.

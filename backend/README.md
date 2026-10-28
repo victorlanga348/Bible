@@ -1,10 +1,10 @@
 # Backend Bíblia App
 
-NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; S05-T006 integra IA local/RAG e permanece IN_PROGRESS.
+NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; integração IA/RAG T006 verificada, T007 READY para14avaliações reais.
 
 POST /studies/:studyId/ai-analyses, GET/DELETE /ai-analyses/:analysisId implementados com Bearer/owner, fontes atuais autorizadas, citações literais e persistência de referências/proveniência. Não há conversa/S06 nem release de IA aprovado. Sem runtime/índice configurados, criação503; leitura/eliminação próprias continuam disponíveis.
 
-Provas e limitações atuais: [relatório](../docs/sprints/S05/TEST_REPORT.md), [contexto breve](../docs/megabrain/agent-context/project-state.md), [operação AI](../docs/integrations/local-ai.md). Histórico anterior preservado em [arquivo](../docs/megabrain/agent-context/backend-README-history-2026-10-27.md). CIs de checkpoints intermediários terminaram por timeout, sem score atual aceite; gates da fonte final continuam obrigatórios.
+Provas e limitações atuais: [fecho T006](../docs/sprints/S05/T006_COMPLETION_REPORT.md), [relatório](../docs/sprints/S05/TEST_REPORT.md), [contexto breve](../docs/megabrain/agent-context/project-state.md), [operação AI](../docs/integrations/local-ai.md). CI40651025107 passou1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage;14casos T007 ainda NOT_RUN. Histórico de falhas preservado em [arquivo](../docs/megabrain/agent-context/backend-README-history-2026-10-27.md) e TEST_REPORT, sem aceite retroativo.
 
 Comandos operacionais existentes: npm run db:import:ai:dev, npm run ai:index:dev e npm run ai:verify:rag. Só desenvolvimento guardado, originais/admissões operacionais, nenhum override HTTP/modelo/path. Importação não executa modelos. Configuração e pré-requisitos no documento de operação; não executar inferência junto de suites pesadas neste PC8GB.
 
