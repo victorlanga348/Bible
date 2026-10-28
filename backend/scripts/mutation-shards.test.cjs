@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence } = require('./mutation-shards.cjs');
+const { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental } = require('./mutation-shards.cjs');
 
 // Technical code/report fixtures only, never claimed as actual mutation evidence.
 const ai = 'src/modules/ai-assistant/domain/technical.ts';
@@ -121,4 +121,28 @@ test('preserves valid cache results and metadata without creating detections', (
 });
 test('rejects malformed cache rather than fabricating a complete report', () => {
   for (const value of [undefined, {}, { files: null }, { files: [] }, { files: { technical: null } }, { files: { technical: { mutants: null } } }]) assert.throws(() => invalidateNonEvidence(value));
+});
+
+test('selects the intact complete cache when balancing moved files, without rewriting either report or identifiers', () => {
+  const { expected, shards } = example(); const seed = mergeReports(expected, shards, config).report;
+  const local = { ...seed, files: { [ai]: seed.files[ai] } }; const before = clone({ local, seed });
+  const result = chooseIncremental(local, seed, expected, [ai, other]);
+  assert.equal(result.report, seed); assert.equal(result.selected, 'seed');
+  assert.equal(result.matchingMutants, Object.values(expected.mutants).flat().length);
+  assert.deepEqual({ local, seed }, before);
+});
+test('keeps local input on a tie or when its exact current sources provide better evidence than the old seed', () => {
+  const { expected, shards } = example(); const local = mergeReports(expected, shards, config).report; const seed = clone(local);
+  assert.equal(chooseIncremental(local, seed, expected, [ai, other]).report, local);
+  seed.files[other].source += '\n// different source';
+  assert.equal(chooseIncremental(local, seed, expected, [ai, other]).report, local);
+  assert.equal(chooseIncremental(undefined, local, expected, [ai, other]).report, local);
+});
+test('does not count cached errors, unmatched mutations or duplicated identifiers as reusable evidence', () => {
+  const { expected, shards } = example(); const seed = mergeReports(expected, shards, config).report;
+  const local = clone(seed); for (const entry of Object.values(local.files)) for (const m of entry.mutants) m.status = 'NoCoverage';
+  const result = chooseIncremental(local, seed, expected, [ai, other]); assert.equal(result.report, seed);
+  const extra = clone(seed); extra.files[ai].mutants.push({ ...clone(extra.files[ai].mutants[0]), replacement: 'not in inventory', id: 'extra' });
+  extra.files[ai].mutants.push(clone(extra.files[ai].mutants[0]));
+  assert.equal(chooseIncremental(undefined, extra, expected, [ai, other]).matchingMutants, Object.values(expected.mutants).flat().length);
 });

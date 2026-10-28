@@ -104,6 +104,20 @@ async function main(args) {
     for (const name of ['shard.json', 'mutation.json']) if (existsSync(`${folder}/${name}`)) rmSync(`${folder}/${name}`);
     const config = { ...expected.base, mutate: partition(expected.mutants, expected.count)[index], maxTestRunnerReuse: 25 };
     write(`${folder}/shard-config.json`, config);
+    if (existsSync(`${folder}/seed/mutation.json`)) {
+      const seedBytes = readFileSync(`${folder}/seed/mutation.json`);
+      const seedSha256 = createHash('sha256').update(seedBytes).digest('hex');
+      assert.equal(seedSha256, 'b5e6eb362d22ab1b8c847b65ce865daa9e226210cc99a6729412511def61d22a', 'Unverified complete seed');
+      const seed = JSON.parse(seedBytes.toString('utf8')); verifyAiMutationReport(seed);
+      const localBytes = existsSync(`${folder}/incremental.json`) ? readFileSync(`${folder}/incremental.json`) : null;
+      const choice = chooseIncremental(localBytes ? JSON.parse(localBytes.toString('utf8')) : undefined, seed, expected, config.mutate);
+      if (choice.selected === 'seed') {
+        if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
+        writeFileSync(`${folder}/incremental.json`, seedBytes);
+      }
+      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '61a94299c438992ac50f31f3134e8f5b9fa16daf', seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
+      console.log(JSON.stringify({ incrementalInput: choice.selected, matchingMutants: choice.matchingMutants }));
+    }
     if (existsSync(`${folder}/incremental.json`)) {
       const bytes = readFileSync(`${folder}/incremental.json`);
       const revalidation = invalidateNonEvidence(JSON.parse(bytes.toString('utf8')));
@@ -163,5 +177,16 @@ function invalidateNonEvidence(report) {
   }
   return { report: copy, invalidated };
 }
-module.exports = { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence };
+function chooseIncremental(local, seed, expected, group) {
+  const reusable = new Set(['Killed', 'Survived', 'Timeout', 'CompileError']);
+  const score = report => group.reduce((sum, name) => {
+    const file = report?.files?.[name];
+    if (!file || file.source.replaceAll('\r\n', '\n') !== expected.sources[name]) return sum;
+    const matches = new Set(file.mutants.filter(m => reusable.has(m.status)).map(signature));
+    return sum + expected.mutants[name].filter(m => matches.has(signature(m))).length;
+  }, 0);
+  const current = score(local); const complete = score(seed);
+  return complete > current ? { report: seed, selected: 'seed', matchingMutants: complete } : { report: local, selected: 'local', matchingMutants: current };
+}
+module.exports = { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental };
 if (require.main === module) main(process.argv.slice(2)).catch(error => { console.error(error.message); process.exitCode = 1; });
