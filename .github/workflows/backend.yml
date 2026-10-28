@@ -162,13 +162,13 @@ jobs:
           key: mutation-shard-${{ matrix.shard }}-${{ runner.os }}-${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/scripts/mutation-shards.cjs', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') }}-${{ github.sha }}
           restore-keys: |
             mutation-shard-${{ matrix.shard }}-${{ runner.os }}-${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/scripts/mutation-shards.cjs', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') }}-
-            ${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c7420005bea1082056d977d24a68d0a692bba7894feb84765629e0aaddc3f9a2' && format('mutation-shard-{0}-{1}-2e67d5a5f77dab2c1628d994ede92840d4b9bf279e1f8b7bde17f4d01a98094e-a7790c5177df6201df80765b8050946b2d389693', matrix.shard, runner.os) || 'no-compatible-a7790-mutation-cache' }}
+            ${{ hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c7420005bea1082056d977d24a68d0a692bba7894feb84765629e0aaddc3f9a2' && format('mutation-shard-{0}-{1}-6fa37e898c7610ab6f1979acd7ef4e599f5564c9f53459068533f43d054a55c5-9d50bbb5b8274d1e846998b66530d026e14a1ef4', matrix.shard, runner.os) || 'no-compatible-9d50-mutation-cache' }}
       - name: Seed compatible analysis from the completed checkpoint when no cache exists
         if: hashFiles('backend/reports/mutation/incremental.json') == '' && hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c7420005bea1082056d977d24a68d0a692bba7894feb84765629e0aaddc3f9a2'
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           name: mutation-${{ matrix.shard }}
-          run-id: 40632374321
+          run-id: 40646817640
           github-token: ${{ github.token }}
           path: backend/reports/mutation
       - run: npm run test:mutation:shard -- ${{ matrix.shard }}

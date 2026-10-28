@@ -104,6 +104,16 @@ async function main(args) {
     for (const name of ['shard.json', 'mutation.json']) if (existsSync(`${folder}/${name}`)) rmSync(`${folder}/${name}`);
     const config = { ...expected.base, mutate: partition(expected.mutants, expected.count)[index], maxTestRunnerReuse: 25 };
     write(`${folder}/shard-config.json`, config);
+    if (existsSync(`${folder}/incremental.json`)) {
+      const bytes = readFileSync(`${folder}/incremental.json`);
+      const revalidation = invalidateNonEvidence(JSON.parse(bytes.toString('utf8')));
+      if (revalidation.invalidated.length) {
+        writeFileSync(`${folder}/incremental-before-revalidation.json`, bytes);
+        write(`${folder}/cache-revalidation.json`, { originalSha256: createHash('sha256').update(bytes).digest('hex'), invalidated: revalidation.invalidated, reason: 'Force actual re-execution; cached errors/uncovered results are not evidence' });
+        write(`${folder}/incremental.json`, revalidation.report);
+        console.log(JSON.stringify({ cacheEntriesRequiringActualRevalidation: revalidation.invalidated.length }));
+      }
+    }
     const result = spawnSync(process.execPath, ['node_modules/@stryker-mutator/core/bin/stryker.js', 'run', `${folder}/shard-config.json`, '--incremental', '--incrementalFile', `${folder}/incremental.json`], { stdio: 'inherit' });
     if (result.error || !existsSync(`${folder}/mutation.json`)) { process.exitCode = 1; return; }
     const report = JSON.parse(text(`${folder}/mutation.json`));
@@ -141,5 +151,17 @@ function analysisExitCode(report, exit) {
   const expectedExit = 100 * detected < 85 * valid ? 1 : 0;
   return exit === expectedExit ? 0 : 1;
 }
-module.exports = { inventory, partition, mergeReports, analysisExitCode };
+function invalidateNonEvidence(report) {
+  assert.ok(report && report.files && typeof report.files === 'object' && !Array.isArray(report.files), 'Malformed mutation cache');
+  const copy = JSON.parse(JSON.stringify(report)); const invalidated = [];
+  for (const [file, entry] of Object.entries(copy.files)) {
+    assert.ok(entry && Array.isArray(entry.mutants), 'Malformed mutation cache');
+    entry.mutants = entry.mutants.filter(mutant => {
+      if (mutant.status === 'RuntimeError' || mutant.status === 'NoCoverage') { invalidated.push({ file, ...mutant }); return false; }
+      return true;
+    });
+  }
+  return { report: copy, invalidated };
+}
+module.exports = { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence };
 if (require.main === module) main(process.argv.slice(2)).catch(error => { console.error(error.message); process.exitCode = 1; });

@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { inventory, partition, mergeReports, analysisExitCode } = require('./mutation-shards.cjs');
+const { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence } = require('./mutation-shards.cjs');
 
 // Technical code/report fixtures only, never claimed as actual mutation evidence.
 const ai = 'src/modules/ai-assistant/domain/technical.ts';
@@ -105,4 +105,20 @@ test('keeps NoCoverage visible for the unchanged strict aggregate gate rather th
   const report = fragment(['Killed', 'NoCoverage']);
   assert.equal(analysisExitCode(report, 1), 0); assert.equal(report.files['src/technical.ts'].mutants[1].status, 'NoCoverage');
   assert.throws(() => require('./check-ai-mutation.cjs').verifyAiMutationReport(report), /strictly greater than 85|NoCoverage/);
+});
+test('invalidates only failed non-evidence in the cache to require actual reruns, preserving the original object', () => {
+  const original = fragment(['Killed', 'RuntimeError', 'Timeout', 'Survived', 'CompileError', 'NoCoverage']); const before = clone(original);
+  const result = invalidateNonEvidence(original);
+  assert.deepEqual(original, before);
+  assert.deepEqual(result.report.files['src/technical.ts'].mutants.map(m => m.status), ['Killed', 'Timeout', 'Survived', 'CompileError']);
+  assert.deepEqual(result.invalidated.map(m => m.status), ['RuntimeError', 'NoCoverage']);
+  assert.deepEqual(result.report.config, original.config);
+});
+test('preserves valid cache results and metadata without creating detections', () => {
+  const original = { ...fragment(['Killed', 'Survived', 'CompileError', 'Timeout']), testFiles: { technical: { source: 'technical fixture', tests: [] } } };
+  const result = invalidateNonEvidence(original);
+  assert.deepEqual(result.report, original); assert.deepEqual(result.invalidated, []);
+});
+test('rejects malformed cache rather than fabricating a complete report', () => {
+  for (const value of [undefined, {}, { files: null }, { files: [] }, { files: { technical: null } }, { files: { technical: { mutants: null } } }]) assert.throws(() => invalidateNonEvidence(value));
 });

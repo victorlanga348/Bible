@@ -10,14 +10,15 @@ import { aiExcerptFixtures, aiSourceFixture, seedAiSource } from '../../helpers/
 import { createAiTestRuntime } from '../../helpers/ai-runtime';
 
 describe('indexing Application with actual libraries/pgvector/lease, embeddings double explicitly not inference', () => {
-  let database: Database; let vectorDatabase: AiIndexDatabase; let home: string; let contexts: Awaited<ReturnType<typeof createAiTestRuntime>>[];
+  let database: Database; let vectorDatabase: AiIndexDatabase; let home = ''; let contexts: Awaited<ReturnType<typeof createAiTestRuntime>>[] = []; let vectorReady = false;
   beforeAll(async () => {
     database = await openSourceTestDatabase(); vectorDatabase = new AiIndexDatabase(assertAiTestTarget(process.env));
     expect(await vectorDatabase.client.$queryRaw`SELECT current_database() AS db,current_user AS role`).toEqual([{ db: 'biblia_test', role: 'biblia_test' }]);
+    vectorReady = true;
   });
-  beforeEach(async () => { await cleanSourceTestData(database); await seedAiSource(database); await vectorDatabase.client.embeddingProfile.deleteMany(); home = await mkdtemp(join(resolve('reports'), 'ai-indexing-app-')); contexts = []; });
-  afterEach(async () => { for (const context of contexts) await context.operation.onModuleDestroy(); if (!home.startsWith(resolve('reports') + sep + 'ai-indexing-app-')) throw new Error('Unsafe technical cleanup'); await rm(home, { recursive: true, force: true }); });
-  afterAll(async () => { if (database) { try { await cleanSourceTestData(database); if (vectorDatabase?.client) await vectorDatabase.client.embeddingProfile.deleteMany(); } finally { await database.onModuleDestroy(); if (vectorDatabase?.client) await vectorDatabase.client.$disconnect(); } } });
+  beforeEach(async () => { contexts = []; home = ''; await cleanSourceTestData(database); await seedAiSource(database); await vectorDatabase.client.embeddingProfile.deleteMany(); home = await mkdtemp(join(resolve('reports'), 'ai-indexing-app-')); });
+  afterEach(async () => { for (const context of contexts) await context.operation.onModuleDestroy(); if (home) { if (!home.startsWith(resolve('reports') + sep + 'ai-indexing-app-')) throw new Error('Unsafe technical cleanup'); await rm(home, { recursive: true, force: true }); } });
+  afterAll(async () => { if (database) { try { await cleanSourceTestData(database); if (vectorReady) await vectorDatabase.client.embeddingProfile.deleteMany(); } finally { await database.onModuleDestroy(); if (vectorDatabase?.client) await vectorDatabase.client.$disconnect(); } } });
   const setup = async () => {
     const context = await createAiTestRuntime(database, vectorDatabase, home); contexts.push(context);
     const library = new SourceIndexingLibrary(context.settings, context.sources, context.embeddings, context.index, context.operation, context.identity, context.hash);
