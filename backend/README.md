@@ -1,10 +1,10 @@
 # Backend Bíblia App
 
-NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; integração IA/RAG T006 verificada, T007 IN_PROGRESS para14avaliações reais.
+NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; IA/RAG S05 concluída com14/14avaliações reais e revisão semântica PASS.
 
 POST /studies/:studyId/ai-analyses, GET/DELETE /ai-analyses/:analysisId implementados com Bearer/owner, fontes atuais autorizadas, citações literais e persistência de referências/proveniência. Não há conversa/S06 nem release de IA aprovado. Sem runtime/índice configurados, criação503; leitura/eliminação próprias continuam disponíveis.
 
-Provas e limitações atuais: [fecho T006](../docs/sprints/S05/T006_COMPLETION_REPORT.md), [relatório](../docs/sprints/S05/TEST_REPORT.md), [contexto breve](../docs/megabrain/agent-context/project-state.md), [operação AI](../docs/integrations/local-ai.md). CI40651025107 passou1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage;14casos T007 ainda NOT_RUN. Histórico de falhas preservado em [arquivo](../docs/megabrain/agent-context/backend-README-history-2026-10-27.md) e TEST_REPORT, sem aceite retroativo.
+Provas e limitações atuais: [fecho T006](../docs/sprints/S05/T006_COMPLETION_REPORT.md), [relatório](../docs/sprints/S05/TEST_REPORT.md), [contexto breve](../docs/megabrain/agent-context/project-state.md), [operação AI](../docs/integrations/local-ai.md). [Fecho S05](../docs/sprints/S05/T007_COMPLETION_REPORT.md): CI40660972664 passou1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage;14casos T007 e revisão semântica PASS, corpus limitado e direitos locais preservados. Histórico de falhas preservado em [arquivo](../docs/megabrain/agent-context/backend-README-history-2026-10-27.md) e TEST_REPORT, sem aceite retroativo.
 
 Comandos operacionais existentes: npm run db:import:ai:dev, npm run ai:index:dev e npm run ai:verify:rag. Só desenvolvimento guardado, originais/admissões operacionais, nenhum override HTTP/modelo/path. Importação não executa modelos. Configuração e pré-requisitos no documento de operação; não executar inferência junto de suites pesadas neste PC8GB.
 
@@ -90,4 +90,4 @@ O workflow GitHub Actions prepara um PostgreSQL descartável no runner e executa
 
 Para parar os serviços locais, usar `docker compose stop`. A base de testes usa tmpfs e pode perder dados quando o container é recriado; voltar a aplicar a migração. O volume de desenvolvimento é persistente; não executar `down -v` para limpar testes.
 
-Avalia??o integrada: `npm run ai:evaluate:local` exige os recursos locais reais j? admitidos e n?o aceita overrides. Executa uma tentativa por caso congelado, guarda relat?rio em `reports/ai-evaluation-local-*` (ignorado), verifica isolamento e remove somente as an?lises t?cnicas novas; quatro estudos t?cnicos pr?prios s?o conservados. Resultado REVIEW requer revis?o sem?ntica expl?cita; n?o ? PASS autom?tico.
+Avaliação integrada: `npm run ai:evaluate:local` exige os recursos locais reais já admitidos e não aceita overrides. Executa uma tentativa por caso congelado, guarda relatório em `reports/ai-evaluation-local-*` (ignorado), verifica isolamento e remove somente as análises técnicas novas; quatro estudos técnicos próprios são conservados. Resultado REVIEW requer revisão semântica explícita; não — PASS automático.

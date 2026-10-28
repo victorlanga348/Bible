@@ -1,5 +1,7 @@
 # Execução integral autorizada — 2026-10-22
 
+Checkpoint2026-10-28: S00–S05 DONE técnico; [fecho S05](../sprints/S05/T007_COMPLETION_REPORT.md),14/14avaliações/revisão e CI40660972664 PASS. S06–S08 autorizadas/pendentes, próxima S06-T004; uma tarefa/sem agentes/sem nova permissão.
+
 Origem: pedido posterior do utilizador para executar tudo o que for necessário, terminar todas as sprints e fazer push sem autorização prévia adicional, com registo detalhado. Decisões de implementação delegadas ao agente; não são decisões individuais prévias do utilizador. Esta autorização substitui pausas por aprovação, preservando specs/ADRs históricos e provas reais. Não autoriza declarar PASS sem execução, omitir falhas ou expor segredos.
 
 ## Ordem, escopo e saídas

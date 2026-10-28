@@ -1,5 +1,7 @@
 # S05 — IA e RAG
 
+Execução2026-10-28 concluída sob delegação vigente: T004–T007/gates/14casos reais e revisão PASS; [fecho](T007_COMPLETION_REPORT.md). Plano anterior preservado abaixo.
+
 ## Plano de execução delegado — 2026-10-26
 
 Preparação T004 concluída por provas/revisão delegada: [SPEC](SPEC.md)/[ADR-0006](../../architecture/adr/ADR-0006-ia-local-e-indice-reconstruivel.md)/[perfil local-extractive-v1](../../ai/profiles/local-extractive-v1.json), dez casos v6 conformes/pins/limites/destino local documentados. T005 READY, T006/T007 dependentes; nenhum código de produto implementado. Distribuição engine assinada Ollama0.40.11/b11845 e GGUF registry Q4_K_M escolhidos pelos resultados, preservando baselines falhadas e discrepância de rótulo. Opção inicial unsigned seguinte histórica e bloqueada pelo Windows, nunca fallback. Auditorias reais/configuração/documentos no TEST_REPORT/REVIEW.

@@ -1,5 +1,7 @@
 # S05 — IA e RAG
 
+Estado vigente2026-10-28: **S05 DONE técnico**, T004–T007 DONE, fecho delegado condicionado — auditoria documental antes do commit.14/14avaliações reais e revisão semântica PASS; CI40660972664/1706testes/70tooling/100%linhas97,74%branches/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage. [Fecho T007](T007_COMPLETION_REPORT.md) e [T006](T006_COMPLETION_REPORT.md), com limites e originais preservados. S06 autorizada para refinamento sequencial. Entradas seguintes históricas.
+
 Estado corrente2026-10-28: T004/T005/T006 DONE válidas, **T007 READY**. [Fecho T006](T006_COMPLETION_REPORT.md): CI40651025107/1706testes/60tooling/100%linhas/97,74%branches/global89,94%/AI88,78%/zeroRuntimeError+NoCoverage, fontes/digests/sobreviventes auditados e percurso nativo95s real.14avaliações T007 ainda NOT_RUN, **S05 IN_PROGRESS**. [Retoma](../../megabrain/agent-context/project-state.md), [relatório](TEST_REPORT.md), [revisão](REVIEW.md). Entradas seguintes históricas; autorização integral vigente, sem agentes/nova pergunta.
 
 Estado2026-10-27: T004/T005 DONE técnico com gate específico integralmente cumprido na fonte f798f31/CI40471991297:1200testes/56suites/100%linhas/98,03%branches, própria90,34%/global90,57%, zeroRuntimeError/NoCoverage. T006 READY para plano e TDD; T007/14casos dependentes, S05 IN_PROGRESS/sem API de análise entregue. [Fecho corrigido](T005_COMPLETION_REPORT.md). Aceite7406a0f revogado permanece histórico; nova CI e gate automatizado resolvem ERR-0020 sem dispensa da SPEC.
