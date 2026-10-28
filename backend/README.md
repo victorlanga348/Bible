@@ -10,6 +10,8 @@ Comandos operacionais existentes: npm run db:import:ai:dev, npm run ai:index:dev
 
 ## Preparação local
 
+CI de mutação usa seis partições com PostgreSQL isolado e agregação estrita de todo o escopo. Operação/limites/provas em [mutation testing](../docs/quality/mutation-testing.md); partição isolada não aprova release.
+
 Usar Node 24.16.0, npm 11.13.0 e Docker Desktop com motor Linux operacional. Executar os comandos nesta pasta.
 
 ```powershell

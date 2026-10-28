@@ -1,6 +1,8 @@
 # Estado operacional do Bíblia App
 
-Atualizado2026-10-27. Fonte breve de retoma; histórico integral preservado em [arquivo](project-state-history-2026-10-27.md). Specs/ADRs/gates permanecem normativos; consultar apenas a tarefa e os documentos aplicáveis, sem carregar o arquivo por rotina.
+Atualizado2026-10-28. Fonte breve de retoma; histórico integral preservado em [arquivo](project-state-history-2026-10-27.md). Specs/ADRs/gates permanecem normativos; consultar apenas a tarefa e os documentos aplicáveis, sem carregar o arquivo por rotina.
+
+- Retoma prioritária2026-10-28: CI40563697363 CANCELLED360min,1680/77PASS/100%linhas/97,39%branches, mutação2876/4483 incompleta e workers sem memória, nenhum score aceite. T006 implementa correção do gargalo:6partições balanceadas747/748/747/748/747/746, cada uma com banco isolado/concurrency1/worker reciclado25; agregador regenera4483mutantes/98fontes e verifica tudo uma vez/revisão/fontes/fingerprint/configuração+gates originais. RED7→GREEN7/tooling50/lint/actionlint PASS; nova CI real pendente. Nenhuma mudança src/modelos/dados. T006 IN_PROGRESS/T007 BLOCKED; não iniciar dependentes antes do gate. Entradas antigas abaixo preservam histórico da execução anterior.
 
 - Autorização vigente: executar S00–S08, decisões documentadas, commits/push em feat/biblia-backend sem nova permissão. main preservada; uma tarefa por vez, sem subagentes. Utilizador pediu reduzir contexto/releituras/repetições, mantendo TDD/gates reais. Pausa de balanço revogada pelo pedido de prosseguir.
 - S00–S04 DONE. S05 IN_PROGRESS; T004/T005 DONE válidas (T00541d1e6a, fontef798/CI40471991297, zeroRuntimeError/NoCoverage). T006 IN_PROGRESS, T007 dependente; S06–S08 BACKLOG autorizado, contratos ainda a refinar nas tarefas próprias.

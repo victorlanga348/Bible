@@ -22,6 +22,8 @@
     "test:mutation": "stryker run && node scripts/check-mutation.cjs",
     "test:mutation:dry-run": "stryker run --dryRunOnly",
     "test:mutation:incremental": "node scripts/mutation-incremental.cjs",
+    "test:mutation:shard": "node scripts/mutation-shards.cjs run",
+    "test:mutation:merge": "node scripts/mutation-shards.cjs merge",
     "test:mutation:ai-gate": "node scripts/check-ai-mutation.cjs",
     "prisma:generate": "prisma generate && prisma generate --config prisma-ai.config.ts",
     "db:migrate:test": "npm run build && node scripts/migrate-test.cjs",

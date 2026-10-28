@@ -15,6 +15,8 @@ Score estritamente > 85%, antes do arredondamento; 85% falha. Line Coverage >= 9
 Sem mutantes válidos não há score aprovável. Justificar não aplicabilidade real; execução incompleta/falhada não é escopo vazio.
 
 ## Sobreviventes, evidência e bloqueio
+
+S05-T006,2026-10-28: CI reparte o escopo completo em seis jobs/bancos descartáveis próprios, concurrency1. `npm run test:mutation:shard -- 0` (índices0–5) mantém operadores/checker/perTest/limiares; `npm run test:mutation:merge` regenera todos os mutantes pelo Instrumenter10 e exige correspondência exata de localização/operador/replacement, fontes/revisão/fingerprint de testes/configuração, sem omissões/sobreposições ou partições incompletas. Gate agregado: >85 bruto global/AI e zeroRuntimeError/NoCoverage. Saídas reports/mutation/mutation.json e shards-audit.json; IDs prefixados por partição, estados preservados. Worker reciclado25avaliações para conter crescimento observado. Cache separado por partição não comprova gate; comando integral permanece. Decisão/provas no [plano T006](../sprints/S05/tasks/S05-T006-rag-persistence-http.md) e [relatório](../sprints/S05/TEST_REPORT.md).
 Relatório: localização, operador, comportamento, cobertura, teste em falta, equivalência eventualmente comprovada, responsável e tarefa.
 Investigar timeouts excessivos e defeitos críticos de fontes/acesso/licenças mesmo com score suficiente.
 Guardar comando real, versão, revisão, escopo, exclusões, categorias, score bruto e artefactos. Não inventar relatórios/score.
