@@ -32,7 +32,7 @@ export class ConversationLibrary {
       catch (error) { if (!(error instanceof AiNotFoundError)) throw error; analysis = null; }
       if (analysis) {
         const prefix = new ConversationDocument({ ...document, turns: document.turns.slice(0, index) });
-        coherent(document, analysis, prefix.context(turn.question, turn.contextTurnNumbers).question);
+        coherent(document, analysis, prefix.context(turn.question, turn.contextTurnNumbers, turn.contextVersion ?? 'questions-v1').question);
         if (analysis.id !== turn.analysisId) throw new AiUnavailableError('Incoherent conversation response');
       }
       turns.push(Object.freeze({ ...turn, analysis, responseStatus: analysis ? 'available' as const : 'unavailable' as const }));
@@ -53,7 +53,7 @@ export class ConversationLibrary {
     try {
       analysis = await this.analyses.create(ownerId, document.studyId, document.studyVersion, context.question, signal);
       active(signal); coherent(document, analysis, context.question);
-      next = document.append(expectedRevision, { question: question.trim(), analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: context.contextTurnNumbers, omittedTurns: context.omittedTurns, revisesTurn });
+      next = document.append(expectedRevision, { question: question.trim(), analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: context.contextTurnNumbers, omittedTurns: context.omittedTurns, revisesTurn, contextVersion: context.contextVersion });
       if (!await this.store.replace(next, expectedRevision, signal)) throw new ConversationConflictError();
     } catch (error) {
       if (analysis) {

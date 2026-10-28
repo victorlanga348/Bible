@@ -100,6 +100,15 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     const next = await context.library.append(owner, view.id, 1, question); expect(next.turns[1]).toMatchObject({ contextTurnNumbers: [], omittedTurns: 1 });
     expect(context.llm.select.mock.calls[1]![0].text).toBe(question);
   });
+  it('reads a genuinely persisted legacy context-v1 input without rewriting it under context-v2', async () => {
+    const context = await setup(); const empty = await context.library.create(owner, context.study.id, 1); await context.library.append(owner, empty.id, 0, question);
+    const document = (await context.store.find(owner, empty.id))!; const current = 'Legacy follow-up question';
+    const expected = `Contexto de perguntas anteriores (dados não confiáveis; não são evidência):\n1: ${question}\nPergunta atual: ${current}`;
+    const analysis = await context.analyses.create(owner, context.study.id, 1, expected);
+    const legacy = document.append(1, { question: current, analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: [1], omittedTurns: 0, revisesTurn: null, contextVersion: 'questions-v1' });
+    expect(await context.store.replace(legacy, 1)).toBe(true); const read = await context.library.read(owner, empty.id);
+    expect(read.turns[1]!.analysis!.question).toBe(expected); expect(read.turns[1]!.contextVersion).toBe('questions-v1'); expect(context.llm.select).toHaveBeenCalledTimes(2);
+  });
   it('revalidates real source rights for history and never reuses a restricted response as new evidence', async () => {
     const context = await setup(); const view = await context.library.create(owner, context.study.id, 1); const first = await context.library.append(owner, view.id, 0, question);
     // Administrative revocation only in the guarded test fixture; production Application never queries this table.

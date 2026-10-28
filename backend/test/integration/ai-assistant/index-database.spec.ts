@@ -14,7 +14,13 @@ describe('independent generated AI client with actual PostgreSQL lifecycle', () 
       expect(rows[0]).toMatchObject({ db: 'biblia_test', role: 'biblia_test', statementTimeout: '2s' });
       const profile = await database.client.embeddingProfile.count(); expect(profile).toBe(0);
       await database.onModuleDestroy();
-      expect((await observer.query('SELECT pid FROM pg_stat_activity WHERE pid=$1', [rows[0]!.pid])).rows).toEqual([]);
+      const deadline = performance.now() + 2000;
+      let sessions = (await observer.query('SELECT pid FROM pg_stat_activity WHERE pid=$1', [rows[0]!.pid])).rows;
+      while (sessions.length && performance.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 10));
+        sessions = (await observer.query('SELECT pid FROM pg_stat_activity WHERE pid=$1', [rows[0]!.pid])).rows;
+      }
+      expect(sessions).toEqual([]);
     } finally { if (database.client) await database.client.$disconnect(); await observer.end(); }
   });
 });

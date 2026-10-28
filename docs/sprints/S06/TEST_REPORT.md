@@ -1,5 +1,15 @@
 # S06 — Relatório de testes
 
+## T006 — falha real C01v1 e correção versionada em validação
+
+Fonte743d110/CI40686183795: foundation PASS; partes0/4/5 falharam (sem gate aceite).0falhou no dry-run por PID588 ainda visível imediatamente após disconnect do cliente AI; recorrência ERR-0011, teste alinhado à observação já existente2s/10ms exigindo zero, sem alterar timeout/produto.4/5 concluíram análise mas falharam no ledger porque Stryker atualizou a fonte de histórico fora do escopo. Correção RED1→GREEN23 permite fonte histórica intacta ou fonte atual exatamente igual ao inventário atual de nome conhecido, rotulando esta como updated-out-of-scope sem usar seus estados como evidência. Todas as fontes/mutantes atuais continuam obrigatórias no agregado. Brutos/entradas permanecem intactos; falhas não são PASS.
+
+NativeC01v1 executado uma vez: T01PASS84426ms/T02PASS70725ms/T03FAIL62305ms, terceira pergunta sobre inserção de espírito/alma citou Eve. Raw reports/ai-conversation-local-2rAkLT/report.json SHAaa59464df2d9f03c85c5454c395970f79e883d07b0ce9c32702bbd4ecff7b863; auditoria s06-native-verify-2a54ca69-8a60-495f-82fa-f0b00d4bd7c1.json: preservação PASS,7estudos8versões/0análises0conversas, fontes/corpus íntegros e recursos fechados. Dois acertos não compensam o terceiro; resultado permanece FAIL. Não atribuir causa exclusiva a idioma/quantização sem prova.
+
+Migração dev aditiva7PASS: backup custom pg_dump16 e pg_restore--list estruturais fora do Git/OneDrive, relatório s06-native-migrate-420a6006-ea76-43d6-a48b-6cc093c174ce.json; hashes de todas as tabelas anteriores preservados. Restore efetivo reservado para S08, não presumido. Nenhuma alteração a .env/modelos/perfil/fontes/cânone.
+
+Formato questions-v2 decidido/documentado antes de código: distingue perguntas anteriores e pergunta atual em inglês, mesmos2anteriores/1000bytes/500bytes/input, sem respostas históricas no modelo. contextVersion guardado/exposto por turno; ausência legada=v1, leitura usa versão original sem reescrever/responder outra vez. Corpus/modelos/promptv6/expectativas intactos, v1FAIL conservado; C01 novo é regressão versionada, C02–C04 ainda não observados. RED1FAIL53PASS→GREEN54, depois55unidades; integração42/3suitesPASS34,622s incluindo legado v1 e shutdown; HTTP21PASS35,031s; lint/actionlint PASS, typecheck/build final em execução. Prova nativa v2 aindaNOT_RUN, sem encerrar T006/T007/S06. Total planeado de aceite9turnos, mais3tentativas v1falhadas preservadas, não nove chamadas totais.
+
 ## T006 — checkpoint de integração2026-10-28
 
 Após fecho T005f619a9d, plano T006/SPEC fixados antes do código. Schema: verificação executável inicial14FAIL por tabela inexistente (configuração, não RED de negócio); migração aditiva202610280001_ai_conversation aplicada somente em biblia_test após guard/identidade;14PASS4,833s nas constraints reais, sem FK para módulos alheios. Desenvolvimento ainda com6migrações neste checkpoint, nenhuma limpeza/dado nativo alterado.
@@ -59,3 +69,5 @@ Diagnóstico do domínio novo:209mutantes156Killed35CompileError18Survived/89,65
 Validação final da correção: tooling75/75PASS8,578s, typecheck/lint/actionlint PASS; auditoria documental2026-10-28T10:13:07.913Z PASS10ficheiros/12links/zero missing,segredos,whitespace,prohibited,staged. Logs s06-t005-{scope-tooling,final-typecheck,final-lint,cache-scope-red,cache-scope-green}.log. Commit de checkpoint antes da nova CI; produto byte-idêntico7ac3538.
 
 Fecho T005: auditoria documental PASS2026-10-28T10:23:54.126Z14Markdown/80links/zero missing,secretHits,whitespace,prohibited,staged. Agente revê/encerra sob delegação vigente; Gate4/6 não aplicáveis ao domínio novo, não PASS de persistência ou IA S06. Fonte/gates/sobreviventes/digests em T005_COMPLETION_REPORT.
+
+Checkpoint contextov2:55unitPASS,42integration/3suitesPASS34,622s,21HTTPPASS35,031s,79toolingPASS9,313s,typecheck/build/lint/actionlintPASS; auditoria antes decommit. Typecheck detetou undefined explícito incompatível com exactOptionalPropertyTypes num fixture legado; corrigido para ausência real da propriedade, conforme JSON. Nenhuma prova nativa v2 executada ainda.

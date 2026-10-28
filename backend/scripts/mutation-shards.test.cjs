@@ -163,3 +163,13 @@ test('rejects missing current files, unknown extras and changed historical sourc
   const state = clone(input); state.files[other].mutants[0].status = 'RuntimeError'; assert.throws(() => currentPartition(state, [ai], input));
   const extra = clone(input); extra.files['src/unexpected.ts'] = extra.files[other]; assert.throws(() => currentPartition(extra, [ai], input));
 });
+test('audits Stryker-updated out-of-scope source only when it exactly matches the independent current inventory', () => {
+  const { expected, shards } = example(); const input = mergeReports(expected, shards, config).report; const raw = clone(input);
+  raw.files[other].source += '\n// current source outside this partition';
+  const sourcesNow = { ...expected.sources, [other]: raw.files[other].source };
+  const result = currentPartition(raw, [ai], input, sourcesNow);
+  assert.equal(result.report.files[ai], raw.files[ai]); assert.deepEqual(Object.keys(result.report.files), [ai]);
+  assert.equal(result.history[0].kind, 'updated-out-of-scope');
+  assert.equal(raw.files[other].source, sourcesNow[other]);
+  assert.throws(() => currentPartition(raw, [ai], input, expected.sources));
+});

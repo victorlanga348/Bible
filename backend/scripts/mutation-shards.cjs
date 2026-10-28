@@ -110,12 +110,21 @@ async function main(args) {
       assert.equal(seedSha256, 'e7504b95b07866e6641e38caa455de8b51526c962fb82a650707110fa68c0e49', 'Unverified complete seed');
       const seed = JSON.parse(seedBytes.toString('utf8')); verifyAiMutationReport(seed);
       const localBytes = existsSync(`${folder}/incremental.json`) ? readFileSync(`${folder}/incremental.json`) : null;
-      const choice = chooseIncremental(localBytes ? JSON.parse(localBytes.toString('utf8')) : undefined, seed, expected, config.mutate);
-      if (choice.selected === 'seed') {
-        if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
-        writeFileSync(`${folder}/incremental.json`, seedBytes);
+      let choice = chooseIncremental(localBytes ? JSON.parse(localBytes.toString('utf8')) : undefined, seed, expected, config.mutate);
+      let selectedBytes = choice.selected === 'seed' ? seedBytes : localBytes;
+      const recent = `${folder}/recent`;
+      if (existsSync(recent)) for (const entry of readdirSync(recent, { withFileTypes: true }).filter(entry => entry.isDirectory() && /^mutation-[0-5]$/.test(entry.name))) {
+        const candidateFile = `${recent}/${entry.name}/mutation.json`; if (!existsSync(candidateFile)) continue;
+        const bytes = readFileSync(candidateFile); const candidate = JSON.parse(bytes.toString('utf8'));
+        assert.equal(candidate.config.thresholds.break, 85, 'Changed candidate threshold');
+        const next = chooseIncremental(choice.report, candidate, expected, config.mutate);
+        if (next.selected === 'seed') { choice = { ...next, selected: `recent-${entry.name}` }; selectedBytes = bytes; }
       }
-      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: 'cc157ea4ee3a5ecc7220acdf38016eb53a4c3507', seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
+      if (choice.selected !== 'local') {
+        if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
+        writeFileSync(`${folder}/incremental.json`, selectedBytes);
+      }
+      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: 'cc157ea4ee3a5ecc7220acdf38016eb53a4c3507', recentCandidateRevision: '743d1104952ab7f59682e5f3814ae3bdaf654ff1', selectedSha256: selectedBytes ? createHash('sha256').update(selectedBytes).digest('hex') : null, seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
       console.log(JSON.stringify({ incrementalInput: choice.selected, matchingMutants: choice.matchingMutants }));
     }
     if (existsSync(`${folder}/incremental.json`)) {
@@ -134,7 +143,7 @@ async function main(args) {
     if (result.error || !existsSync(`${folder}/mutation.json`)) { process.exitCode = 1; return; }
     const report = JSON.parse(text(`${folder}/mutation.json`));
     if (analysisExitCode(report, result.status) !== 0) { process.exitCode = 1; return; }
-    const scoped = currentPartition(report, config.mutate, usedBytes ? JSON.parse(usedBytes.toString('utf8')) : undefined);
+    const scoped = currentPartition(report, config.mutate, usedBytes ? JSON.parse(usedBytes.toString('utf8')) : undefined, expected.sources);
     write(`${folder}/partition-mutation.json`, scoped.report);
     write(`${folder}/history-audit.json`, { sourceReportSha256: createHash('sha256').update(readFileSync(`${folder}/mutation.json`)).digest('hex'), inputSha256: usedBytes ? createHash('sha256').update(usedBytes).digest('hex') : null, history: scoped.history, reason: 'Unchanged out-of-scope cache history, not current partition evidence; raw report preserved' });
     console.log(JSON.stringify({ partition: index, analysis: 'completed', qualityGate: 'NOT_RUN', reason: 'Quality is evaluated across the complete aggregate, not arbitrary file partitions' }));
@@ -193,14 +202,17 @@ function chooseIncremental(local, seed, expected, group) {
   const current = score(local); const complete = score(seed);
   return complete > current ? { report: seed, selected: 'seed', matchingMutants: complete } : { report: local, selected: 'local', matchingMutants: current };
 }
-function currentPartition(report, group, input) {
+function currentPartition(report, group, input, currentSources) {
   const own = new Set(group); assert.ok(own.size === group.length && own.size > 0, 'Invalid partition');
   for (const name of group) assert.ok(report.files[name], 'Missing current partition file');
   const historical = m => JSON.stringify([signature(m), m.status]);
   const history = Object.keys(report.files).filter(name => !own.has(name)).sort(lexical).map(name => {
     const previous = input?.files?.[name]; const file = report.files[name];
     assert.ok(previous, 'Unexpected out-of-scope file');
-    assert.equal(file.source, previous.source, 'Changed historical source');
+    if (file.source !== previous.source) {
+      assert.equal(file.source.replaceAll('\r\n', '\n'), currentSources?.[name], 'Unexpected updated out-of-scope source');
+      return { file: name, mutants: file.mutants.length, kind: 'updated-out-of-scope', inputSourceSha256: createHash('sha256').update(previous.source).digest('hex'), currentSourceSha256: createHash('sha256').update(file.source).digest('hex') };
+    }
     assert.deepEqual(file.mutants.map(historical).sort(lexical), previous.mutants.map(historical).sort(lexical), 'Changed historical mutant states');
     return { file: name, mutants: file.mutants.length };
   });
