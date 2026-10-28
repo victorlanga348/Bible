@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental } = require('./mutation-shards.cjs');
+const { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental, currentPartition } = require('./mutation-shards.cjs');
 
 // Technical code/report fixtures only, never claimed as actual mutation evidence.
 const ai = 'src/modules/ai-assistant/domain/technical.ts';
@@ -145,4 +145,21 @@ test('does not count cached errors, unmatched mutations or duplicated identifier
   const extra = clone(seed); extra.files[ai].mutants.push({ ...clone(extra.files[ai].mutants[0]), replacement: 'not in inventory', id: 'extra' });
   extra.files[ai].mutants.push(clone(extra.files[ai].mutants[0]));
   assert.equal(chooseIncremental(undefined, extra, expected, [ai, other]).matchingMutants, Object.values(expected.mutants).flat().length);
+});
+
+test('projects only the declared partition while retaining raw output and unchanged cached history as separate evidence', () => {
+  const { expected, shards } = example(); const input = mergeReports(expected, shards, config).report; const raw = clone(input);
+  raw.files[ai].mutants[0].status = 'Survived'; const before = clone(raw);
+  const result = currentPartition(raw, [ai], input);
+  assert.deepEqual(Object.keys(result.report.files), [ai]); assert.equal(result.report.files[ai], raw.files[ai]);
+  assert.equal(result.report.files[ai].mutants[0].status, 'Survived'); assert.deepEqual(raw, before);
+  assert.deepEqual(result.history, [{ file: other, mutants: input.files[other].mutants.length }]);
+});
+test('rejects missing current files, unknown extras and changed historical sources or mutant states', () => {
+  const { expected, shards } = example(); const input = mergeReports(expected, shards, config).report;
+  const missing = clone(input); delete missing.files[ai]; assert.throws(() => currentPartition(missing, [ai], input));
+  assert.throws(() => currentPartition(input, [ai], undefined));
+  const source = clone(input); source.files[other].source += ' changed'; assert.throws(() => currentPartition(source, [ai], input));
+  const state = clone(input); state.files[other].mutants[0].status = 'RuntimeError'; assert.throws(() => currentPartition(state, [ai], input));
+  const extra = clone(input); extra.files['src/unexpected.ts'] = extra.files[other]; assert.throws(() => currentPartition(extra, [ai], input));
 });

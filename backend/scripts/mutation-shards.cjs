@@ -101,7 +101,7 @@ async function main(args) {
   if (args.length === 2 && args[0] === 'run' && /^[0-5]$/.test(args[1])) {
     const index = Number(args[1]);
     const folder = 'reports/mutation'; mkdirSync(folder, { recursive: true });
-    for (const name of ['shard.json', 'mutation.json']) if (existsSync(`${folder}/${name}`)) rmSync(`${folder}/${name}`);
+    for (const name of ['shard.json', 'mutation.json', 'partition-mutation.json', 'history-audit.json', 'incremental-used.json']) if (existsSync(`${folder}/${name}`)) rmSync(`${folder}/${name}`);
     const config = { ...expected.base, mutate: partition(expected.mutants, expected.count)[index], maxTestRunnerReuse: 25 };
     write(`${folder}/shard-config.json`, config);
     if (existsSync(`${folder}/seed/mutation.json`)) {
@@ -128,10 +128,15 @@ async function main(args) {
         console.log(JSON.stringify({ cacheEntriesRequiringActualRevalidation: revalidation.invalidated.length }));
       }
     }
+    const usedBytes = existsSync(`${folder}/incremental.json`) ? readFileSync(`${folder}/incremental.json`) : null;
+    if (usedBytes) writeFileSync(`${folder}/incremental-used.json`, usedBytes);
     const result = spawnSync(process.execPath, ['node_modules/@stryker-mutator/core/bin/stryker.js', 'run', `${folder}/shard-config.json`, '--incremental', '--incrementalFile', `${folder}/incremental.json`], { stdio: 'inherit' });
     if (result.error || !existsSync(`${folder}/mutation.json`)) { process.exitCode = 1; return; }
     const report = JSON.parse(text(`${folder}/mutation.json`));
     if (analysisExitCode(report, result.status) !== 0) { process.exitCode = 1; return; }
+    const scoped = currentPartition(report, config.mutate, usedBytes ? JSON.parse(usedBytes.toString('utf8')) : undefined);
+    write(`${folder}/partition-mutation.json`, scoped.report);
+    write(`${folder}/history-audit.json`, { sourceReportSha256: createHash('sha256').update(readFileSync(`${folder}/mutation.json`)).digest('hex'), inputSha256: usedBytes ? createHash('sha256').update(usedBytes).digest('hex') : null, history: scoped.history, reason: 'Unchanged out-of-scope cache history, not current partition evidence; raw report preserved' });
     console.log(JSON.stringify({ partition: index, analysis: 'completed', qualityGate: 'NOT_RUN', reason: 'Quality is evaluated across the complete aggregate, not arbitrary file partitions' }));
     write(`${folder}/shard.json`, { index, count: expected.count, revision: expected.revision, fingerprint: expected.fingerprint, completed: true });
     return;
@@ -139,7 +144,7 @@ async function main(args) {
   if (args.length === 1 && args[0] === 'merge') {
     const shards = Array.from({ length: expected.count }, (_, index) => {
       const root = `reports/shards/mutation-${index}`;
-      return { stamp: JSON.parse(text(`${root}/shard.json`)), report: JSON.parse(text(`${root}/mutation.json`)) };
+      return { stamp: JSON.parse(text(`${root}/shard.json`)), report: JSON.parse(text(`${root}/partition-mutation.json`)) };
     });
     const result = mergeReports(expected, shards, expected.base);
     mkdirSync('reports/mutation', { recursive: true });
@@ -188,5 +193,18 @@ function chooseIncremental(local, seed, expected, group) {
   const current = score(local); const complete = score(seed);
   return complete > current ? { report: seed, selected: 'seed', matchingMutants: complete } : { report: local, selected: 'local', matchingMutants: current };
 }
-module.exports = { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental };
+function currentPartition(report, group, input) {
+  const own = new Set(group); assert.ok(own.size === group.length && own.size > 0, 'Invalid partition');
+  for (const name of group) assert.ok(report.files[name], 'Missing current partition file');
+  const historical = m => JSON.stringify([signature(m), m.status]);
+  const history = Object.keys(report.files).filter(name => !own.has(name)).sort(lexical).map(name => {
+    const previous = input?.files?.[name]; const file = report.files[name];
+    assert.ok(previous, 'Unexpected out-of-scope file');
+    assert.equal(file.source, previous.source, 'Changed historical source');
+    assert.deepEqual(file.mutants.map(historical).sort(lexical), previous.mutants.map(historical).sort(lexical), 'Changed historical mutant states');
+    return { file: name, mutants: file.mutants.length };
+  });
+  return { report: { ...report, files: Object.fromEntries(group.map(name => [name, report.files[name]])) }, history };
+}
+module.exports = { inventory, partition, mergeReports, analysisExitCode, invalidateNonEvidence, chooseIncremental, currentPartition };
 if (require.main === module) main(process.argv.slice(2)).catch(error => { console.error(error.message); process.exitCode = 1; });

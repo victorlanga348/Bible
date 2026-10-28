@@ -34,7 +34,7 @@ describe('private immutable conversation and bounded question context; no infere
     expect(Object.isFrozen(value.turns[1])).toBe(true); expect(Object.isFrozen(value.turns[1]!.contextTurnNumbers)).toBe(true);
   });
   it.each([
-    { schemaVersion: 2 }, { id: 'not-a-uuid' }, { id: uuid(1).toUpperCase().replace('11111111', 'ABCDEFAB') },
+    { schemaVersion: 2 }, { id: 'not-a-uuid' }, { id: uuid(1).toUpperCase().replace('11111111', 'ABCDEFAB') }, { id: 'prefix' + uuid(1) }, { id: uuid(1) + 'suffix' },
     { studyId: '' }, { ownerId: '' }, { ownerId: ' owner ' }, { ownerId: 'a'.repeat(129) }, { ownerId: 'a\0b' },
     { studyVersion: 0 }, { studyVersion: 1.5 }, { studyVersion: Number.MAX_SAFE_INTEGER + 1 },
     { createdAt: 'invalid' }, { createdAt: '2026-02-30T00:00:00.000Z' }, { createdAt: '2026-10-28T10:00:00+00:00' },
@@ -49,7 +49,7 @@ describe('private immutable conversation and bounded question context; no infere
     expect(() => new ConversationDocument({ ...props(), turns: [{ ...turn(), ...invalid }] })).toThrow(AiModelInputError);
   });
   it.each([
-    { number: 3 }, { analysisId: uuid(101) }, { contextTurnNumbers: [0] }, { contextTurnNumbers: [2] },
+    { number: 3 }, { analysisId: uuid(101) }, { contextTurnNumbers: [0], omittedTurns: 0 }, { contextTurnNumbers: [2], omittedTurns: 0 },
     { contextTurnNumbers: [1, 1], omittedTurns: -1 }, { contextTurnNumbers: [1], omittedTurns: 1 },
     { contextTurnNumbers: [], omittedTurns: -1 }, { revisesTurn: 2 }, { revisesTurn: -1 }, { revisesTurn: 0.5 },
   ])('rejects inconsistent sequence/response/context/revision metadata %p', invalid => {
@@ -57,9 +57,20 @@ describe('private immutable conversation and bounded question context; no infere
   });
   it('rejects non-array, unordered, overlong and non-integer context metadata', () => {
     for (const contextTurnNumbers of [null, '1', [1.5], [2, 1], [1, 2, 3]]) {
-      expect(() => new ConversationDocument({ ...props(), turns: [turn(), turn(2), turn(3), { ...turn(4), contextTurnNumbers: contextTurnNumbers as readonly number[], omittedTurns: 0 }] })).toThrow(AiModelInputError);
+      const omittedTurns = Array.isArray(contextTurnNumbers) ? 3 - contextTurnNumbers.length : 0;
+      expect(() => new ConversationDocument({ ...props(), turns: [turn(), turn(2), turn(3), { ...turn(4), contextTurnNumbers: contextTurnNumbers as readonly number[], omittedTurns }] })).toThrow(AiModelInputError);
     }
     expect(() => new ConversationDocument({ ...props(), turns: null as unknown as ConversationTurnProps[] })).toThrow(AiModelInputError);
+  });
+  it('hydrates two valid previous context questions and rejects time moving backwards after the first turn', () => {
+    const value = new ConversationDocument({ ...props(), turns: [turn(), turn(2), { ...turn(3), contextTurnNumbers: [1, 2], omittedTurns: 0 }] });
+    expect(value.turns[2]!.contextTurnNumbers).toEqual([1, 2]); expect(value.revision).toBe(3);
+    expect(() => new ConversationDocument({ ...props(), turns: [{ ...turn(), createdAt: '2026-10-28T12:00:00.000Z' }, { ...turn(2), createdAt: '2026-10-28T11:00:00.000Z' }] })).toThrow(AiModelInputError);
+  });
+  it('rejects null objects and null owner/turn values with the domain error, without leaking a TypeError', () => {
+    for (const input of [null, undefined, { ...props(), ownerId: null }, { ...props(), turns: [null] }]) {
+      expect(() => new ConversationDocument(input as unknown as ConversationProps)).toThrow(AiModelInputError);
+    }
   });
   it('enforces safe revisions and the limit of twenty confirmed turns', () => {
     const full = new ConversationDocument({ ...props(), turns: Array.from({ length: 20 }, (_, i) => turn(i + 1)) });
