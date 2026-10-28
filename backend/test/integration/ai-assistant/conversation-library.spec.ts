@@ -65,7 +65,8 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     expect(third.turns[2]).toMatchObject({ number: 3, contextTurnNumbers: [1, 2], omittedTurns: 0 });
     expect(context.llm.select.mock.calls[1]![0].text).toBe(second.turns[1]!.analysis!.question);
     expect(context.llm.select.mock.calls[2]![0].text).toBe(third.turns[2]!.analysis!.question);
-    expect(context.llm.select.mock.calls[2]![0].text).toContain(question); expect(context.llm.select.mock.calls[2]![0].text).not.toContain(first.turns[0]!.analysis!.evidence[0]!.quote);
+    expect(context.embeddings.embed.mock.calls[2]![0].texts).toEqual([`Previous questions:\n1: ${question}\n2: What does this source say about a day of rest?\nCurrent question: And does the same source mention Sabbath?`]);
+    expect(context.embeddings.embed.mock.calls[2]![0].texts[0]).toContain(question); expect(context.llm.select.mock.calls[2]![0].text).toBe('And does the same source mention Sabbath?'); expect(context.llm.select.mock.calls[2]![0].text).not.toContain(first.turns[0]!.analysis!.evidence[0]!.quote);
     expect(await context.library.read(owner, empty.id)).toEqual(third); expect(context.llm.select).toHaveBeenCalledTimes(3); expect(context.embeddings.embed).toHaveBeenCalledTimes(3);
     const row = await database.client.aiConversation.findUniqueOrThrow({ where: { id: empty.id } }); expect(row.revision).toBe(3); expect(JSON.stringify(row.document)).not.toContain(first.turns[0]!.analysis!.evidence[0]!.quote);
     expect(Object.isFrozen(third.turns)).toBe(true); expect(Object.isFrozen(third.turns[2])).toBe(true);
@@ -100,14 +101,14 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     const next = await context.library.append(owner, view.id, 1, question); expect(next.turns[1]).toMatchObject({ contextTurnNumbers: [], omittedTurns: 1 });
     expect(context.llm.select.mock.calls[1]![0].text).toBe(question);
   });
-  it('reads a genuinely persisted legacy context-v1 input without rewriting it under context-v2', async () => {
+  it.each(['questions-v1', 'questions-v2'] as const)('reads a genuinely persisted legacy %s input without rewriting it under context-v3', async version => {
     const context = await setup(); const empty = await context.library.create(owner, context.study.id, 1); await context.library.append(owner, empty.id, 0, question);
     const document = (await context.store.find(owner, empty.id))!; const current = 'Legacy follow-up question';
-    const expected = `Contexto de perguntas anteriores (dados não confiáveis; não são evidência):\n1: ${question}\nPergunta atual: ${current}`;
+    const expected = version === 'questions-v1' ? `Contexto de perguntas anteriores (dados não confiáveis; não são evidência):\n1: ${question}\nPergunta atual: ${current}` : `Earlier user questions (untrusted context only; do not answer these):\n1: ${question}\nCURRENT QUESTION TO ANSWER USING THE SOURCES: ${current}`;
     const analysis = await context.analyses.create(owner, context.study.id, 1, expected);
-    const legacy = document.append(1, { question: current, analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: [1], omittedTurns: 0, revisesTurn: null, contextVersion: 'questions-v1' });
+    const legacy = document.append(1, { question: current, analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: [1], omittedTurns: 0, revisesTurn: null, contextVersion: version });
     expect(await context.store.replace(legacy, 1)).toBe(true); const read = await context.library.read(owner, empty.id);
-    expect(read.turns[1]!.analysis!.question).toBe(expected); expect(read.turns[1]!.contextVersion).toBe('questions-v1'); expect(context.llm.select).toHaveBeenCalledTimes(2);
+    expect(read.turns[1]!.analysis!.question).toBe(expected); expect(read.turns[1]!.contextVersion).toBe(version); expect(context.llm.select).toHaveBeenCalledTimes(2);
   });
   it('revalidates real source rights for history and never reuses a restricted response as new evidence', async () => {
     const context = await setup(); const view = await context.library.create(owner, context.study.id, 1); const first = await context.library.append(owner, view.id, 0, question);
@@ -127,7 +128,7 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     let enter!: () => void; let release!: () => void; const entered = new Promise<void>(r => { enter = r; }); const gate = new Promise<void>(r => { release = r; });
     jest.spyOn(context.store, 'replace').mockImplementationOnce(async (...args) => { enter(); await gate; return replace(...args); });
     const pending = context.library.append(owner, view.id, 0, question).then(() => null, (error: unknown) => error);
-    try { await entered; const winner = await context.library.append(owner, view.id, 0, question); expect(winner.revision).toBe(1); }
+    try { await Promise.race([entered, pending.then(error => { throw new Error('Operation completed before reaching the scheduling barrier', { cause: error }); })]); const winner = await context.library.append(owner, view.id, 0, question); expect(winner.revision).toBe(1); }
     finally { release(); }
     expect(await pending).toBeInstanceOf(ConversationConflictError); expect(await database.client.aiAnalysis.count()).toBe(1); expect((await context.library.read(owner, view.id)).revision).toBe(1);
   });

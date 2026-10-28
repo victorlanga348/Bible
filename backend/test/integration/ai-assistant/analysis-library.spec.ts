@@ -63,6 +63,12 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     expect(new TextEncoder().encode(contextSentences.map(value => value.text).join('')).byteLength).toBeLessThanOrEqual(2400);
     expect(await vectorDatabase.client.sourceChunk.count()).toBe(11); expect(Object.isFrozen(view)).toBe(true);
   });
+  it('separates the internal history-augmented retrieval query from the current generation question', async () => {
+    const context = await setup(); const query = `Previous technical question\nCurrent question: ${question}`;
+    const view = await context.library.create(owner, context.study.id, 1, question, undefined, query);
+    expect(context.embeddings.embed.mock.calls[0]![0]).toEqual({ purpose: 'question', texts: [query] });
+    expect(context.llm.select.mock.calls[0]![0].text).toBe(question); expect(view.question).toBe(question);
+  });
   it('validates study owner/version before reserving an execution or invoking any model', async () => {
     const context = await setup({ index: false }); const execution = jest.spyOn(context.operation, 'run');
     await expect(context.library.create('another-owner', context.study.id, 1, question)).rejects.toThrow(AiNotFoundError); await expect(context.library.create(owner, context.study.id, 2, question)).rejects.toThrow(AiNotFoundError);

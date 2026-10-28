@@ -40,7 +40,7 @@ async function run() {
         try {
           result.view = await call('POST', `/conversations/${report.conversation.id}/turns`, { expectedRevision: index, question: entry.question }, 201); await save();
           assert.equal(result.view.revision, index + 1); assert.equal('ownerId' in result.view, false);
-          const turn = result.view.turns[index]; assert.equal(turn.number, index + 1); assert.equal(turn.question, entry.question); assert.deepEqual(turn.contextTurnNumbers, entry.contextTurnNumbers); assert.equal(turn.contextVersion, 'questions-v2'); assert.equal(turn.omittedTurns, 0); assert.equal(turn.revisesTurn, null); assert.equal(turn.responseStatus, 'available'); assert.equal(turn.analysisId, turn.analysis.id);
+          const turn = result.view.turns[index]; assert.equal(turn.number, index + 1); assert.equal(turn.question, entry.question); assert.deepEqual(turn.contextTurnNumbers, entry.contextTurnNumbers); assert.equal(turn.contextVersion, 'questions-v3'); assert.equal(turn.omittedTurns, 0); assert.equal(turn.revisesTurn, null); assert.equal(turn.responseStatus, 'available'); assert.equal(turn.analysisId, turn.analysis.id);
           Object.assign(result, validateEvaluation({ ...entry, question: entry.expectedQuestion }, turn.analysis, { original, study: report.study, profile }));
           assert.deepEqual(await call('GET', `/conversations/${report.conversation.id}`, undefined, 200), result.view);
           assert.deepEqual(await call('GET', `/ai-analyses/${turn.analysisId}`, undefined, 200), turn.analysis);

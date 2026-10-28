@@ -12,5 +12,5 @@ export const appendConversationBody = z.strictObject({ expectedRevision: z.numbe
 export const emptyConversationBody = z.strictObject({}).optional();
 export const conversationView = z.strictObject({
   id: uuid, studyId: uuid, studyVersion: positive, createdAt: z.iso.datetime(), revision: z.number().int().min(0).max(20),
-  turns: z.array(z.strictObject({ number: turnNumber, question, analysisId: uuid, createdAt: z.iso.datetime(), contextTurnNumbers: z.array(turnNumber).max(2), contextVersion: z.enum(['questions-v1', 'questions-v2']), omittedTurns: z.number().int().min(0).max(19), revisesTurn: turnNumber.nullable(), analysis: analysisView.nullable(), responseStatus: z.enum(['available', 'unavailable']) })).max(20),
+  turns: z.array(z.strictObject({ number: turnNumber, question, analysisId: uuid, createdAt: z.iso.datetime(), contextTurnNumbers: z.array(turnNumber).max(2), contextVersion: z.enum(['questions-v1', 'questions-v2', 'questions-v3']), omittedTurns: z.number().int().min(0).max(19), revisesTurn: turnNumber.nullable(), analysis: analysisView.nullable(), responseStatus: z.enum(['available', 'unavailable']) })).max(20),
 });

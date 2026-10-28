@@ -8,7 +8,7 @@ export interface ConversationStorePort {
   delete(ownerId: string, id: string): Promise<boolean>;
 }
 export interface ConversationAnalysesPort {
-  create(ownerId: string, studyId: string, studyVersion: number, question: string, signal?: AbortSignal): Promise<AiAnalysisView>;
+  create(ownerId: string, studyId: string, studyVersion: number, question: string, signal?: AbortSignal, retrievalInput?: string): Promise<AiAnalysisView>;
   read(ownerId: string, id: string): Promise<AiAnalysisView>;
   delete(ownerId: string, id: string): Promise<void>;
 }

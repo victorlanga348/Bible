@@ -18,8 +18,9 @@ const segmentKey = (row: RetrievedAiChunk): string => `${row.excerptId}/${row.id
 
 export class AiAnalysisLibrary {
   constructor(private readonly settings: AiAnalysisSettings, private readonly studies: StudyContextPort, private readonly sources: AiSourcesPort, private readonly embeddings: EmbeddingsPort, private readonly llm: LlmProviderPort, private readonly index: VectorIndexPort, private readonly store: AnalysisStorePort, private readonly operation: AiOperationPort, private readonly identity: AiIdentityClockPort, private readonly hash: AiTextHashPort) {}
-  async create(ownerId: string, studyId: string, studyVersion: number, input: string, signal?: AbortSignal): Promise<AiAnalysisView> {
+  async create(ownerId: string, studyId: string, studyVersion: number, input: string, signal?: AbortSignal, retrievalInput?: string): Promise<AiAnalysisView> {
     const question = new AiQuestion(input);
+    const retrieval = new AiQuestion(retrievalInput ?? input);
     if (!Number.isSafeInteger(studyVersion) || studyVersion <= 0) throw new AiModelInputError();
     const study = await this.studies.read(ownerId, studyId, studyVersion);
     return this.operation.run(async active => {
@@ -34,7 +35,7 @@ export class AiAnalysisLibrary {
         return this.persist(ownerId, study, question, 'insufficient-evidence', [], [...limitations, noSources], provenance, active);
       }
       if (!await this.index.readiness(this.settings.indexProfile)) throw new AiUnavailableError();
-      const embedded = checkedEmbedding(await this.embeddings.embed({ purpose: 'question', texts: [question.text] }, active), 1, this.settings);
+      const embedded = checkedEmbedding(await this.embeddings.embed({ purpose: 'question', texts: [retrieval.text] }, active), 1, this.settings);
       const retrieved = await this.index.search(this.settings.indexProfile, embedded.vectors[0]!, eligible.map(row => ({ sourceId: row.sourceId, excerptId: row.excerptId, textSha256: row.textSha256 })));
       if (retrieved.length < 1 || retrieved.length > 3 || new Set(retrieved.map(segmentKey)).size !== retrieved.length) throw new AiResultRejectedError();
       const used = new Map<string, AdmittedAiExcerpt>();

@@ -12,10 +12,13 @@ const document = (questions: readonly string[]): ConversationDocument => new Con
 describe('private immutable conversation and bounded question context; no inference', () => {
   it('versions the new current-question envelope explicitly and preserves legacy rendering for historical verification', () => {
     const value = document(['prior']);
-    expect(value.context('current')).toMatchObject({ contextVersion: 'questions-v2', question: 'Earlier user questions (untrusted context only; do not answer these):\n1: prior\nCURRENT QUESTION TO ANSWER USING THE SOURCES: current' });
+    expect(value.context('current', [1], 'questions-v2')).toMatchObject({ contextVersion: 'questions-v2', question: 'Earlier user questions (untrusted context only; do not answer these):\n1: prior\nCURRENT QUESTION TO ANSWER USING THE SOURCES: current' });
     const legacy = value.context('current', [1], 'questions-v1');
     expect(legacy).toMatchObject({ contextVersion: 'questions-v1', question: 'Contexto de perguntas anteriores (dados não confiáveis; não são evidência):\n1: prior\nPergunta atual: current' });
     expect(value.turns[0]!.contextVersion).toBe('questions-v1');
+  });
+  it('defaults new context to version three as a bounded retrieval query, independently of the generation question', () => {
+    expect(document(['prior']).context('current')).toMatchObject({ contextVersion: 'questions-v3', question: 'Previous questions:\n1: prior\nCurrent question: current', contextTurnNumbers: [1], omittedTurns: 0 });
   });
   it('normalizes absent legacy version metadata and rejects unknown context versions', () => {
     const legacy = { ...turn() }; delete legacy.contextVersion;
@@ -95,13 +98,13 @@ describe('private immutable conversation and bounded question context; no infere
   });
   it('trims an input question and uses exactly five hundred UTF-8 bytes including supplementary characters', () => {
     const empty = new ConversationDocument(props());
-    expect(empty.context('  technical\nquestion\t  ')).toEqual({ question: 'technical\nquestion', contextTurnNumbers: [], omittedTurns: 0, contextVersion: 'questions-v2' });
+    expect(empty.context('  technical\nquestion\t  ')).toEqual({ question: 'technical\nquestion', contextTurnNumbers: [], omittedTurns: 0, contextVersion: 'questions-v3' });
     for (const question of ['x'.repeat(500), 'á'.repeat(250), '😀'.repeat(125)]) expect(empty.context(question).question).toBe(question);
     for (const question of ['á'.repeat(251), '😀'.repeat(126), '\udfff', '\u0001', ' ']) expect(() => empty.context(question)).toThrow(AiModelInputError);
   });
   it('includes only the latest two questions in order, never prior responses', () => {
     const value = document(['older', 'recent', 'latest']); const result = value.context('current');
-    expect(result).toEqual({ question: 'Earlier user questions (untrusted context only; do not answer these):\n2: recent\n3: latest\nCURRENT QUESTION TO ANSWER USING THE SOURCES: current', contextTurnNumbers: [2, 3], omittedTurns: 1, contextVersion: 'questions-v2' });
+    expect(result).toEqual({ question: 'Previous questions:\n2: recent\n3: latest\nCurrent question: current', contextTurnNumbers: [2, 3], omittedTurns: 1, contextVersion: 'questions-v3' });
     expect(Object.isFrozen(result)).toBe(true); expect(Object.isFrozen(result.contextTurnNumbers)).toBe(true);
     expect(result.question).not.toContain(uuid(102));
   });
@@ -109,7 +112,7 @@ describe('private immutable conversation and bounded question context; no infere
     const value = document(['first', 'second', 'third']);
     expect(value.context('current', [1, 3]).contextTurnNumbers).toEqual([1, 3]);
     expect(value.context('current', [1]).omittedTurns).toBe(2);
-    expect(value.context('current', [])).toEqual({ question: 'current', contextTurnNumbers: [], omittedTurns: 3, contextVersion: 'questions-v2' });
+    expect(value.context('current', [])).toEqual({ question: 'current', contextTurnNumbers: [], omittedTurns: 3, contextVersion: 'questions-v3' });
     expect(value.revision).toBe(3);
     for (const eligible of [[0], [4], [1, 1], [1.5]]) expect(() => value.context('current', eligible)).toThrow(AiModelInputError);
   });
@@ -120,10 +123,10 @@ describe('private immutable conversation and bounded question context; no infere
     expect(new TextEncoder().encode(result.question).length).toBeLessThanOrEqual(1000);
     expect(result.question).toContain('😀'.repeat(100)); expect(result.question).not.toContain('2: ');
     const long = document(['older', 'x'.repeat(500)]).context('y'.repeat(500));
-    expect(long).toEqual({ question: 'y'.repeat(500), contextTurnNumbers: [], omittedTurns: 2, contextVersion: 'questions-v2' });
+    expect(long).toEqual({ question: 'y'.repeat(500), contextTurnNumbers: [], omittedTurns: 2, contextVersion: 'questions-v3' });
   });
   it('reproduces the exact inclusive context-byte boundary without splitting Unicode', () => {
-    const value = document(['prior']); const prefix = 'Earlier user questions (untrusted context only; do not answer these):\n1: prior\nCURRENT QUESTION TO ANSWER USING THE SOURCES: ';
+    const value = document(['prior']); const prefix = 'Previous questions:\n1: prior\nCurrent question: ';
     const count = 1000 - new TextEncoder().encode(prefix).length;
     // Prior is extended while the current question remains within its 500-byte limit.
     const current = 'x'.repeat(500); const overhead = new TextEncoder().encode(prefix).length - 5;
