@@ -21,17 +21,19 @@ const original = aiExcerptFixtures[0]!; const quoteStart = original.text.indexOf
 const quote = original.text.slice(quoteStart); const startOffset = Array.from(original.text.slice(0, quoteStart)).length; const endOffset = Array.from(original.text).length;
 type Context = Awaited<ReturnType<typeof createAiTestRuntime>>;
 describe('private analysis Application; real study/source/Prisma/pgvector/lease with declared LLM and embedding doubles, NOT inference', () => {
-  let database: Database; let vectorDatabase: AiIndexDatabase; let home: string; let contexts: Context[];
+  let database: Database; let vectorDatabase: AiIndexDatabase; let home = ''; let contexts: Context[] = []; let vectorReady = false;
   beforeAll(async () => {
     expect(quoteStart).toBeGreaterThan(0); database = await openSourceTestDatabase(); vectorDatabase = new AiIndexDatabase(assertAiTestTarget(process.env));
     expect(await vectorDatabase.client.$queryRaw`SELECT current_database() AS db,current_user AS role`).toEqual([{ db: 'biblia_test', role: 'biblia_test' }]);
+    vectorReady = true;
   });
   beforeEach(async () => {
+    contexts = []; home = '';
     await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); await seedCanon(database); await seedAiSource(database); await vectorDatabase.client.embeddingProfile.deleteMany();
     home = await mkdtemp(join(resolve('reports'), 'ai-analysis-app-')); contexts = [];
   });
-  afterEach(async () => { for (const context of contexts) await context.operation.onModuleDestroy(); if (!home.startsWith(resolve('reports') + sep + 'ai-analysis-app-')) throw new Error('Unsafe technical cleanup'); await rm(home, { recursive: true, force: true }); });
-  afterAll(async () => { if (database) { try { await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); if (vectorDatabase?.client) await vectorDatabase.client.embeddingProfile.deleteMany(); } finally { await database.onModuleDestroy(); if (vectorDatabase?.client) await vectorDatabase.client.$disconnect(); } } });
+  afterEach(async () => { for (const context of contexts ?? []) await context.operation.onModuleDestroy(); if (home) { if (!home.startsWith(resolve('reports') + sep + 'ai-analysis-app-')) throw new Error('Unsafe technical cleanup'); await rm(home, { recursive: true, force: true }); } });
+  afterAll(async () => { if (database) { try { await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); if (vectorReady) await vectorDatabase.client.embeddingProfile.deleteMany(); } finally { await database.onModuleDestroy(); if (vectorDatabase?.client) await vectorDatabase.client.$disconnect(); } } });
   const setup = async (options: { associate?: boolean; index?: boolean } = {}) => {
     const context = await createAiTestRuntime(database, vectorDatabase, home); contexts.push(context);
     if (options.associate !== false) await context.links.curate(aiCurations[0]!);
@@ -117,7 +119,7 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     context.llm.select.mockImplementation(async (...args) => { const result = await normal(...args); const invalid = field === 'dimensions' ? 1024 : field === 'contextLimit' ? 2049 : field === 'outputLimit' ? 127 : 'wrong'; return { ...result, provenance: { ...result.provenance, [field]: invalid } }; });
     await expect(context.library.create(owner, context.study.id, 1, question)).rejects.toThrow(AiResultRejectedError); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
-  it.each(['unknown-id', 'wrong-status', 'missing-sentence', 'altered-quote', 'usage-sum', 'no-output', 'too-much-output', 'prompt-budget'] as const)('refuses controlled generated selection defect %s instead of correcting it', async defect => {
+  it.each(['unknown-id', 'wrong-status', 'missing-sentence', 'altered-quote', 'altered-id', 'altered-paragraph', 'altered-start', 'altered-end', 'usage-sum', 'no-input', 'fractional-input', 'fractional-output', 'no-output', 'too-much-output', 'prompt-budget'] as const)('refuses controlled generated selection defect %s instead of correcting it', async defect => {
     const context = await setup(); const normal = context.llm.select.getMockImplementation()!;
     context.llm.select.mockImplementation(async (...args): Promise<GeneratedSelection> => {
       const result = await normal(...args);
@@ -125,9 +127,23 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
       if (defect === 'wrong-status') return { ...result, selection: { ...result.selection, status: 'insufficient-evidence' } };
       if (defect === 'missing-sentence') return { ...result, selection: { ...result.selection, sentence: null } };
       if (defect === 'altered-quote') return { ...result, selection: { ...result.selection, sentence: { ...result.selection.sentence!, text: 'Controlled technical alteration, not a historical quote.' } } };
+      if (defect === 'altered-id') return { ...result, selection: { ...result.selection, sentence: { ...result.selection.sentence!, id: 'p1-s9999' } } };
+      if (defect === 'altered-paragraph') return { ...result, selection: { ...result.selection, sentence: { ...result.selection.sentence!, paragraph: 2 } } };
+      if (defect === 'altered-start') return { ...result, selection: { ...result.selection, sentence: { ...result.selection.sentence!, start: result.selection.sentence!.start + 1 } } };
+      if (defect === 'altered-end') return { ...result, selection: { ...result.selection, sentence: { ...result.selection.sentence!, end: result.selection.sentence!.end - 1 } } };
+      if (defect === 'no-input') return { ...result, usage: { promptTokens: 0, completionTokens: 5, totalTokens: 5 } };
+      if (defect === 'fractional-input') return { ...result, usage: { promptTokens: 100.5, completionTokens: 5, totalTokens: 105.5 } };
+      if (defect === 'fractional-output') return { ...result, usage: { promptTokens: 100, completionTokens: 5.5, totalTokens: 105.5 } };
       return { ...result, usage: defect === 'usage-sum' ? { ...result.usage, totalTokens: 106 } : defect === 'no-output' ? { promptTokens: 100, completionTokens: 0, totalTokens: 100 } : defect === 'too-much-output' ? { promptTokens: 100, completionTokens: 129, totalTokens: 229 } : { promptTokens: 1921, completionTokens: 5, totalTokens: 1926 } };
     });
     await expect(context.library.create(owner, context.study.id, 1, question)).rejects.toThrow(AiResultRejectedError); expect(await database.client.aiAnalysis.count()).toBe(0);
+  });
+  it('accepts exact declared generation budget boundaries with technical usage, retaining real persistence', async () => {
+    const context = await setup(); const normal = context.llm.select.getMockImplementation()!;
+    context.llm.select.mockImplementation(async (...args): Promise<GeneratedSelection> => ({ ...await normal(...args), usage: { promptTokens: context.settings.contextLimit - context.settings.outputLimit, completionTokens: context.settings.outputLimit, totalTokens: context.settings.contextLimit } }));
+    const result = await context.library.create(owner, context.study.id, 1, question);
+    expect(result.status).toBe('supported'); expect(result.provenance.totalTokens).toBe(context.settings.contextLimit);
+    expect(await database.client.aiAnalysis.count()).toBe(1);
   });
   it.each(['textDigest', 'sourceDigest', 'sourceId', 'excerptId', 'startOffset', 'endOffset'] as const)('rejects a corrupted retrieved %s before generation, retaining actual SQL integration', async field => {
     const context = await setup(); const real = context.index.search.bind(context.index);
@@ -177,9 +193,10 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     const context = await setup({ index: false }); const document = await seed(context); await database.client.studyRecord.delete({ where: { id: context.study.id } });
     await expect(context.library.read(owner, document.id)).rejects.toThrow(AiNotFoundError); expect(await database.client.aiAnalysis.count()).toBe(1); await context.library.delete(owner, document.id); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
-  it('does not deliver a stored reference that disagrees with the actual immutable study version', async () => {
+  it.each(['translation', 'passage'] as const)('does not deliver a stored reference whose %s disagrees with the actual immutable study version', async field => {
     const context = await setup({ index: false }); const document = await seed(context);
-    await database.client.aiAnalysis.update({ where: { id: document.id }, data: { document: { ...JSON.parse(JSON.stringify(document)), reference: { ...document.reference, chapter: 2, normalized: 'GEN 2:1' } } } });
+    const reference = field === 'translation' ? { ...document.reference, translationId: 'technical-corrupted-edition' } : { ...document.reference, chapter: 2, normalized: 'GEN 2:1' };
+    await database.client.aiAnalysis.update({ where: { id: document.id }, data: { document: { ...JSON.parse(JSON.stringify(document)), reference } } });
     await expect(context.library.read(owner, document.id)).rejects.toThrow(AnalysisDomainError);
   });
   it.each(['chunk-digest', 'partial-sentence'])('detects controlled stored metadata corruption %s without inventing a quote', async defect => {

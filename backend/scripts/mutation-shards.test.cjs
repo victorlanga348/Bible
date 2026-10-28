@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { inventory, partition, mergeReports } = require('./mutation-shards.cjs');
+const { inventory, partition, mergeReports, analysisExitCode } = require('./mutation-shards.cjs');
 
 // Technical code/report fixtures only, never claimed as actual mutation evidence.
 const ai = 'src/modules/ai-assistant/domain/technical.ts';
@@ -14,7 +14,7 @@ function example() {
   const groups = partition(expected.mutants, 2);
   const shards = groups.map((files, index) => ({
     stamp: { index, count: 2, revision: expected.revision, fingerprint: expected.fingerprint, completed: true },
-    report: { config: { ...config, mutate: files, maxTestRunnerReuse: 25 }, files: Object.fromEntries(files.map(name => [name, { source: sources[name], mutants: expected.mutants[name].map((m, id) => ({ ...clone(m), id: String(id), status: 'Killed', killedBy: ['0'], coveredBy: ['0'] })) }])), testFiles: { 'test/technical.spec.ts': { source: 'technical', tests: [{ id: '0', name: 'technical' }] } } },
+    report: { config: { ...config, jest: { ...config.jest, enableFindRelatedTests: true }, mutate: files, maxTestRunnerReuse: 25 }, files: Object.fromEntries(files.map(name => [name, { source: sources[name], mutants: expected.mutants[name].map((m, id) => ({ ...clone(m), id: String(id), status: 'Killed', killedBy: ['0'], coveredBy: ['0'] })) }])), testFiles: { 'test/technical.spec.ts': { source: 'technical', tests: [{ id: '0', name: 'technical' }] } } },
   }));
   return { expected, shards };
 }
@@ -75,4 +75,34 @@ test('applies existing raw score and zeroNoCoverage/RuntimeError gates after mer
     const { expected, shards } = example(); Object.values(shards[0].report.files)[0].mutants[0].status = status;
     assert.throws(() => mergeReports(expected, shards, config));
   }
+});
+test('rejects a changed resolved Jest default, runner or project configuration', () => {
+  for (const alter of [c => { c.jest.enableFindRelatedTests = false; }, c => { c.jest.configFile = 'unexpected.cjs'; }, c => { c.jest.projectType = 'react'; }]) {
+    const { expected, shards } = example(); shards[0].report.config = clone(shards[0].report.config); alter(shards[0].report.config);
+    assert.throws(() => mergeReports(expected, shards, config));
+  }
+});
+const fragment = statuses => ({ config: { thresholds: { break: 85 } }, files: { 'src/technical.ts': { mutants: statuses.map(status => ({ status })) } } });
+test('completes partition analysis when exit1 is solely its local score, leaving quality to the aggregate', () => {
+  assert.equal(analysisExitCode(fragment(['Killed', 'Survived']), 1), 0);
+});
+test('preserves successful complete analysis and counts compilation separately', () => {
+  assert.equal(analysisExitCode(fragment(['Killed', 'CompileError']), 0), 0);
+});
+test('refuses technical exits even when a stale or contradictory report has a good score', () => {
+  assert.equal(analysisExitCode(fragment(['Killed']), 1), 1);
+  assert.equal(analysisExitCode(fragment(['Killed']), 2), 1);
+  assert.equal(analysisExitCode(fragment(['Killed']), null), 1);
+  assert.equal(analysisExitCode(fragment(['Killed', 'Survived']), 0), 1);
+});
+test('never absorbs RuntimeError or incomplete/unknown statuses as an analysis success', () => {
+  for (const status of ['RuntimeError', 'Pending', 'Ignored', '']) for (const exit of [0, 1]) assert.equal(analysisExitCode(fragment(['Killed', status]), exit), 1);
+});
+test('refuses malformed reports, empty valid populations and different local thresholds', () => {
+  for (const report of [{}, fragment([]), fragment(['CompileError']), { ...fragment(['Killed']), config: { thresholds: { break: 0 } } }]) assert.equal(analysisExitCode(report, 0), 1);
+});
+test('keeps NoCoverage visible for the unchanged strict aggregate gate rather than altering its state', () => {
+  const report = fragment(['Killed', 'NoCoverage']);
+  assert.equal(analysisExitCode(report, 1), 0); assert.equal(report.files['src/technical.ts'].mutants[1].status, 'NoCoverage');
+  assert.throws(() => require('./check-ai-mutation.cjs').verifyAiMutationReport(report), /strictly greater than 85|NoCoverage/);
 });

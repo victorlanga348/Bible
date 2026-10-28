@@ -8,12 +8,14 @@ import { AiUnavailableError } from '../../../src/modules/ai-assistant/applicatio
 
 describe('owned analysis storage, actual PostgreSQL/Prisma and no cross-module access', () => {
   let database: Database;
+  let ready = false;
   beforeAll(async () => {
     database = new Database(assertTestTarget(process.env));
     expect(await database.client.$queryRaw`SELECT current_database() AS db,current_user AS role`).toEqual([{ db: 'biblia_test', role: 'biblia_test' }]);
+    ready = true;
   });
   beforeEach(async () => { await database.client.aiAnalysis.deleteMany(); });
-  afterAll(async () => { if (database) { try { await database.client.aiAnalysis.deleteMany(); } finally { await database.onModuleDestroy(); } } });
+  afterAll(async () => { if (database) { try { if (ready) await database.client.aiAnalysis.deleteMany(); } finally { await database.onModuleDestroy(); } } });
   const seed = async () => {
     const document = new AnalysisDocument(analysisDocument());
     await database.client.aiAnalysis.create({ data: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), document: JSON.parse(JSON.stringify(document)), createdAt: new Date(document.createdAt) } });

@@ -9,12 +9,14 @@ import { createServer } from 'node:net';
 const at = '2026-10-27T00:00:00.000Z';
 describe('actual Prisma/pgvector index, technical vectors only; no inference', () => {
   let database: AiIndexDatabase;
+  let ready = false;
   beforeAll(async () => {
     database = new AiIndexDatabase(assertAiTestTarget(process.env));
     expect(await database.client.$queryRaw`SELECT current_database() AS db,current_user AS role`).toEqual([{ db: 'biblia_test', role: 'biblia_test' }]);
+    ready = true;
   });
   beforeEach(async () => { await database.client.embeddingProfile.deleteMany(); });
-  afterAll(async () => { if (database?.client) { try { await database.client.embeddingProfile.deleteMany(); } finally { await database.client.$disconnect(); } } });
+  afterAll(async () => { if (database?.client) { try { if (ready) await database.client.embeddingProfile.deleteMany(); } finally { await database.client.$disconnect(); } } });
   it.each(['readiness', 'search', 'replace'] as const)('maps actual index connection refusal to unavailability for %s without stopping any service', async operation => {
     const socket = createServer(); await new Promise<void>(resolve => socket.listen(0, '127.0.0.1', resolve)); const address = socket.address(); if (!address || typeof address === 'string') throw new Error('Missing controlled port'); await new Promise<void>((resolve, reject) => socket.close(error => error ? reject(error) : resolve()));
     const target = new URL(assertAiTestTarget(process.env)); target.hostname = '127.0.0.1'; target.port = String(address.port); const offline = new AiIndexDatabase(target.href); const index = new PrismaVectorIndex(offline); const { profile, chunks, eligible } = technicalAiIndex();

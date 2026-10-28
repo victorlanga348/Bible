@@ -9,6 +9,7 @@ describe('operational preflight compares requested and actual database identitie
   afterAll(async () => { await database?.onModuleDestroy(); });
   it('accepts the actual isolated role/database identity without writing', async () => {
     await expect(verifyDatabaseIdentity(database, assertTestTarget(process.env))).resolves.toBeUndefined();
+    expect(await database.client.$queryRaw`SELECT current_setting('statement_timeout') AS timeout`).toEqual([{ timeout: '2s' }]);
   });
   it.each(['database', 'role'])('rejects a different requested %s even though the connection is usable', async field => {
     const target = new URL(assertTestTarget(process.env));

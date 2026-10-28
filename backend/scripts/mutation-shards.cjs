@@ -55,7 +55,9 @@ function mergeReports(expected, shards, base) {
     assert.equal(stamp.revision, expected.revision, 'Stale revision');
     assert.equal(stamp.fingerprint, expected.fingerprint, 'Stale sources, tests or configuration');
     assert.deepEqual(part.config.mutate, groups[index], 'Changed shard scope');
-    for (const key of Object.keys(base).filter(key => key !== '$schema' && key !== 'mutate')) assert.deepEqual(part.config[key], base[key], `Changed option: ${key}`);
+    // Stryker's Jest plugin serializes this default into the final report.
+    const resolvedBase = { ...base, jest: { enableFindRelatedTests: true, ...base.jest } };
+    for (const key of Object.keys(resolvedBase).filter(key => key !== '$schema' && key !== 'mutate')) assert.deepEqual(part.config[key], resolvedBase[key], `Changed option: ${key}`);
     assert.equal(part.config.maxTestRunnerReuse, 25);
     // Default operators only; do not permit configuration to suppress inventory.
     if (part.config.mutator) assert.deepEqual(part.config.mutator.excludedMutations, []);
@@ -103,8 +105,10 @@ async function main(args) {
     const config = { ...expected.base, mutate: partition(expected.mutants, expected.count)[index], maxTestRunnerReuse: 25 };
     write(`${folder}/shard-config.json`, config);
     const result = spawnSync(process.execPath, ['node_modules/@stryker-mutator/core/bin/stryker.js', 'run', `${folder}/shard-config.json`, '--incremental', '--incrementalFile', `${folder}/incremental.json`], { stdio: 'inherit' });
-    if (result.error || result.status !== 0) { process.exitCode = result.status || 1; return; }
-    assert.ok(existsSync(`${folder}/mutation.json`), 'No final report');
+    if (result.error || !existsSync(`${folder}/mutation.json`)) { process.exitCode = 1; return; }
+    const report = JSON.parse(text(`${folder}/mutation.json`));
+    if (analysisExitCode(report, result.status) !== 0) { process.exitCode = 1; return; }
+    console.log(JSON.stringify({ partition: index, analysis: 'completed', qualityGate: 'NOT_RUN', reason: 'Quality is evaluated across the complete aggregate, not arbitrary file partitions' }));
     write(`${folder}/shard.json`, { index, count: expected.count, revision: expected.revision, fingerprint: expected.fingerprint, completed: true });
     return;
   }
@@ -121,5 +125,21 @@ async function main(args) {
   }
   throw new Error('Use inventory, run <0..5>, or merge');
 }
-module.exports = { inventory, partition, mergeReports };
+function analysisExitCode(report, exit) {
+  if (![0, 1].includes(exit) || report?.config?.thresholds?.break !== 85 || !report.files || typeof report.files !== 'object') return 1;
+  let detected = 0; let valid = 0;
+  for (const file of Object.values(report.files)) {
+    if (!Array.isArray(file.mutants)) return 1;
+    for (const mutant of file.mutants) {
+      if (mutant.status === 'Killed' || mutant.status === 'Timeout') { detected++; valid++; }
+      else if (mutant.status === 'Survived' || mutant.status === 'NoCoverage') valid++;
+      else if (mutant.status !== 'CompileError') return 1;
+    }
+  }
+  if (!valid) return 1;
+  // Stryker itself accepts exactly85; the final existing gate is strictly>85.
+  const expectedExit = 100 * detected < 85 * valid ? 1 : 0;
+  return exit === expectedExit ? 0 : 1;
+}
+module.exports = { inventory, partition, mergeReports, analysisExitCode };
 if (require.main === module) main(process.argv.slice(2)).catch(error => { console.error(error.message); process.exitCode = 1; });

@@ -5,6 +5,9 @@ import { AiModelInputError } from '../../../src/modules/ai-assistant/domain/mode
 import { analysisDocument, analysisProvenance, analysisQuote, noInferenceProvenance, resolvedAnalysisEvidence } from '../../helpers/ai-analysis';
 
 describe('actual-use provenance and explicit absence of inference', () => {
+  it('rejects a fractional output budget even when token counts otherwise fit', () => {
+    expect(() => new AnalysisProvenance({ ...analysisProvenance(), outputLimit: 128.5 })).toThrow(AnalysisDomainError);
+  });
   it('preserves the actually pinned model identifier with dots and underscore without renaming it (metadata only, no inference)', () => {
     const profile = JSON.parse(readFileSync('admissions/local-extractive-v1.json', 'utf8')) as { generation: { id: string } };
     expect(profile.generation.id).toBe('ollama-qwen3-1.7b-q4_k_m');
@@ -55,6 +58,27 @@ describe('actual-use provenance and explicit absence of inference', () => {
 });
 
 describe('private immutable analysis document and rights-aware projection', () => {
+  it('rejects an unknown persisted status even with empty evidence and no inference', () => {
+    expect(() => new AnalysisDocument({ ...analysisDocument(), status: 'unknown', evidenceRefs: [], provenance: noInferenceProvenance() } as unknown as AnalysisDocumentProps)).toThrow(AnalysisDomainError);
+  });
+  it('requires actual overlap, excluding a consulted span beginning exactly after the evidence', () => {
+    const input = analysisDocument(); const ref = input.evidenceRefs[0]!;
+    expect(() => new AnalysisDocument({ ...input, provenance: { ...input.provenance, consultedSegments: [{ ...input.provenance.consultedSegments[0]!, startOffset: ref.endOffset }] } })).toThrow(AnalysisDomainError);
+  });
+  it('rejects changed citation offsets even when the shortened genuine substring has matching length', () => {
+    const document = new AnalysisDocument(analysisDocument()); const resolved = resolvedAnalysisEvidence(); const points = Array.from(resolved.quote);
+    expect(() => document.forDelivery([{ ...resolved, startOffset: resolved.startOffset + 1, quote: points.slice(1).join('') }])).toThrow(AnalysisDomainError);
+    expect(() => document.forDelivery([{ ...resolved, endOffset: resolved.endOffset - 1, quote: points.slice(0, -1).join('') }])).toThrow(AnalysisDomainError);
+  });
+  it('rejects technical malformed Unicode in an equal-length quote and a parseable rights URL', () => {
+    const document = new AnalysisDocument(analysisDocument()); const resolved = resolvedAnalysisEvidence();
+    expect(() => document.forDelivery([{ ...resolved, quote: '\ud800'.repeat(Array.from(resolved.quote).length) }])).toThrow(AnalysisDomainError);
+    expect(() => document.forDelivery([{ ...resolved, rightsUrl: resolved.rightsUrl + '/\ud800' }])).toThrow(AnalysisDomainError);
+  });
+  it('accepts the specified HTTP rights protocol as well as HTTPS without fetching the technical URL variant', () => {
+    const document = new AnalysisDocument(analysisDocument()); const resolved = resolvedAnalysisEvidence(); const rightsUrl = resolved.rightsUrl.replace(/^https:/, 'http:');
+    expect(rightsUrl).toMatch(/^http:/); expect(document.forDelivery([{ ...resolved, rightsUrl }]).evidence[0]!.rightsUrl).toBe(rightsUrl);
+  });
   it('keeps only metadata and exact reference fields, copies/freeze all values, and trims the validated question', () => {
     const input = { ...analysisDocument(), question: '  What does this source report?\n', rawPrompt: analysisQuote }; const value = new AnalysisDocument(input);
     expect(value).toEqual(analysisDocument()); expect(JSON.stringify(value)).not.toContain(analysisQuote);

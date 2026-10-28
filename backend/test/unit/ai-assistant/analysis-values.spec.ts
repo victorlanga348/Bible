@@ -1,12 +1,22 @@
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { AnalysisDomainError, AnalysisReference, ConsultedSegment, EvidenceRef, type AnalysisReferenceProps, type ConsultedSegmentProps, type EvidenceRefProps } from '../../../src/modules/ai-assistant/domain/analysis-values';
+import { AnalysisDomainError, AnalysisReference, ConsultedSegment, EvidenceRef, sameConsultedSegment, type AnalysisReferenceProps, type ConsultedSegmentProps, type EvidenceRefProps } from '../../../src/modules/ai-assistant/domain/analysis-values';
 
 // Domain-only reads of genuine source; no admission, persistence or inference.
 const original = (JSON.parse(readFileSync('test/fixtures/source-library/josephus-antiquities-pg2848-en/excerpts.json', 'utf8')) as { sourceId: string; id: string; locator: string; textSha256: string; text: string }[])[0]!;
 const reference = (): AnalysisReferenceProps => ({ translationId: 'por-br-2018', bookCode: 'GEN', chapter: 1, fromVerse: 1, toVerse: 1, normalized: 'GEN 1:1' });
 const evidence = (): EvidenceRefProps => ({ sourceId: original.sourceId, excerptId: original.id, locator: original.locator, textSha256: original.textSha256, startOffset: 0, endOffset: 52 });
 const segment = (): ConsultedSegmentProps => ({ id: 'p1-c1', sourceId: original.sourceId, excerptId: original.id, sourceDigest: original.textSha256, textDigest: createHash('sha256').update(Array.from(original.text).slice(0, 1000).join('')).digest('hex'), startOffset: 0, endOffset: 1000 });
+
+describe('exact identity of consulted metadata, with independent technical corruption per field', () => {
+  it('recognizes a distinct copy of the same metadata', () => {
+    const row = segment(); expect(sameConsultedSegment(row, { ...row })).toBe(true);
+  });
+  it.each(['id', 'sourceId', 'excerptId', 'sourceDigest', 'textDigest', 'startOffset', 'endOffset'] as const)('refuses a changed %s even when every other field matches', field => {
+    const row = segment(); const value = row[field]; const altered = { ...row, [field]: typeof value === 'number' ? value + 1 : value + '-technical-corruption' };
+    expect(sameConsultedSegment(row, altered)).toBe(false); expect(sameConsultedSegment(altered, row)).toBe(false);
+  });
+});
 
 describe('owned analysis references, no dependency on other module types', () => {
   it('copies and freezes exact single verse and range references', () => {

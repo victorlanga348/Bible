@@ -13,6 +13,7 @@ import { AiIndexDatabase } from '../../src/modules/ai-assistant/infrastructure/i
 import { LocalModelProvider } from '../../src/modules/ai-assistant/infrastructure/local-model-provider';
 import { SourceIndexingLibrary } from '../../src/modules/ai-assistant/application/source-indexing-library';
 import { AiResultRejectedError, AiTimeoutError, AiUnavailableError } from '../../src/modules/ai-assistant/application/errors';
+import { AiModelInputError } from '../../src/modules/ai-assistant/domain/model-input';
 import { AiAnalysisLibrary } from '../../src/modules/ai-assistant/application/ai-analysis-library';
 import { cleanCanon, seedCanon } from '../helpers/canon';
 import { cleanStudyTestData } from '../helpers/study-database';
@@ -24,10 +25,11 @@ describe('AI HTTP with real Nest/JWT/libraries/SQL/vector/lease; explicit provid
   const secret = 'ai-http-test-only-signing-material-2026'; const question = 'Which day does this source call Sabbath?';
   const absent = '00000000-0000-4000-8000-000000000000'; const input = { studyVersion: 1, question };
   let app: INestApplication; let database: Database; let vector: AiIndexDatabase; let home: string; let token: string; let other: string;
-  let contexts: Awaited<ReturnType<typeof createAiTestRuntime>>[];
+  let contexts: Awaited<ReturnType<typeof createAiTestRuntime>>[] = []; let vectorReady = false;
   beforeAll(async () => {
     database = await openSourceTestDatabase(); vector = new AiIndexDatabase(assertAiTestTarget(process.env));
     expect(await vector.client.$queryRaw`SELECT current_database() AS db,current_user AS role`).toEqual([{ db: 'biblia_test', role: 'biblia_test' }]);
+    vectorReady = true;
     home = await mkdtemp(join(resolve('reports'), 'ai-http-'));
     app = await createApplication({ ...parseRuntimeConfig(process.env), jwtSecret: secret, aiHome: home, aiDatabaseUrl: assertAiTestTarget(process.env) }); await app.init();
     token = await new LocalAccessTokens(secret).issue('technical-ai-owner'); other = await new LocalAccessTokens(secret).issue('another-ai-owner');
@@ -35,7 +37,7 @@ describe('AI HTTP with real Nest/JWT/libraries/SQL/vector/lease; explicit provid
   beforeEach(async () => { contexts = []; await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); await seedCanon(database); await seedAiSource(database); await vector.client.embeddingProfile.deleteMany(); });
   afterEach(async () => { jest.restoreAllMocks(); for (const context of contexts) await context.operation.onModuleDestroy(); });
   afterAll(async () => {
-    try { if (database) { await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); } if (vector) await vector.client.embeddingProfile.deleteMany(); }
+    try { if (database) { await database.client.aiAnalysis.deleteMany(); await cleanStudyTestData(database); await cleanSourceTestData(database); await cleanCanon(database); } if (vectorReady) await vector.client.embeddingProfile.deleteMany(); }
     finally { try { await app?.close(); } finally { await database?.onModuleDestroy(); await vector?.onModuleDestroy(); await cleanHome(); } }
   });
   const cleanHome = async () => { if (home) { if (!home.startsWith(resolve('reports') + sep + 'ai-http-')) throw new Error('Unsafe technical cleanup'); await rm(home, { recursive: true, force: true }); } };
@@ -105,9 +107,9 @@ describe('AI HTTP with real Nest/JWT/libraries/SQL/vector/lease; explicit provid
   it('returns sanitized unavailability for a missing index before question inference', async () => {
     const context = await setup(false); expect((await post(context.study.id).send(input).expect(503)).body).toEqual(error('AI_UNAVAILABLE', 'Assistente temporariamente indisponível.')); expect(context.embeddings.embed).not.toHaveBeenCalled(); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
-  it.each(['rejected', 'timeout', 'unexpected'] as const)('sanitizes %s provider errors without storing an analysis', async kind => {
-    const context = await setup(); context.llm.select.mockRejectedValue(kind === 'rejected' ? new AiResultRejectedError('private-technical-marker') : kind === 'timeout' ? new AiTimeoutError('private-technical-marker') : new Error('private-technical-marker'));
-    const expected = kind === 'rejected' ? [422, 'AI_RESULT_REJECTED', 'Não foi possível fundamentar esta análise.'] : kind === 'timeout' ? [504, 'AI_TIMEOUT', 'O assistente excedeu o tempo de execução.'] : [500, 'INTERNAL_ERROR', 'Erro interno.'];
+  it.each(['invalid-input', 'rejected', 'timeout', 'unexpected'] as const)('sanitizes %s provider errors without storing an analysis', async kind => {
+    const context = await setup(); context.llm.select.mockRejectedValue(kind === 'invalid-input' ? new AiModelInputError('private-technical-marker') : kind === 'rejected' ? new AiResultRejectedError('private-technical-marker') : kind === 'timeout' ? new AiTimeoutError('private-technical-marker') : new Error('private-technical-marker'));
+    const expected = kind === 'invalid-input' ? [400, 'VALIDATION_ERROR', 'Entrada inválida.'] : kind === 'rejected' ? [422, 'AI_RESULT_REJECTED', 'Não foi possível fundamentar esta análise.'] : kind === 'timeout' ? [504, 'AI_TIMEOUT', 'O assistente excedeu o tempo de execução.'] : [500, 'INTERNAL_ERROR', 'Erro interno.'];
     expect((await post(context.study.id).send(input).expect(expected[0] as number)).body).toEqual(error(expected[1] as string, expected[2] as string)); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
   it('redacts current rights at GET without rewriting the committed decision', async () => {

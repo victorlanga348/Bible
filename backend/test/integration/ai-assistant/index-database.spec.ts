@@ -10,8 +10,8 @@ describe('independent generated AI client with actual PostgreSQL lifecycle', () 
     try {
       expect(database.client).toBeDefined();
       await observer.connect();
-      const rows = await database.client.$queryRaw<{ db: string; role: string; pid: number }[]>`SELECT current_database() AS db,current_user AS role,pg_backend_pid() AS pid`;
-      expect(rows[0]).toMatchObject({ db: 'biblia_test', role: 'biblia_test' });
+      const rows = await database.client.$queryRaw<{ db: string; role: string; pid: number; statementTimeout: string }[]>`SELECT current_database() AS db,current_user AS role,pg_backend_pid() AS pid,current_setting('statement_timeout') AS "statementTimeout"`;
+      expect(rows[0]).toMatchObject({ db: 'biblia_test', role: 'biblia_test', statementTimeout: '2s' });
       const profile = await database.client.embeddingProfile.count(); expect(profile).toBe(0);
       await database.onModuleDestroy();
       expect((await observer.query('SELECT pid FROM pg_stat_activity WHERE pid=$1', [rows[0]!.pid])).rows).toEqual([]);
