@@ -24,6 +24,9 @@ import { PrismaVectorIndex } from './infrastructure/prisma-vector-index';
 import { readPinnedRuntimeProfile, VerifiedRuntimeArtifacts } from './infrastructure/runtime-artifacts';
 import { readAiSourcePolicy } from './infrastructure/source-policy';
 import { AiAnalysisController } from './presentation/ai-analysis.controller';
+import { ConversationLibrary } from './application/conversation-library';
+import { PrismaConversationStore } from './infrastructure/prisma-conversation-store';
+import { ConversationController } from './presentation/conversation.controller';
 
 const resourcesToken = Symbol('ai-assistant-owned-resources');
 async function compose(config: RuntimeConfig, database: Database, sourceLibrary: SourceLibrary, studyLibrary: StudyLibrary) {
@@ -46,8 +49,10 @@ async function compose(config: RuntimeConfig, database: Database, sourceLibrary:
   const provider = runtime ? new LocalModelProvider(profile, runtime) : { embed: unavailable, select: unavailable };
   const hash = new NodeAiTextHash(); const identity = new NodeAiIdentityClock();
   const sources = new LibraryAiSourcesAdapter(sourceLibrary, policy, hash); const studies = new LibraryStudyContextAdapter(studyLibrary);
+  const library = new AiAnalysisLibrary(settings, studies, sources, provider, provider, index, new PrismaAnalysisStore(database), operation, identity, hash);
   return {
-    library: new AiAnalysisLibrary(settings, studies, sources, provider, provider, index, new PrismaAnalysisStore(database), operation, identity, hash),
+    library,
+    conversations: new ConversationLibrary(new PrismaConversationStore(database), library, studies, identity),
     indexer: new SourceIndexingLibrary(settings, sources, provider, index, operation, identity, hash),
     async onModuleDestroy() { try { if (operation instanceof AiOperationSlot) await operation.onModuleDestroy(); } finally { try { await runtime?.close(); } finally { await indexDatabase?.onModuleDestroy(); } } },
   };
@@ -55,10 +60,11 @@ async function compose(config: RuntimeConfig, database: Database, sourceLibrary:
 @Module({})
 export class AiAssistantModule {
   static register(config: RuntimeConfig): DynamicModule {
-    return { module: AiAssistantModule, imports: [SourceLibraryModule, StudyModule], controllers: [AiAnalysisController], providers: [
+    return { module: AiAssistantModule, imports: [SourceLibraryModule, StudyModule], controllers: [AiAnalysisController, ConversationController], providers: [
       { provide: resourcesToken, useFactory: (database: Database, sources: SourceLibrary, studies: StudyLibrary) => compose(config, database, sources, studies), inject: [Database, SourceLibrary, StudyLibrary] },
       { provide: AiAnalysisLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.library, inject: [resourcesToken] },
+      { provide: ConversationLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.conversations, inject: [resourcesToken] },
       { provide: SourceIndexingLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.indexer, inject: [resourcesToken] },
-    ], exports: [AiAnalysisLibrary, SourceIndexingLibrary] };
+    ], exports: [AiAnalysisLibrary, SourceIndexingLibrary, ConversationLibrary] };
   }
 }

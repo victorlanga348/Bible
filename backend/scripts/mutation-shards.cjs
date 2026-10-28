@@ -107,7 +107,7 @@ async function main(args) {
     if (existsSync(`${folder}/seed/mutation.json`)) {
       const seedBytes = readFileSync(`${folder}/seed/mutation.json`);
       const seedSha256 = createHash('sha256').update(seedBytes).digest('hex');
-      assert.equal(seedSha256, 'b5e6eb362d22ab1b8c847b65ce865daa9e226210cc99a6729412511def61d22a', 'Unverified complete seed');
+      assert.equal(seedSha256, 'e7504b95b07866e6641e38caa455de8b51526c962fb82a650707110fa68c0e49', 'Unverified complete seed');
       const seed = JSON.parse(seedBytes.toString('utf8')); verifyAiMutationReport(seed);
       const localBytes = existsSync(`${folder}/incremental.json`) ? readFileSync(`${folder}/incremental.json`) : null;
       const choice = chooseIncremental(localBytes ? JSON.parse(localBytes.toString('utf8')) : undefined, seed, expected, config.mutate);
@@ -115,7 +115,7 @@ async function main(args) {
         if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
         writeFileSync(`${folder}/incremental.json`, seedBytes);
       }
-      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '61a94299c438992ac50f31f3134e8f5b9fa16daf', seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
+      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: 'cc157ea4ee3a5ecc7220acdf38016eb53a4c3507', seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
       console.log(JSON.stringify({ incrementalInput: choice.selected, matchingMutants: choice.matchingMutants }));
     }
     if (existsSync(`${folder}/incremental.json`)) {
