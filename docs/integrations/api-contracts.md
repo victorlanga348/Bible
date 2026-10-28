@@ -1,5 +1,7 @@
 # Contratos de API
 
+Contratos S06 aceites2026-10-28 pelo agente delegado, antes de implementação: [quatro operações/DTOs/erros/retenção/contexto](../sprints/S06/SPEC.md). POST /studies/:studyId/conversations, GET/DELETE /conversations/:conversationId, POST /conversations/:conversationId/turns; JWT/owner404/expectedRevision obrigatório. Implementação/execuções ainda NOT_RUN; APIs S05 permanecem entregues.
+
 Fecho S04 verificado2026-10-26: três operações privadas de estudo abaixo implementadas e verificadas por Nest/JOSE/PostgreSQL reais, dentro de907 regressões e CI40338249693. Gates/fonte corrigida/revisão aprovados; S04 DONE, sem alterar contratos nesta atualização de estado. [Relatório S04](../sprints/S04/TEST_REPORT.md)/[operação local](local-studies.md). Contratos futuros de IA/conversas ainda não são entrega. Notas seguintes históricas.
 
 Estado vigente S04-T0062026-10-22: POST /studies, GET /studies/:id?version e POST /studies/:id/versions implementados e32 testes HTTP reais PASS, conforme [SPEC S04](../sprints/S04/SPEC.md). Bearer local obrigatório, owner só do token, snapshots imutáveis, revalidação atual das fontes, entradas/saídas estritas e OpenAPI com401/400/404/409/500. Prova adicional pelo processo HTTP em loopback contra bible_db do PC, sem tokens em logs. Não há endpoint de emissão, escrita pública de curadoria ou geração IA nesta sprint. Gates integrais S04 ainda pendentes. As notas seguintes são históricas.

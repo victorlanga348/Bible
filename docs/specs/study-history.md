@@ -1,5 +1,7 @@
 # SH-001 — Histórico de estudos
 
+Concretização complementar2026-10-28: estudos S04 e análises S05 entregues; inclusão privada de perguntas/respostas posteriores aceite na S06-T004 conforme [SPEC S06](../sprints/S06/SPEC.md). Conversa fixa estudo/versão, mensagens ordenadas imutáveis, histórico sem regeneração/revalidação atual de direitos, eliminação própria e retenção local explícita. Parte S06 ainda NOT_RUN; critérios antigos preservados.
+
 Estado: rascunho para revisão. Versão documental: 0.1. Data: 2026-10-17.
 Aprovador/data/referência: pendentes. Implementação e testes: inexistentes.
 Trilhas: A, B e C. Requisitos: PRD-08; proveniência e licenças transversais.

@@ -81,6 +81,6 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
-S00–S05 DONE técnico;14/14avaliações nativas T007/revisão semântica PASS, CI40660972664/61a9429/gates completos, fecho documental a auditar antes de commit. Próxima tarefa S06-T004 (contratos/contexto/acesso/retenção); S06–S08 pendentes e autorizadas. Fonte breve de retoma: [project-state](docs/megabrain/agent-context/project-state.md). Históricos em [arquivo](docs/megabrain/agent-context/AGENTS-state-history-2026-10-27.md) e contexto; não carregar por rotina.
+S00–S05 DONE técnico;14/14avaliações nativas T007/revisão semântica PASS, CI40660972664/61a9429/gates completos, fecho1b19623 publicado. S06 IN_PROGRESS, T004 documental DONE/SPEC aceite, T005 READY para domínio/contexto por TDD; S07–S08 pendentes e autorizadas. Fonte breve de retoma: [project-state](docs/megabrain/agent-context/project-state.md). Históricos em [arquivo](docs/megabrain/agent-context/AGENTS-state-history-2026-10-27.md) e contexto; não carregar por rotina.
 
 Pedido2026-10-27 reafirmado2026-10-28: reduzir consumo por contexto/releituras e validações repetidas, preservando TDD, requisitos, integrações e todos os gates. Consultar documentos pertinentes — tarefa, usar testes afetados durante RED/GREEN e regressões/gates completos nos marcos exigidos. Não alterar main, serviços alheios ou segredos, nem usar agentes. Autorização integral acima permanece vigente.

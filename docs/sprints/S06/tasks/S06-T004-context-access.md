@@ -1,0 +1,21 @@
+# S06-T004 — Preparação de contexto, acesso e retenção
+
+Fecho documental2026-10-28: DONE técnico sob delegação, S05 satisfeita1b19623. [SPEC](../SPEC.md) concretiza decisões/contratos/rubrica antes de código; fontes/recursos locais comprovados, sem nova dependência/ação do utilizador. TDD e gates de produto não aplicáveis à preparação documental; auditoria real antes de commit. T005 READY, restante texto preservado como plano anterior.
+
+Estado: BACKLOG, preparação documental enquanto S04 aguarda gates; nenhuma implementação S06. Dependência: S05 realmente concluída, com contratos/modelos/dados e avaliações verificados. A autorização integral dispensa nova permissão; mantém uma tarefa ativa e decisões concretas antes de código. [FQ-001](../../../specs/free-questions.md), [execução integral](../../../roadmap/completion-execution.md).
+
+Objetivo: continuar uma investigação associada a um estudo/versão existentes, com histórico ordenado e privado, geração/recuperação reais, evidências e limites. Conversa não é uma nova versão do estudo. ai-assistant mantém a propriedade de conversas/mensagens; study conserva os seus snapshots e source-library os direitos/textos. Não introduzir relação SQL/FK para tabelas alheias nem duplicar regras de acesso por conveniência.
+
+Concretizar SPEC/ADR/ports/HTTP somente após confrontar a saída real S05. Owner vem do JWT validado; contexto não pode vir de owner/role/system arbitrários no body. Estudo/conversa de outro subject deve permanecer indistinguível de ausência. Fixar limites de pergunta, contexto, resposta, chamadas/tempo/concorrência, retenção e eliminação, com os recursos efetivamente medidos. Uma pergunta fora da cobertura não autoriza inventar fonte ou transformar memória do modelo em suporte.
+
+Persistência proposta para avaliar: turno só fica confirmado com pergunta/resposta e proveniência guardadas de forma consistente; falha real de geração/escrita não deixa um par apresentado como completo. Evitar transação de banco aberta durante inferência longa. Concorrência precisa de política explícita de versão/ordem antes de implementação; duas submissões simultâneas não podem sobrescrever histórico nem misturar contextos. Repetição e ordenação devem ser verificáveis, sem prometer entrega exatamente uma vez por uma chave inexistente.
+
+Contexto deve conservar passagem/edição, versão do estudo e sequência válida da conversa. Definir seleção/truncagem explícita sem reescrever texto original ou apagar evidência; não enviar todo o histórico sem orçamento. Conteúdo de pergunta, fonte e mensagens anteriores é dado não confiável. Não incluir chave, token, environment ou dados de outro owner no prompt/log; não executar instruções de conteúdo recuperado.
+
+Revalidar fontes antes da geração e da entrega, incluindo histórico: ausência/revogação redige quote/conteúdo dependente; falha técnica continua erro. Referência existente e suporte semântico são verificações separadas. IA real e avaliações de diálogo precisam de corpus/rubrica próprios sobre as fontes admitidas; não basta reproduzir uma resposta gravada ou procurar uma substring.
+
+Plano TDD posterior: Domain/ordenação/limites com testes antes; Application com PostgreSQL e serviços reais como padrão; Nest/Supertest com JWT real. Cobrir owner A/B, conversa/estudo ausentes, contexto/versão corretos, duas mensagens simultâneas, histórico sem regeneração, rollback real, indisponibilidade, revogação e instrução maliciosa. Probes de timing/doubles técnicos específicos são identificados; aceitação de geração continua a exigir chamadas reais.
+
+Vantagem: continuidade rastreável sem perder a identidade da análise original. Custo: controlo de contexto/concorrência e revalidação de histórico. Alternativas de sessão sem owner, histórico só em memória ou transação longa durante o modelo são rejeitadas. Riscos de custo/latência/contexto excessivo mitigados pelos limites medidos S05, serialização de inferência e falha honesta, sem respostas estáticas usadas como integração.
+
+Saída para READY/DONE de preparação: contratos/plano/dependências/rubrica e retenção revistos sob delegação, critérios verificáveis e fontes reais suficientes para os casos propostos. Depois T005–T007 executam RED/GREEN, integrações/avaliações/gates e documentação. A preparação atual não fecha S06 nem altera a tarefa ativa S04.

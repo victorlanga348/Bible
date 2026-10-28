@@ -1,0 +1,9 @@
+# S06-T005 — Domínio de conversa e contexto
+
+READY depois de T004 documental; executar somente após registar o fecho T004. Agente delegado,2026-10-28. [SPEC](../SPEC.md) fixa critérios/limites/erros antes de código, [FQ-001](../../../specs/free-questions.md)/S05/ADR-0006 consultados. Estado não é prova de implementação.
+
+Ficheiros previstos: backend/src/modules/ai-assistant/domain/conversation.ts e teste unitário correspondente. Tipos/construtores puros, sem Nest/Prisma/Zod/ambiente. Reutilizar AiQuestion para validar texto, sem alterar limites existentes. Documento deve validar hidratação tão rigorosamente quanto criação; append devolve novo documento sem alterar original. Contexto deriva de perguntas confirmadas, não de respostas/fonte inventada. Definir tipos de ports junto da implementação Application T006 quando assinaturas forem concretas, sem scaffolding vazio.
+
+RED: escrever primeiro testes positivos/negativos de critérios da SPEC; stub compilável pode demonstrar falha de comportamento, ausência de módulo/sintaxe não é RED. Guardar saída em reports. GREEN: implementação mínima que satisfaz os mesmos casos; REFACTOR com unidades afetadas e arquitetura. Cobrir UTF-8/surrogates/controlos, UUID/datas/versões, sequência/duplicatas/metadados, revisão/CAS/limite20, cópias imutáveis e budget/sufixo de contexto. Testes técnicos não são conteúdo bíblico/histórico nem inferência.
+
+Vantagem: isola regras antes de SQL/HTTP; custo: validação de documentos persistidos e metadados do contexto. Sem dependências novas. Não antecipar T006 enquanto T005 não for revista. Gate estática/unidades/arquitetura/cobertura/mutação própria/global será executado no checkpoint válido; infraestrutura/IA não aplicáveis a este domínio puro, não PASS fictício. Revisão/relatório documentam comandos reais/resultados e sobreviventes; teste afetado usa script Jest existente com caminho exato.

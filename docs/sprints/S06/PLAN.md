@@ -1,5 +1,7 @@
 # S06 — Conversas Contextuais
 
+Estado vigente2026-10-28: S06 READY→IN_PROGRESS sob autorização integral; dependência S05 satisfeita1b19623. T004 concreta e aprova SPEC/contratos/rubrica antes de código; T005 domínio/contexto, T006 aplicação/PG/HTTP, T0078inferências de diálogo/gates. [SPEC](SPEC.md) contém decisões, vantagens, alternativas, riscos e critérios verificáveis. Agente é decisor/revisor delegado; entradas seguintes históricas.
+
 Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
 Branch: feat/biblia-backend. Commit: PENDING. Dependência: S05 encerrada e nova aprovação.
 

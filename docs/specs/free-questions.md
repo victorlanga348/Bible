@@ -1,5 +1,7 @@
 # FQ-001 — Perguntas livres
 
+Concretização normativa2026-10-28: FQ-001 v0.2 aceite pelo agente sob delegação integral na S06-T004, conforme [SPEC S06](../sprints/S06/SPEC.md). Perguntas associadas a estudo/versão privados,20turnos,contexto questions-v1,retenção local até DELETE,CAS e contratos/limites/rubrica definidos antes de código. Conteúdo v0.1 abaixo preserva origem e critérios; execução/testes S06 ainda NOT_RUN.
+
 Estado: rascunho para revisão. Versão documental: 0.1. Data: 2026-10-17.
 Aprovador/data/referência: pendentes. Implementação e testes: inexistentes.
 Trilhas: B, A e C. Requisitos: PRD-06; BR-01 a BR-12 conforme aplicáveis.
