@@ -1,5 +1,7 @@
 # Ações externas necessárias
 
+Resolução S07-T006: prova nativa/revisão/preservação PASS, CI40900841329 oito SUCCESS; o pedido anterior sobre OneDrive deixou de ser necessário e nenhuma ação sobre o serviço foi executada. Não há ação/segredo pendente do utilizador para este incremento local. [Fecho](../sprints/S07/T006_COMPLETION_REPORT.md).
+
 Estado S07-T0062026-10-29: provas locais limitadas por memória (V8OOM/134; menos de1GB físico livre observado). Pedido específico assíncrono pendente para encerrar temporariamente e reabrir OneDrive, por instrução de preservar serviços alheios no [AGENTS](../../AGENTS.md). Nenhuma ação sobre esse serviço executada; não são necessárias credenciais. Enquanto pendente, CI remota continua e testes técnicos locais usam limite temporário de heap, sem alterar timeouts/modelos. Critério de desbloqueio: resposta explícita sobre essa ação ou recursos libertados pelo utilizador; uma inspeção readiness PASS isolada não aprova o turno nativo anteriormente503.
 
 
@@ -216,3 +218,5 @@ Prontidão de configuração/segurança, arranque real, persistência/IA, desemp
 
 Critério de desbloqueio:
 Ambiente/políticas aprovados, acessos configurados com segurança e validações obrigatórias reais aprovadas. Deployment publicado apenas após autorização específica, sem pendências críticas.
+
+Checkpoint6a5142e/CI40900841329: foundation PASS2133testes/102suites83,516s,83tooling,100%linhas97,56%branches; seis shards de mutação em execução, nenhum gate agregado presumido. Artefacto backend-quality12909088496/381551bytes/SHAa03a7a33c3a07bfd7da76850f32bd7b914a178f175fe746a0bfa972ad4e2bb0f baixado/verificado. Prova nativa repetida após readiness real PASS: raw r5T0gk REVIEW/SHA cb85ea08fee35cf58c7a4160334cc8a8e7a77bf74a6dd57682147ef1f60c83c5, todos cinco checks PASS incluindo turno nativo/commit/reabertura/cleanup; wrapper034bb327… REVIEW/preservação14tabelas+índice PASS. Revisão semântica separada ainda pendente/T007. Raw503anterior permanece FAIL, causa exata não estabelecida. Pedido de fechar OneDrive deixou de ser necessário para esta prova; nenhuma ação sobre o serviço foi executada e eventual autorização tardia não exige executá-la.

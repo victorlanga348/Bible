@@ -29,3 +29,5 @@ Usar [Error Report](../templates/error-report.md) e nomes `ERR-0001-descricao-cu
 Antes de criar, pesquisar sintomas, módulo e causa nos registos existentes. Se for recorrência do mesmo erro, atualizar o registo e a cronologia em vez de duplicar.
 Estados: aberto, resolvido ou recorrente. Uma solução só é confirmada com evidência e regressão aplicável.
 Manter um índice de ID, título, estado, módulo e tarefa quando houver registos.
+
+[ERR-0025 — fixture interrompida de workspace](ERR-0025-interrupted-workspace-fixture.md): recuperação guardada/testada, CI integral atual em validação.

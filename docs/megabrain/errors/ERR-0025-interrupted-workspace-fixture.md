@@ -1,0 +1,9 @@
+# ERR-0025 — Fixture SQL de falha interrompida em mutação
+
+Observado2026-10-29/S07-T006. CI40886500327/fonte265dfce teve foundation2128PASS, mas parte3 de mutação terminou43RuntimeError. Bruto oficial12903114658/ZIP SHAcd2ce113d29e600f76a793a4845b17d92f61b41f897e1f9c7d39dabb3bb70de1 preservado. beforeEach/afterAll falhavam porque workspace_note permanecia renomeada pelo caso de indisponibilidade HTTP. Esse estado residual é confirmado nos erros; a sequência exata do primeiro mutante que impediu finally não foi recuperada, portanto não atribuir identidade/causa específica sem prova.
+
+Correção somente no harness: cliente Supertest com5s resposta/8s deadline, inferior ao Jest15s, e recuperação antes das suites afetadas. Helper verifica biblia_test/biblia_test antes de qualquer DDL, usa apenas aliases literais fechados de testes, recusa base+alias/mais de um alias e remove apenas trigger/function controlados. Não apaga linhas nem altera o produto. Testes técnicos reais5RED→5GREEN15,435s, incluindo timeout HTTP real/recuperação em finally;26HTTP PASS31,764s. Typecheck/lint PASS. Candidatos com RuntimeError/NoCoverage são invalidados só na cópia de entrada; raw anterior permanece intacto e gate atual exige execução efetiva/zero erros.
+
+CI40900841329/6a5142e foundation2133PASS/102suites/83tooling; mutação atual ainda em curso no registo inicial. Não declarar resolução integral antes dos seis shards/agregado. Lições: limitar o cliente dos testes que alteram schema para permitir finally, guardar bruto original e recuperar só o alvo técnico inequivocamente identificado; não relaxar timeouts de produto, excluir teste de erro ou converter RuntimeError em Killed manualmente.
+
+Resolução confirmada: CI40900841329/6a5142e oito SUCCESS, agregado6540mutantes/zeroRuntimeError+NoCoverage/global89,2797%/IA88,8186%. Os43erros anteriores foram efetivamente reavaliados pela CI; raw anterior permanece inalterado.

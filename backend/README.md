@@ -1,6 +1,6 @@
 # Backend Bíblia App
 
-S07-T006 em validação: dez endpoints /workspace para estudos/histórico, notas pessoais CAS, favoritos privados idempotentes e eliminação retomável, conforme [contrato](../docs/sprints/S07/SPEC.md).26testes HTTP reais e recorte161testes PASS100%linhas94,65%branches; gates completos/nativo atuais pendentes. Desenvolvimento com nove migrações após backup externo e auditoria de preservação PASS. CI40886500327:2128testes PASS, mutação incompleta por43RuntimeError de fixture; correção do harness em validação. Prova nativa workspace: notas/favoritos PASS, turno503IA; sem aprovação antecipada de integração IA.
+S07-T006 implementada e verificada: dez endpoints /workspace para estudos/histórico, notas CAS, favoritos privados e eliminação retomável, conforme [contrato](../docs/sprints/S07/SPEC.md). [Revisão](../docs/sprints/S07/T006_COMPLETION_REPORT.md): CI40900841329/2133testes/102suites83tooling PASS,100%linhas97,56%branches, mutação89,2797%global88,8186%IA/zeroRuntimeError+NoCoverage. Nove migrações no teste e desenvolvimento; prova nativa/semântica e preservação PASS. S07 aguarda revisão final T007; release/hardening S08 permanece pendente.
 
 NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; IA/RAG S05 concluída com14/14avaliações reais e revisão semântica PASS.
 
