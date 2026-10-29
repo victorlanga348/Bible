@@ -1,5 +1,13 @@
 # S07 — Relatório de testes
 
+## T005 — prova nativa e CI em curso
+
+Fonte3b95fc22843b232aa41ea136ae2d56507ffacd01 publicada. CI40818184684 foundation SUCCESS:1957testes89suites/83tooling,100%linhas97,70%branches, estática/build; mutação corrente ainda em curso, sem score aprovado do código novo.
+
+Migração dev8aplicada com Prisma exit0/finished/checksum6d445ed2… e backup custom1417675bytes/SHA030c7d79…/pg_restore--list válidos. Wrapper original s07-relations-native-migrate-5db8d508… ficou BLOCKED porque o snapshot SQL de canon_verse excedeu2s, confirmado no log PG16às04:32:16Z. Original preservado, sem mudança de prazo da aplicação/IA. Auditoria independente `node reports/s07-native-migration-preservation-audit.cjs` PASS: oito migrações concluídas/checksum correto, hashes de todos os dados anteriores idênticos aos posteriores à prova HTTP; nova cross_reference vazia. [Causa/recuperação](../../megabrain/errors/ERR-0023-native-snapshot-timeout.md).
+
+`node reports/s07-native-relations.cjs verify` REVIEW, raw s07-cross-reference-local-dKzt9O/report.json SHAee8772c8db9aa7e85d0a1bd6434f1799862d14e12883b0ea503aefe12868925e; prova wrapperc6b98cf9… confirma todos os hashes preservados/zero relações próprias após DELETE. Estudo14/15versões, cânone/fontes/AI/conversas intactos; nenhum fixture importado/modelo chamado. Relação GEN2:7→GEN2:22, dois spans reais de Josefo0..220/584..934, GET dos dois extremos/owner404/DELETE/quotes exatas PASS. Revisão semântica separada comparou também os versículos BLIVRE reais, classificação temática pessoal/limites explícitos; resultado PASS, digest separado registado no fecho posterior. Raw continua REVIEW original. T005 continua IN_PROGRESS pelos gates de mutação/revisão atuais pendentes; T006 dependente.
+
 ## T005 — checkpoint de relações2026-10-29
 
 Domínio: RED47FAIL por Not implemented, GREEN47PASS2,183s. Janela/cursor de transporte: RED3FAIL→GREEN3PASS1,458s. Schema:17falhas por tabela inexistente são verificação de configuração, não RED de negócio; migração8aditiva202610290001_cross_reference aplicada somente em biblia_test após guard/identidade,17constraints PASS2,827s. Repositório real: RED13FAIL→GREEN13PASS2,934s; metadados/owner/paginação/overlap/DELETE/incoerência/erro SQL real. Application com CanonLibrary/SourceLibrary/Prisma reais e clock técnico explícito: primeira execução falhou por nome errado de helper, preservada como application-setup-failure e não contada como RED; corrigido import, RED18FAIL por métodos não implementados→GREEN18PASS7,013s. HTTP: RED19FAIL por rotas ausentes→GREEN19PASS22,365s, Nest/JWT/Supertest/SQL reais, contratos/owner404/400/422/503/OpenAPI e fontes revogadas.

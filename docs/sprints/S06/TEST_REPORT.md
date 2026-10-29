@@ -1,5 +1,7 @@
 # S06 — Relatório de testes
 
+CI suplementar40813122964/91a6ebd concluída oito jobs SUCCESS. Auditoria `python reports/audit-s06-final-ci.py 40813122964-99 91a6ebd961b3ff64fd19420a8a04edf28aa1ebf0`:87fontes confrontadas com commit,5051mutantes/90,1783264746%global89,3263342082%IA/zero RuntimeError+NoCoverage,358sobreviventes.13variações entre execuções revistas em MUTATION_REVIEW; brutos de ambas preservados. Qualidade1840testes83suites/83tooling/100%linhas97,76%branches. A fonte desta auditoria é S06 antes do incremento S07, sem atribuir esse score ao código novo de relações.
+
 ## S06 — fecho delegado2026-10-29
 
 [T007/fecho](T007_COMPLETION_REPORT.md) consolida9/9turnos nativos e semântica PASS. C01 incorporado por digest; seis pendentes executados uma vez no runner91a6ebd, raw47158a7e… e revisão separadacb3dd675…. Preservação/owner/GET/DELETE/recursos PASS;14estudos15versões, zero análises/conversas. Produto221ficheiros src/test idênticos4a34ddb, inventáriodf737d47…; gates integrais de produto CI40695319164 válidos para esta fonte exata, mutação90,2332%global89,4138%IA/zero RuntimeError+NoCoverage, sobreviventes em MUTATION_REVIEW. Tooling83PASS/lint e CI40813122964 foundation SUCCESS1840testes83suites/83tooling/100%linhas97,76%branches; repetição automática de mutação40813122964 ainda suplementar, sem presumir resultado. Identidade de fontes/gates reutilizados foi definida antes do runner e comprovada por comparação executável; não há produto novo sem gates.

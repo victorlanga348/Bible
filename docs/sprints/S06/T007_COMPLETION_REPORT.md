@@ -1,5 +1,7 @@
 # S06-T007 — Conversas reais verificadas
 
+Atualização2026-10-29: CI40813122964/91a6ebd concluiu oito jobs SUCCESS;1840testes/83tooling,100%linhas97,76%branches, mutação bruta90,1783%global89,3263%IA, zero RuntimeError/NoCoverage,87fontes/digests conferidos. [Revisão das variações](MUTATION_REVIEW.md). A execução suplementar antes pendente tem agora prova própria; entradas anteriores preservam a cronologia.
+
 Fecho técnico delegado2026-10-29. Produto `4a34ddb694f7740348e955fd09dcce2dbd784896`, runner `91a6ebd961b3ff64fd19420a8a04edf28aa1ebf0`; S06 DONE técnico sob autorização integral, sem release público presumido. T004/T005/T006 e esta tarefa têm provas próprias; próxima S07-T004.
 
 ## Diálogos e revisão

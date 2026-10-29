@@ -1,5 +1,7 @@
 # S06 — Revisão técnica
 
+Atualização2026-10-29: CI40813122964/91a6ebd concluiu oito jobs SUCCESS;1840testes/83tooling,100%linhas97,76%branches, mutação bruta90,1783%global89,3263%IA, zero RuntimeError/NoCoverage,87fontes/digests conferidos. [Revisão das variações](MUTATION_REVIEW.md). A execução suplementar antes pendente tem agora prova própria; entradas anteriores preservam a cronologia.
+
 Estado vigente2026-10-29: S06 DONE técnico; T004–T007 DONE sob delegação vigente. [Fecho T007/gates](T007_COMPLETION_REPORT.md):9/9turnos nativos e semântica PASS, produto221ficheiros idênticos4a34ddb/CI40695319164/mutação auditada, runner91a6ebd/tooling83PASS/CI40813122964 foundation SUCCESS. Mutação automática40813122964 ainda suplementar em curso, sem resultado presumido. Próxima S07-T004; entradas abaixo preservam o histórico.
 
 Estado vigente2026-10-29: T006 DONE técnico após [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e semântica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02–C04 pendentes. Entradas anteriores abaixo são históricas.
