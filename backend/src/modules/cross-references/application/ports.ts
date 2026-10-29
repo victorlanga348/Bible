@@ -1,0 +1,10 @@
+import type { CrossReference, RelationPassage, RelationEvidence, RelationWindow, RelationCursor, RelationProps } from '../domain/relation';
+export interface RelationSpan { readonly excerptId: string; readonly startOffset: number; readonly endOffset: number }
+export interface RelationCreate { readonly from: { readonly translationId: string; readonly reference: string }; readonly to: { readonly translationId: string; readonly reference: string }; readonly type: RelationProps['type']; readonly reading: RelationProps['reading']; readonly rationale: string; readonly evidence: readonly RelationSpan[] }
+export interface RelationEvidenceView extends RelationEvidence { readonly availability: 'available' | 'missing' | 'restricted'; readonly quote: string | null; readonly attribution: string | null; readonly rightsStatement: string | null; readonly rightsUrl: string | null }
+export interface RelationView { readonly id: string; readonly from: RelationPassage; readonly to: RelationPassage; readonly type: RelationProps['type']; readonly reading: RelationProps['reading']; readonly rationale: string; readonly assessment: 'user-interpretation'; readonly evidence: readonly RelationEvidenceView[]; readonly limitations: readonly string[]; readonly createdAt: string }
+export interface RelationPage { readonly items: readonly RelationView[]; readonly nextCursor: RelationCursor | null }
+export interface RelationStorePort { create(document: CrossReference): Promise<void>; find(owner: string, id: string): Promise<CrossReference | null>; list(owner: string, passage: RelationPassage, query: RelationWindow): Promise<readonly CrossReference[]>; delete(owner: string, id: string): Promise<boolean> }
+export interface RelationCanonPort { resolve(translationId: string, reference: string): Promise<RelationPassage> }
+export interface RelationSourcesPort { capture(spans: readonly RelationSpan[]): Promise<readonly RelationEvidence[]>; deliver(refs: readonly RelationEvidence[]): Promise<readonly RelationEvidenceView[]> }
+export interface RelationIdentityClockPort { nextId(): string; now(): string }

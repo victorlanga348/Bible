@@ -173,21 +173,13 @@ jobs:
           github-token: ${{ github.token }}
           path: backend/reports/mutation
       - name: Retrieve the verified complete seed for files moved between partitions
-        if: hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c7420005bea1082056d977d24a68d0a692bba7894feb84765629e0aaddc3f9a2'
+        if: hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c6075e2dde3212ecd1608cd37206a10c6b191004cff015337b59687f98b7700b'
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           name: backend-mutation-verified
-          run-id: 40670440360
+          run-id: 40695319164
           github-token: ${{ github.token }}
           path: backend/reports/mutation/seed
-      - name: Retrieve recent analysis inputs without treating their failed aggregate as evidence
-        if: hashFiles('backend/package-lock.json', 'backend/jest*.cjs', 'backend/tsconfig*.json', 'backend/stryker.config.json', 'backend/test/setup.cjs', 'backend/test/mutation-database-setup.ts', 'backend/test/helpers/**') == 'c7420005bea1082056d977d24a68d0a692bba7894feb84765629e0aaddc3f9a2'
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
-        with:
-          pattern: mutation-*
-          run-id: 40686183795
-          github-token: ${{ github.token }}
-          path: backend/reports/mutation/recent
       - run: npm run test:mutation:shard -- ${{ matrix.shard }}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

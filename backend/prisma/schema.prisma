@@ -165,3 +165,26 @@ model StudyVersion {
   @@map("study_version")
   @@schema("app")
 }
+
+model CrossReferenceRecord {
+  id String @id @db.Uuid
+  ownerId String @map("owner_id")
+  fromTranslationId String @map("from_translation_id")
+  fromBookCode String @map("from_book_code")
+  fromChapter BigInt @map("from_chapter")
+  fromVerseStart BigInt @map("from_verse_start")
+  fromVerseEnd BigInt @map("from_verse_end")
+  toTranslationId String @map("to_translation_id")
+  toBookCode String @map("to_book_code")
+  toChapter BigInt @map("to_chapter")
+  toVerseStart BigInt @map("to_verse_start")
+  toVerseEnd BigInt @map("to_verse_end")
+  document Json @db.JsonB
+  createdAt DateTime @map("created_at") @db.Timestamptz(3)
+
+  @@index([ownerId, createdAt(sort: Desc), id(sort: Desc)], map: "cross_reference_owner_created_id_idx")
+  @@index([ownerId, fromTranslationId, fromBookCode, fromChapter], map: "cross_reference_owner_from_lookup_idx")
+  @@index([ownerId, toTranslationId, toBookCode, toChapter], map: "cross_reference_owner_to_lookup_idx")
+  @@map("cross_reference")
+  @@schema("app")
+}

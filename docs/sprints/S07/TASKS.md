@@ -8,7 +8,7 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | ID | Título | Trilha | Prioridade | Estado | Dependências | Referência |
 |---|---|---|---|---|---|---|
 | S07-T004 | Aprovar relações, notas, favoritos, histórico e SH-001 | A/C | Alta (proposta) | DONE | S06 encerrada; EXT-005 | [PLAN](PLAN.md) |
-| S07-T005 | Implementar relações entre passagens e classificação | A | Alta (proposta) | READY | S07-T004 | [PLAN](PLAN.md) |
+| S07-T005 | Implementar relações entre passagens e classificação | A | Alta (proposta) | IN_PROGRESS | S07-T004 | [Ficha](tasks/S07-T005-cross-references.md) |
 | S07-T006 | Integrar workspace e recuperação de estudos | B | Alta (proposta) | BLOCKED | S07-T005 | [PLAN](PLAN.md) |
 | S07-T007 | Verificar navegação, persistência e gates | C | Alta (proposta) | BLOCKED | S07-T006 | [PLAN](PLAN.md) |
 
