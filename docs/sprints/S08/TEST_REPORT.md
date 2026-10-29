@@ -1,3 +1,5 @@
+T004 documental DONE: SPEC/cenários/metas/ambiente definidos por delegação antes de implementação. Auditoria2026-10-29T15:52:07.895Z PASS6Markdown37links/zero alertas; TDD/gates2–6 não aplicáveis a esta definição pura. T005 READY, integrações/recuperação/performance/gates S08 ainda NOT_RUN.
+
 # S08 — Relatório de testes
 
 STATUS: NOT_RUN. Sprint não iniciada; este é o registo de prontidão documental, não um relatório de testes executados.

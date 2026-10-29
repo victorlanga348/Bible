@@ -195,8 +195,10 @@ Política/mecanismo e contratos aprovados, configuração segura e testes reais 
 
 ID: EXT-006
 Componente: ambiente de disponibilização e operação
-Estado: ACTION_REQUIRED
+Estado: DECIDED para release pessoal local; validação NOT_RUN
 Sprint afetada: S08
+
+Decisão2026-10-29 do agente delegado: ambiente pessoal local existente, custo incremental zero/sem serviço pago, JWT/loopback e limites atuais, backups privados/restauro isolado/metas na [SPEC S08](../sprints/S08/SPEC.md). Não requer chave/conta/permissão adicional do utilizador; validações técnicas continuam obrigatórias. Publicação remota é ampliação futura separada. Texto de preparação abaixo histórico.
 
 Ação necessária:
 Escolher ambiente, acesso, custos autorizados, segredos, backups/recuperação e critérios mensuráveis de disponibilidade/desempenho. Autorizar publicação separadamente.

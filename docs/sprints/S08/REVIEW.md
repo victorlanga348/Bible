@@ -1,3 +1,5 @@
+Estado vigente2026-10-29: IN_PROGRESS/T004 DONE documental/T005 READY, SPEC/planos aceites antes de código. Sem prontidão de release presumida. Definição é documental; provas obrigatórias da SPEC ainda NOT_RUN, auditoria de links/segredos PASS. Pergunta de auditoria confrontada: nenhum comportamento S08 implementado ainda, decisões e riscos atuais refletidos na SPEC/README. Notas seguintes históricas.
+
 # S08 — Revisão técnica
 
 Estado: NOT_RUN; sprint não executada, sem aprovação de encerramento. Commit PENDING.

@@ -1,5 +1,7 @@
 # S08 — Hardening e Release
 
+Estado vigente2026-10-29: IN_PROGRESS/T004 DONE documental/T005 READY, S07 encerrada4d43e73. [SPEC](SPEC.md) aceite por decisão delegada antes de código; [plano T005](tasks/S08-T005-hardening-recovery.md). Direitos/ambiente pessoal local, sem serviço pago ou publicação; histórico de rascunho abaixo não revoga autorização integral.
+
 Estado: BACKLOG. Sem início/encerramento aprovado. Dependências: [S07](../S07/README.md) encerrada; contratos/plano/tarefas e ações externas satisfeitos.
 Trilhas: A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; não autorizam paralelismo.
 Backend pronto para o ambiente aprovado, sem pendência crítica ou teste obrigatório bloqueado.

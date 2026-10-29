@@ -1,6 +1,6 @@
 # S08 — Critérios de aceitação
 
-Propostas a detalhar/aprovar antes da implementação. Nenhum critério executado.
+Aceites por decisão delegada2026-10-29 na [SPEC](SPEC.md), antes de código. Nenhum critério de produto executado ainda. AC01 exige release pessoal local/inventário/restore+HTTP; AC02 regressões/segurança/casos assimétricos e performance mensurável; AC03 fronteiras/dados operacionais sem fixtures e admissão; AC04 suites/gates/runbooks/limitações/provas atuais.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
