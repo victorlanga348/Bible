@@ -1,3 +1,5 @@
+DONE técnico2026-10-29: [fecho/evidências](../T005_COMPLETION_REPORT.md), CI40827091922 oito jobs SUCCESS, global90,1858%/IA89,4138%/recorte89,8734%, zero RuntimeError/NoCoverage; [sobreviventes](../MUTATION_REVIEW.md). Plano e checkpoints históricos abaixo preservados.
+
 # S07-T005 — Relações privadas entre passagens
 
 IN_PROGRESS2026-10-29, após T004f03daac/SPEC/ADR-0007 e fecho S06. Agente delegado, uma tarefa/sem agentes/nova permissão. Contratos/stack/direitos/MegaBrain ERR-0021 e PITFALL-0001/0002 consultados. Nenhuma dependência/serviço novo.

@@ -1,6 +1,6 @@
 # S07 — Critérios de aceitação
 
-Propostas a detalhar/aprovar antes da implementação. Nenhum critério executado.
+Critérios aceites por delegação na SPEC/T004. Estado parcial: relações entre passagens verificadas por TDD/PG/HTTP e prova nativa com revisão semântica; workspace/histórico ainda dependem de T006/T007. Nenhum critério de sprint integralmente PASS antes desses incrementos e dos gates atuais. Ver [revisão T005](T005_COMPLETION_REPORT.md). Os estados NOT_RUN da tabela referem-se à avaliação integral de cada critério, não à ausência de qualquer teste da sprint.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|

@@ -1,3 +1,7 @@
+Auditoria documental de fecho T005 PASS2026-10-29T06:30:49.836Z:12Markdown85links, zero missing/secretHits/whitespace/prohibited/staged, comando node backend/reports/check-completion-docs.cjs.
+
+Estado corrente de referências cruzadas: [revisão T005](T005_COMPLETION_REPORT.md). CI40827091922 foundation PASS1976testes/90suites/83tooling,100%linhas97,91%branches; mutação atual PASS nos oito jobs. Global90,1858027632%/IA89,4138232721%/relações+paginação89,8734177215%,5758mutantes/zero RuntimeError+NoCoverage; agregado fa62cc5a…/95fontes conferidas, seis NoCoverage anteriores agora Killed. [Sobreviventes/lacunas S08](MUTATION_REVIEW.md). T005 DONE técnico, T006 READY. Histórico de checkpoints abaixo preservado por data/revisão, sem substituir o estado corrente.
+
 # S07 — Relatório de testes
 
 ## T005 — falha agregada preservada e regressões de mutação
@@ -49,3 +53,5 @@ BRANCH: feat/biblia-backend. COMMIT: PENDING. Aprovações de execução/encerra
 Critérios: todos NOT_RUN em [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md). Comandos e artefactos de aplicação: nenhum executado. RED/GREEN/REFACTOR: sem evidência; comportamento não implementado.
 Quando iniciada, registar data/ambiente/revisão, comandos reais, resultados, cobertura/contagens de mutação/sobreviventes, falhas/regressões, pendências e riscos por critério. Não substituir esta ausência por PASS.
 Dependências e ações: [PLAN](PLAN.md), [TASKS](TASKS.md), [ações externas](../../external-actions/REQUIRED_ACTIONS.md). Caso o serviço obrigatório continue indisponível na execução, marcar o respetivo teste/gate BLOCKED e pedir intervenção.
+
+Checkpoint de regressões publicado2ec7918874ebbe29afb32fa738cddf92624e6d0a; CI40827091922 inicialmente queued, ainda sem gate atual. Produto idêntico3b95fc2 comprovado antes do push; raw nativo/semântica incorporados sem replay.
