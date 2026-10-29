@@ -1,6 +1,6 @@
 # S07 — Tarefas
 
-Estado vigente2026-10-29: S07 IN_PROGRESS sob autorização integral, S06 encerrada48be2f0. T004 preparação de [SPEC](SPEC.md)/ADR-0007 DONE documental após auditoria real, antes de código; T005 relações DONE técnico/CI40827091922, T006 workspace/lifecycle/históricos DONE técnico/CI40900841329, T007 provas/gates READY. Agente é decisor delegado; uma tarefa por vez/sem agentes/sem novas perguntas. Nenhum gate de produto S07 presumido. Entradas seguintes históricas.
+Estado vigente2026-10-29: S07 DONE técnico sob autorização integral, S06 encerrada48be2f0. T004 preparação de [SPEC](SPEC.md)/ADR-0007 DONE documental após auditoria real, antes de código; T005 relações DONE técnico/CI40827091922, T006 workspace/lifecycle/históricos DONE técnico/CI40900841329, T007 provas/gates DONE documental. Agente é decisor delegado; uma tarefa por vez/sem agentes/sem novas perguntas. Nenhum gate de produto S07 presumido. Entradas seguintes históricas.
 
 Fonte canónica. Sprint BACKLOG; nenhuma tarefa de implementação autorizada. A revisão do tema em S00 não aprova spec, contratos, versões ou dependências de execução.
 Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilhas A domínio/regras, B infraestrutura/integrações, C qualidade/documentação.
@@ -10,7 +10,7 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | S07-T004 | Aprovar relações, notas, favoritos, histórico e SH-001 | A/C | Alta (proposta) | DONE | S06 encerrada; EXT-005 | [PLAN](PLAN.md) |
 | S07-T005 | Implementar relações entre passagens e classificação | A | Alta (proposta) | DONE | S07-T004 | [Ficha](tasks/S07-T005-cross-references.md) |
 | S07-T006 | Integrar workspace e recuperação de estudos | B | Alta (proposta) | DONE | S07-T005 | [Ficha](tasks/S07-T006-workspace-lifecycle.md) |
-| S07-T007 | Verificar navegação, persistência e gates | C | Alta (proposta) | READY | S07-T006 | [PLAN](PLAN.md) |
+| S07-T007 | Verificar navegação, persistência e gates | C | Alta (proposta) | DONE | S07-T006 | [Ficha](tasks/S07-T007-close-sprint.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.
 Uma tarefa por vez. Estados e execução são distintos: BACKLOG/READY/IN_PROGRESS/BLOCKED/REVIEW/DONE para trabalho; PASS/FAIL/BLOCKED/NOT_RUN para evidência.

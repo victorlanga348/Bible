@@ -1,13 +1,13 @@
 # S07 — Critérios de aceitação
 
-Critérios aceites por delegação na SPEC/T004. Estado parcial: relações entre passagens verificadas por TDD/PG/HTTP e prova nativa com revisão semântica; workspace/histórico ainda dependem de T006/T007. Nenhum critério de sprint integralmente PASS antes desses incrementos e dos gates atuais. Ver [revisão T005](T005_COMPLETION_REPORT.md). Os estados NOT_RUN da tabela referem-se à avaliação integral de cada critério, não à ausência de qualquer teste da sprint.
+Critérios PASS2026-10-29 no recorte local, conforme [fecho T007](T007_COMPLETION_REPORT.md), com CI integral e provas nativas/revisões T005/T006. Hardening e restauração real continuam S08; nenhuma autorização pública/remota presumida.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
-| S07-AC01 | Utilizador navega entre passagens relacionadas e recupera estudos, notas, favoritos e histórico. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S07-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S07-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S07-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| S07-AC01 | Utilizador navega entre passagens relacionadas e recupera estudos, notas, favoritos e histórico. | [Fecho/evidências](T007_COMPLETION_REPORT.md) | PASS |
+| S07-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | [Fecho/evidências](T007_COMPLETION_REPORT.md) | PASS |
+| S07-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | [Fecho/evidências](T007_COMPLETION_REPORT.md) | PASS |
+| S07-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | [Fecho/evidências](T007_COMPLETION_REPORT.md) | PASS |
 
 ## Sete gates
 | Gate | Obrigação |

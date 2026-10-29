@@ -81,7 +81,7 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
-S00–S06 DONE técnico. S07 T004/T005/T006 DONE técnico; T006produto662c1bc/harness6a5142e/CI40900841329 oito SUCCESS,2133testes102suites83tooling,100%linhas97,56%branches, global89,2797%/IA88,8186%/zeroRuntimeError+NoCoverage. Nove migrações nativas/preservação PASS; caso workspace real e revisão semântica PASS, anteriores503/OOM/RuntimeError preservados. T007 READY para fecho de sprint; S08 pendente/autorizada com lacunas de hardening no MUTATION_REVIEW. OneDrive não foi alterado e já não precisa de fecho para a prova concluída. Fonte breve: [project-state](docs/megabrain/agent-context/project-state.md).
+S00–S07 DONE técnico, [fecho S07](docs/sprints/S07/T007_COMPLETION_REPORT.md). T00603aa590/produto662c1bc/harness6a5142e/CI40900841329 oito SUCCESS,2133testes102suites83tooling/100%linhas97,56%branches/global89,2797%/IA88,8186%/zeroRuntimeError+NoCoverage. Nove migrações nativas/provas workspace/revisões/preservação PASS; falhas anteriores mantidas. S08 READY/autorizada: hardening/lacunas MUTATION_REVIEW, restauração real/runbooks/desempenho/segurança/gates. Uma tarefa por vez/sem agentes, main/segredos/serviços alheios preservados. [Retoma](docs/megabrain/agent-context/project-state.md).
 
 
 Pedido2026-10-27 reafirmado2026-10-28: reduzir consumo por contexto/releituras e validações repetidas, preservando TDD, requisitos, integrações e todos os gates. Consultar documentos pertinentes — tarefa, usar testes afetados durante RED/GREEN e regressões/gates completos nos marcos exigidos. Não alterar main, serviços alheios ou segredos, nem usar agentes. Autorização integral acima permanece vigente.
