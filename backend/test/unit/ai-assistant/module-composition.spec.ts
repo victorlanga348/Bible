@@ -15,7 +15,7 @@ interface Resources { library: AiAnalysisLibrary; indexer: SourceIndexingLibrary
 const technicalTarget = 'postgresql://bible_ai_owner@127.0.0.1:55436/bible_ai?schema=ai';
 const config: RuntimeConfig = { environment: 'development', port: 3000, databaseUrl: 'unused-main-database-double', aiDatabaseUrl: technicalTarget };
 function compose(input: RuntimeConfig): Promise<Resources> {
-  const provider = AiAssistantModule.register(input).providers!.find(value => typeof value === 'object' && value !== null && 'useFactory' in value && value.inject?.includes(Database)) as FactoryProvider<Resources>;
+  const provider = AiAssistantModule.register(input).providers!.find(value => typeof value === 'object' && value !== null && 'useFactory' in value && typeof value.provide === 'symbol' && value.inject?.includes(Database)) as FactoryProvider<Resources>;
   return Promise.resolve(provider.useFactory({} as Database, {} as SourceLibrary, {} as StudyLibrary));
 }
 describe('technical development-composition boundary, never a development database test', () => {

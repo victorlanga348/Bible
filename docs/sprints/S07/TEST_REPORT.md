@@ -1,3 +1,5 @@
+Checkpoint662c1bc55c7df46ceca5db75ff07994c26e5e358 publicado. CI40884676439: estática/83tooling PASS; test:coverage FAIL2/2128 (2126PASS,99/100suites PASS,73,379s), ambos em unit/ai-assistant/module-composition.spec.ts. Seletor técnico de factory Database ambíguo após a nova façade de histórico; não é falha de uma operação HTTP nem do cleanup real. Predicado corrigido para token Symbol de recursos; composition-selection-green2/2PASS17,862s, typecheck/lint PASS. Código de produto idêntico662c1bc; nova CI integral requerida, mutação anterior skipped, sem score atual. Excertos exatos preservados em reports/s07-t006-ci-40884676439-failure-excerpts.json, log completo no job123485096091.
+
 # Checkpoint S07-T006 —2026-10-29
 
 IN_PROGRESS; [plano/decisões/harness](tasks/S07-T006-workspace-lifecycle.md), [ADR-0008](../../architecture/adr/ADR-0008-short-main-database-write-scope.md). Nenhum gate completo atual aprovado antecipadamente. Comandos reais npm via RTK, fallback PowerShell/Python UTF-8. Logs em backend/reports/s07-t006-*.log ignorados, preservados.
