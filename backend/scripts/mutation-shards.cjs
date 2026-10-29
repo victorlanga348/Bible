@@ -124,7 +124,7 @@ async function main(args) {
         if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
         writeFileSync(`${folder}/incremental.json`, selectedBytes);
       }
-      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '2ec7918874ebbe29afb32fa738cddf92624e6d0a', recentCandidateRevision: '3b95fc22843b232aa41ea136ae2d56507ffacd01', selectedSha256: selectedBytes ? createHash('sha256').update(selectedBytes).digest('hex') : null, seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
+      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '2ec7918874ebbe29afb32fa738cddf92624e6d0a', recentCandidateRevision: '265dfceed9a6070edd2fdd91135068c66832ae40', selectedSha256: selectedBytes ? createHash('sha256').update(selectedBytes).digest('hex') : null, seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
       console.log(JSON.stringify({ incrementalInput: choice.selected, matchingMutants: choice.matchingMutants }));
     }
     if (existsSync(`${folder}/incremental.json`)) {

@@ -1,9 +1,11 @@
+import { recoverWorkspaceTestSchema } from '../helpers/workspace-database';
 import { randomUUID } from 'node:crypto';
 import type { Database } from '../../src/infrastructure/database';
 import { openSourceTestDatabase } from '../helpers/source-library';
 describe('workspace/lifecycle actual PostgreSQL constraints', () => {
   let database: Database;
   beforeAll(async () => { database = await openSourceTestDatabase(); });
+  beforeEach(async () => { await recoverWorkspaceTestSchema(database); });
   afterEach(async () => { await database.client.$executeRaw`DELETE FROM app.workspace_note WHERE owner_id = 'schema-workspace'`; await database.client.$executeRaw`DELETE FROM app.workspace_favorite WHERE owner_id = 'schema-workspace'`; });
   afterAll(async () => { await database?.onModuleDestroy(); });
   const note = async (patch: Partial<{ owner: string; version: bigint; revision: number; content: string; updatedAt: Date }> = {}) => {

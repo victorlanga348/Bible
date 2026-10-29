@@ -1,3 +1,4 @@
+import { recoverWorkspaceTestSchema } from '../helpers/workspace-database';
 import { randomUUID } from 'node:crypto';
 import type { Database } from '../../src/infrastructure/database';
 import { WorkspaceLibrary } from '../../src/modules/study-workspace/application/workspace-library';
@@ -20,7 +21,7 @@ import { createStudyTestServices } from '../helpers/study-runtime';
 const owner='workspace-owner';
 describe('workspace Application with actual module libraries/Prisma/canon/sources and no model',()=>{
  let database: Database;let studies: StudyLibrary;let store: PrismaWorkspaceStore;let adapter: WorkspaceStudyAdapter;let library: WorkspaceLibrary;
- const clean=async()=>{await database.client.workspaceNote.deleteMany();await database.client.workspaceFavorite.deleteMany();await database.client.aiConversation.deleteMany();await database.client.aiAnalysis.deleteMany();await cleanStudyTestData(database);await cleanSourceTestData(database);await cleanCanon(database);};
+ const clean=async()=>{await recoverWorkspaceTestSchema(database);await database.client.workspaceNote.deleteMany();await database.client.workspaceFavorite.deleteMany();await database.client.aiConversation.deleteMany();await database.client.aiAnalysis.deleteMany();await cleanStudyTestData(database);await cleanSourceTestData(database);await cleanCanon(database);};
  beforeAll(async()=>{database=await openSourceTestDatabase();});
  beforeEach(async()=>{await clean();await seedCanon(database);await seedCuratedSource(database);const real=createStudyTestServices(database);studies=new StudyLibrary(real.builder,real.store,real.sourcePort);store=new PrismaWorkspaceStore(database);adapter=new WorkspaceStudyAdapter(studies);library=new WorkspaceLibrary(store,adapter,new WorkspaceHistoryAdapter(new AiHistoryLibrary(new PrismaHistoryStore(database))),{id:randomUUID,now:()=>new Date().toISOString()});});
  afterAll(async()=>{try{await clean();}finally{await database?.onModuleDestroy();}});

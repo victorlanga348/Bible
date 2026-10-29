@@ -1,3 +1,4 @@
+import { recoverWorkspaceTestSchema } from '../helpers/workspace-database';
 import { randomUUID } from 'node:crypto';
 import type { Database } from '../../src/infrastructure/database';
 import { usingWriteScope } from '../../src/infrastructure/write-scope';
@@ -10,7 +11,7 @@ const note=(patch: Partial<ConstructorParameters<typeof WorkspaceNote>[0]>={}) =
 const favorite=(patch: Partial<ConstructorParameters<typeof WorkspaceFavorite>[0]>={}) => new WorkspaceFavorite({ id:randomUUID(),ownerId:owner,studyId,studyVersion:1,createdAt:time,...patch });
 describe('workspace-owned persistence, actual PostgreSQL without external module FK/SQL',()=>{
  let database: Database; let store: PrismaWorkspaceStore;
- const clean=async()=>{ await database.client.workspaceNote.deleteMany(); await database.client.workspaceFavorite.deleteMany(); };
+ const clean=async()=>{await recoverWorkspaceTestSchema(database); await database.client.workspaceNote.deleteMany(); await database.client.workspaceFavorite.deleteMany(); };
  beforeAll(async()=>{ database=await openSourceTestDatabase();store=new PrismaWorkspaceStore(database); });
  beforeEach(clean);afterAll(async()=>{try{await clean();}finally{await database?.onModuleDestroy();}});
  it('round-trips private notes and never returns/deletes a foreign note',async()=>{ const n=note();await store.createNote(n);expect(await store.findNote(owner,n.id)).toEqual(n);expect(await store.findNote('foreign-owner',n.id)).toBeNull();expect(await store.deleteNote('foreign-owner',n.id)).toBe(false);expect(await store.findNote(owner,n.id)).toEqual(n);expect(await store.deleteNote(owner,n.id)).toBe(true);expect(await store.deleteNote(owner,n.id)).toBe(false); });
