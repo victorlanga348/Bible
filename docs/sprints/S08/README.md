@@ -1,10 +1,7 @@
-# S08 — Hardening e Release
+# S08 — Hardening e release
 
-Estado vigente2026-10-29: IN_PROGRESS/T004 DONE documental/T005 IN_PROGRESS, S07 encerrada4d43e73. [SPEC](SPEC.md) aceite por decisão delegada antes de código; [plano T005](tasks/S08-T005-hardening-recovery.md). Direitos/ambiente pessoal local, sem serviço pago ou publicação; histórico de rascunho abaixo não revoga autorização integral.
+Estado DONE técnico2026-10-29. T004–T007 DONE; fecho delegado após auditoria documental PASS, sem nova autorização necessária. [Fecho](T007_COMPLETION_REPORT.md), [PLAN](PLAN.md), [TASKS](TASKS.md), [SPEC](SPEC.md), [critérios](ACCEPTANCE_CRITERIA.md), [relatório](TEST_REPORT.md), [revisão](REVIEW.md).
 
-Estado: BACKLOG. Sem início/encerramento aprovado. Dependências: [S07](../S07/README.md) encerrada; contratos/plano/tarefas e ações externas satisfeitos.
-Trilhas: A domínio/regras, B infraestrutura/integrações, C qualidade/documentação; não autorizam paralelismo.
-Backend pronto para o ambiente aprovado, sem pendência crítica ou teste obrigatório bloqueado.
+Revisão executável f71a735/CI40912125811, oito SUCCESS;2249testes107suites89tooling/100%linhas97,94%branches/mutação90,96%global89,87%IA/zeroRuntimeError+NoCoverage. Uma geração real e revisão semântica separada PASS; dois bancos restaurados com TimeZone e HTTP real, dados anteriores/vetores preservados, recursos técnicos próprios eliminados. [Evidência](evidence/release-verification.json).
 
-[PLAN](PLAN.md) · [TASKS](TASKS.md) · [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md) · [TEST_REPORT](TEST_REPORT.md) · [REVIEW](REVIEW.md).
-Backlog tem estados de tarefa; este README tem o estado da sprint. Histórico anterior em [HISTORY](../../roadmap/HISTORY.md). Specs continuam sujeitas a aprovação própria.
+Release pessoal local, sem frontend/OAuth/serviço remoto/público. Corpus operacional autêntico, IA de quatro parágrafos/uma frase inglesa e limitações preservadas. [Operação](../../operations/README.md). Backlog histórico em [HISTORY](../../roadmap/HISTORY.md); esta entrada substitui rascunhos de preparação da sprint.

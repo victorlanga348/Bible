@@ -1,34 +1,18 @@
-# S08 — Hardening e Release
+# S08 — Plano de hardening e release
 
-Estado vigente2026-10-29: IN_PROGRESS/T004 DONE documental/T005 IN_PROGRESS, S07 encerrada4d43e73. [SPEC](SPEC.md) aceite por delegação e [cenários](tasks/S08-T004-release-scenarios.md); planos/TDD antes de implementação T005, provas/gates T006, prontidão T007. Autorização integral cobre decisões/commits/push, uma tarefa por vez/sem agentes. Rascunho seguinte histórico.
+Estado DONE técnico2026-10-29, sob autorização integral. T004–T007 DONE após revisão/gates/auditoria documental PASS. Decisões operacionais do agente delegado na [SPEC](SPEC.md), antes da implementação; não atribuídas a escolhas individuais prévias do utilizador. Branch feat/biblia-backend, uma tarefa por vez, sem agentes.
 
-Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
-Branch: feat/biblia-backend. Commit: PENDING. Dependência: S07 encerrada e nova aprovação.
+Objetivo: release pessoal local recuperável, sem gate obrigatório falhado/bloqueado. Escopo: auditoria de limites, regressões das lacunas S05/S06/S07, preparação operacional independente de fixtures, segurança/configuração, uma inferência real congelada, desempenho básico, backups e restauro isolado, gates completos e runbooks. Frontend/OAuth/serviço público/remoto/HA fora do escopo; dados/modelos/segredos/main/serviços alheios preservados.
 
-## Objetivo e escopo
-Backend pronto para o ambiente aprovado, sem pendência crítica ou teste obrigatório bloqueado.
-Auditoria arquitetural, suites completas, cobertura/mutação, segurança/contratos HTTP, configurações/erros, desempenho básico, avaliações reais de IA, backup/recuperação e documentação de deployment.
+Sequência executada:
 
-## Fora do escopo
-Frontend, módulos de sprints posteriores, serviços adicionais, merge/push/publicação automática. Aprovar este roadmap não aprova specs, contratos ou imports.
-Em S04 não exigir LLM; em S05 não aceitar integração estática como real.
+1. [T004](tasks/S08-T004-release-scenarios.md): ambiente/escopo/metas congelados antes de código; aceite delegado da SPEC.
+2. [T005](tasks/S08-T005-hardening-recovery.md): regressões Domain/Application/PG/Nest/HTTP, verificação de preparação sem fixtures, CI de checkpoint, recursos próprios/nativa/desempenho, dois backups/restauro/HTTP/preservação. Falhas e hipóteses refutadas mantidas.
+3. [T006](tasks/S08-T006-final-gates.md): oito jobs/artefactos/fontes/inventário/cobertura/mutação/429sobreviventes/segurança/semântica conferidos na mesma revisão, sem gates intactos repetidos.
+4. [T007](tasks/S08-T007-release-readiness.md): operação/inventário/TimeZone/runbooks/entradas/contexto curto, revisão/critério/evidência, auditoria e commit/push autorizados.
 
-## Tarefas, contratos e ficheiros
-Ordem e dependências em [TASKS](TASKS.md). Antes de cada tarefa refinar spec, ports, entradas/saídas Zod/HTTP/OpenAPI, erros, persistência e critérios de segurança pertinentes, sem inventar assinaturas/fields neste rascunho.
-Ficheiros previstos: documentação da tarefa/spec, módulo afetado com domain/application/infrastructure/presentation/module.ts, testes e migrações justificadas. Caminhos concretos e dependências aprovados no plano detalhado antes da edição.
-Contratos aprovados não existem ainda. Domain independente de NestJS/Prisma/SDKs e Application de adapters; nenhum acesso direto a dados de outro módulo.
+Dependências S07 e EXT-001–006 satisfeitas no recorte pessoal local. Nenhum serviço pago, nova dependência ou tecnologia. Alternativas rejeitadas: mock como restauro/IA, fixture em desenvolvimento, mudanças de thresholds/pins, restauro por cima de dados existentes e repetir semântica até passar. Custos reais: espaço de cópia privada, CI e uma inferência; mitigados por execução sequencial e incorporação por identidade.
 
-## Testes e Red → Green → Refactor
-Para cada comportamento aprovado: teste antes; RED por causa esperada e saída guardada; GREEN mínimo; REFACTOR com regressões/fiscalização arquitetural.
-Domínio puro sem serviços; Application com infraestrutura real como padrão; Prisma/PostgreSQL/migrações/repositórios/transações/restrições reais; HTTP NestJS/Supertest; fixtures autênticas/autorizadas e limpeza segura.
-IA separa contratos determinísticos, integração real e avaliações semânticas com fontes verificadas. Falta de credencial deixa teste/gate BLOCKED.
+TDD: nenhum comportamento de produção alterado; regressões novas não são RED retroativo. Preparação/configuração teve verificação causal anterior, GREEN e snapshot idêntico, documentados na ficha. Diagnósticos de restauro são operações verificáveis, não código de produto testado depois para fabricar RED. [Sete gates](../../quality/quality-gates.md) intactos: linhas>=90%, branches>=85%, mutação bruta>85%global/IA/zeroRuntimeError+NoCoverage, todos testes obrigatórios PASS.
 
-## Aceitação, riscos e alternativas
-Critérios em [ACCEPTANCE_CRITERIA](ACCEPTANCE_CRITERIA.md). Limites: linhas >=90%, branches >=85%, mutação bruta >85%; zero erros de tipagem/lint e nenhum teste obrigatório falhado/bloqueado.
-Riscos: contratos incompletos, direitos/dados indisponíveis, credenciais/infraestrutura em falta e regressões. Mitigar aprovando contratos/dados, ações externas e testes antes de código. Não substituir por fixtures fictícias.
-Alternativa de antecipar módulos ou usar fakes como aceitação rejeitada; preservação de fronteiras custa contratos/mapeamentos, reduzindo acoplamento. Versões e custos exigem investigação/aprovação antes do uso.
-Dependências externas em [REQUIRED_ACTIONS](../../external-actions/REQUIRED_ACTIONS.md); dados/acesso/retensão/fornecedores conforme momento afetado.
-
-## Validação e aprovação
-Scripts reais de package.json serão identificados depois de existir aplicação; não há comandos de suite aprovados neste rascunho.
-Executar sete gates aplicáveis, registar por critério comando/ambiente/data/resultado e artefactos, produzir [TEST_REPORT](TEST_REPORT.md) e [REVIEW](REVIEW.md), aguardar aprovação de encerramento/commit. Não iniciar sprint seguinte sem autorização própria.
+[TEST_REPORT](TEST_REPORT.md), [REVIEW](REVIEW.md), [AC01–04](ACCEPTANCE_CRITERIA.md), [evidência](evidence/release-verification.json). Configuração TimeZone do original integra a recuperação após falha causal comprovada; nenhum dado/código/expectativa foi alterado para aceitar a cópia. Operação e direitos locais limitados explicitamente; outro ambiente/fuso exige trabalho próprio.

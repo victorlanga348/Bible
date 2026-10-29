@@ -1,0 +1,13 @@
+# S08-T007 — Prontidão da release pessoal local
+
+DONE técnico2026-10-29 após T006 DONE e revisão/auditoria documental PASS. Plano aceite antes da edição operacional por decisão delegada, sob autorização integral. Dependências T005/T006 satisfeitas; uma tarefa por vez, sem agentes. Fonte: SPEC, TEST_REPORT, MUTATION_REVIEW e evidência S08.
+
+Objetivo: entregar uma entrada utilizável e runbooks executáveis com limites claros, fechar S08/S00–S08 e publicar na feat/biblia-backend sem alterar main. Nenhuma mudança de src/testes/Prisma/contrato/modelos/pacotes é prevista.
+
+Sequência: atualizar inventário/configuração/segurança/backup/restauro/TimeZone/desempenho/retensão/incident response; sincronizar README raiz/backend, sprints/roadmap/ações externas/AGENTS e contexto curto; conservar cronologia anterior em arquivo próprio. Emitir REVIEW/AC01–04/relatório de fecho ligados às provas, verificar identidade dos ficheiros executáveis, links/UTF-8/segredos/whitespace/serviços próprios. Só após auditoria PASS transitar REVIEW→DONE sob autorização vigente e selecionar ficheiros documentais para commit/push sem force. Registar hash real posteriormente sem autorreferência impossível.
+
+Critérios: operador encontra comandos reais de arranque/token/health, alvos/segredos e procedimento de recuperação que inclui fuso; todos os sete gates e critérios têm prova, nenhum bloqueio obrigatório; escopo pessoal local e limites de direitos/IA explícitos. Pergunta de auditoria obrigatória confrontada com diff/docs/README, sem interromper para repetir autorização já dada.
+
+Vantagens: operação recuperável e contexto curto para futuras tarefas. Custo: sincronização de entradas antigas; mitigação por uma fonte detalhada por assunto e links. Alternativas rejeitadas: duplicar logs longos nas entradas, declarar publicação remota/IA geral pronta, repetir gates intactos. Riscos: instrução obsoleta de ambiente, omissão de TimeZone ou segredo; mitigados por inventário, provas pinadas e auditoria final. TDD/Gates2–6 novos não aplicáveis à documentação; gates reais do produto incorporados por identidade.
+
+Fecho delegado: IN_PROGRESS→REVIEW→DONE; operações/segurança/entradas/roadmap/contexto curto sincronizados, ERR-0026 e hipótese refutada registados, nenhuma mudança executável. Auditoria19:05:16.361Z PASS31Markdown263links/zero alertas, seguida de conferência de estados/UTF-8/segredos/diff antes de stage. [Fecho](../T007_COMPLETION_REPORT.md). Commit/push autorizados, somente docs; [skip ci] evita repetir gates de produto idêntico à CI40912125811. Nenhuma alteração conhecida ficou sem documentação; hash real será registado depois de criar o commit.

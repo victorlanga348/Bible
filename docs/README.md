@@ -1,6 +1,8 @@
 # Documentação do Bíblia App
 
-Estado vigente2026-10-22: [execução integral autorizada](roadmap/completion-execution.md), sem pausas por novas permissões. [S02 integral](sprints/S02/README.md) concluída tecnicamente:551 testes, mutação padrão95,87% local/95,41% CI, fontes conferidas e auditoria final. S00/S01/S03 também concluídas; S04 é a próxima execução autorizada, com planos preparados e sem código entregue. S04–S08 ainda não estão concluídas. A linha de2026-10-21 a seguir preserva o fecho reduzido anterior.
+Estado2026-10-29: backend S00–S08 tecnicamente verificado para uso pessoal local; [fecho S08](sprints/S08/T007_COMPLETION_REPORT.md), [operação](operations/README.md) e [estado breve](megabrain/agent-context/project-state.md). Auditoria documental final PASS; registos anteriores abaixo são históricos.
+
+Estado histórico2026-10-22: [execução integral autorizada](roadmap/completion-execution.md), sem pausas por novas permissões. [S02 integral](sprints/S02/README.md) concluída tecnicamente:551 testes, mutação padrão95,87% local/95,41% CI, fontes conferidas e auditoria final. S00/S01/S03 também concluídas; S04 é a próxima execução autorizada, com planos preparados e sem código entregue. S04–S08 ainda não estão concluídas. A linha de2026-10-21 a seguir preserva o fecho reduzido anterior.
 
 
 

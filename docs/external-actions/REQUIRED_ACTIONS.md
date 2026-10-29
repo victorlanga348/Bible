@@ -1,5 +1,7 @@
 # Ações externas necessárias
 
+Estado vigente2026-10-29/S08: EXT-001(modelos),002(bancos),003(cânone),004(fontes/avaliações),005(acesso/retenção) e006(operação/recuperação) RESOLVED no recorte pessoal local. [Provas finais](../sprints/S08/TEST_REPORT.md)/[runbooks](../operations/runbooks.md). Nenhuma ação/chave do utilizador pendente para esta entrega. S08 DONE técnico; publicação remota/outro ambiente/fuso ou direitos adicionais fora do escopo. Estados mais antigos abaixo são históricos, não reabrem ações já resolvidas.
+
 Resolução S07-T006: prova nativa/revisão/preservação PASS, CI40900841329 oito SUCCESS; o pedido anterior sobre OneDrive deixou de ser necessário e nenhuma ação sobre o serviço foi executada. Não há ação/segredo pendente do utilizador para este incremento local. [Fecho](../sprints/S07/T006_COMPLETION_REPORT.md).
 
 Estado S07-T0062026-10-29: provas locais limitadas por memória (V8OOM/134; menos de1GB físico livre observado). Pedido específico assíncrono pendente para encerrar temporariamente e reabrir OneDrive, por instrução de preservar serviços alheios no [AGENTS](../../AGENTS.md). Nenhuma ação sobre esse serviço executada; não são necessárias credenciais. Enquanto pendente, CI remota continua e testes técnicos locais usam limite temporário de heap, sem alterar timeouts/modelos. Critério de desbloqueio: resposta explícita sobre essa ação ou recursos libertados pelo utilizador; uma inspeção readiness PASS isolada não aprova o turno nativo anteriormente503.

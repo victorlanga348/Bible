@@ -1,0 +1,11 @@
+# ERR-0026 — Restauro sem TimeZone alterou datas lidas
+
+Confirmado2026-10-29/S08-T005, recuperação operacional. Dumps e snapshots por PK/UTC dos dois bancos eram idênticos, mas lista de notas recuperada tinha timestamps duas horas anteriores e GET conversa503AI_UNAVAILABLE. Brutos55cb8fef…,23829dd2… e55c454c6… preservados FAIL; não houve nova inferência, alteração de dado ou expectativa para obter PASS.
+
+Inventário read-only comprovou principalPG16.14TimeZoneAfrica/Johannesburg e índicePG17.11Etc/UTC; cópia nova usava UTC. Código instalado @prisma/adapter-pg7.10.1: formatDateTime serializa componentes UTC sem offset e normalize_timestamptz substitui offset por+00:00. O roundtrip existente depende do fuso fixado; PrismaConversationStore.hydrate exige igualdade da data relacional com document.createdAt. A diferença na cópia quebra essa igualdade. Hipótese inicial de índice indisponível foi refutada: a leitura de análise não consulta o índice e a injeção do adapter restaurado não resolveu a falha.
+
+Correção do procedimento antes da repetição: inventariar também TimeZone e aplicar ALTER DATABASE exclusivamente nas duas bases descartáveis para o fuso respetivo antes de pg_restore; SET TIME ZONE UTC somente nas conexões do auditor. Não mudar servidor original, pins, dados, JSON, contrato, guard ou src. Não é migração para UTC nem prova de portabilidade para outro fuso. Preservar o ambiente aprovado é requisito da recuperação; outra portabilidade exige tarefa própria.
+
+Prova finalab679f7b… rawSHA80c0ca597fefa465005c9a5ac922732181c48a05c1900517afaa0166ea2d5daf REVIEW; HTTP9fd6b7fa64e968c8cc45e6572c72ed31f1e081eab716966670245ad8c333d257 PASS, com datas/notas/favoritos/estudos/histórico/conversa/citações idênticos. Adapter real do índice readinessPASS, zero novas chamadas de modelo. Preservação integral e container removido PASS. Um wrapper anterior marcou remoçãofalse; inspeção independente posterior confirmou o ID ausente, sem alterar o bruto.
+
+Lição: pg_dump da base não substitui inventário de configuração do servidor/conexão; hashes de dados isoladamente não demonstram leitura HTTP recuperável. Guardar cada resposta antes de asserts é necessário para encontrar o valor divergente. [Relatório](../../sprints/S08/TEST_REPORT.md), [runbook](../../operations/runbooks.md), [evidência](../../sprints/S08/evidence/release-verification.json).

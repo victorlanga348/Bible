@@ -1,5 +1,7 @@
 # Rastreabilidade e evolução do roadmap
 
+Estado2026-10-29: complemento S02-T006/T007 concluído, S00–S07 DONE/S08 DONE técnico; [fecho S08](../sprints/S08/T007_COMPLETION_REPORT.md). Frontend/S09 históricos fora deste ciclo. Correspondências abaixo preservam a migração documental, sem tarefas backend antigas por executar.
+
 IDs anteriores não mudam de significado; títulos/trilhas/estados preservados em [HISTORY](HISTORY.md). A tabela seguinte é correspondência de trabalho, não renumeração retroativa, transferência de aprovação ou prova de execução.
 
 Atualização2026-10-21: encerramento reduzido S02 autorizado pelo utilizador («termina, o que falta vou adicionar depois»). Correspondências para S02-T006/T007 abaixo conservam-se como trabalho adiado no BACKLOG, sem conclusão/transferência para outra sprint; só T004/T005 foram entregues. Fonte de estados: TASKS/README S02.

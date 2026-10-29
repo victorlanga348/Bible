@@ -1,0 +1,814 @@
+{
+  "result": "PASS",
+  "date": "2026-10-29T18:55:22.127Z",
+  "scope": "Release pessoal local da SPEC S08; sem frontend/serviço remoto ou público.",
+  "revision": "f71a7356b6fb445284d6713d47d7f6552f98d750",
+  "sourceIdentity": "git diff --exit-code f71a735 -- backend/src backend/test backend/prisma backend/prisma-ai backend/admissions backend/scripts backend/package.json backend/package-lock.json backend/stryker.config.json .github/workflows/backend.yml: exit0",
+  "ci": {
+    "run": 40912125811,
+    "url": "https://github.com/victorlanga348/Bible/actions/runs/40912125811",
+    "jobs": 8,
+    "allJobs": "SUCCESS",
+    "jest": {
+      "tests": 2249,
+      "suites": 107,
+      "seconds": 76.517
+    },
+    "tooling": {
+      "tests": 89,
+      "failed": 0
+    },
+    "mutation": {
+      "result": "PASS",
+      "run": 40912125811,
+      "revision": "f71a7356b6fb445284d6713d47d7f6552f98d750",
+      "artifactIds": {
+        "mutation": 12916142991,
+        "quality": 12914242664
+      },
+      "reportSha256": "1e8864535e7cf6cb72a3ad4c0bec411a4634670ef05d64eb96ce0677ea50e5bc",
+      "sourceFiles": 107,
+      "gate": {
+        "global": {
+          "detected": 4319,
+          "valid": 4748,
+          "score": 90.96461668070766
+        },
+        "ai": {
+          "detected": 2130,
+          "valid": 2370,
+          "score": 89.87341772151899
+        }
+      },
+      "counts": {
+        "Killed": 4269,
+        "CompileError": 1792,
+        "Survived": 429,
+        "Timeout": 50
+      },
+      "coverage": {
+        "lines": {
+          "total": 2290,
+          "covered": 2290,
+          "skipped": 0,
+          "pct": 100
+        },
+        "statements": {
+          "total": 3247,
+          "covered": 3233,
+          "skipped": 0,
+          "pct": 99.56
+        },
+        "functions": {
+          "total": 625,
+          "covered": 624,
+          "skipped": 0,
+          "pct": 99.84
+        },
+        "branches": {
+          "total": 1603,
+          "covered": 1570,
+          "skipped": 0,
+          "pct": 97.94
+        },
+        "branchesTrue": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "shardAudit": {
+        "revision": "f71a7356b6fb445284d6713d47d7f6552f98d750",
+        "fingerprint": "fba5674a3e8e6732c3989335f7d198185b35f0ef02ece05b190308c9f05640a9",
+        "count": 6,
+        "gate": {
+          "global": {
+            "detected": 4319,
+            "valid": 4748,
+            "score": 90.96461668070766
+          },
+          "ai": {
+            "detected": 2130,
+            "valid": 2370,
+            "score": 89.87341772151899
+          }
+        },
+        "sourceFiles": 132,
+        "mutableFiles": 107,
+        "mutants": 6540
+      },
+      "previousReportSha256": "e755f92db54fca6b80268fb91837ca51170df79487accd6f75c2bd1d3452e062",
+      "oldSurvivorCount": 509,
+      "survivors": 429,
+      "transitions": {
+        "Survived->Timeout": 8,
+        "Timeout->Survived": 7,
+        "Timeout->Killed": 16,
+        "Survived->Killed": 79
+      }
+    }
+  },
+  "native": {
+    "result": "PASS após revisão separada",
+    "rawResultUnchanged": "REVIEW",
+    "rawFile": "reports/s08-release-audit-21dadbbe-1d11-499a-9a52-1ca0007c54f2-restore-ab679f7b-6724-4e50-bdf3-80f29d874494.json",
+    "rawSha256": "80c0ca597fefa465005c9a5ac922732181c48a05c1900517afaa0166ea2d5daf",
+    "populateSha256": "71ab7c611b62d2279aa96f916ce8888a2d8bd12aa878814576e8362ff2aa9fb7",
+    "restoredHttpSha256": "9fd6b7fa64e968c8cc45e6572c72ed31f1e081eab716966670245ad8c333d257",
+    "semanticReviewSha256": "be4ba95ed3d0cd9e6797c093514bc337b0acdd8aa54125c8b7709c7572ecbcd2",
+    "evidenceDirectory": "LOCALAPPDATA\\BibleAI\\quality-artifacts\\release-s08-21dadbbe-1d11-499a-9a52-1ca0007c54f2-restore-ab679f7b-6724-4e50-bdf3-80f29d874494",
+    "startedAt": "2026-10-29T18:37:30.494Z",
+    "finishedAt": "2026-10-29T18:40:51.245Z",
+    "frozenCase": "Which day does this source call Sabbath?",
+    "expectedSentence": "p1-s11",
+    "actualGenerationCalls": 1,
+    "restoredGenerationCalls": 0,
+    "stages": [
+      {
+        "stage": "index-readiness",
+        "startedAt": "2026-10-29T18:37:47.681Z",
+        "result": "PASS",
+        "durationMs": 270.5050999999985,
+        "finishedAt": "2026-10-29T18:37:47.951Z"
+      },
+      {
+        "stage": "embedding",
+        "startedAt": "2026-10-29T18:37:47.952Z",
+        "result": "PASS",
+        "durationMs": 40146.460600000006,
+        "finishedAt": "2026-10-29T18:38:28.099Z"
+      },
+      {
+        "stage": "retrieval",
+        "startedAt": "2026-10-29T18:38:28.101Z",
+        "result": "PASS",
+        "durationMs": 175.41990000000078,
+        "finishedAt": "2026-10-29T18:38:28.277Z"
+      },
+      {
+        "stage": "generation",
+        "startedAt": "2026-10-29T18:38:28.625Z",
+        "result": "PASS",
+        "durationMs": 135990.8359,
+        "finishedAt": "2026-10-29T18:40:44.617Z"
+      },
+      {
+        "stage": "persistence",
+        "startedAt": "2026-10-29T18:40:45.011Z",
+        "result": "PASS",
+        "durationMs": 144.32459999999264,
+        "finishedAt": "2026-10-29T18:40:45.155Z"
+      }
+    ],
+    "runtimeCalls": [
+      {
+        "kind": "embedding",
+        "startedAt": "2026-10-29T18:37:47.954Z",
+        "requests": [
+          {
+            "path": "/tokenize",
+            "result": "PASS",
+            "durationMs": 22.550600000002305
+          },
+          {
+            "path": "/v1/embeddings",
+            "result": "PASS",
+            "durationMs": 1280.3796999999977
+          }
+        ],
+        "readyElapsedMs": 38592.0081,
+        "durationMs": 40143.5044
+      },
+      {
+        "kind": "generation",
+        "startedAt": "2026-10-29T18:38:28.627Z",
+        "requests": [
+          {
+            "path": "/apply-template",
+            "result": "PASS",
+            "durationMs": 302.7446999999811
+          },
+          {
+            "path": "/tokenize",
+            "result": "PASS",
+            "durationMs": 631.1051000000152
+          },
+          {
+            "path": "/v1/chat/completions",
+            "result": "PASS",
+            "durationMs": 23323.007500000007
+          }
+        ],
+        "readyElapsedMs": 110952.02610000002,
+        "durationMs": 135987.55870000002
+      }
+    ],
+    "usage": {
+      "profileId": "local-extractive-v1",
+      "promptVersion": "source-sentence-selection-v6",
+      "modelId": "ollama-qwen3-1.7b-q4_k_m",
+      "modelSha256": "3d0b790534fe4b79525fc3692950408dca41171676ed7e21db57af5c65ef6ab6",
+      "embeddingModelSha256": "06507c7b42688469c4e7298b0a1e16deff06caf291cf0a5b278c308249c3e439",
+      "runtimeVersion": "9ff0d7e90",
+      "dimensions": 1024,
+      "contextLimit": 2048,
+      "outputLimit": 128,
+      "promptTokens": 812,
+      "completionTokens": 11,
+      "totalTokens": 823,
+      "embeddingPromptTokens": 26,
+      "consultedSegments": [
+        {
+          "id": "p1-c3",
+          "sourceId": "josephus-antiquities-pg2848-en-local-ai-v1",
+          "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p1",
+          "sourceDigest": "f8665e8cfa6a7e46bf9b0e40bad7b68062d48502151c25a18e3ba506b1597221",
+          "textDigest": "5cb7a6b39542e3c9cc2e6f31f428f64313daddd9307d7a766032bbebc733cda0",
+          "startOffset": 1800,
+          "endOffset": 2127
+        },
+        {
+          "id": "p1-c1",
+          "sourceId": "josephus-antiquities-pg2848-en-local-ai-v1",
+          "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p1",
+          "sourceDigest": "f8665e8cfa6a7e46bf9b0e40bad7b68062d48502151c25a18e3ba506b1597221",
+          "textDigest": "26e3790b9197e5ce5ce02c668bc6336bbe272f69d0955ca1430c75367db636d6",
+          "startOffset": 0,
+          "endOffset": 1000
+        },
+        {
+          "id": "p1-c2",
+          "sourceId": "josephus-antiquities-pg2848-en-local-ai-v1",
+          "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p1",
+          "sourceDigest": "f8665e8cfa6a7e46bf9b0e40bad7b68062d48502151c25a18e3ba506b1597221",
+          "textDigest": "fb38df38963d1ab84075e57e0a9d95f209302fa0e21422d2add01b21f420f0cd",
+          "startOffset": 900,
+          "endOffset": 1900
+        }
+      ]
+    },
+    "benchmarks": [
+      {
+        "label": "deterministic-study",
+        "samples": 5,
+        "concurrency": 1,
+        "p95": 714.4172999999992,
+        "max": 714.4172999999992,
+        "limitP95": 5000
+      },
+      {
+        "label": "canonical-selection",
+        "samples": 20,
+        "concurrency": 1,
+        "p50": 26.69550000000163,
+        "p95": 40.60390000001644,
+        "max": 57.48509999999078,
+        "limitP95": 2000
+      },
+      {
+        "label": "workspace-recovery",
+        "samples": 20,
+        "concurrency": 1,
+        "p50": 11.805799999972805,
+        "p95": 22.21040000001085,
+        "max": 30.62829999998212,
+        "limitP95": 2000
+      },
+      {
+        "label": "conversation-history",
+        "samples": 20,
+        "concurrency": 1,
+        "p50": 10.76480000000447,
+        "p95": 17.11460000000079,
+        "max": 17.134799999999814,
+        "limitP95": 2000
+      },
+      {
+        "label": "favorite-recovery",
+        "samples": 20,
+        "concurrency": 1,
+        "p50": 8.942799999989802,
+        "p95": 12.198399999993853,
+        "max": 13.823800000012852,
+        "limitP95": 2000
+      }
+    ],
+    "concurrentRead": {
+      "requests": 5,
+      "failures": 0,
+      "totalMs": 234.91150000001653
+    },
+    "memory": {
+      "intervalMs": 2000,
+      "sampleCount": 71,
+      "maxima": {
+        "node": {
+          "maxObservedPrivateBytes": 256016384,
+          "maxObservedWorkingSetBytes": 238936064
+        },
+        "model": {
+          "maxObservedPrivateBytes": 1068961792,
+          "maxObservedWorkingSetBytes": 2130440192
+        }
+      },
+      "limitation": "Observed samples, not a continuous absolute peak. Node heap512MiB is a limit, not a measured peak. Sampler overhead included.",
+      "actualIntervalMinMs": 2233,
+      "actualIntervalMaxMs": 8972,
+      "firstSample": "2026-10-29T18:37:46.1082427Z",
+      "lastSample": "2026-10-29T18:40:47.4026627Z",
+      "minimumObservedFreePhysicalKB": 411868
+    },
+    "backups": {
+      "main": {
+        "file": "LOCALAPPDATA\\BibleAI\\backups\\release-s08-21dadbbe-1d11-499a-9a52-1ca0007c54f2-resume-81d5d9d6-01ef-47b8-8f24-7c226d04a397\\main.dump",
+        "bytes": 1431312,
+        "sha256": "ca4ab0de52fcc51913b8b70ebc79db14f653a2472c736fcede382ffd6e1492f3",
+        "archiveListSha256": "e9e953acb70e123d0d814b6d3d0c5e6142f5d4123a9e19028ac37fb483bfd2af"
+      },
+      "ai": {
+        "file": "LOCALAPPDATA\\BibleAI\\backups\\release-s08-21dadbbe-1d11-499a-9a52-1ca0007c54f2-resume-81d5d9d6-01ef-47b8-8f24-7c226d04a397\\ai.dump",
+        "bytes": 63953,
+        "sha256": "e13f45555723323e2419f2b5ea8d62af9c596d478f56b861d8e978dc7157b85a",
+        "archiveListSha256": "9a8780dd9eaad1b120812cd7df6109e97a221b16a343cb429944025a4752e925"
+      }
+    },
+    "sourceTimezones": {
+      "main": "Africa/Johannesburg",
+      "ai": "Etc/UTC"
+    },
+    "mainBefore": {
+      "identity": {
+        "db": "bible_db",
+        "role": "postgres",
+        "version": "160014"
+      },
+      "tables": {
+        "canon_translation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "475d622cdce68d3b0cfb1ba76d1e4e636fb818a7450888ad1b8716a7d88f1477"
+        },
+        "canon_book": {
+          "exists": true,
+          "count": 66,
+          "sha256": "ade1a0883a7025fb9cac7b5093be242c5e46271e0fe80fb77391401eca43c806"
+        },
+        "canon_chapter": {
+          "exists": true,
+          "count": 1189,
+          "sha256": "9425de50e97a793a4aac4ece3ab591e5ca48cf1902c24beae242fc8ea1ed9a3e"
+        },
+        "canon_verse": {
+          "exists": true,
+          "count": 31102,
+          "sha256": "12921ca33c5272b6a961ba809e86e634a039972a40741745e2833e5d92ef63a9"
+        },
+        "source_library_source": {
+          "exists": true,
+          "count": 2,
+          "sha256": "991478fe5841353df216abd0232e345a0da79663c98161a5cf5bf982703c7161"
+        },
+        "source_library_excerpt": {
+          "exists": true,
+          "count": 8,
+          "sha256": "012c8f56cc148bbcdc62536926766d2c694e3dbff907048b3ebfcb948f0b80ab"
+        },
+        "source_library_passage_link": {
+          "exists": true,
+          "count": 5,
+          "sha256": "758a823091313cfc24cfd8398ae9f96fe02d931a8d8be4ea405437aa831da6c8"
+        },
+        "study_record": {
+          "exists": true,
+          "count": 14,
+          "sha256": "3b55f602384c12194de92ffd27decd9a0e2efcb0e8aa52e6d62dc25ddbfe925c"
+        },
+        "study_version": {
+          "exists": true,
+          "count": 15,
+          "sha256": "5dedbf78224634f4e94b09ad3248de407022813d9950cd5371c80ba172489721"
+        },
+        "ai_analysis": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "ai_conversation": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "cross_reference": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "workspace_note": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "workspace_favorite": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 9,
+          "sha256": "2edd120ee45784ea1f547470597b963409ab13174c4bf7a7cdfc9de3faee37b3"
+        }
+      }
+    },
+    "mainAfter": {
+      "identity": {
+        "db": "bible_db",
+        "role": "postgres",
+        "version": "160014",
+        "timezone": "Africa/Johannesburg"
+      },
+      "tables": {
+        "canon_translation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "475d622cdce68d3b0cfb1ba76d1e4e636fb818a7450888ad1b8716a7d88f1477"
+        },
+        "canon_book": {
+          "exists": true,
+          "count": 66,
+          "sha256": "ade1a0883a7025fb9cac7b5093be242c5e46271e0fe80fb77391401eca43c806"
+        },
+        "canon_chapter": {
+          "exists": true,
+          "count": 1189,
+          "sha256": "9425de50e97a793a4aac4ece3ab591e5ca48cf1902c24beae242fc8ea1ed9a3e"
+        },
+        "canon_verse": {
+          "exists": true,
+          "count": 31102,
+          "sha256": "12921ca33c5272b6a961ba809e86e634a039972a40741745e2833e5d92ef63a9"
+        },
+        "source_library_source": {
+          "exists": true,
+          "count": 2,
+          "sha256": "991478fe5841353df216abd0232e345a0da79663c98161a5cf5bf982703c7161"
+        },
+        "source_library_excerpt": {
+          "exists": true,
+          "count": 8,
+          "sha256": "012c8f56cc148bbcdc62536926766d2c694e3dbff907048b3ebfcb948f0b80ab"
+        },
+        "source_library_passage_link": {
+          "exists": true,
+          "count": 5,
+          "sha256": "758a823091313cfc24cfd8398ae9f96fe02d931a8d8be4ea405437aa831da6c8"
+        },
+        "study_record": {
+          "exists": true,
+          "count": 14,
+          "sha256": "3b55f602384c12194de92ffd27decd9a0e2efcb0e8aa52e6d62dc25ddbfe925c"
+        },
+        "study_version": {
+          "exists": true,
+          "count": 15,
+          "sha256": "5dedbf78224634f4e94b09ad3248de407022813d9950cd5371c80ba172489721"
+        },
+        "ai_analysis": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "ai_conversation": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "cross_reference": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "workspace_note": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "workspace_favorite": {
+          "exists": true,
+          "count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 9,
+          "sha256": "2edd120ee45784ea1f547470597b963409ab13174c4bf7a7cdfc9de3faee37b3"
+        }
+      }
+    },
+    "aiBefore": {
+      "identity": {
+        "db": "bible_ai",
+        "role": "bible_ai_owner",
+        "version": "170011"
+      },
+      "tables": {
+        "embedding_profile": {
+          "exists": true,
+          "count": 1,
+          "sha256": "838402ae333c74125cfb72cfbcab3d61a5c413e780f951f21777c0b00b83b6c8"
+        },
+        "source_chunk": {
+          "exists": true,
+          "count": 11,
+          "sha256": "e1b79af3c4621d87a0a438a66d25bcb9ee18dc3e91c15cdcf5e99cb045039c44"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 1,
+          "sha256": "ca15498f1eb2abb7550164e775ece5cf47673d64e008c3e682b52f0f59691da9"
+        }
+      }
+    },
+    "aiAfter": {
+      "identity": {
+        "db": "bible_ai",
+        "role": "bible_ai_owner",
+        "version": "170011",
+        "timezone": "Etc/UTC"
+      },
+      "tables": {
+        "embedding_profile": {
+          "exists": true,
+          "count": 1,
+          "sha256": "838402ae333c74125cfb72cfbcab3d61a5c413e780f951f21777c0b00b83b6c8"
+        },
+        "source_chunk": {
+          "exists": true,
+          "count": 11,
+          "sha256": "e1b79af3c4621d87a0a438a66d25bcb9ee18dc3e91c15cdcf5e99cb045039c44"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 1,
+          "sha256": "ca15498f1eb2abb7550164e775ece5cf47673d64e008c3e682b52f0f59691da9"
+        }
+      }
+    },
+    "frozenMain": {
+      "identity": {
+        "db": "bible_db",
+        "role": "postgres",
+        "version": "160014"
+      },
+      "tables": {
+        "canon_translation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "475d622cdce68d3b0cfb1ba76d1e4e636fb818a7450888ad1b8716a7d88f1477"
+        },
+        "canon_book": {
+          "exists": true,
+          "count": 66,
+          "sha256": "ade1a0883a7025fb9cac7b5093be242c5e46271e0fe80fb77391401eca43c806"
+        },
+        "canon_chapter": {
+          "exists": true,
+          "count": 1189,
+          "sha256": "9425de50e97a793a4aac4ece3ab591e5ca48cf1902c24beae242fc8ea1ed9a3e"
+        },
+        "canon_verse": {
+          "exists": true,
+          "count": 31102,
+          "sha256": "12921ca33c5272b6a961ba809e86e634a039972a40741745e2833e5d92ef63a9"
+        },
+        "source_library_source": {
+          "exists": true,
+          "count": 2,
+          "sha256": "991478fe5841353df216abd0232e345a0da79663c98161a5cf5bf982703c7161"
+        },
+        "source_library_excerpt": {
+          "exists": true,
+          "count": 8,
+          "sha256": "012c8f56cc148bbcdc62536926766d2c694e3dbff907048b3ebfcb948f0b80ab"
+        },
+        "source_library_passage_link": {
+          "exists": true,
+          "count": 5,
+          "sha256": "758a823091313cfc24cfd8398ae9f96fe02d931a8d8be4ea405437aa831da6c8"
+        },
+        "study_record": {
+          "exists": true,
+          "count": 19,
+          "sha256": "b7b6d45e8fb15b90835f507e150abe66abaa07e05faccb977d5d9ab24fc6d336"
+        },
+        "study_version": {
+          "exists": true,
+          "count": 21,
+          "sha256": "d5eb0f480e678c5119520d2009edc59a2b24350cbdc768baa6b4c90987af88b8"
+        },
+        "ai_analysis": {
+          "exists": true,
+          "count": 1,
+          "sha256": "41448316fb3be16b99b13805cd6f49b551a6c79a11c3a659af217ff39e73730e"
+        },
+        "ai_conversation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "c4fc0069f2a831be65a9cc835028612e308e0088fcb2b85dd00c5bfe87670581"
+        },
+        "cross_reference": {
+          "exists": true,
+          "count": 1,
+          "sha256": "49894732f3b72384ca3cf767e4f6ec1d8f5e28c00a59a9cc103ee3536343297b"
+        },
+        "workspace_note": {
+          "exists": true,
+          "count": 1,
+          "sha256": "53a0182a6c71f7bdc27f5184ebf02eb221262eea7bda0eee1df40cb269927356"
+        },
+        "workspace_favorite": {
+          "exists": true,
+          "count": 1,
+          "sha256": "17f9a6cee4ae2ac5a19504c87594564f7ed06c7933b3d1e3f914de429bb80c4e"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 9,
+          "sha256": "2edd120ee45784ea1f547470597b963409ab13174c4bf7a7cdfc9de3faee37b3"
+        }
+      }
+    },
+    "frozenAi": {
+      "identity": {
+        "db": "bible_ai",
+        "role": "bible_ai_owner",
+        "version": "170011"
+      },
+      "tables": {
+        "embedding_profile": {
+          "exists": true,
+          "count": 1,
+          "sha256": "838402ae333c74125cfb72cfbcab3d61a5c413e780f951f21777c0b00b83b6c8"
+        },
+        "source_chunk": {
+          "exists": true,
+          "count": 11,
+          "sha256": "e1b79af3c4621d87a0a438a66d25bcb9ee18dc3e91c15cdcf5e99cb045039c44"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 1,
+          "sha256": "ca15498f1eb2abb7550164e775ece5cf47673d64e008c3e682b52f0f59691da9"
+        }
+      }
+    },
+    "restoredMain": {
+      "identity": {
+        "db": "biblia_release_main_s08",
+        "role": "biblia_restore_s08",
+        "version": "170011",
+        "timezone": "Africa/Johannesburg"
+      },
+      "tables": {
+        "canon_translation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "475d622cdce68d3b0cfb1ba76d1e4e636fb818a7450888ad1b8716a7d88f1477"
+        },
+        "canon_book": {
+          "exists": true,
+          "count": 66,
+          "sha256": "ade1a0883a7025fb9cac7b5093be242c5e46271e0fe80fb77391401eca43c806"
+        },
+        "canon_chapter": {
+          "exists": true,
+          "count": 1189,
+          "sha256": "9425de50e97a793a4aac4ece3ab591e5ca48cf1902c24beae242fc8ea1ed9a3e"
+        },
+        "canon_verse": {
+          "exists": true,
+          "count": 31102,
+          "sha256": "12921ca33c5272b6a961ba809e86e634a039972a40741745e2833e5d92ef63a9"
+        },
+        "source_library_source": {
+          "exists": true,
+          "count": 2,
+          "sha256": "991478fe5841353df216abd0232e345a0da79663c98161a5cf5bf982703c7161"
+        },
+        "source_library_excerpt": {
+          "exists": true,
+          "count": 8,
+          "sha256": "012c8f56cc148bbcdc62536926766d2c694e3dbff907048b3ebfcb948f0b80ab"
+        },
+        "source_library_passage_link": {
+          "exists": true,
+          "count": 5,
+          "sha256": "758a823091313cfc24cfd8398ae9f96fe02d931a8d8be4ea405437aa831da6c8"
+        },
+        "study_record": {
+          "exists": true,
+          "count": 19,
+          "sha256": "b7b6d45e8fb15b90835f507e150abe66abaa07e05faccb977d5d9ab24fc6d336"
+        },
+        "study_version": {
+          "exists": true,
+          "count": 21,
+          "sha256": "d5eb0f480e678c5119520d2009edc59a2b24350cbdc768baa6b4c90987af88b8"
+        },
+        "ai_analysis": {
+          "exists": true,
+          "count": 1,
+          "sha256": "41448316fb3be16b99b13805cd6f49b551a6c79a11c3a659af217ff39e73730e"
+        },
+        "ai_conversation": {
+          "exists": true,
+          "count": 1,
+          "sha256": "c4fc0069f2a831be65a9cc835028612e308e0088fcb2b85dd00c5bfe87670581"
+        },
+        "cross_reference": {
+          "exists": true,
+          "count": 1,
+          "sha256": "49894732f3b72384ca3cf767e4f6ec1d8f5e28c00a59a9cc103ee3536343297b"
+        },
+        "workspace_note": {
+          "exists": true,
+          "count": 1,
+          "sha256": "53a0182a6c71f7bdc27f5184ebf02eb221262eea7bda0eee1df40cb269927356"
+        },
+        "workspace_favorite": {
+          "exists": true,
+          "count": 1,
+          "sha256": "17f9a6cee4ae2ac5a19504c87594564f7ed06c7933b3d1e3f914de429bb80c4e"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 9,
+          "sha256": "2edd120ee45784ea1f547470597b963409ab13174c4bf7a7cdfc9de3faee37b3"
+        }
+      }
+    },
+    "restoredAi": {
+      "identity": {
+        "db": "biblia_release_ai_s08",
+        "role": "biblia_restore_s08",
+        "version": "170011",
+        "timezone": "Etc/UTC"
+      },
+      "tables": {
+        "embedding_profile": {
+          "exists": true,
+          "count": 1,
+          "sha256": "838402ae333c74125cfb72cfbcab3d61a5c413e780f951f21777c0b00b83b6c8"
+        },
+        "source_chunk": {
+          "exists": true,
+          "count": 11,
+          "sha256": "e1b79af3c4621d87a0a438a66d25bcb9ee18dc3e91c15cdcf5e99cb045039c44"
+        },
+        "_prisma_migrations": {
+          "exists": true,
+          "count": 1,
+          "sha256": "ca15498f1eb2abb7550164e775ece5cf47673d64e008c3e682b52f0f59691da9"
+        }
+      }
+    },
+    "constraints": {
+      "check": "23514",
+      "unique": "23505"
+    },
+    "preservation": "PASS",
+    "nativeCleanup": "PASS",
+    "ownedRestoreContainerRemoved": true,
+    "restoredHttpChecks": [
+      {
+        "check": "restored-index-real-adapter-and-closed-runtime",
+        "result": "PASS"
+      },
+      {
+        "check": "restored-health-and-authentic-canonical-selection",
+        "result": "PASS"
+      },
+      {
+        "check": "restored-private-workspace-versions-history-and-quotes-without-inference",
+        "result": "PASS"
+      }
+    ],
+    "codeHashes": {
+      "s08-release-audit.cjs": "89f87658a22bbbc2bbc788cadcf546d72bba40a9d038b956ce7683e60a95ea14",
+      "s08-release-phase.cjs": "9fa219d3115e10daebc4f6189ec7e13f3d73e06bef19f3af6106013799600396",
+      "s07-native-snapshot.cjs": "5fd261f46fcba2a0cd99ee15c99d287a85747a6238668365be8fcde4345a4e2d",
+      "s08-memory-sampler.ps1": "fcae55d9b6562fb8f7f895ec51f1d29bc1696147c2da44a7fc5eef4b961746ce",
+      "audit-s08-ci.cjs": "6d853a8198c4e50f949d29190bc4e9058d8ffc1cbd24662bfbe597a2d714aa41",
+      "s08-timezone-inspect.cjs": "a7df1c0c7180b09e5ded0ed65715ab2383eccee092917634b9200043d6c4add3"
+    }
+  },
+  "limits": [
+    "Dumps main+AI são coordenados por operador sem escrita; não são transação distribuída.",
+    "TimeZone é parte obrigatória da recuperação: Africa/Johannesburg main, Etc/UTC AI; não mudar fuso de dados existentes sem migração própria.",
+    "Restauro HTTP é prova isolada com runtime desconfigurado; índice verificado separadamente com adapter real.",
+    "Amostragem de memória não é pico absoluto; heap512MiB é teto, não medição.",
+    "429sobreviventes revistos, sem declaração geral de equivalência; históricos FAIL/BLOCKED permanecem.",
+    "IA limitada a quatro parágrafos da mesma obra, uma frase inglesa e uso pessoal local."
+  ]
+}

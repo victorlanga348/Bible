@@ -10,7 +10,9 @@
 | [ADR-0006](ADR-0006-ia-local-e-indice-reconstruivel.md) | Decisão estrutural delegada2026-10-26; runtime local/índice próprio, perfil final condicionado à viabilidade/avaliação S05-T004 |
 | [Template](template.md) | Modelo para novas decisões |
 
-Próximo ID: ADR-0007. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
+Próximo ID: ADR-0009. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
 Aprovação exige decisor, data e origem verificável. Specs definem comportamento; ADR não aprova endpoint/schema ou instalação. Pendências na [stack](../stack.md).
 
 - [ADR-0007 — Ciclo de vida e workspace](ADR-0007-study-lifecycle-and-workspace.md): aceite pelo agente delegado2026-10-29, antes de S07; guard curto por estudo e eliminação modular repetível.
+
+- [ADR-0008 — Capacidade opaca de transação curta](ADR-0008-short-main-database-write-scope.md): aceite antes de S07-T006; implementação/gates finais comprovados, sem expor Prisma entre módulos.

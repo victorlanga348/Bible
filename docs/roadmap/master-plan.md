@@ -1,6 +1,6 @@
 # Plano mestre — Backend S00–S08
 
-Estado2026-10-29: S00–S07 DONE técnico/[fecho S07](../sprints/S07/T007_COMPLETION_REPORT.md); S08 READY/autorizada para plano próprio, sem release pública presumida. Notas anteriores históricas.
+Estado2026-10-29: S00–S07 DONE; S08 DONE técnico/[fecho S08](../sprints/S08/T007_COMPLETION_REPORT.md), sem release pública presumida. Notas anteriores históricas.
 
 Atualização2026-10-26: S04 encerrada sob autorização integral, T004–T007 DONE; provas reais e CI40338249693/fontes atuais conferidas,907 testes e mutação global90,69%/própria87,71%. S05–S08 permanecem pendentes e autorizadas, sem IA já instalada por preparação. [Revisão S04](../sprints/S04/REVIEW.md). Notas anteriores de aprovação/execução abaixo são históricas.
 
@@ -13,10 +13,10 @@ Consolidação documental aprovada em 2026-10-20, sem aprovação antecipada de 
 | [S02](../sprints/S02/README.md) | Cânone, corpus e integração bíblica | DONE | Complemento T006/T007 concluído/publicado cea1289 e CI integral PASS; fecho reduzido anterior preservado |
 | [S03](../sprints/S03/README.md) | Biblioteca de Fontes | DONE | T004–T007 DONE técnico; percurso integrado/gates/CI local verificados, encerramento/commit aprovados pelo «pode usar» após revisão final |
 | [S04](../sprints/S04/README.md) | Motor de Estudos | DONE | T004–T007/gates/revisão/auditoria conferidos;907 testes, CI corrigida e fecho delegado |
-| [S05](../sprints/S05/README.md) | IA e RAG | BACKLOG | S04 encerrada e nova aprovação |
-| [S06](../sprints/S06/README.md) | Conversas Contextuais | BACKLOG | S05 encerrada e nova aprovação |
+| [S05](../sprints/S05/README.md) | IA e RAG | DONE | S04 encerrada e gates comprovados |
+| [S06](../sprints/S06/README.md) | Conversas Contextuais | DONE | S05 encerrada e gates comprovados |
 | [S07](../sprints/S07/README.md) | Referências Cruzadas e Workspace | DONE | S06 encerrada e nova aprovação |
-| [S08](../sprints/S08/README.md) | Hardening e Release | READY | S07 encerrada e nova aprovação |
+| [S08](../sprints/S08/README.md) | Hardening e Release | DONE | Produto/gates/recuperação/auditoria documental PASS |
 
 S04 constrói estudo determinístico a partir de evidências; S05 integra LLM/RAG real. S07 é backend de referências/workspace; frontend adiado. S08 reúne integração ponta a ponta e hardening, sem publicar automaticamente. S09 não pertence ao ciclo atual.
 Versões, contratos, acesso/retenção, cânone/licenças, fontes, fornecedor/modelos e ambiente têm decisões/aprovações próprias. Sem datas estimadas ou resultados inventados.

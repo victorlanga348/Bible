@@ -1,22 +1,37 @@
-# Runbooks
+# Runbooks da release pessoal local
 
-Estado: comandos locais de preparação, migração de teste, arranque, validação e paragem documentados no [backend](../../backend/README.md) e executados conforme [relatório S01](../sprints/S01/TEST_REPORT.md). Os cenários abaixo continuam conceptuais para operação futura; não há procedimento de recuperação de produção validado.
+Procedimentos apoiados pela [prova S08](../sprints/S08/TEST_REPORT.md) e [evidência com digests/alvos](../sprints/S08/evidence/release-verification.json). [Inventário](environments.md), [arranque/token](../../backend/README.md). Operador local; nunca enviar segredos ao chat/Git/log. Antes de mutações confirmar URL guardada, current_database/current_user/porta/versão e propriedade dos recursos.
 
-## Antes de intervir
-Confirmar ambiente e âmbito, pesquisar MegaBrain, recolher evidência sanitizada e distinguir hipótese de causa.
-Não executar limpeza, migração reversa, restauro ou repetição paga sem plano e autorização apropriados.
+## Arranque, acesso e indisponibilidade
 
-## Cenários a concretizar
-| Cenário | Diagnóstico e resposta a preparar |
-|---|---|
-| PostgreSQL indisponível | Verificar ligação, credenciais e ambiente; não afirmar gravação; validar recuperação |
-| Migração falhada | Conservar diagnóstico; avaliar estado real e plano de recuperação antes de nova alteração |
-| Fornecedor de IA indisponível | Distinguir falha técnica de ausência de evidência; controlar repetição e custo |
-| Referência fabricada/não sustentada | Conter entrega afetada, preservar evidência e criar regressão/avaliação |
-| Fonte retirada/licença alterada | Suspender uso afetado e rever armazenamento, exibição e proveniência |
-| Acesso indevido | Conter exposição, preservar evidências e rever política/implementação |
+Em backend, `npm run build` e `npm start`; HTTP127.0.0.1:3000. Verificar GET /health/live e /health/ready. Sem banco pronto, não afirmar gravação. Conferir serviço nativo principal e identidade; não substituir URL por banco de testes ou de outro projeto. Readiness não prova existência de migrações/corpus. Migrações de desenvolvimento têm scripts guardados próprios; não repetir DDL sem inspecionar a tabela de migrações/backup.
 
-## Modelo de runbook futuro
-Responsável, âmbito, sinais, pré-condições, verificações, ações aprovadas, critérios de interrupção, recuperação, confirmação, comunicação e referências.
-Acrescentar comandos somente após execução e validação no ambiente correspondente.
-Para incidentes relevantes, usar [Error Report](../megabrain/templates/error-report.md); não criar incidentes fictícios.
+Token só via CLI `npm run auth:token -- local-owner`, saída deliberada privada do operador.401: verificar token, issuer/audience/expiração1h e chave local;404 de owner alheio não autoriza procurar dados de outro utilizador. Rotação: substituir jwtSecret somente no ficheiro privado por chave >=32bytes, reiniciar a aplicação e emitir novo token. Tokens antigos deixam de verificar; nunca imprimir chave. Não há endpoint de login por username/OAuth.
+
+503AI_UNAVAILABLE é falha técnica, não insuficiência de evidência. Conferir admissão/perfil/pins, índice e processos/lease próprios; não iniciar várias inferências ou ampliar prazos para esconder falhas. Runtime local precisa de memória; parar somente processos próprios após verificar PID/parent/comando/lease. Não parar OneDrive/Docker/Domus nem apagar lock de processo vivo/desconhecido. Guardar diagnóstico sanitizado e corpo HTTP antes de asserts/cleanup. Não repetir caso semântico para obter resposta favorável.
+
+## Backup consistente e privado
+
+1. Confirmar identidades do inventário. Gerar diretório exclusivo LOCALAPPDATA/BibleAI/backups/release-s08-<nonce>, fora Git/OneDrive. Inventariar revisão/pacotes/perfil/admissões/modelos/migrações e TimeZone de cada conexão antes de a normalizar para auditoria. Principal Africa/Johannesburg; índice Etc/UTC. Não incluir passwords no manifesto.
+2. Suspender novas escritas da própria aplicação durante os dois dumps e snapshots. Não parar o servidor PostgreSQL nem serviços alheios. Os dumps coordenados não constituem transação distribuída.
+3. Principal: cliente PostgreSQL16 instalado, pg_dump.exe com --host/--port/--username/--dbname vindos da URL guardada, --format=custom --no-owner --no-privileges. Password somente em PGPASSWORD do subprocesso, nunca argumento ou stdout. Na prova, alvo bible_db/postgres/5432. Usar arquivo binário aberto diretamente, sem pipeline textual PowerShell.
+4. Índice: docker exec no ID confirmado de biblia-ai-index-development/imagem pinada, pg_dump --host=127.0.0.1 --username=bible_ai_owner --dbname=bible_ai --format=custom --no-owner --no-privileges; PGPASSWORD só no ambiente do subprocesso. Gravar stdout binário diretamente.
+5. Exigir exit0 de ambos, SHA256/tamanho e pg_restore --list de cada dump. O leitor --list pode encerrar o pipe cedo com EOF/EPIPE: apenas é aceitável se o leitor exit0 e a listagem estiver completa; outros erros falham. Guardar stdout/stderr sanitizados e nunca sobrescrever dump anterior.
+6. Comparar todas as tabelas por PK/count/hash antes/depois, incluindo migrações, JSON, direitos/proveniência/textos/vetores. Auditor em conexão própria SET TIME ZONE UTC, leitura paginada512linhas evita agregação integral sob deadline2s. Manter prazo do produto. Só declarar backup recuperável depois do restauro abaixo.
+
+## Restauro descartável e verificação
+
+1. Recusar como destino bible_db5432, bible_ai55436, biblia_test55433 ou container alheio. Na prova: container novo biblia-release-restore-s08-<nonce>, labels org.biblia.task=S08-T005/org.biblia.nonce=<nonce>, imagem instalada ac08538c…/PG17.11/vector0.8.7, porta livre127.0.0.1:55437, tmpfs exclusivo256MB, limite384MB e nenhum volume do utilizador. Password aleatória privada transmitida pelo ambiente, nunca comando/log. Conferir ID64hex/nome/imagem/labels/bind loopback/mounts antes de cada mutação.
+2. Criar somente biblia_release_main_s08 e biblia_release_ai_s08 com role técnico biblia_restore_s08. Antes de restaurar, executar ALTER DATABASE na cópia para o TimeZone original respetivo; pg_dump de base não transporta a configuração do servidor. A omissão produziu notas duas horas deslocadas e conversa503 por incoerência SQL/JSON. Não corrigir mudando datas ou expectativas, nem alterar fuso de banco original.
+3. pg_restore --exit-on-error --no-owner --no-privileges --username=biblia_restore_s08 --dbname=<base própria>, pela entrada binária. Exigir exit0, migrações/tabelas/counts/hashes integrais idênticos. Comparar em UTC apenas na sessão do auditor. Direitos das fontes são dados preservados; roles/ACL de outro ambiente não são implicitamente restaurados pelos flags usados.
+4. Confirmar constraints reais (prova S08 recusou violações23514/23505 sem gravar linhas), configuração do índice/11chunks/vetores, readiness pelo PrismaVectorIndex real e todos os hashes. Inicializar aplicação de verificação com Database apontada só à cópia guardada, runtime desconfigurado; o alvo AI de produção continua estrito. Índice da cópia é conferido por conexão/adapter real separado. Não relaxar guards de produção para um ensaio.
+5. Com token técnico próprio, verificar por HTTP cânone, estudos/versões, nota revista, favoritos, relação/duas citações, histórico e conversa/análise persistida idênticos aos corpos congelados. Guardar cada corpo antes do assert. Sem nova geração/embedding. Conferir novamente hashes após HTTP para provar leitura sem mutação.
+6. Guardar artefactos, listar e eliminar somente recursos técnicos criados na origem por APIs públicas do respetivo owner; comparar integralmente15tabelas main+3AI com baseline anterior. Conferir conexões/modelos/leases próprios encerrados. Antes de parar/remover cópia verificar novamente o ID e labels; não usar prune/down-v/remoção por wildcard. Confirmar ausência do ID. Conservar backups/brutos/código do auditor e revisão semântica separada. Um wrapper FAIL/BLOCKED anterior permanece tal, mesmo que prova posterior independente passe.
+
+A prova completa está em LOCALAPPDATA/BibleAI/quality-artifacts/release-s08-21dadbbe-1d11-499a-9a52-1ca0007c54f2-restore-ab679f7b-6724-4e50-bdf3-80f29d874494; código administrativo e SHA no subdiretório audit-code. Esses diagnósticos são locais/ignorados, não comandos npm distribuídos. As instruções acima descrevem ferramentas reais executadas; uma máquina nova precisa provisionar/admitir recursos, não receber fixtures de teste como corpus operacional.
+
+## Retenção, fontes e incidentes
+
+Estudos/notas/favoritos/conversas persistem até eliminação explícita. DELETE /workspace/studies/:studyId marca deleting, remove filhos através dos módulos proprietários e termina o pai; repetir a mesma operação permite retomar falha intermediária conforme contrato. Não limpar tabelas diretamente. Fontes retiradas/digests divergentes impedem entrega antiga como se fosse evidência válida; revalidar direitos/proveniência sem trocar pins silenciosamente.
+
+Não há retenção central automática. Conservar backups até substituto verificado e diagnósticos privados até revisão. Em suspeita de acesso indevido: parar a aplicação própria, rodar chave local, preservar evidências sanitizadas e rever owner/rotas antes de reabrir. Em discrepância de datas/hash: suspender promoção, confirmar TimeZone/admissão/migrações e repetir apenas o diagnóstico necessário. Publicação remota, outro fuso, HA ou novo fornecedor exigem plano próprio.

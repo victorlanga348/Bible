@@ -1,97 +1,81 @@
 # Backend Bíblia App
 
-S07-T006 implementada e verificada: dez endpoints /workspace para estudos/histórico, notas CAS, favoritos privados e eliminação retomável, conforme [contrato](../docs/sprints/S07/SPEC.md). [Revisão](../docs/sprints/S07/T006_COMPLETION_REPORT.md): CI40900841329/2133testes/102suites83tooling PASS,100%linhas97,56%branches, mutação89,2797%global88,8186%IA/zeroRuntimeError+NoCoverage. Nove migrações no teste e desenvolvimento; prova nativa/semântica e preservação PASS. S07 encerrada tecnicamente/[fecho](../docs/sprints/S07/T007_COMPLETION_REPORT.md); release/hardening S08 READY.
+Release pessoal local S00–S08 concluída tecnicamente2026-10-29. [Fecho](../docs/sprints/S08/T007_COMPLETION_REPORT.md), [provas](../docs/sprints/S08/TEST_REPORT.md), [inventário](../docs/operations/environments.md) e [recuperação](../docs/operations/runbooks.md). Histórico anterior conservado no Git f71a735; esta entrada substitui instruções de sprints antigas.
 
-NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; IA/RAG S05 concluída com14/14avaliações reais e revisão semântica PASS.
+NestJS12.2.0/TypeScript6.0.3 strict/Zod4.6.7/Prisma7.10.1/PostgreSQL. Seis módulos: biblical-canon, source-library, study, cross-references, ai-assistant e study-workspace. REST/OpenAPI, consultas parametrizadas e transações curtas; inferência fora do lock. CI40912125811:2249testes107suites89tooling,100%linhas97,94%branches, mutação90,96%global89,87%IA/zeroRuntimeError+NoCoverage.
 
-POST /studies/:studyId/ai-analyses, GET/DELETE /ai-analyses/:analysisId implementados com Bearer/owner, fontes atuais autorizadas, citações literais e persistência de referências/proveniência. Conversas privadas S06 implementadas e verificadas; release/exposição pública permanecem S08. Sem runtime/índice configurados, criação503; leitura/eliminação próprias continuam disponíveis.
+## Instalação e configuração
 
-Provas e limitações atuais: [fecho T006](../docs/sprints/S05/T006_COMPLETION_REPORT.md), [relatório](../docs/sprints/S05/TEST_REPORT.md), [contexto breve](../docs/megabrain/agent-context/project-state.md), [operação AI](../docs/integrations/local-ai.md). [Fecho S05](../docs/sprints/S05/T007_COMPLETION_REPORT.md): CI40660972664 passou1706testes/mutação89,94%global88,78%AI/zeroRuntimeError+NoCoverage;14casos T007 e revisão semântica PASS, corpus limitado e direitos locais preservados. Histórico de falhas preservado em [arquivo](../docs/megabrain/agent-context/backend-README-history-2026-10-27.md) e TEST_REPORT, sem aceite retroativo.
-
-Comandos operacionais existentes: npm run db:import:ai:dev, npm run ai:index:dev e npm run ai:verify:rag. Só desenvolvimento guardado, originais/admissões operacionais, nenhum override HTTP/modelo/path. Importação não executa modelos. Configuração e pré-requisitos no documento de operação; não executar inferência junto de suites pesadas neste PC8GB.
-
-## Preparação local
-
-CI de mutação usa seis partições com PostgreSQL isolado e agregação estrita de todo o escopo. Operação/limites/provas em [mutation testing](../docs/quality/mutation-testing.md); partição isolada não aprova release.
-
-Usar Node 24.16.0, npm 11.13.0 e Docker Desktop com motor Linux operacional. Executar os comandos nesta pasta.
+Usar Node24.16.0/npm11.13.0. Executar nesta pasta:
 
 ```powershell
 npm ci --ignore-scripts --strict-peer-deps
 npm run prisma:generate
+npm run build
 ```
 
-Copiar `.env.example` para `.env` e `.env.test.example` para `.env.test`, preenchendo apenas os ficheiros locais ignorados pelo Git. Gerar duas palavras-passe distintas com um gerador seguro. Não as enviar pelo chat nem versionar. Os nomes e alvos são:
+Em instalação nova, copiar `.env.example` para `.env` e `.env.test.example` para `.env.test`, preenchendo credenciais somente nos ficheiros locais ignorados. No ambiente já provisionado, preservar esses ficheiros e os bancos existentes. Não há migração nem importação automática no arranque.
 
-| Ficheiro | Variável | Configuração |
-|---|---|---|
-| .env | NODE_ENV / PORT | development / 3000 |
-| .env | BIBLE_DEV_DB_PASSWORD | Palavra-passe local de desenvolvimento |
-| .env | BIBLE_TEST_DB_PASSWORD | Palavra-passe local de testes |
-| .env | DATABASE_URL | PostgreSQL do PC: localhost:5432/bible_db, schema=app; alternativa Compose: biblia_dev em 127.0.0.1:55432 |
-| .env.test | NODE_ENV | test |
-| .env.test | TEST_DATABASE_URL | PostgreSQL, utilizador/base biblia_test, 127.0.0.1:55433, schema=app |
+| Configuração consumida | Uso |
+|---|---|
+| NODE_ENV | development ou test |
+| PORT | API local, padrão3000 |
+| DATABASE_URL | Principal; neste PC localhost:5432/bible_db?schema=app |
+| TEST_DATABASE_URL | Somente teste;127.0.0.1:55433/biblia_test?schema=app/rolebiblia_test |
+| jwtSecret | Chave local >=32bytes para JWT; sem chave as rotas privadas recusam autenticação |
+| BIBLE_AI_HOME | Diretório absoluto privado do runtime/modelos admitidos, fora Git/OneDrive |
+| BIBLE_AI_DATABASE_URL | Índice real em127.0.0.1:55436/bible_ai?schema=ai/rolebible_ai_owner |
 
-As palavras-passe nas URLs devem ser codificadas para URL. Há exemplos sem segredos nos dois ficheiros `.example`. Se o volume de desenvolvimento já existe, mudar a variável não muda a palavra-passe dentro do PostgreSQL.
+Passwords de URL exigem codificação. DATABASE_URL é a fonte da ligação, não interpolação dos campos auxiliares POSTGRES_*. GOOGLE_CLIENT_ID não habilita OAuth. BIBLE_DEV_DB_PASSWORD/BIBLE_TEST_DB_PASSWORD pertencem ao Compose, não mudam passwords de volumes já criados. [Configuração e fusos dos bancos](../docs/operations/environments.md).
 
-O utilizador pode apontar `DATABASE_URL` a outro PostgreSQL local; nesse caso, deve provisionar o schema `app` e as migrações nesse alvo num trabalho próprio. Na revisão S03-T007, o `.env` alterado pelo utilizador foi validado; apenas `BIBLE_TEST_DB_PASSWORD` foi sincronizada com a credencial já validada de `.env.test`, evitando divergência quando o container de teste for recriado. Restantes valores preservados; o alvo de desenvolvimento não foi migrado nem recebeu fixtures. As variáveis adicionais de Google/JWT/PostgreSQL não são consumidas pela aplicação atual. Testes mantêm a configuração isolada de `.env.test`, com guard e identidade real antes de escrever.
-
-Atualização EXT-002 em2026-10-22: bible_db criada no PostgreSQL16.14 instalado no PC/porta5432, DATABASE_URL alinhada com schema=app, três migrações existentes aplicadas e conexão/HTTP de leitura verificados. Nenhuma fixture de teste alimenta esse alvo. Os campos POSTGRES_DB/USER/PORT/PASSWORD são dados auxiliares coerentes com a URL; a aplicação usa DATABASE_URL como fonte da conexão, sem interpolação automática. O Compose continua a usar BIBLE_DEV_DB_PASSWORD/BIBLE_TEST_DB_PASSWORD; o serviço Docker de desenvolvimento é uma alternativa e não é o alvo do `.env` atual.
+## Arranque e uso
 
 ```powershell
-docker compose up -d --wait
-npm run db:migrate:test
-npm run build
 npm start
 ```
 
-O servidor escuta em `127.0.0.1:3000`. `GET /health/live` verifica o processo; `GET /health/ready` executa uma consulta Prisma real e devolve 503 se o banco estiver indisponível. Swagger: `/docs/`; contrato: `/openapi.json`. Ctrl+C encerra HTTP e ligações. Configuração inválida impede o arranque e produz um diagnóstico genérico sem a URL.
+Servidor em `http://127.0.0.1:3000`; `GET /health/live` verifica processo e `GET /health/ready` verifica conexão principal. Readiness não certifica corpus, migrações ou modelos. Swagger em `/docs/`, contrato em `/openapi.json`. Ctrl+C encerra HTTP e conexões próprias. Configuração inválida produz diagnóstico sanitizado.
 
-A migração de teste recusa alvos inseguros antes de ligar e confirma a identidade no servidor. Não há comando de migração de produção nesta sprint. A migração inicial só estabelece o namespace `app`; a tabela `persistence_probe` é uma fixture técnica criada exclusivamente na base de testes. Não contém textos bíblicos fictícios.
-
-S03 acrescenta `app.source_library_source` e `app.source_library_excerpt`, com constraints próprias e pesquisa lexical inglesa calculada, sem GIN persistente. Na execução S03 só o banco de teste foi migrado; o provisionamento local posterior EXT-002 aplicou as três migrações em bible_db. `npm start` usa desenvolvimento; a base local tem tabelas e catálogo ainda vazio, sem dados de teste. Readiness verifica conectividade e não substitui a verificação das migrações; não há migração automática no arranque.
-
-## Biblioteca de fontes no alvo de teste
-
-Contratos: `GET /sources`, `GET /sources/:sourceId/excerpts?q=God&limit=20&offset=0` e `GET /source-excerpts/:excerptId`. As respostas conservam direitos, créditos, localizações e limitações. A pesquisa encontra palavras no capítulo admitido; não valida afirmações históricas ou associações bíblicas.
-
-Para verificar a admissão, obter o HTML original indicado no [manifesto da fixture](test/fixtures/source-library/josephus-antiquities-pg2848-en/manifest.json) e conservá-lo no caminho ignorado `data/source-library/josephus-antiquities-pg2848-en/source.html`. O SHA-256 exigido é `098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99`. Um original ausente ou alterado faz o teste/importador falhar; não gerar substituto nem atualizar o hash sem nova admissão. Manifesto, quatro excertos e aviso originais são fixtures versionadas, exclusivas de teste.
+Em outro terminal local, o operador pode emitir token:
 
 ```powershell
-npm run db:import:sources:test -- data/source-library/josephus-antiquities-pg2848-en/source.html test/fixtures/source-library/josephus-antiquities-pg2848-en/manifest.json test/fixtures/source-library/josephus-antiquities-pg2848-en/excerpts.json test/fixtures/source-library/josephus-antiquities-pg2848-en/NOTICE.source.txt
+npm run auth:token -- local-owner
 ```
 
-O comando exige os quatro caminhos explícitos, valida hashes contra a admissão fixa e confirma `biblia_test`/utilizador/schema antes de escrever. Importação atómica: mesmo id/hash retorna `unchanged`; hash diferente é conflito sem substituição. Não existe escrita/importação HTTP nem importação de fixture para produção. As suites limpam apenas tabelas do módulo na base de teste e conservam ficheiros reais. Integração, cobertura e mutação exigem também o HTML original provisionado. O CI agora obtém o HTML por HTTPS da URL admitida e verifica o SHA-256 fixo antes das suites; indisponibilidade ou alteração fazem o job falhar. A preparação foi exercitada localmente em T007, incluindo falhas de download/integridade; execução remota continua NOT_RUN.
+Usar o resultado apenas em `Authorization: Bearer <token>`. É saída deliberada do operador: não enviar ao chat/Git/log. HS256/issuerbiblia-local/audiencebiblia-backend/validade1h; owner é o subject. Rotação de jwtSecret e reinício invalidam tokens anteriores. Não existe emissão pública por username.
+
+API inclui leitura/pesquisa do cânone e fontes, criação/versões de estudos, análises e conversas privadas, relações com evidências, notas CAS, favoritos por versão e histórico paginado. Contratos específicos no OpenAPI e nas [specs de sprints](../docs/sprints/README.md). Owner alheio404; token inválido401; conflitos CAS409; falha técnica503. Não confundir insuficiência de evidência com indisponibilidade técnica.
+
+## Dados e IA
+
+Principal: Bíblia Livre/porbr2018 integral66/1189/31102, fontes operacionais e nove migrações. Preparação canónica `python scripts/prepare-canon.py` usa admissão em `admissions/biblical-canon/porbr2018/manifest.json`, ZIP/XML/aviso/catálogo autenticados em `data/`; não depende de fixtures. Ausência/adulteração impede preparação. Test/fixtures permanece exclusivamente para testes.
+
+Importações operacionais guardadas: `npm run db:import:sources:dev`, `npm run db:import:ai:dev`, indexação `npm run ai:index:dev`; consultar pré-requisitos/argumentos em [IA local](../docs/integrations/local-ai.md) e admissões. Não reprovisionar dados existentes para arrancar. Migrações próprias: `npm run db:migrate:dev` e `npm run db:migrate:ai:dev`, somente após backup/identidade/plano.
+
+Perfil local-extractive-v1/source-sentence-selection-v6, Qwen3-1.7B Q4_K_M/embedding0.6B Q8_0/1024dimensões, runtime pinado9ff0d7e90. Uma operação por lease, dois threads CPU/contexto2048/output128. Quatro parágrafos da mesma obra Josefo/Whiston; uma frase inglesa com atribuição e limitações, sem consenso histórico presumido. Sem runtime/índice, nova geração503; leitura e eliminação de dados já persistidos não executam modelos. Não executar modelos junto de suites locais pesadas.
+
+Avaliações reais existentes: `npm run ai:evaluate:local`, `npm run ai:evaluate:conversations`; provas `npm run ai:verify:rag` e `npm run ai:verify:conversations`. Guardam brutos antes de cleanup e exigem revisão semântica separada; não repetir casos já aceites sem motivo. [Resultados S05](../docs/sprints/S05/T007_COMPLETION_REPORT.md), [S06](../docs/sprints/S06/T007_COMPLETION_REPORT.md) e [S08](../docs/sprints/S08/TEST_REPORT.md).
 
 ## Verificação
 
-Para S05 o gate específico `npm run test:mutation:ai-gate` é obrigatório depois da execução integral de Stryker: rejeita qualquer NoCoverage e score próprio ai-assistant<=85%. O cálculo genérico e os estados originais continuam intactos. A CI executa ambos automaticamente; o gate específico aceita caminho de JSON confiável opcional para diagnóstico, sem modificar o relatório.
+Teste usa PostgreSQL independente; confirmar biblia_test/rolebiblia_test/porta55433 antes de operações. Apenas o serviço de teste do Compose é necessário:
 
 ```powershell
+docker compose up -d --wait postgres-test
+npm run db:migrate:test
 npm run typecheck
 npm run lint
 npm run build
 npm run test:tooling
 npm run test:coverage
 npm run test:mutation
+npm run test:mutation:ai-gate
 ```
 
-Também existem `test:unit`, `test:integration`, `test:e2e` e `test:architecture`. Os testes de integração/E2E e mutação precisam do PostgreSQL de testes e da migração aplicada. Jest usa `--experimental-vm-modules` para carregar Nest 12; o aviso experimental do Node é esperado e não é um teste aprovado por si só. Stryker executa uma instância de cada vez porque a fixture usa uma única base isolada; não executar duas suites destrutivas concorrentes sobre essa base.
+Também existem test:unit/integration/e2e/architecture. Integrações e mutação exigem originais autenticados/migrações, não dados históricos inventados. Não correr suites destrutivas simultâneas na mesma base. Nomes reais dos serviços no [Compose](compose.yaml). Nunca usar limpeza de volumes para limpar testes nem parar serviços de outros projetos.
 
-No OneDrive, entradas de diretório podem ser identificadas como links apesar de `stat` reconhecer ficheiros normais. O Jest permite seguir essas entradas; o script `test` desativa Watchman por argumento para propagar a opção aos três projetos, e a configuração de mutação também o desativa. Usar os scripts npm acima preserva essa configuração e evita uma execução com zero testes descobertos.
+Limites: linhas>=90%, branches>=85%, mutação bruta>85%global/IA, zeroRuntimeError/NoCoverage. CI usa seis partições e agregação de inventário/assinaturas. Incremental só reutiliza evidência compatível e não dispensa gate completo da revisão. Reports/dist/generated/node_modules/dados e segredos ficam fora Git. [Política de mutação](../docs/quality/mutation-testing.md).
 
-`npm run test:mutation:incremental` usa o último relatório para reavaliar mutantes afetados por mudanças de testes/código; resultados reutilizados ficam identificados pelo Stryker. O comando padrão `test:mutation`, usado no CI, executa a avaliação integral. Não editar os relatórios para alterar o score.
+## Operação
 
-O cache incremental usa `reports/mutation/incremental.json`, separado do relatório JSON final `reports/mutation/mutation.json`. Usar o mesmo caminho faz dois writers do Stryker escreverem no mesmo ficheiro e pode produzir JSON inválido, como observado na S02. Sem cache válido a primeira avaliação incremental pode ser integral; um relatório anterior válido pode inicializar o cache, conservando a origem e deixando a seleção/reutilização a cargo do Stryker. JSON inválido não aprova o gate, mesmo que o log mostre um score suficiente.
-
-O script incremental encaminha argumentos ao Stryker antes de executar o gate. Para reavaliar trechos estáticos após corrigir o harness/testes, suporta `npm run test:mutation:incremental -- --force --mutate ficheiro:linha-linha`. Stryker preserva no cache os mutantes fora da seleção; não editar estados manualmente. Depois de uma reavaliação dirigida, executar novamente o comando sem argumentos e conferir relatório/escopo completo. Um resultado estático antigo pode ser reutilizado mesmo após novos testes, por não ter cobertura associada a cada teste; não tratar isso como nova prova do cenário corrigido.
-
-Cobertura: `reports/coverage/`; mutação: `reports/mutation/`. Limites: linhas >=90%, branches >=85%, score bruto de mutação >85%; o gate adicional rejeita exatamente 85%, relatórios incompletos e denominador vazio. Código próprio `src/**/*.ts` está no escopo; cliente Prisma gerado fica excluído.
-
-O workflow GitHub Actions prepara um PostgreSQL descartável no runner e executa os mesmos scripts. O serviço efémero de CI usa trust sem uma palavra-passe versionada; essa opção não é usada no Docker Compose local nem serve para deployment. Só uma execução remota comprova o workflow. Não foi feito push nesta sprint.
-
-Para parar os serviços locais, usar `docker compose stop`. A base de testes usa tmpfs e pode perder dados quando o container é recriado; voltar a aplicar a migração. O volume de desenvolvimento é persistente; não executar `down -v` para limpar testes.
-
-Avaliação integrada: `npm run ai:evaluate:local` exige os recursos locais reais já admitidos e não aceita overrides. Executa uma tentativa por caso congelado, guarda relatório em `reports/ai-evaluation-local-*` (ignorado), verifica isolamento e remove somente as análises técnicas novas; quatro estudos técnicos próprios são conservados. Resultado REVIEW requer revisão semântica explícita; não — PASS automático.
-
-S06 concluída tecnicamente: quatro operações de conversa com JWT/owner/CAS e histórico revalidado; [SPEC](../docs/sprints/S06/SPEC.md), [fecho/gates](../docs/sprints/S06/T007_COMPLETION_REPORT.md). Contexto questions-v3 usa até duas perguntas anteriores somente na recuperação; a geração recebe a pergunta atual e fontes autorizadas. V1/v2 continuam legíveis. `npm run ai:verify:conversations` executa C01três turnos; `npm run ai:evaluate:conversations` incorpora o original C01 pinado e executa C02–C04/seis turnos. Ambos exigem os recursos reais locais e recusam overrides; guardam os brutos em reports antes da validação/DELETE e requerem revisão semântica separada. Não repetir chamadas de aceite já executadas sem motivo documentado. Estudos técnicos são conservados; análises/conversas próprias são eliminadas. Migração7 comprovada em teste/desenvolvimento com backup e preservação; nove turnos v3 e revisões PASS, tentativas antigas falhadas/bloqueadas preservadas.
+[Runbooks](../docs/operations/runbooks.md) incluem backup/restauro real, fusos obrigatórios, falhas503 e conservação de evidências. Backups privados fora Git/OneDrive; não restaurar por cima de bible_db/bible_ai nem do banco de testes. A prova S08 usou um container próprio descartável e verificou HTTP/constraints/vetores, com dados anteriores intactos. Release é pessoal local; publicação remota/OAuth/frontend requerem escopo próprio.

@@ -31,3 +31,5 @@ Estados: aberto, resolvido ou recorrente. Uma solução só é confirmada com ev
 Manter um índice de ID, título, estado, módulo e tarefa quando houver registos.
 
 [ERR-0025 — fixture interrompida de workspace](ERR-0025-interrupted-workspace-fixture.md): recuperação guardada/testada, CI integral atual em validação.
+
+[ERR-0026 — TimeZone no restauro](ERR-0026-restore-timezone.md): causa demonstrada, procedimento corrigido apenas na cópia e HTTP/preservação PASS.

@@ -1,5 +1,7 @@
 # Stack e decisões
 
+Estado S08/2026-10-29: matriz completa/recursos/perfil/acesso e recuperação verificados no [inventário operacional](../operations/environments.md), [relatório](../sprints/S08/TEST_REPORT.md). DEC-02/03/04/05/10 concretizadas para uso pessoal local nas SPEC/ADRs S04–S08; tabelas seguintes preservam os momentos históricos, sem exigir novas escolhas do utilizador para esse recorte.
+
 Stack prescrita no pedido mestre e consolidada em S00. Fundação implementada, validada e aceite no encerramento S01 em backend/; escolhas concretas e alternativas na [SPEC S01](../sprints/S01/SPEC.md).
 [ADR-0001](adr/ADR-0001-stack-e-limites-arquiteturais.md)/[ADR-0002](adr/ADR-0002-adocao-condicional-strykerjs.md) preservadas; evolução na [ADR-0003](adr/ADR-0003-backend-modular-e-stack-prescrita.md).
 

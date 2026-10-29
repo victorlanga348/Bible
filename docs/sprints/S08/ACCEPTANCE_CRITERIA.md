@@ -1,23 +1,22 @@
 # S08 — Critérios de aceitação
 
-Aceites por decisão delegada2026-10-29 na [SPEC](SPEC.md), antes de código. Nenhum critério de produto executado ainda. AC01 exige release pessoal local/inventário/restore+HTTP; AC02 regressões/segurança/casos assimétricos e performance mensurável; AC03 fronteiras/dados operacionais sem fixtures e admissão; AC04 suites/gates/runbooks/limitações/provas atuais.
+Critérios da [SPEC](SPEC.md), aceites por decisão delegada antes de implementação. Resultados técnicos2026-10-29; fecho documental delegado após auditoria PASS. [Relatório](TEST_REPORT.md)/[evidência](evidence/release-verification.json).
 
-| Critério | Resultado exigido | Evidência prevista | Estado |
-|---|---|---|---|
-| S08-AC01 | Backend pronto para o ambiente aprovado, sem pendência crítica ou teste obrigatório bloqueado. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S08-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S08-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S08-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| Critério | Estado | Evidência verificável |
+|---|---|---|
+| S08-AC01 — pronto para ambiente aprovado | PASS | Release pessoal local, fontes/configuração/migrações inventariadas, main+AI restaurados/HTTP/constraints/vetores, todos os gates de produto aprovados |
+| S08-AC02 — contratos válidos/inválidos/negados | PASS |2249testes107suites reais, regressões de fronteiras/versão2/Unicode/cursors/owner/JWT/CAS/múltiplas evidências; metas de desempenho congeladas satisfeitas |
+| S08-AC03 — fronteiras/dados/direitos | PASS |89tooling/arquitetura, monólito/seis módulos/ADRs, preparação operacional sem fixtures/snapshot e31102textos idênticos, admissões/licenças/limitações preservadas |
+| S08-AC04 — gates/relatórios/operabilidade | PASS | CI oito SUCCESS/cobertura/mutação/revisão semântica/recuperação, runbooks/configuração e entradas sincronizadas; auditoria documental final T007 PASS |
 
-## Sete gates
-| Gate | Obrigação |
+| Gate | Resultado da revisão executável |
 |---|---|
-| 1 | Sprint, spec/contratos, tarefas/dependências aprovados |
-| 2 | RED/GREEN/REFACTOR demonstrados por comportamento |
-| 3 | TypeScript strict/lint/build/arquitetura; linhas >=90%, branches >=85% |
-| 4 | PostgreSQL/Prisma/migrações/HTTP reais e serviços pertinentes |
-| 5 | Stryker, Mutation Score bruto >85%, relatório e sobreviventes |
-| 6 | IA, fontes, suporte/citações e limitações quando aplicável |
-| 7 | Docs/README, ADRs, MegaBrain, critérios e relatórios sincronizados |
+|1 — escopo/spec/plano/dependências | APROVADO: delegação vigente, SPEC e fichas antes das alterações |
+|2 — TDD | APROVADO no aplicável: regressões/configuração e histórico reais; nenhum RED retroativo. Documentação/revisão não requer comportamento artificial |
+|3 — estática/build/arquitetura/cobertura | APROVADO: zero erros,100%linhas97,94%branches |
+|4 — integrações/migrações | APROVADO: PG/Prisma/Nest/Supertest, restauro/HTTP/preservação reais |
+|5 — mutação | APROVADO:90,9646%global89,8734%IA,429sobreviventes revistos,zeroRuntimeError+NoCoverage |
+|6 — IA | APROVADO: uma nova geração congelada/revisão separada; avaliações S05/S06/S07 incorporadas por identidade |
+|7 — documentação/governança | APROVADO: auditoria T007 PASS2026-10-29T19:05:16.361Z/31Markdown263links/zero alertas; revisão final após transição |
 
-Não aplicabilidade exige motivo/evidência separados de NOT_RUN; não é PASS. Serviço/credencial obrigatório ausente é BLOCKED e impede encerramento. Sem código mutável real não inventar score nem criar regras artificiais.
+Nenhum serviço obrigatório ausente/falhado/bloqueado no ambiente admitido. Não aplicabilidade é separada de PASS: não houve novo TDD/teste/mutação de produto para documentação pura. Não se aprovam serviço público/outro fuso ou qualidade histórica geral. Pergunta final confrontada na REVIEW.
