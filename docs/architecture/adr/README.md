@@ -12,3 +12,5 @@
 
 Próximo ID: ADR-0007. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
 Aprovação exige decisor, data e origem verificável. Specs definem comportamento; ADR não aprova endpoint/schema ou instalação. Pendências na [stack](../stack.md).
+
+- [ADR-0007 — Ciclo de vida e workspace](ADR-0007-study-lifecycle-and-workspace.md): aceite pelo agente delegado2026-10-29, antes de S07; guard curto por estudo e eliminação modular repetível.

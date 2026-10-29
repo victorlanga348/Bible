@@ -1,5 +1,7 @@
 # Contratos de API
 
+S07 contratos aceites pelo agente delegado2026-10-29 antes de código: [SPEC S07](../sprints/S07/SPEC.md), relações privadas com fundamento/fontes atuais, notas/favoritos versionados, histórico keyset e eliminação modular repetível. Ainda NOT_RUN; entrega S06 permanece comprovada. Sem campos/endpoints implícitos além da SPEC.
+
 Contratos S06 aceites2026-10-28 pelo agente delegado, antes de implementação: [quatro operações/DTOs/erros/retenção/contexto](../sprints/S06/SPEC.md). POST /studies/:studyId/conversations, GET/DELETE /conversations/:conversationId, POST /conversations/:conversationId/turns; JWT/owner404/expectedRevision obrigatório. Implementadas/verificadas: [fecho S06](../sprints/S06/T007_COMPLETION_REPORT.md), incluindo PostgreSQL/HTTP reais e nove turnos nativos/semântica PASS. APIs S05 mantidas.
 
 Fecho S04 verificado2026-10-26: três operações privadas de estudo abaixo implementadas e verificadas por Nest/JOSE/PostgreSQL reais, dentro de907 regressões e CI40338249693. Gates/fonte corrigida/revisão aprovados; S04 DONE, sem alterar contratos nesta atualização de estado. [Relatório S04](../sprints/S04/TEST_REPORT.md)/[operação local](local-studies.md). Contratos futuros de IA/conversas ainda não são entrega. Notas seguintes históricas.

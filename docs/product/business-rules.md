@@ -1,5 +1,7 @@
 # Regras de negócio
 
+Operacionalização S07 aceite pelo agente delegado2026-10-29: [SPEC](../sprints/S07/SPEC.md) separa tipos de relação/leituras proféticas e avaliação pessoal de facto validado; todas as relações exigem fundamento/fontes, quotes atuais são revalidadas. Workspace privado retém notas/favoritos versionados e histórico paginado sem gerar; eliminação modular conforme ADR-0007. Implementação S07 ainda NOT_RUN.
+
 Estado: princípios definidos pelo utilizador; operacionalização nas specs ainda em rascunho. Consolidação S00 de 2026-10-20 mantém a distinção entre facto documentado, inferência, tradição interpretativa e hipótese. Notas/favoritos/relações do backend serão especificados em S07, sem presumir contratos.
 Aplicam-se a estudos, comparações, perguntas livres e histórico de respostas.
 

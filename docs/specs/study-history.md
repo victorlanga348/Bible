@@ -1,5 +1,7 @@
 # SH-001 — Histórico de estudos
 
+Concretização S072026-10-29: [SPEC](../sprints/S07/SPEC.md) aceite por delegação para listagens privadas keyset, notas/favoritos de estudo/versão, recuperação sem gerar e eliminação modular retomável. S06 já entregue48be2f0/nove turnos nativos; parte S07 ainda NOT_RUN. Specs antigas abaixo mantêm o histórico, sem aprovações novas pendentes para este escopo delegado.
+
 Concretização complementar2026-10-28: estudos S04 e análises S05 entregues; inclusão privada de perguntas/respostas posteriores aceite na S06-T004 conforme [SPEC S06](../sprints/S06/SPEC.md). Conversa fixa estudo/versão, mensagens ordenadas imutáveis, histórico sem regeneração/revalidação atual de direitos, eliminação própria e retenção local explícita. Parte S06 ainda NOT_RUN; critérios antigos preservados.
 
 Estado: rascunho para revisão. Versão documental: 0.1. Data: 2026-10-17.

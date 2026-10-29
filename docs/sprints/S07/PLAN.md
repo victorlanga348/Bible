@@ -1,5 +1,7 @@
 # S07 — Referências Cruzadas e Workspace
 
+Estado vigente2026-10-29: S07 IN_PROGRESS sob autorização integral, S06 encerrada48be2f0. T004 preparação de [SPEC](SPEC.md)/ADR-0007 em revisão documental antes de código; T005 relações, T006 workspace/lifecycle/históricos, T007 provas/gates. Agente é decisor delegado; uma tarefa por vez/sem agentes/sem novas perguntas. Nenhum gate de produto S07 presumido. Entradas seguintes históricas.
+
 Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
 Branch: feat/biblia-backend. Commit: PENDING. Dependência: S06 encerrada e nova aprovação.
 

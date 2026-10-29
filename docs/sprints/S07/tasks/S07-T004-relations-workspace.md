@@ -1,0 +1,21 @@
+# S07-T004 — Preparação de relações e workspace
+
+Estado vigente2026-10-29: DONE documental, dependência S06 satisfeita48be2f0. [SPEC](../SPEC.md) e ADR-0007 concretizados antes de código por delegação. Skill create-a-backend consultada: conservar NestJS/PostgreSQL e módulos; sem Vercel/deployment/serviço novo. Próxima T005 somente após auditoria desta preparação.
+
+Estado: BACKLOG, preparação documental durante os gates S04; nenhuma implementação S07. Depende de S06 concluída e dos contratos efetivos de estudo/conversa. Autorização integral vigente, uma tarefa ativa, sem agentes paralelos. [SH-001](../../../specs/study-history.md), [execução integral](../../../roadmap/completion-execution.md).
+
+Objetivo: relações justificadas entre passagens e espaço privado de notas/favoritos/histórico, com recuperação de estudos/sessões e eliminação definida. cross-references é proprietário das relações; study-workspace das notas/favoritos/projeções próprias; estudos/conversas continuam nos seus módulos. Serviços públicos, sem SQL/FK de tabelas alheias. Frontend permanece fora do ciclo backend.
+
+Relações exigem ambas as referências realmente existentes e fundamento explícito. Não inferir automaticamente citação, alusão, paralelo ou cumprimento profético por palavras semelhantes ou distância vetorial. Refinar tipos e rótulos de leituras históricas/messiânicas/escatológicas com suporte e limites antes de campos/endpoints. Só usar textos/fontes reais admitidos; caso sem evidência não se torna facto. Uma curadoria inicial pequena pode ser útil sem alegar cobertura completa.
+
+Workspace exige JWT real, owner do subject e verificação de existência/acesso por contrato público de estudo/conversa. Notas pessoais são conteúdo do utilizador, distinto de evidência histórica validada. Fixar limites, erros, idempotência de favoritos, ordenação/paginação, retenção e eliminação antes de implementação. Paginar metadados sem regenerar estudo ou inferir fonte disponível a partir de um resumo. Índice owner/data/id já preparado em study deve ser avaliado pelo seu próprio repositório, não por join no workspace.
+
+Histórico de estudos e de conversas precisa de contratos públicos próprios; evitar cursor global que exige ler tabelas de vários módulos. Definir como se apresentam recursos eliminados/restritos e se a leitura de resumo necessita de conteúdo. Não expor owner, quote revogada ou conteúdo de outro utilizador em pesquisa/paginação/erros.
+
+Eliminação exige revisão explícita da concorrência entre criação de notas/favoritos, respostas de IA em curso e limpeza de estudo/conversa. Não basta consultar existência e depois escrever noutra transação: um recurso pode desaparecer nesse intervalo. Concretizar protocolo que não deixe órfãos privados, permita repetir limpeza parcial e preserve propriedade modular. Avaliar coordenação técnica curta no PostgreSQL existente, sem segurar transação/pool durante inferência nem acrescentar Redis/filas externas. Não prometer atomicidade entre módulos/bancos sem prova real; justificar qualquer mecanismo específico antes de código.
+
+Plano TDD posterior: relações válidas/ausentes/inválidas e fundamento; notas/favoritos isolados A/B, limites, duplicação/idempotência, paginação ordenada estável; histórico sem geração; eliminação e escrita concorrente com PostgreSQL real; falha/repetição de limpeza e fontes revogadas. Nest/Supertest/JOSE/Prisma reais, constraints e migração aditiva; fontes/versículos genuínos, variantes técnicas identificadas. Nenhum seed de fixture em desenvolvimento.
+
+Vantagens: trabalho pessoal recuperável e relações auditáveis. Desvantagens: mais contratos de leitura/ciclo de vida e coordenação de exclusão. Alternativas de FK cruzada ou apagar tabelas alheias diretamente são rejeitadas; ocultar um recurso sem política de retenção explícita também não comprova eliminação. Mitigar riscos com autorização/ownership em todas as operações e casos de corrida verificáveis.
+
+Saída da preparação: SPEC/ADRs, ports/transportes/dados/retensão e critérios detalhados revistos à luz de S06, antes de T005–T007. Depois implementar uma tarefa de cada vez e concluir os sete gates, sem inventar score ou prova de recuperação. Esta ficha não fecha S07 nem inicia trabalho concorrente.

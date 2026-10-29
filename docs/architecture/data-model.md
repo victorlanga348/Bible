@@ -1,5 +1,7 @@
 # Modelo de dados
 
+Modelo S07 aceite2026-10-29 antes de código: [SPEC](../sprints/S07/SPEC.md)/[ADR-0007](adr/ADR-0007-study-lifecycle-and-workspace.md), cross_reference própria/privada sem FK externa, workspace_note/workspace_favorite próprios, study_record.lifecycle e listas de metadados pelos proprietários. Migrações8/9aditivas ainda NOT_RUN; tabelas preexistentes e corpus preservados. Guard curto de escrita e eliminação em fases são contratos, não prova de implementação.
+
 Decisão2026-10-28/S06-T004: [modelo/consistência S06](../sprints/S06/SPEC.md) aceite antes de código: ai-assistant terá ai_conversation (documento JSONB imutável até20turnos+contador CAS), ligado a análises do mesmo módulo por identidade pública, sem FK/SQL para study/source-library. Migração futura aditiva somente T006 após domínio T005; nada aplicado nesta decisão.
 
 Fecho S04 verificado2026-10-26: modelo/persistência descritos abaixo implementados, sem nova alteração de schema nesta revisão.907 testes/CI40338249693/Prisma/PostgreSQL reais, rollback/owner/versionamento e gates atuais aprovados no [relatório S04](../sprints/S04/TEST_REPORT.md). S04 DONE; o modelo futuro de IA/conversas/workspace continua dependente dos seus contratos. Notas seguintes históricas.
