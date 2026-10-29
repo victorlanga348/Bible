@@ -1,10 +1,12 @@
 # S06 — Relatório de testes
 
-## T006 ? fecho t?cnico2026-10-29
+Correção documental2026-10-29: acentos novos perdidos no pipe ASCII do PowerShell em ff0e269 foram corrigidos com UTF-8 explícito conforme PITFALL-0001; originais executáveis/nativos inalterados. Auditoria repetida antes de commit. Recuperação da execução interrompida: PID21444 ausente, locks próprios arquivados por digest e removidos, conversa própria eliminada e zero análises/conversas; hashes de todas as linhas anteriores preservados. Raw interrompido SHA5a8d5e80… permanece original, revisão de recuperação separada em reports/s06-interrupted-recovery.json. Retoma v3 observacional foi decidida antes de executar, sem mudar modelos/casos/perfil/expectativas.
 
-[Fecho](T006_COMPLETION_REPORT.md) e [muta??o](MUTATION_REVIEW.md) consolidam os sete gates: fonte4a34ddb/CI40695319164 oito jobs SUCCESS,1840testes83suites/79tooling,100%linhas97,84%branches;5051mutantes global90,2332%/IA89,4138%,zero RuntimeError/NoCoverage. Prova C01 nativa3/3 e revis?o sem?ntica separada PASS, raw SHA bc08ff2b5caa5888e9a42eb391419f73ab4e2dd3ddef2ac3206553322e7da601; tr?s turnos122713/52287/43129ms. Preserva??o/owner/GET/DELETE/recursos PASS, sem atribuir causa n?o provada ao503 anterior. T006 DONE, T007 READY para seis turnos restantes; S06 IN_PROGRESS.
+## T006 — fecho técnico2026-10-29
 
-Auditoria documental real `node backend/reports/check-completion-docs.cjs` PASS2026-10-29T03:30:06.533Z,9Markdown39links,zero missing/secretHits/whitespace/prohibited/staged. Comando nativo do verificador usa git diff --check por ERR-0021. Primeiro arranque da prova foi recusado pelo shell antes de executar por cwd/log destino errado; corrigido para backend, sem tentativa de modelo nem dados a contar. Nenhum script npm fict?cio.
+[Fecho](T006_COMPLETION_REPORT.md) e [mutação](MUTATION_REVIEW.md) consolidam os sete gates: fonte4a34ddb/CI40695319164 oito jobs SUCCESS,1840testes83suites/79tooling,100%linhas97,84%branches;5051mutantes global90,2332%/IA89,4138%,zero RuntimeError/NoCoverage. Prova C01 nativa3/3 e revisão semântica separada PASS, raw SHA bc08ff2b5caa5888e9a42eb391419f73ab4e2dd3ddef2ac3206553322e7da601; três turnos122713/52287/43129ms. Preservação/owner/GET/DELETE/recursos PASS, sem atribuir causa não provada ao503 anterior. T006 DONE, T007 READY para seis turnos restantes; S06 IN_PROGRESS.
+
+Auditoria documental real `node backend/reports/check-completion-docs.cjs` PASS2026-10-29T03:30:06.533Z,9Markdown39links,zero missing/secretHits/whitespace/prohibited/staged. Comando nativo do verificador usa git diff --check por ERR-0021. Primeiro arranque da prova foi recusado pelo shell antes de executar por cwd/log destino errado; corrigido para backend, sem tentativa de modelo nem dados a contar. Nenhum script npm fictício.
 
 ## T006 — contexto v3: bloqueio operacional e diagnóstico controlado
 

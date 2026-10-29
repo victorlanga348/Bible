@@ -1,6 +1,6 @@
 # S06 — Conversas Contextuais
 
-Estado vigente2026-10-29: T006 DONE t?cnico ap?s [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e sem?ntica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02?C04 pendentes. Entradas anteriores abaixo s?o hist?ricas.
+Estado vigente2026-10-29: T006 DONE técnico após [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e semântica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02–C04 pendentes. Entradas anteriores abaixo são históricas.
 
 Estado vigente: S06 IN_PROGRESS, T004/T005 DONE técnico, [gates T005](T005_COMPLETION_REPORT.md)/CI40670440360/1759testes. T006 READY para aplicação/PG/HTTP; T007 ainda depende de integração e avaliações nativas próprias. Nenhuma API de conversa entregue por este domínio puro. Histórico seguinte preservado.
 

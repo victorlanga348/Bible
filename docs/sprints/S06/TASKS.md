@@ -1,6 +1,6 @@
 # S06 — Tarefas
 
-Estado vigente2026-10-29: T006 DONE t?cnico ap?s [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e sem?ntica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02?C04 pendentes. Entradas anteriores abaixo s?o hist?ricas.
+Estado vigente2026-10-29: T006 DONE técnico após [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e semântica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02–C04 pendentes. Entradas anteriores abaixo são históricas.
 
 Estado2026-10-28: S06 IN_PROGRESS; S05 satisfeita1b19623. T004 IN_PROGRESS→REVIEW→DONE documental após auditoria, [SPEC](SPEC.md) aceite pelo agente delegado antes de código. T005 IN_PROGRESS para domínio/contexto, T006/T007 dependentes. Nenhum teste/implementação S06 presumido PASS. Entradas seguintes históricas.
 
