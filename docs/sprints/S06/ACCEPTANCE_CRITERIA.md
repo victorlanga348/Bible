@@ -1,13 +1,13 @@
 # S06 — Critérios de aceitação
 
-Propostas a detalhar/aprovar antes da implementação. Nenhum critério executado.
+Aceite e verificado sob delegação vigente; [provas atuais](T007_COMPLETION_REPORT.md) e [integração](T006_COMPLETION_REPORT.md),2026-10-29.
 
 | Critério | Resultado exigido | Evidência prevista | Estado |
 |---|---|---|---|
-| S06-AC01 | Perguntas reais mantêm contexto do estudo e validam novas evidências/referências. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S06-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S06-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
-| S06-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | NOT_RUN |
+| S06-AC01 | Perguntas reais mantêm contexto do estudo e validam novas evidências/referências. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | PASS |
+| S06-AC02 | Contratos aprovados cobrem caminhos válidos, inválidos e negados, com efeitos reais verificáveis. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | PASS |
+| S06-AC03 | Fronteiras DDD/hexagonais e propriedade modular verificadas; dados/fontes autênticos e direitos/proveniência demonstrados. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | PASS |
+| S06-AC04 | Gates aplicáveis cumpridos, relatórios e documentação sincronizados, sem pendência crítica. | Testes reais e revisão conforme PLAN; comando/data/ambiente/artefactos por critério | PASS |
 
 ## Sete gates
 | Gate | Obrigação |

@@ -1,5 +1,7 @@
 # Ações externas necessárias
 
+Resolução local2026-10-29: S06/9turnos nativos e revisões PASS, acesso/retention/eliminação e bancos reais comprovados no [fecho](../sprints/S06/T007_COMPLETION_REPORT.md). EXT-001/004/005 satisfeitas para este recorte local pessoal, sem ação/segredo adicional do utilizador. Direitos de publicação, ambiente de release e políticas S07/S08 exigem as respetivas provas; não se tornam PASS por esta avaliação. Autorizações de execução já vigentes; fontes e recursos locais não devem ser reprovisionados sem necessidade.
+
 Resolução local2026-10-28: S05/14avaliações reais+revisão e gates concluídos, [fecho](../sprints/S05/T007_COMPLETION_REPORT.md). EXT-001/004 satisfeitas no recorte local admitido, sem ação/chave adicional do utilizador; direitos públicos/remotos e avaliações futuras S06/S08 exigem provas próprias. Não repetir provisionamento local já verificado.
 
 Estado T0062026-10-27T18:44Z: sem nova ação/segredo do utilizador. Configuração privada real acrescentada preservando valores anteriores; migração principal6 e admissão operacional própria importadas. Indexação nativa1911tokens/11vetores1024/1profile no banco AI separado PASS; corpus/fonte legada/local-owner preservados por hashes. Prova HTTP nativa em execução e14avaliações/gates correntes continuam pendentes. Regressões locais posteriores encontraram prazos sob pressão de memória e não são PASS; verificar fonte estável em CI, sem enfraquecer requisitos. [Estado breve](../megabrain/agent-context/project-state.md), [provas](../sprints/S05/TEST_REPORT.md).

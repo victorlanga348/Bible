@@ -1,5 +1,7 @@
 # IA local — operação em implementação
 
+Operação S06 verificada2026-10-29: `npm run ai:verify:conversations` e `npm run ai:evaluate:conversations` são CLIs reais sem overrides, somente ambiente local admitido. C01 pinado incorporado sem replay mais seis turnos C02–C04:9/9nativo/semântica PASS; GET/owner404/DELETE/recursos/preservação PASS. [Fecho e digests](../sprints/S06/T007_COMPLETION_REPORT.md). Nenhuma nova chave/conta/instalação necessária. Evitar executar novamente os casos só para reconstruir evidência existente; conservar originais e revisão separada. Estudos técnicos finais14/15versões, zero análises/conversas; sete migrações do banco principal. Exposição/recuperação/quotas S08 continuam dependentes de auditoria própria.
+
 Estado2026-10-27: S05-T006 IN_PROGRESS. Application/índice/recuperação/persistência e três rotas HTTP implementados e testados com infraestrutura real/doubles técnicos de modelo identificados. Prova nativa integrada, mutação da fonte estável e14avaliações do produto ainda pendentes de aceite; provider T005 tem prova real própria. [SPEC](../sprints/S05/SPEC.md), [plano concreto](../sprints/S05/tasks/S05-T006-rag-persistence-http.md), [admissão](../sprints/S05/DATA_ADMISSION.md), [provas](../sprints/S05/TEST_REPORT.md).
 
 ## Bancos, configuração e limites

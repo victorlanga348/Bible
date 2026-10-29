@@ -1,5 +1,7 @@
 # S06 — Tarefas
 
+Estado vigente2026-10-29: S06 DONE técnico; T004–T007 DONE sob delegação vigente. [Fecho T007/gates](T007_COMPLETION_REPORT.md):9/9turnos nativos e semântica PASS, produto221ficheiros idênticos4a34ddb/CI40695319164/mutação auditada, runner91a6ebd/tooling83PASS/CI40813122964 foundation SUCCESS. Mutação automática40813122964 ainda suplementar em curso, sem resultado presumido. Próxima S07-T004; entradas abaixo preservam o histórico.
+
 Estado vigente2026-10-29: T006 DONE técnico após [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e semântica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02–C04 pendentes. Entradas anteriores abaixo são históricas.
 
 Estado2026-10-28: S06 IN_PROGRESS; S05 satisfeita1b19623. T004 IN_PROGRESS→REVIEW→DONE documental após auditoria, [SPEC](SPEC.md) aceite pelo agente delegado antes de código. T005 IN_PROGRESS para domínio/contexto, T006/T007 dependentes. Nenhum teste/implementação S06 presumido PASS. Entradas seguintes históricas.
@@ -12,7 +14,7 @@ Responsável/revisor técnico por designar; aprovador inicial: utilizador. Trilh
 | S06-T004 | Aprovar FQ-001, contexto, acesso e retenção | A/C | Alta (proposta) | DONE | S05 encerrada; EXT-005 | [SPEC](SPEC.md) |
 | S06-T005 | Implementar conversas, mensagens e controlo de contexto | A | Alta (proposta) | DONE | S06-T004 | [Fecho](T005_COMPLETION_REPORT.md) |
 | S06-T006 | Integrar perguntas livres, persistência e evidências | B | Alta (proposta) | DONE | S06-T005 | [Ficha](tasks/S06-T006-conversation-integration.md) |
-| S06-T007 | Verificar conversas reais, referências e gates | C | Alta (proposta) | IN_PROGRESS | S06-T006; EXT-001 | [Ficha](tasks/S06-T007-conversation-evaluation.md) |
+| S06-T007 | Verificar conversas reais, referências e gates | C | Alta (proposta) | DONE | S06-T006; EXT-001 | [Ficha](tasks/S06-T007-conversation-evaluation.md) |
 
 BACKLOG: requer plano detalhado/aprovações de entrada. BLOCKED: predecessora e contrato/dados/ambiente ainda não satisfeitos; desbloquear comprovando essas condições e obtendo aprovação antes de READY. Não confundir aprovação deste planeamento com autorização para instalar/implementar.
 Uma tarefa por vez. Estados e execução são distintos: BACKLOG/READY/IN_PROGRESS/BLOCKED/REVIEW/DONE para trabalho; PASS/FAIL/BLOCKED/NOT_RUN para evidência.

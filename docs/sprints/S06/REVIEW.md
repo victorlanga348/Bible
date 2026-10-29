@@ -1,5 +1,7 @@
 # S06 — Revisão técnica
 
+Estado vigente2026-10-29: S06 DONE técnico; T004–T007 DONE sob delegação vigente. [Fecho T007/gates](T007_COMPLETION_REPORT.md):9/9turnos nativos e semântica PASS, produto221ficheiros idênticos4a34ddb/CI40695319164/mutação auditada, runner91a6ebd/tooling83PASS/CI40813122964 foundation SUCCESS. Mutação automática40813122964 ainda suplementar em curso, sem resultado presumido. Próxima S07-T004; entradas abaixo preservam o histórico.
+
 Estado vigente2026-10-29: T006 DONE técnico após [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e semântica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02–C04 pendentes. Entradas anteriores abaixo são históricas.
 
 Estado vigente2026-10-28: T005 DONE técnico após CI40670440360/cc157ea,1759testes75tooling/100%linhas97,82%branches/mutação90,37%global89,59%AI98,28%domínio/zeroRuntimeError+NoCoverage. [Fecho T005](T005_COMPLETION_REPORT.md) reúne digests/327sobreviventes (324históricos+3guards revistos). Auditoria documental antes de commit; T006 READY/T007dependente, S06 IN_PROGRESS. Entradas seguintes históricas.

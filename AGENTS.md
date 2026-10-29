@@ -81,6 +81,6 @@ Pergunta obrigatória: **"Existe alguma alteração no projeto que não esteja r
 
 ## Estado atual
 
-S00–S05 DONE técnico;14/14avaliações nativas T007/revisão semântica PASS, CI40660972664/61a9429/gates completos, fecho1b19623 publicado. S06 IN_PROGRESS, T004/T005 DONE/CI40670440360, T006 IN_PROGRESS para aplicação/PG/HTTP; S07–S08 pendentes e autorizadas. Fonte breve de retoma: [project-state](docs/megabrain/agent-context/project-state.md). Históricos em [arquivo](docs/megabrain/agent-context/AGENTS-state-history-2026-10-27.md) e contexto; não carregar por rotina.
+S00–S06 DONE técnico; S06 nove turnos nativos/semântica PASS, produto4a34ddb/CI40695319164/gates/mutação auditados;221ficheiros src/test idênticos no runner91a6ebd/83tooling/CI40813122964 foundation SUCCESS, mutação automática suplementar ainda em curso. S07-T004 READY, S08 pendente/autorizada. Retoma curta: [project-state](docs/megabrain/agent-context/project-state.md); [fecho S06](docs/sprints/S06/T007_COMPLETION_REPORT.md). Não repetir gates de fontes inalteradas; nenhum PASS presumido de CI em curso.
 
 Pedido2026-10-27 reafirmado2026-10-28: reduzir consumo por contexto/releituras e validações repetidas, preservando TDD, requisitos, integrações e todos os gates. Consultar documentos pertinentes — tarefa, usar testes afetados durante RED/GREEN e regressões/gates completos nos marcos exigidos. Não alterar main, serviços alheios ou segredos, nem usar agentes. Autorização integral acima permanece vigente.

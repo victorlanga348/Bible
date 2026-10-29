@@ -1,6 +1,6 @@
 # Sprints — Backend Bíblia App
 
-Estado2026-10-28: S00–S05 DONE técnico, fecho S05 delegado após14/14avaliações reais/revisão e CI40660972664; auditoria documental antes de commit. S06 IN_PROGRESS/T004/T005 DONE/T006 READY; S07–S08 autorizadas/pendentes; uma tarefa por vez, sem agentes ou novas permissões. [Retoma breve](../megabrain/agent-context/project-state.md), [provas S05](S05/T007_COMPLETION_REPORT.md). Histórico integral do Índice em [arquivo](README-history-2026-10-28.md); aprovações antigas não revogam a autorização integral vigente em AGENTS.md.
+Estado2026-10-29: S00–S06 DONE técnico sob autorização integral; S06 nove turnos nativos/revisões PASS, produto idêntico4a34ddb/CI40695319164/mutação auditada, runner91a6ebd83tooling/CI40813122964 foundation SUCCESS (mutação automática suplementar ainda em curso). S07-T004 READY, S08 dependente de S07. Uma tarefa por vez, sem agentes ou novas permissões. [Retoma breve](../megabrain/agent-context/project-state.md), [fecho S06](S06/T007_COMPLETION_REPORT.md).
 
 | Sprint | Objetivo | Estado | Dependência/aceite |
 |---|---|---|---|
@@ -10,7 +10,7 @@ Estado2026-10-28: S00–S05 DONE técnico, fecho S05 delegado após14/14avaliaç
 | [S03](S03/README.md) | Biblioteca de fontes | DONE | Corpus/curadoria/pesquisa/HTTP reais |
 | [S04](S04/README.md) | Estudos estruturados privados | DONE | CI40338249693/907testes/gates/revisão |
 | [S05](S05/README.md) | IA e RAG | DONE | T004–T007; CI40660972664/1706testes/14casos e revisão semântica PASS |
-| [S06](S06/README.md) | Conversas contextuais | IN_PROGRESS | S05 satisfeita; T004/T005 DONE/CI40670440360; T006 READY aplicação/PG/HTTP |
+| [S06](S06/README.md) | Conversas contextuais | DONE | Nove turnos nativos/semântica e sete gates aplicáveis demonstrados |
 | [S07](S07/README.md) | Referências cruzadas e workspace | BACKLOG | S06 concluída |
 | [S08](S08/README.md) | Hardening e release | BACKLOG | S07 concluída; direitos/exposição revistos no escopo de release |
 
