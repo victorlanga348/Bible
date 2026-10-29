@@ -34,6 +34,7 @@
     "ai:verify:local": "npm run build && node scripts/verify-ai-local.cjs",
     "ai:verify:rag": "npm run build && node --env-file-if-exists=.env scripts/verify-ai-rag.cjs",
     "ai:verify:conversations": "npm run build && node --env-file-if-exists=.env scripts/verify-conversations-local.cjs",
+    "ai:evaluate:conversations": "npm run build && node --env-file-if-exists=.env scripts/evaluate-conversations-local.cjs",
     "ai:evaluate:local": "npm run build && node --env-file-if-exists=.env scripts/evaluate-ai-local.cjs",
     "db:import:ai:dev": "npm run build && node --env-file-if-exists=.env scripts/import-ai-development.cjs",
     "ai:index:dev": "npm run build && node --env-file-if-exists=.env scripts/index-ai-development.cjs",

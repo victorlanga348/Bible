@@ -1,5 +1,9 @@
 # S06 — Relatório de testes
 
+## T007 — runner pendente de execução real
+
+Plano próprio fixado após fecho T006. `node --test scripts/conversation-evaluation.test.cjs` RED3FAIL por Not implemented, sem falha de ambiente; GREEN3PASS após finalizador exato e incorporação por digest. Guard CLI adicional comprovou recusa sem acesso a DB/modelo. `npm run test:tooling`83/83PASS8,754s, zero skipped/fail; lint inicial/final PASS, logs reports/s06-t007-{proof-red,proof-green,tooling,lint,lint-final,cli-guard}.log. Os inputs nativos C02–C04 estão congelados na SPEC e no helper antes de qualquer chamada. Nenhuma expectativa entra no body do modelo. Produto src/test continua byte-idêntico4a34ddb; gates de cobertura/mutação do produto permanecem os auditados, não métricas novas do runner. Comando ai:evaluate:conversations só adicionado após CLI/helper/guard existentes. Wrapper preservador próprio aceita apenas três adições técnicas de estudo/versão; conferência dos hashes e limpeza obrigatórias. Execução real seis turnos e revisão semântica ainda NOT_RUN. Ajuste inicial do wrapper recusou por cwd errado antes de qualquer execução; corrigido na preparação.
+
 Correção documental2026-10-29: acentos novos perdidos no pipe ASCII do PowerShell em ff0e269 foram corrigidos com UTF-8 explícito conforme PITFALL-0001; originais executáveis/nativos inalterados. Auditoria repetida antes de commit. Recuperação da execução interrompida: PID21444 ausente, locks próprios arquivados por digest e removidos, conversa própria eliminada e zero análises/conversas; hashes de todas as linhas anteriores preservados. Raw interrompido SHA5a8d5e80… permanece original, revisão de recuperação separada em reports/s06-interrupted-recovery.json. Retoma v3 observacional foi decidida antes de executar, sem mudar modelos/casos/perfil/expectativas.
 
 ## T006 — fecho técnico2026-10-29
