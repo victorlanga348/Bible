@@ -18,7 +18,7 @@ describe('cross-reference repository in actual isolated PostgreSQL', () => {
     expect(await store.find('other-owner', d.id)).toBeNull(); expect(await store.find(d.ownerId, thirdId)).toBeNull();
   });
   it('preserves the existing record after duplicate-key failure and retains the internal cause', async () => {
-    const d = await seed(); await expect(store.create(d)).rejects.toMatchObject({ cause: { code: 'P2002' } }); expect(await store.find(d.ownerId, d.id)).toEqual(d);
+    const d = await seed(); await expect(store.create(d)).rejects.toMatchObject({ message: expect.stringMatching(/\S/), cause: { code: 'P2002' } }); expect(await store.find(d.ownerId, d.id)).toEqual(d);
   });
   it('finds either overlapping endpoint, excludes other owners/non-overlap and uses keyset order', async () => {
     const p = relationProps(); await seed();
@@ -53,9 +53,9 @@ describe('cross-reference repository in actual isolated PostgreSQL', () => {
   it('maps real SQL failure without accepting it as an empty result', async () => {
     await database.client.$executeRawUnsafe('ALTER TABLE app.cross_reference RENAME TO cross_reference_test_unavailable');
     try {
-      const p = relationProps(); await expect(store.find(p.ownerId, p.id)).rejects.toThrow(RelationUnavailableError);
-      await expect(store.list(p.ownerId, p.from, { limit: 1 })).rejects.toThrow(RelationUnavailableError);
-      await expect(store.delete(p.ownerId, p.id)).rejects.toThrow(RelationUnavailableError);
+      const p = relationProps(); for (const operation of [() => store.find(p.ownerId, p.id), () => store.list(p.ownerId, p.from, { limit: 1 }), () => store.delete(p.ownerId, p.id)]) {
+        const failing = operation(); await expect(failing).rejects.toThrow(RelationUnavailableError); await expect(failing).rejects.toMatchObject({ message: expect.stringMatching(/\S/), cause: expect.any(Error) });
+      }
     } finally { await database.client.$executeRawUnsafe('ALTER TABLE app.cross_reference_test_unavailable RENAME TO cross_reference'); }
   });
 });

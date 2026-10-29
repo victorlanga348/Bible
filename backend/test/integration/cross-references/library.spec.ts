@@ -50,6 +50,9 @@ describe('cross-reference Application with real Canon/Source/Prisma/PostgreSQL; 
     await database.client.sourceLibrarySource.update({ where: { id: sourceFixture.id }, data: { permissions: { ...sourceFixture.permissions, quote: 'denied' } } });
     expect((await library.read(p.ownerId, view.id)).evidence[0]).toMatchObject({ availability: 'restricted', quote: null, attribution: null });
     await expect(library.create(p.ownerId, input())).rejects.toThrow(RelationEvidenceError);
+    await database.client.sourceLibrarySource.update({ where: { id: sourceFixture.id }, data: { permissions: { ...sourceFixture.permissions, store: 'denied' } } });
+    expect((await library.read(p.ownerId, view.id)).evidence[0]).toMatchObject({ availability: 'restricted', quote: null });
+    await expect(library.create(p.ownerId, input())).rejects.toThrow(RelationEvidenceError);
     await database.client.sourceLibraryExcerpt.delete({ where: { id: excerptFixture[0]!.id } }); expect((await library.read(p.ownerId, view.id)).evidence[0]).toMatchObject({ availability: 'missing', quote: null });
   });
   it('marks a legitimately changed source digest missing and rejects actual integrity corruption', async () => {
@@ -68,5 +71,43 @@ describe('cross-reference Application with real Canon/Source/Prisma/PostgreSQL; 
     await expect(library.list(p.ownerId, 'porbr2018', 'not a reference', { limit: 1 })).rejects.toThrow(RelationInputError);
     await expect(library.list(p.ownerId, 'porbr2018', p.from.normalized, { limit: 0 })).rejects.toThrow(RelationInputError);
     await expect(library.read('', p.id)).rejects.toThrow(RelationInputError); await expect(library.read(p.ownerId, 'invalid')).rejects.toThrow(RelationInputError);
+  });
+
+  it('accepts the exact maximum of four distinct permitted source spans', async () => {
+    const spans = Array.from({ length: 4 }, (_, startOffset) => ({ excerptId: excerptFixture[0]!.id, startOffset, endOffset: startOffset + 1 }));
+    expect((await library.create(p.ownerId, { ...input(), evidence: spans })).evidence).toHaveLength(4);
+  });
+  it.each(['canon_translation', 'source_library_source'] as const)('preserves real SQL cause/context for unavailable %s instead of declaring absence', async table => {
+    const view = await library.create(p.ownerId, input());
+    await database.client.$executeRawUnsafe(`ALTER TABLE app.${table} RENAME TO cross_reference_test_unavailable_dependency`);
+    try {
+      const failing = table === 'canon_translation' ? library.create(p.ownerId, input()) : library.read(p.ownerId, view.id);
+      await expect(failing).rejects.toThrow(RelationUnavailableError);
+      await expect(failing).rejects.toMatchObject({ message: expect.stringMatching(/\S/), cause: expect.any(Error) });
+    } finally { await database.client.$executeRawUnsafe(`ALTER TABLE app.cross_reference_test_unavailable_dependency RENAME TO ${table}`); }
+  });
+  it('rejects a corrupt durable source span with its cause and no delivered quote', async () => {
+    const view = await library.create(p.ownerId, input()); const row = await database.client.crossReferenceRecord.findUniqueOrThrow({ where: { id: view.id } });
+    const document = JSON.parse(JSON.stringify(row.document)); document.evidence[0].endOffset = Array.from(excerptFixture[0]!.text).length + 1;
+    await database.client.crossReferenceRecord.update({ where: { id: view.id }, data: { document } });
+    const failing = library.read(p.ownerId, view.id); await expect(failing).rejects.toThrow(RelationUnavailableError);
+    await expect(failing).rejects.toMatchObject({ message: expect.stringMatching(/\S/), cause: expect.any(RelationEvidenceError) });
+  });
+
+  it.each(['locator', 'sourceId'] as const)('suppresses a quote when its bibliographic %s changes, even with unchanged text', async field => {
+    const view = await library.create(p.ownerId, input()); const original = excerptFixture[0]!;
+    if (field === 'locator') await database.client.sourceLibraryExcerpt.update({ where: { id: original.id }, data: { locator: original.locator + '-technical-relocation' } });
+    else {
+      // Controlled identity variant of the exact same real work, never a new historical witness.
+      const id = 'technical-reassigned-source'; await database.client.sourceLibrarySource.create({ data: { ...sourceFixture, id, permissions: { ...sourceFixture.permissions } } });
+      await database.client.sourceLibraryExcerpt.update({ where: { id: original.id }, data: { sourceId: id } });
+    }
+    expect((await library.read(p.ownerId, view.id)).evidence[0]).toMatchObject({ availability: 'missing', quote: null });
+  });
+  it('accepts an actual source span at the exact 1000-byte UTF-8 boundary', async () => {
+    const points = Array.from(excerptFixture[0]!.text); const prefix = [0]; for (const point of points) prefix.push(prefix.at(-1)! + Buffer.byteLength(point));
+    const positions = new Map(prefix.map((bytes, index) => [bytes, index])); const startOffset = prefix.findIndex(bytes => positions.has(bytes + 1000)); expect(startOffset).toBeGreaterThanOrEqual(0);
+    const endOffset = positions.get(prefix[startOffset]! + 1000)!; const view = await library.create(p.ownerId, { ...input(), evidence: [{ excerptId: excerptFixture[0]!.id, startOffset, endOffset }] });
+    expect(Buffer.byteLength(view.evidence[0]!.quote!)).toBe(1000);
   });
 });

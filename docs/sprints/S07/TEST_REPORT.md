@@ -1,5 +1,13 @@
 # S07 — Relatório de testes
 
+## T005 — falha agregada preservada e regressões de mutação
+
+CI40818184684:1957testes/89suites/83tooling e seis análises concluídas SUCCESS, mutation-gate FAIL por seis NoCoverage.5758mutantes brutos:3637Killed63Timeout492Survived1560CompileError6NoCoverage, zero RuntimeError; resultado diagnóstico, não score aprovado. Os seis estão em três caminhos de erro dos novos adapters (falha SQL Canon, falha SQL Source, span persistido incoerente), cada um com StringLiteral/ObjectLiteral não exercitados. ZIPs oficiais das seis partes baixados por MCP, SHA conferido, relatórios brutos/entradas intactos em reports/ci-40818184684-{0..5}-artifact; diagnóstico s07-initial-mutation-diagnostic.json. Nenhuma categoria/escopo/limiar foi alterada para aprovar.
+
+Regressões acrescentadas conforme ficha antes de alterações: erros SQL reais com causa/contexto, span durável corrompido, permissão store revogada, mudança de locator/sourceId mantendo texto, limite exato1000bytes, erros HTTP400/401/404/422/503 e logging sem token/owner/rationale. Negativos de domínio agora isolam a regra correta (normalização consistente com metadados inválidos, cinco spans únicos, igualdade dos offsets, JSON null/arrays, UUID/SHA com prefixo/sufixo); recusa antes de I/O tem ports locais explícitos, sem se apresentar como integração. Primeiros80testes de regressão PASS; conjunto afetado atual136testes/7suites PASS61,671s. Recorte174/174linhas271/271statements46/46funções100%,137/139branches98,56%, em reports/s07-t005-mutation-coverage/coverage-summary.json; typecheck/lint e83tooling PASS10,384s. Estes são reforços de regras existentes, não RED retroativo nem nova prova de inferência.
+
+`git diff --exit-code 3b95fc2 -- backend/src backend/prisma backend/admissions backend/package.json backend/package-lock.json` PASS: produto/DDL/perfil/pins iguais. Prova nativa e revisão semântica permanecem incorporáveis por digest ee8772c8…/fae54d99…, sem repetição. Workflow passa a baixar candidatos completos do run falhado fixo40818184684; metadata de revisão recente atualizada3b95fc2, mesmo seletor/threshold85/zero NoCoverage final. NoCoverage é invalidado somente na entrada de cache e deve ser exercitado pelo Stryker atual. Novo gate integral ainda NOT_RUN; T005 continua IN_PROGRESS.
+
 ## T005 — prova nativa e CI em curso
 
 Fonte3b95fc22843b232aa41ea136ae2d56507ffacd01 publicada. CI40818184684 foundation SUCCESS:1957testes89suites/83tooling,100%linhas97,70%branches, estática/build; mutação corrente ainda em curso, sem score aprovado do código novo.

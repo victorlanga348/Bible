@@ -14,6 +14,7 @@ describe('private cross-references over actual Nest/JWT/Prisma/PostgreSQL, no mo
   const clean = async () => { await database.client.crossReferenceRecord.deleteMany(); await cleanSourceTestData(database); await cleanCanon(database); };
   beforeAll(async () => { database = await openSourceTestDatabase(); app = await createApplication({ ...parseRuntimeConfig(process.env), jwtSecret: secret }); await app.init(); token = await new LocalAccessTokens(secret).issue(p.ownerId); other = await new LocalAccessTokens(secret).issue('other-owner'); });
   beforeEach(async () => { await clean(); await seedCanon(database); await seedCuratedSource(database); });
+  afterEach(() => { jest.restoreAllMocks(); });
   afterAll(async () => { try { if (database) await clean(); } finally { await app?.close(); await database?.onModuleDestroy(); } });
   const post = () => request(app.getHttpServer()).post('/cross-references').auth(token, { type: 'bearer' });
   const list = (reference = p.from.normalized, auth = token) => request(app.getHttpServer()).get('/cross-references').auth(auth, { type: 'bearer' }).query({ translationId: p.from.translationId, reference });
@@ -31,22 +32,22 @@ describe('private cross-references over actual Nest/JWT/Prisma/PostgreSQL, no mo
     expect((await list(p.from.normalized, other).expect(200)).body).toEqual({ items: [], nextCursor: null });
   });
   it('requires a real JWT and hides another owner identically to missing', async () => {
-    await request(app.getHttpServer()).post('/cross-references').send(body()).expect(401); const view = (await post().send(body()).expect(201)).body;
+    const unauthorized = await request(app.getHttpServer()).post('/cross-references').send(body()).expect(401); expect(unauthorized.body).toEqual({ error: { code: 'UNAUTHORIZED', message: 'Autenticação necessária.' } }); const view = (await post().send(body()).expect(201)).body;
     const denied = await request(app.getHttpServer()).get(`/cross-references/${view.id}`).auth(other, { type: 'bearer' }).expect(404);
-    const missing = await request(app.getHttpServer()).get('/cross-references/99999999-9999-4999-8999-999999999999').auth(other, { type: 'bearer' }).expect(404); expect(denied.body).toEqual(missing.body);
+    const missing = await request(app.getHttpServer()).get('/cross-references/99999999-9999-4999-8999-999999999999').auth(other, { type: 'bearer' }).expect(404); expect(denied.body).toEqual(missing.body); expect(missing.body).toEqual({ error: { code: 'NOT_FOUND', message: 'Recurso não encontrado.' } });
     await request(app.getHttpServer()).delete(`/cross-references/${view.id}`).auth(other, { type: 'bearer' }).expect(404); expect(await database.client.crossReferenceRecord.count()).toBe(1);
   });
-  it.each([{ ownerId: 'injected' }, { type: 'invented' }, { reading: 'historical' }, { type: 'prophetic-relation', reading: 'textual' }, { rationale: '' }, { rationale: 'é'.repeat(1001) }, { rationale: '\ud800' }, { evidence: [] }])('rejects invalid or unapproved body %p', async patch => { await post().send({ ...body(), ...patch }).expect(400); expect(await database.client.crossReferenceRecord.count()).toBe(0); });
+  it.each([{ ownerId: 'injected' }, { type: 'invented' }, { reading: 'historical' }, { type: 'prophetic-relation', reading: 'textual' }, { rationale: '' }, { rationale: 'é'.repeat(1001) }, { rationale: '\ud800' }, { evidence: [] }])('rejects invalid or unapproved body %p', async patch => { const response = await post().send({ ...body(), ...patch }).expect(400); expect(response.body).toEqual({ error: { code: 'VALIDATION_ERROR', message: 'Entrada inválida.' } }); expect(await database.client.crossReferenceRecord.count()).toBe(0); });
   it.each([{ limit: '0' }, { limit: '51' }, { cursor: 'invalid' }, { owner: 'injected' }])('rejects malformed list query %p before reading', async patch => { await list().query(patch).expect(400); });
   it('rejects invalid paths, query/body fields and self-relations', async () => {
     await request(app.getHttpServer()).get('/cross-references/not-a-uuid').auth(token, { type: 'bearer' }).expect(400);
-    await post().send({ ...body(), to: body().from }).expect(400);
+    const invalid = await post().send({ ...body(), to: body().from }).expect(400); expect(invalid.body).toEqual({ error: { code: 'VALIDATION_ERROR', message: 'Entrada inválida.' } });
     await post().query({ owner: 'injected' }).send(body()).expect(400);
     const view = (await post().send(body()).expect(201)).body;
     await request(app.getHttpServer()).delete(`/cross-references/${view.id}`).auth(token, { type: 'bearer' }).send({ owner: 'injected' }).expect(400);
   });
   it('returns explicit source rejection and suppresses a quote after revocation', async () => {
-    await post().send({ ...body(), evidence: [{ excerptId: 'missing', startOffset: 0, endOffset: 1 }] }).expect(422);
+    const rejected = await post().send({ ...body(), evidence: [{ excerptId: 'missing', startOffset: 0, endOffset: 1 }] }).expect(422); expect(rejected.body).toEqual({ error: { code: 'RELATION_EVIDENCE_REJECTED', message: 'Não foi possível validar as evidências da relação.' } });
     const view = (await post().send(body()).expect(201)).body;
     await database.client.sourceLibrarySource.update({ where: { id: sourceFixture.id }, data: { permissions: { ...sourceFixture.permissions, quote: 'denied' } } });
     const read = (await request(app.getHttpServer()).get(`/cross-references/${view.id}`).auth(token, { type: 'bearer' }).expect(200)).body; expect(read.evidence[0]).toMatchObject({ availability: 'restricted', quote: null }); await post().send(body()).expect(422);
@@ -59,5 +60,12 @@ describe('private cross-references over actual Nest/JWT/Prisma/PostgreSQL, no mo
   it('describes the actual routes, bearer access, cursor and evidence rejection in OpenAPI', async () => {
     const openapi = (await request(app.getHttpServer()).get('/openapi.json').expect(200)).body;
     expect(openapi.paths['/cross-references'].post.responses['201']).toBeDefined(); expect(openapi.paths['/cross-references'].post.responses['422']).toBeDefined(); expect(openapi.paths['/cross-references'].get.parameters.some((q: { name: string }) => q.name === 'cursor')).toBe(true); expect(openapi.paths['/cross-references/{id}'].delete.responses['204']).toBeDefined(); expect(openapi.paths['/cross-references'].post.security).toEqual([{ bearer: [] }]);
+  });
+
+  it('logs only structured safe error metadata without bearer, owner, rationale or evidence text', async () => {
+    const logged: unknown[][] = []; jest.spyOn(console, 'info').mockImplementation((...args: unknown[]) => { logged.push(args); });
+    await request(app.getHttpServer()).post('/cross-references').send(body()).expect(401);
+    expect(logged).toHaveLength(1); const event = JSON.parse(String(logged[0]![0])); expect(event).toEqual({ component: 'http', code: 'UNAUTHORIZED', status: 401 });
+    const serialized = JSON.stringify(logged); for (const privateValue of [token, p.ownerId, p.rationale]) expect(serialized).not.toContain(privateValue);
   });
 });
