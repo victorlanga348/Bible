@@ -1,3 +1,5 @@
+Checkpoint T005 IN_PROGRESS: regressões existentes53boundariesPASS/24guardsPASS/4integraçõesPG+NestPASS/66HTTP+cursorPASS; novos casos IA/lifecycle11PASS e4FAIL de expectativa do harness corrigidos para AiUnavailableError com causa AiModelInputError; quatro port-cases e causa de cleanup5PASS. Não são RED retroativos de comportamento já correto. Preparação operacional:2FAIL3PASS pela dependência de fixture/configuração ausente→5PASS; snapshot integral14c2103d… byte-idêntico. Typecheck final/lint/build/88tooling PASS (typecast inválido de teste corrigido, origem preservada). SRC/Prisma/package/modelos/prompt inalterados; só admissão operacional/script/testes e metadata de cache mudaram. CI atual a publicar; recuperação/performance/nativa S08 ainda NOT_RUN. [Plano/evidências](tasks/S08-T005-hardening-recovery.md).
+
 T004 documental DONE: SPEC/cenários/metas/ambiente definidos por delegação antes de implementação. Auditoria2026-10-29T15:52:07.895Z PASS6Markdown37links/zero alertas; TDD/gates2–6 não aplicáveis a esta definição pura. T005 READY, integrações/recuperação/performance/gates S08 ainda NOT_RUN.
 
 # S08 — Relatório de testes

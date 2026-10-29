@@ -41,7 +41,7 @@ describe('AI-owned metadata history and cleanup with real SQL, no runtime', () =
   await seed(); await new PrismaAnalysisStore(database).create(new AnalysisDocument({ ...analysisDocument(), ownerId: owner }));
   await database.client.$executeRaw`CREATE FUNCTION app.history_test_fail_delete() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'controlled-history-cleanup-failure'; END $$`;
   await database.client.$executeRaw`CREATE TRIGGER history_test_fail_delete BEFORE DELETE ON app.ai_analysis FOR EACH ROW EXECUTE FUNCTION app.history_test_fail_delete()`;
-  try { await expect(library.deleteForStudy(owner, studyId)).rejects.toThrow(AiUnavailableError); expect(await database.client.aiConversation.count()).toBe(1); expect(await database.client.aiAnalysis.count()).toBe(1); }
+  try { const rejected=library.deleteForStudy(owner, studyId);await expect(rejected).rejects.toThrow(AiUnavailableError);await expect(rejected).rejects.toMatchObject({cause:expect.any(Error),message:expect.stringMatching(/\S/)}); expect(await database.client.aiConversation.count()).toBe(1); expect(await database.client.aiAnalysis.count()).toBe(1); }
   finally { await database.client.$executeRaw`DROP TRIGGER history_test_fail_delete ON app.ai_analysis`; await database.client.$executeRaw`DROP FUNCTION app.history_test_fail_delete()`; }
  });
  it('preserves the SQL cause without pretending an unavailable history is empty', async () => {

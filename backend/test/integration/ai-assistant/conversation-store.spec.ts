@@ -103,4 +103,9 @@ describe('conversation persistence/CAS/cleanup, actual PostgreSQL and genuine so
     try { await expect(store.delete(document.ownerId, document.id)).rejects.toThrow(AiUnavailableError); expect(await store.find(document.ownerId, document.id)).toEqual(next); expect(await database.client.aiAnalysis.count()).toBe(1); }
     finally { await database.client.$executeRawUnsafe('DROP TRIGGER conversation_test_reject_delete ON app.ai_analysis'); await database.client.$executeRawUnsafe('DROP FUNCTION app.conversation_test_reject_delete()'); }
   });
+  it.each([-1,NaN,0.5,Number.MAX_SAFE_INTEGER+1])('release: rejects invalid direct repository CAS revision %p without changing real history',async expected=>{
+    const current=await seed();const next=current.append(0,{question:'Technical direct CAS boundary',analysisId:'99999999-9999-4999-8999-999999999999',createdAt:current.createdAt,contextTurnNumbers:[],omittedTurns:0,revisesTurn:null});
+    const rejected=store.replace(next,expected);await expect(rejected).rejects.toThrow(AiUnavailableError);await expect(rejected).rejects.toMatchObject({cause:expect.any(AiModelInputError)});expect((await store.find(current.ownerId,current.id))!.revision).toBe(0);
+  });
+
 });

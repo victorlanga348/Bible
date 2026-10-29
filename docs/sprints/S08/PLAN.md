@@ -1,6 +1,6 @@
 # S08 — Hardening e Release
 
-Estado vigente2026-10-29: IN_PROGRESS/T004 documental, S07 encerrada4d43e73. [SPEC](SPEC.md) aceite por delegação e [cenários](tasks/S08-T004-release-scenarios.md); planos/TDD antes de implementação T005, provas/gates T006, prontidão T007. Autorização integral cobre decisões/commits/push, uma tarefa por vez/sem agentes. Rascunho seguinte histórico.
+Estado vigente2026-10-29: IN_PROGRESS/T004 DONE documental/T005 IN_PROGRESS, S07 encerrada4d43e73. [SPEC](SPEC.md) aceite por delegação e [cenários](tasks/S08-T004-release-scenarios.md); planos/TDD antes de implementação T005, provas/gates T006, prontidão T007. Autorização integral cobre decisões/commits/push, uma tarefa por vez/sem agentes. Rascunho seguinte histórico.
 
 Estado: RASCUNHO para refinamento; sprint BACKLOG. Documento preparado em S00, sem autorização de execução.
 Branch: feat/biblia-backend. Commit: PENDING. Dependência: S07 encerrada e nova aprovação.

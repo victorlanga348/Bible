@@ -233,4 +233,10 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     expect(await database.client.aiAnalysis.count()).toBe(0); expect(context.llm.select).not.toHaveBeenCalled();
   });
 
+  it.each([0,4])('release: rejects invalid index-port result cardinality %p before generation or persistence',async count=>{
+    const context=await setup();const search=context.index.search.bind(context.index);
+    jest.spyOn(context.index,'search').mockImplementationOnce(async(...args)=>{const actual=await search(...args);expect(actual.length).toBeGreaterThan(0);return count===0?[]:Array.from({length:4},()=>actual[0]!);});
+    await expect(context.library.create(owner,context.study.id,1,question)).rejects.toThrow(AiResultRejectedError);expect(context.llm.select).not.toHaveBeenCalled();expect(await database.client.aiAnalysis.count()).toBe(0);
+  });
+
 });

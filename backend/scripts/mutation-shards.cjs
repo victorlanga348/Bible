@@ -107,7 +107,7 @@ async function main(args) {
     if (existsSync(`${folder}/seed/mutation.json`)) {
       const seedBytes = readFileSync(`${folder}/seed/mutation.json`);
       const seedSha256 = createHash('sha256').update(seedBytes).digest('hex');
-      assert.equal(seedSha256, 'fa62cc5ae0b1be9a3cd28984ac3a601de1e427d7571cacab6f34e4486b04748c', 'Unverified complete seed');
+      assert.equal(seedSha256, 'e755f92db54fca6b80268fb91837ca51170df79487accd6f75c2bd1d3452e062', 'Unverified complete seed');
       const seed = JSON.parse(seedBytes.toString('utf8')); verifyAiMutationReport(seed);
       const localBytes = existsSync(`${folder}/incremental.json`) ? readFileSync(`${folder}/incremental.json`) : null;
       let choice = chooseIncremental(localBytes ? JSON.parse(localBytes.toString('utf8')) : undefined, seed, expected, config.mutate);
@@ -124,7 +124,7 @@ async function main(args) {
         if (localBytes) writeFileSync(`${folder}/incremental-before-full-seed.json`, localBytes);
         writeFileSync(`${folder}/incremental.json`, selectedBytes);
       }
-      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '2ec7918874ebbe29afb32fa738cddf92624e6d0a', recentCandidateRevision: '265dfceed9a6070edd2fdd91135068c66832ae40', selectedSha256: selectedBytes ? createHash('sha256').update(selectedBytes).digest('hex') : null, seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
+      write(`${folder}/seed-selection.json`, { selected: choice.selected, matchingMutants: choice.matchingMutants, seedRevision: '6a5142e37c6f95abe44ae91f4863d995e3f2c483', recentCandidateRevision: '265dfceed9a6070edd2fdd91135068c66832ae40', selectedSha256: selectedBytes ? createHash('sha256').update(selectedBytes).digest('hex') : null, seedSha256, localSha256: localBytes ? createHash('sha256').update(localBytes).digest('hex') : null, reason: 'Input only; Stryker revalidates changes and the complete current gate remains mandatory' });
       console.log(JSON.stringify({ incrementalInput: choice.selected, matchingMutants: choice.matchingMutants }));
     }
     if (existsSync(`${folder}/incremental.json`)) {

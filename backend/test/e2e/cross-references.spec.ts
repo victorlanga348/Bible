@@ -68,4 +68,18 @@ describe('private cross-references over actual Nest/JWT/Prisma/PostgreSQL, no mo
     expect(logged).toHaveLength(1); const event = JSON.parse(String(logged[0]![0])); expect(event).toEqual({ component: 'http', code: 'UNAUTHORIZED', status: 401 });
     const serialized = JSON.stringify(logged); for (const privateValue of [token, p.ownerId, p.rationale]) expect(serialized).not.toContain(privateValue);
   });
+  it('finds partial overlap inside a multi-verse target and after reversing its endpoints',async()=>{
+    const direct={...body(),to:{translationId:p.to.translationId,reference:'JHN 3:16-18'}};
+    const first=(await post().send(direct).expect(201)).body;const reverse={...direct,from:direct.to,to:direct.from};const second=(await post().send(reverse).expect(201)).body;
+    const middle=await list('JHN 3:17').expect(200);expect(new Set(middle.body.items.map((r:{id:string})=>r.id))).toEqual(new Set([first.id,second.id]));
+    expect((await list('JHN 3:16-17').expect(200)).body.items).toHaveLength(2);expect((await list('JHN 3:18').expect(200)).body.items).toHaveLength(2);
+    expect((await list('GEN 1:1').expect(200)).body.items).toHaveLength(2);
+  });
+  it.each([2,3,4])('preserves %p distinct nonzero spans from the authentic paragraph through HTTP',async count=>{
+    const evidence=Array.from({length:count},(_,index)=>({excerptId:p.evidence[0]!.excerptId,startOffset:5+index*40,endOffset:35+index*40}));
+    const created=(await post().send({...body(),evidence}).expect(201)).body;expect(created.evidence).toHaveLength(count);
+    for(const [index,ref]of created.evidence.entries()){expect(ref.startOffset).toBe(evidence[index]!.startOffset);expect(ref.endOffset).toBe(evidence[index]!.endOffset);expect(ref.quote.length).toBeGreaterThan(0);expect(Array.from(ref.quote)).toHaveLength(30);expect(ref.availability).toBe('available');}
+    expect((await request(app.getHttpServer()).get('/cross-references/'+created.id).auth(token,{type:'bearer'}).expect(200)).body).toEqual(created);
+  });
+
 });

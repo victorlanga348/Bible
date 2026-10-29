@@ -206,4 +206,14 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     expect((await database.client.aiConversation.findUniqueOrThrow({ where: { id: conversation.id } })).revision).toBe(0);
   });
 
+  it('release: keeps the actual CAS conflict when compensation finds its analysis already deleted',async()=>{
+    const context=await setup();const view=await context.library.create(owner,context.study.id,1);const create=context.analyses.create.bind(context.analyses);
+    jest.spyOn(context.analyses,'create').mockImplementationOnce(async(...args)=>{
+      const result=await create(...args);await context.analyses.delete(owner,result.id);
+      const winner=await context.library.append(owner,view.id,0,question);expect(winner.revision).toBe(1);return result;
+    });
+    await expect(context.library.append(owner,view.id,0,question)).rejects.toThrow(ConversationConflictError);
+    expect((await context.library.read(owner,view.id)).revision).toBe(1);expect(await database.client.aiAnalysis.count()).toBe(1);expect(context.llm.select).toHaveBeenCalledTimes(2);
+  });
+
 });
