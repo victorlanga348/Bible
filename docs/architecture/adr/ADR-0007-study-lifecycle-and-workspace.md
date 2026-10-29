@@ -6,6 +6,8 @@ Aceite pelo agente delegado2026-10-29 antes da implementação S07, sob autoriza
 
 Notas/favoritos e respostas podem competir com eliminação de estudo/conversa. Validar existência e gravar filho numa segunda operação permite órfãos; transação durante inferência retém pools/locks por minutos. Tabelas de módulos diferentes não devem ser consultadas/apagadas por outro proprietário. Os bancos principal e vetorial continuam distintos; o índice contém fontes, não filhos de estudo.
 
+Precisão antes de T006: [ADR-0008](ADR-0008-short-main-database-write-scope.md) exige a mesma transação/conexão para lock do pai e escrita do filho por capacidade opaca. Callback não abre uma segunda transação. Fluxo público e fases de eliminação permanecem iguais.
+
 ## Decisão
 
 study_record recebe lifecycle active/deleting, default active para os estudos existentes. StudyLibrary expõe beginDelete/finishDelete e guardActive(owner,id,write), além de listagem própria de metadados. O guard é uma capacidade técnica específica para a consistência deste ciclo, implementada no repositório de study com SELECT FOR UPDATE da sua linha dentro de transação curta. Verifica owner/active antes do callback. Callback faz somente persistência pequena de um módulo e retorna; não recebe transaction/Prisma/table de study. Cada módulo continua a executar suas próprias consultas. Deadline/timeout do banco continuam aplicáveis; falha aborta a confirmação.

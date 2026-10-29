@@ -1,3 +1,32 @@
+# Checkpoint S07-T006 —2026-10-29
+
+IN_PROGRESS; [plano/decisões/harness](tasks/S07-T006-workspace-lifecycle.md), [ADR-0008](../../architecture/adr/ADR-0008-short-main-database-write-scope.md). Nenhum gate completo atual aprovado antecipadamente. Comandos reais npm via RTK, fallback PowerShell/Python UTF-8. Logs em backend/reports/s07-t006-*.log ignorados, preservados.
+
+| Recorte | Execução/evidência |
+|---|---|
+| Capacidade opaca/PG real | scope-red7FAIL Not implemented→scope-green7PASS3,041s |
+| Migração9/schema | schema-before12FAIL por objetos ausentes: configuração/não RED de negócio; generate/migrate-test exit0,9migrações app/1ai, somente biblia_test; schema-after12PASS3,735s |
+| Lifecycle PG | lifecycle-red-corrected7FAIL→lifecycle-green7PASS3,139s; primeiro harness de barreira corrigido antes da prova causal |
+| Study Application | study-library-red7FAIL→study-green-regression41PASS/5suites11,786s |
+| Corridas IA | ai-lifecycle-red4FAIL causais→ai-lifecycle-green4PASS7,845s; modelo/insuficiência/conversa/CAS após marca recusados sem filho |
+| Histórico AI | history-red7FAIL→history-green7PASS2,567s; transação de cleanup/erro SQL reais |
+| Domínio workspace | domain-red41FAIL→domain-green41PASS2,482s; notas UTF-8/imutabilidade/revisões/favoritos |
+| Repositório workspace | store-red8FAIL→store-green8PASS2,902s; SQL/idempotência/CAS/rollback/owners |
+| Application workspace | application-red13FAIL→application-green-corrected13PASS6,866s; assert anterior de updatedAt corrigido conforme SPEC, log original preservado |
+| Nest/JWT/Supertest/PG | http-red26FAIL por rotas ausentes→http-green26PASS13,926s; dez operações/OpenAPI/400401404409503/limite8000bytes |
+| Regressões de concorrência | concurrency-regression45PASS/4suites19,040s; timeout SQL real faz rollback e revoga scope, corrida de cada escrita de workspace, página de favoritos ocultos e CAS público concorrente |
+| Regressão AI agrupada | ai-regression131total/119PASS12FAIL/5suites448,601s, AiTimeoutError na preparação do índice (budget técnico5s), não PASS global |
+| Reexecução da suite falhada | analysis-isolated-regression69/69PASS110,959s, mesmo produto/prazos/fixtures; quatro restantes suites da execução agrupada PASS. Verificações adicionais novas ainda pendentes |
+| Tooling | tooling83total81PASS2FAIL77,651s: statusnull em subprocessos com timeout15s; repetição isolada83/83PASS15,621s, sem relaxar prazos |
+| Estática | typecheck final/lint current PASS após correções de representação opcionais; final-typecheck/final-lint/final-build PASS após os ajustes de testes/harness |
+| Cobertura dirigida | affected-coverage161testes/12suites PASS150,639s;309/309linhas100%,177/187branches94,65%,480/486statements98,76%,139/139functions100%. Recorte explícito workspace/scope/Study/history/adapter, não cobertura global atual |
+| CI/cobertura global/mutação atuais | NOT_RUN até publicação do checkpoint; seed2ec verificado é entrada, nunca aprovação do produto novo |
+| Desenvolvimento/nativo | migração9 ainda NOT_RUN em dev; backup/preservação e prova real pendentes, dev permanece8 |
+
+TDD de revisão durante builder: revision-race-red1FAIL/1PASS, falha causal StudyConflict versus404 quando eliminação já terminou; correção em Application mantém o contrato anterior do repositório para id/owner ausentes. Regressão incluída nos45PASS. Banco teste confirmado biblia_test/biblia_test antes de limpar/DDL; nenhum modelo nativo executado, estudos/fontes/corpus de desenvolvimento intactos. [Incidente e recuperação](../../megabrain/errors/ERR-0024-local-validation-contention.md). Duas verificações pesadas correram simultaneamente na execução que falhou; isso é contexto observado, não causa específica de host comprovada. Repetir isoladamente e preservar os resultados reais.
+
+Os checkpoints anteriores abaixo são históricos; não encerram T006 ou S07.
+
 Auditoria documental de fecho T005 PASS2026-10-29T06:30:49.836Z:12Markdown85links, zero missing/secretHits/whitespace/prohibited/staged, comando node backend/reports/check-completion-docs.cjs.
 
 Estado corrente de referências cruzadas: [revisão T005](T005_COMPLETION_REPORT.md). CI40827091922 foundation PASS1976testes/90suites/83tooling,100%linhas97,91%branches; mutação atual PASS nos oito jobs. Global90,1858027632%/IA89,4138232721%/relações+paginação89,8734177215%,5758mutantes/zero RuntimeError+NoCoverage; agregado fa62cc5a…/95fontes conferidas, seis NoCoverage anteriores agora Killed. [Sobreviventes/lacunas S08](MUTATION_REVIEW.md). T005 DONE técnico, T006 READY. Histórico de checkpoints abaixo preservado por data/revisão, sem substituir o estado corrente.

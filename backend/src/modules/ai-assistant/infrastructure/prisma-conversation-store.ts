@@ -1,3 +1,5 @@
+import type { WriteScope } from '../../../application/write-scope';
+import { writeTransaction } from '../../../infrastructure/write-scope';
 import type { Database } from '../../../infrastructure/database';
 import type { ConversationStorePort } from '../application/conversation-ports';
 import { ConversationDocument, type ConversationProps } from '../domain/conversation';
@@ -23,11 +25,11 @@ function hydrate(row: StoredConversation): ConversationDocument {
 
 export class PrismaConversationStore implements ConversationStorePort {
   constructor(private readonly database: Database) {}
-  async create(input: ConversationDocument, signal?: AbortSignal): Promise<void> {
+  async create(input: ConversationDocument, signal?: AbortSignal, scope?: WriteScope): Promise<void> {
     try {
       active(signal); const document = new ConversationDocument(input);
       if (document.revision !== 0) throw new AiModelInputError();
-      await this.database.client.$transaction(async transaction => {
+      await writeTransaction(this.database, scope, async transaction => {
         active(signal);
         await transaction.aiConversation.create({ data: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), revision: 0, document: json(document), createdAt: new Date(document.createdAt) } });
         active(signal);
@@ -38,11 +40,11 @@ export class PrismaConversationStore implements ConversationStorePort {
     try { const row = await this.database.client.aiConversation.findFirst({ where: { id, ownerId } }); return row ? hydrate(row) : null; }
     catch (cause) { return unavailable(cause); }
   }
-  async replace(input: ConversationDocument, expectedRevision: number, signal?: AbortSignal): Promise<boolean> {
+  async replace(input: ConversationDocument, expectedRevision: number, signal?: AbortSignal, scope?: WriteScope): Promise<boolean> {
     try {
       active(signal); const document = new ConversationDocument(input);
       if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || document.revision !== expectedRevision + 1) throw new AiModelInputError();
-      return await this.database.client.$transaction(async transaction => {
+      return await writeTransaction(this.database, scope, async transaction => {
         active(signal);
         const result = await transaction.aiConversation.updateMany({ where: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), createdAt: new Date(document.createdAt), revision: expectedRevision }, data: { document: json(document), revision: document.revision } });
         active(signal); return result.count === 1;

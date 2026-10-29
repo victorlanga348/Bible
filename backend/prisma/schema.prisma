@@ -18,6 +18,7 @@ model AiConversation {
   document Json @db.JsonB
   createdAt DateTime @map("created_at") @db.Timestamptz(3)
   @@index([ownerId,id], map: "ai_conversation_owner_id_idx")
+  @@index([ownerId,studyId,createdAt(sort: Desc),id(sort: Desc)], map: "ai_conversation_owner_study_created_id_idx")
   @@map("ai_conversation")
   @@schema("app")
 }
@@ -146,6 +147,7 @@ model StudyRecord {
   id String @id @db.Uuid
   ownerId String @map("owner_id")
   currentVersion BigInt @map("current_version")
+  lifecycle String @default("active")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   versions StudyVersion[]
 
@@ -186,5 +188,30 @@ model CrossReferenceRecord {
   @@index([ownerId, fromTranslationId, fromBookCode, fromChapter], map: "cross_reference_owner_from_lookup_idx")
   @@index([ownerId, toTranslationId, toBookCode, toChapter], map: "cross_reference_owner_to_lookup_idx")
   @@map("cross_reference")
+  @@schema("app")
+}
+
+model WorkspaceNote {
+  id String @id @db.Uuid
+  ownerId String @map("owner_id")
+  studyId String @map("study_id") @db.Uuid
+  studyVersion BigInt @map("study_version")
+  revision Int
+  content String
+  createdAt DateTime @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @map("updated_at") @db.Timestamptz(3)
+  @@index([ownerId,studyId,createdAt(sort: Desc),id(sort: Desc)], map: "workspace_note_owner_study_created_id_idx")
+  @@map("workspace_note")
+  @@schema("app")
+}
+model WorkspaceFavorite {
+  id String @id @db.Uuid
+  ownerId String @map("owner_id")
+  studyId String @map("study_id") @db.Uuid
+  studyVersion BigInt @map("study_version")
+  createdAt DateTime @map("created_at") @db.Timestamptz(3)
+  @@unique([ownerId,studyId,studyVersion], map: "workspace_favorite_owner_study_version_key")
+  @@index([ownerId,createdAt(sort: Desc),id(sort: Desc)], map: "workspace_favorite_owner_created_id_idx")
+  @@map("workspace_favorite")
   @@schema("app")
 }

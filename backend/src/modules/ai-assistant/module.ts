@@ -1,3 +1,5 @@
+import { AiHistoryLibrary } from './application/ai-history-library';
+import { PrismaHistoryStore } from './infrastructure/prisma-history-store';
 import { Module, type DynamicModule } from '@nestjs/common';
 import { join } from 'node:path';
 import type { RuntimeConfig } from '../../config/runtime-config';
@@ -61,10 +63,11 @@ async function compose(config: RuntimeConfig, database: Database, sourceLibrary:
 export class AiAssistantModule {
   static register(config: RuntimeConfig): DynamicModule {
     return { module: AiAssistantModule, imports: [SourceLibraryModule, StudyModule], controllers: [AiAnalysisController, ConversationController], providers: [
+      { provide: AiHistoryLibrary, useFactory: (database: Database) => new AiHistoryLibrary(new PrismaHistoryStore(database)), inject: [Database] },
       { provide: resourcesToken, useFactory: (database: Database, sources: SourceLibrary, studies: StudyLibrary) => compose(config, database, sources, studies), inject: [Database, SourceLibrary, StudyLibrary] },
       { provide: AiAnalysisLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.library, inject: [resourcesToken] },
       { provide: ConversationLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.conversations, inject: [resourcesToken] },
       { provide: SourceIndexingLibrary, useFactory: (resources: Awaited<ReturnType<typeof compose>>) => resources.indexer, inject: [resourcesToken] },
-    ], exports: [AiAnalysisLibrary, SourceIndexingLibrary, ConversationLibrary] };
+    ], exports: [AiAnalysisLibrary, SourceIndexingLibrary, ConversationLibrary, AiHistoryLibrary] };
   }
 }

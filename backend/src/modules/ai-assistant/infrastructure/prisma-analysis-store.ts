@@ -1,3 +1,5 @@
+import type { WriteScope } from '../../../application/write-scope';
+import { writeTransaction } from '../../../infrastructure/write-scope';
 import type { Database } from '../../../infrastructure/database';
 import type { AnalysisStorePort } from '../application/analysis-ports';
 import { AnalysisDocument, type AnalysisDocumentProps } from '../domain/analysis-document';
@@ -7,10 +9,10 @@ import { AiUnavailableError } from '../application/errors';
 
 export class PrismaAnalysisStore implements AnalysisStorePort {
   constructor(private readonly database: Database) {}
-  async create(input: AnalysisDocument, signal?: AbortSignal): Promise<void> {
+  async create(input: AnalysisDocument, signal?: AbortSignal, scope?: WriteScope): Promise<void> {
     if (signal?.aborted) throw new AiUnavailableError();
     const document = new AnalysisDocument(input);
-    await this.database.client.$transaction(async transaction => {
+    await writeTransaction(this.database, scope, async transaction => {
       if (signal?.aborted) throw new AiUnavailableError();
       await transaction.aiAnalysis.create({ data: { id: document.id, ownerId: document.ownerId, studyId: document.studyId, studyVersion: BigInt(document.studyVersion), document: JSON.parse(JSON.stringify(document)) as Prisma.InputJsonValue, createdAt: new Date(document.createdAt) } });
       if (signal?.aborted) throw new AiUnavailableError();

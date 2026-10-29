@@ -1,8 +1,9 @@
 # S07 — Revisão técnica
 
-Estado: NOT_RUN; sprint não executada, sem aprovação de encerramento. Commit PENDING.
-A decomposição documental não comprova implementação, testes ou conformidade arquitetural executável.
-Antes da revisão final verificar [critérios](ACCEPTANCE_CRITERIA.md), [relatório](TEST_REPORT.md), imports/fronteiras, migrações reais, segredos, ações externas, direitos e limitações. Evidenciar todos os gates aplicáveis e tratar falhas antes de pedir aprovação.
-Riscos atuais: contratos ainda em rascunho e dependências específicas do [PLAN](PLAN.md). Não declarar release ou funcionalidades concluídas.
-Pergunta de fechamento: **"Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?"**
-AGUARDANDO APROVAÇÃO: apenas planeamento; a execução precisa de pedido próprio depois de encerrada a sprint anterior.
+IN_PROGRESS2026-10-29. T004/T005 concluídas tecnicamente/fecho26d1271, [relações](T005_COMPLETION_REPORT.md) e [mutação](MUTATION_REVIEW.md); S07 ainda não encerrada. T006 em execução conforme [plano](tasks/S07-T006-workspace-lifecycle.md)/SPEC/ADR-0008, com dez endpoints HTTP reais e TDD de lifecycle/workspace. Cobertura/mutação/integração nativa atuais e T007 ainda pendentes. S08 depende do fecho real desta sprint.
+
+Revisão modular parcial: cada repositório consulta apenas tabelas próprias; guard Study passa capacidade opaca vinculada à mesma transação principal, sem Prisma nos ports, sem segunda conexão de filho ou inferência sob lock. Cleanup atravessa fachadas públicas de Study/AI/workspace; nenhuma transação distribuída com índice. Notas e favoritos pertencem ao estudo/versão; relações canónicas independentes. Nenhuma dependência nova. Dados de desenvolvimento e segredos preservados; migração9 somente teste até prova nativa guardada.
+
+Falhas locais/harness, causas demonstradas e limites constam do [relatório](TEST_REPORT.md). Não confundir timeout de setup com RED de negócio ou aprovação. Sobreviventes anteriores mantêm estados brutos; novas análises integrais ainda obrigatórias. Encerramento/commit/push autorizados por instrução vigente, sem novas perguntas, mas nenhum DONE sem os gates reais.
+
+Pergunta documental: **Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?** A auditoria de cada checkpoint e a revisão final devem confrontar o diff com a documentação antes do fecho.

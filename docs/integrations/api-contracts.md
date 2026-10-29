@@ -1,3 +1,5 @@
+Estado S07-T006: dez operações privadas de workspace implementadas conforme [SPEC S07](../sprints/S07/SPEC.md), com26testes Nest/JWT/Supertest/PostgreSQL PASS. Notas CAS/revision e favoritos idempotentes referem estudo/versão; históricos são metadados sem regeneração. Eliminação retomável devolve204 só após todos os proprietários confirmarem.400/401/404/409WORKSPACE_CONFLICT/503WORKSPACE_UNAVAILABLE sanitizados e OpenAPI real. Gate completo atual e prova nativa ainda pendentes; implementação não equivale a fecho da tarefa. Registos históricos abaixo preservados.
+
 # Contratos de API
 
 S07 contratos aceites pelo agente delegado2026-10-29 antes de código: [SPEC S07](../sprints/S07/SPEC.md), relações privadas com fundamento/fontes atuais, notas/favoritos versionados, histórico keyset e eliminação modular repetível. Ainda NOT_RUN; entrega S06 permanece comprovada. Sem campos/endpoints implícitos além da SPEC.

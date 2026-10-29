@@ -17,7 +17,7 @@ describe('private study snapshots and optimistic versions on real PostgreSQL', (
     expect(saved.createdAt).toBe(new Date(saved.createdAt).toISOString());
     expect(await repository.find('Owner.A_1', saved.id)).toEqual(saved);
     expect(await repository.find('Owner.A_1', saved.id, 1)).toEqual(saved);
-    expect(await database.client.studyRecord.findUnique({ where: { id: saved.id } })).toEqual({ id: saved.id, ownerId: 'Owner.A_1', currentVersion: 1n, createdAt: new Date(saved.createdAt) });
+    expect(await database.client.studyRecord.findUnique({ where: { id: saved.id } })).toEqual({ id: saved.id, ownerId: 'Owner.A_1', currentVersion: 1n, lifecycle: 'active', createdAt: new Date(saved.createdAt) });
     expect((await database.client.studyVersion.findMany()).map(row => row.document)).toEqual([input]);
   });
   it('filters owner in persistence and distinguishes absent versions', async () => {

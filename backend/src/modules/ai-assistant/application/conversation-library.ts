@@ -17,7 +17,7 @@ export class ConversationLibrary {
     if (!Number.isSafeInteger(studyVersion) || studyVersion < 1) throw new AiModelInputError();
     const study = await this.studies.read(ownerId, studyId, studyVersion);
     const document = new ConversationDocument({ schemaVersion: 1, id: this.identity.newId(), ownerId, studyId: study.id, studyVersion: study.version, createdAt: this.identity.now(), turns: [] });
-    await this.store.create(document, signal); return this.deliver(ownerId, document);
+    await this.studies.guardActive(ownerId, study.id, scope => this.store.create(document, signal, scope)); return this.deliver(ownerId, document);
   }
   private async load(ownerId: string, id: string): Promise<ConversationDocument> {
     const document = await this.store.find(ownerId, id); if (!document) throw new AiNotFoundError();
@@ -54,7 +54,7 @@ export class ConversationLibrary {
       analysis = await this.analyses.create(ownerId, document.studyId, document.studyVersion, question.trim(), signal, context.question);
       active(signal); coherent(document, analysis, question.trim());
       next = document.append(expectedRevision, { question: question.trim(), analysisId: analysis.id, createdAt: analysis.createdAt, contextTurnNumbers: context.contextTurnNumbers, omittedTurns: context.omittedTurns, revisesTurn, contextVersion: context.contextVersion });
-      if (!await this.store.replace(next, expectedRevision, signal)) throw new ConversationConflictError();
+      if (!await this.studies.guardActive(ownerId, document.studyId, scope => this.store.replace(next, expectedRevision, signal, scope))) throw new ConversationConflictError();
     } catch (error) {
       if (analysis) {
         try { await this.analyses.delete(ownerId, analysis.id); }

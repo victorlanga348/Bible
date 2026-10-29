@@ -70,7 +70,7 @@ describe('private study application with real canon, sources and persistence', (
     const revoke = async () => { await database.client.sourceLibrarySource.update({ where: { id: sourceFixture.id }, data: { permissions: { ...sourceFixture.permissions, display: 'denied' } } }); };
     // Identified fault boundary: both writes use the actual repository; only the
     // timing of a real source revocation is controlled, after its transaction.
-    const store = { find: services.store.find.bind(services.store),
+    const store = { metadata: services.store.metadata.bind(services.store), list: services.store.list.bind(services.store), guardActive: services.store.guardActive.bind(services.store), beginDelete: services.store.beginDelete.bind(services.store), finishDelete: services.store.finishDelete.bind(services.store), find: services.store.find.bind(services.store),
       create: async (...args: Parameters<typeof services.store.create>) => { const result = await services.store.create(...args); await revoke(); return result; },
       append: async (...args: Parameters<typeof services.store.append>) => { const result = await services.store.append(...args); await revoke(); return result; } };
     const checked = new StudyLibrary(services.builder, store, services.sourcePort);
@@ -84,4 +84,11 @@ describe('private study application with real canon, sources and persistence', (
     await database.client.sourceLibraryExcerpt.update({ where: { id: realEvidence().excerptId }, data: { textSha256: 'a'.repeat(64) } });
     await expect(library.read('owner-a', saved.id)).rejects.toThrow('Source text integrity failure');
   });
+  it.each(['mark','finish'] as const)('lifecycle revision sees404 when deletion %s occurs during the real builder outside a lock', async phase => {
+    const saved = await services.store.create('owner-a', studyContent()); const execute = services.builder.execute.bind(services.builder);
+    jest.spyOn(services.builder, 'execute').mockImplementationOnce(async (...args) => { const content = await execute(...args); await services.store.beginDelete('owner-a', saved.id); if (phase === 'finish') await services.store.finishDelete('owner-a', saved.id); return content; });
+    await expect(library.revise('owner-a', saved.id, 1)).rejects.toThrow(StudyNotFoundError);
+    expect(await database.client.studyVersion.count()).toBe(phase === 'finish' ? 0 : 1);
+  });
+
 });

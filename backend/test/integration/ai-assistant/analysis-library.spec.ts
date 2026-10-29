@@ -1,3 +1,4 @@
+import type { WriteScope } from '../../../src/application/write-scope';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import { assertAiTestTarget } from '../../../src/config/ai-target';
@@ -115,8 +116,13 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     await expect(context.library.create(owner, context.study.id, 1, question)).rejects.toThrow(AiResultRejectedError); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
   it('projects post-commit revocation as restricted while keeping the immutable original decision stored', async () => {
-    const context = await setup(); const real = context.store.create.bind(context.store);
-    jest.spyOn(context.store, 'create').mockImplementation(async document => { await real(document); await database.client.sourceLibrarySource.update({ where: { id: aiSourceFixture.id }, data: { permissions: { ...aiSourceFixture.permissions, sendToAi: 'denied' } } }); });
+    const context = await setup(); const guarded = context.studies.guardActive.bind(context.studies);
+    // Revocation follows the actual parent transaction commit, not an inner callback.
+    jest.spyOn(context.studies, 'guardActive').mockImplementation(async <T>(subject: string, studyId: string, write: (scope: WriteScope) => Promise<T>): Promise<T> => {
+      const result = await guarded(subject, studyId, write);
+      await database.client.sourceLibrarySource.update({ where: { id: aiSourceFixture.id }, data: { permissions: { ...aiSourceFixture.permissions, sendToAi: 'denied' } } });
+      return result;
+    });
     const result = await context.library.create(owner, context.study.id, 1, question); expect(result.status).toBe('restricted'); expect(result.evidence).toEqual([]); expect(result.provenance.consultedSegments).toEqual([]);
     const saved = await context.store.find(owner, result.id); expect(saved!.status).toBe('supported'); expect(saved!.evidenceRefs).toHaveLength(1); expect(saved!.provenance.consultedSegments).toHaveLength(3);
   });
@@ -212,4 +218,19 @@ describe('private analysis Application; real study/source/Prisma/pgvector/lease 
     await database.client.aiAnalysis.update({ where: { id: document.id }, data: { document: value } });
     await expect(context.library.read(owner, document.id)).rejects.toThrow(AiSourceIntegrityError);
   });
+  it('lifecycle: refuses confirmation after deletion during model execution without holding a study lock', async () => {
+    const context = await setup(); const originalSelect = context.llm.select.getMockImplementation()!;
+    context.llm.select.mockImplementationOnce(async (...args) => { await context.studyLibrary.beginDelete(owner, context.study.id); return originalSelect(...args); });
+    await expect(context.library.create(owner, context.study.id, 1, question)).rejects.toThrow(AiNotFoundError);
+    expect(await database.client.aiAnalysis.count()).toBe(0);
+    expect((await database.client.studyRecord.findUniqueOrThrow({ where: { id: context.study.id } })).lifecycle).toBe('deleting');
+  });
+  it('lifecycle: guards insufficient-evidence persistence even when no model is invoked', async () => {
+    const context = await setup({ associate: false, index: false }); const actualRead = context.studies.read.bind(context.studies);
+    // Only the timing boundary is controlled; both Study and AI persistence remain real.
+    jest.spyOn(context.studies, 'read').mockImplementationOnce(async (...args) => { const result = await actualRead(...args); await context.studyLibrary.beginDelete(owner, context.study.id); return result; });
+    await expect(context.library.create(owner, context.study.id, 1, question)).rejects.toThrow(AiNotFoundError);
+    expect(await database.client.aiAnalysis.count()).toBe(0); expect(context.llm.select).not.toHaveBeenCalled();
+  });
+
 });

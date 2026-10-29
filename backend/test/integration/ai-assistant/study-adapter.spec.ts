@@ -1,6 +1,6 @@
 import type { Database } from '../../../src/infrastructure/database';
 import { StudyLibrary } from '../../../src/modules/study/application/study-library';
-import { AiNotFoundError } from '../../../src/modules/ai-assistant/application/errors';
+import { AiNotFoundError, AiUnavailableError } from '../../../src/modules/ai-assistant/application/errors';
 import { LibraryStudyContextAdapter } from '../../../src/modules/ai-assistant/infrastructure/library-study-adapter';
 import { createStudyTestServices } from '../../helpers/study-runtime';
 import { cleanStudyTestData } from '../../helpers/study-database';
@@ -50,4 +50,10 @@ describe('owner/version context through actual public StudyLibrary, no Bible tex
     try { await expect(adapter.read('technical-owner', study.id, 1)).rejects.toMatchObject({ code: 'P2021' }); }
     finally { await database.client.$executeRaw`ALTER TABLE app.study_version_offline_for_ai_test RENAME TO study_version`; }
   });
+  it('maps a real guarded Study SQL failure to unavailable while preserving the cause',async()=>{
+    const {adapter}=services();await database.client.$executeRaw`ALTER TABLE app.study_record RENAME TO ai_guard_test_study_offline`;
+    try{const failing=adapter.guardActive('technical-owner','00000000-0000-0000-0000-000000000000',async()=>7);await expect(failing).rejects.toThrow(AiUnavailableError);await expect(failing).rejects.toMatchObject({cause:expect.any(Error),message:expect.stringMatching(/\S/)});}
+    finally{await database.client.$executeRaw`ALTER TABLE app.ai_guard_test_study_offline RENAME TO study_record`;}
+  });
+
 });

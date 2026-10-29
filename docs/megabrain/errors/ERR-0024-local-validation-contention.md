@@ -1,0 +1,7 @@
+# ERR-0024 — Timeouts locais com duas verificações pesadas em simultâneo
+
+Observado2026-10-29/S07-T006. A regressão de AI131testes e tooling83testes correram simultaneamente no PC8GB. AI:119PASS12FAIL448,601s, falhas em setup de rebuild do índice por AiTimeoutError no orçamento técnico5s; não eram RED de negócio. Tooling:81PASS2FAIL77,651s, subprocessos com timeout configurado15s terminaram com statusnull em cerca16s. A saída original não expõe o campo error de spawnSync; não atribuir código ETIMEDOUT específico como facto sem prova adicional.
+
+Reexecuções sequenciais, sem alterar produto/prazos/fixtures: suite de análise falhada69/69PASS110,959s; tooling83/83PASS15,621s. Demais quatro suites da regressão agrupada já PASS; testes novos subsequentes e cobertura dirigida161/161PASS/12suites150,639s,100%linhas94,65%branches do recorte. Originais FAIL preservados em reports/s07-t006-ai-regression.log e s07-t006-tooling.log; reexecuções em analysis-isolated-regression/tooling-isolated/affected-coverage.
+
+Contexto confirmado é a concorrência das duas execuções e os resultados isolados. Não foi recolhida telemetria suficiente para afirmar raiz em CPU, RAM, Docker, disco ou OneDrive. Não ampliar prazos da aplicação/modelo, parar serviços alheios ou apagar evidências para obter PASS. Neste PC, executar uma validação pesada por vez, deixar CI dedicada fazer os gates integrais e manter inferência nativa separada. O resultado isolado substitui a pendência da respetiva verificação corrente, sem reescrever o histórico ou dispensar os gates da revisão publicada.

@@ -1,3 +1,5 @@
+Estado lógico S07-T006: workspace_note/workspace_favorite e study_record.lifecycle active/deleting, constraints/índices/unique conforme [SPEC S07](../sprints/S07/SPEC.md) e [ADR-0008](adr/ADR-0008-short-main-database-write-scope.md). Migração202610290002_workspace_lifecycle aplicada somente em biblia_test; doze testes de schema/restrições PASS. Sem FK externo. Guard compartilha transação curta entre repositórios proprietários no banco principal, por capacidade opaca; limpeza faseada permanece retomável. Não há transação com o índice vetorial. Desenvolvimento e prova de preservação ainda pendentes desta migração. Registos históricos abaixo preservados.
+
 # Modelo de dados
 
 Modelo S07 aceite2026-10-29 antes de código: [SPEC](../sprints/S07/SPEC.md)/[ADR-0007](adr/ADR-0007-study-lifecycle-and-workspace.md), cross_reference própria/privada sem FK externa, workspace_note/workspace_favorite próprios, study_record.lifecycle e listas de metadados pelos proprietários. Migrações8/9aditivas ainda NOT_RUN; tabelas preexistentes e corpus preservados. Guard curto de escrita e eliminação em fases são contratos, não prova de implementação.

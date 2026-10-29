@@ -69,7 +69,7 @@ export class AiAnalysisLibrary {
   }
   private async persist(ownerId: string, study: AiStudyContext, question: AiQuestion, status: 'supported' | 'insufficient-evidence', evidenceRefs: readonly EvidenceRefProps[], notes: readonly string[], provenance: AnalysisProvenanceProps, signal: AbortSignal): Promise<AiAnalysisView> {
     const document = new AnalysisDocument({ schemaVersion: 1, id: this.identity.newId(), ownerId, studyId: study.id, studyVersion: study.version, createdAt: this.identity.now(), reference: study.reference, question: question.text, status, evidenceRefs, limitations: notes, provenance });
-    await this.store.create(document, signal);
+    await this.studies.guardActive(ownerId, study.id, scope => this.store.create(document, signal, scope));
     return this.deliver(ownerId, document);
   }
   async read(ownerId: string, id: string): Promise<AiAnalysisView> {

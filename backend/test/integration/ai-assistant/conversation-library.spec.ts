@@ -124,9 +124,10 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     expect((await context.library.read(owner, view.id)).revision).toBe(0); expect(await database.client.aiAnalysis.count()).toBe(0);
   });
   it('compensates the losing analysis after an actual PostgreSQL optimistic conflict using a scheduling barrier only', async () => {
-    const context = await setup(); const view = await context.library.create(owner, context.study.id, 1); const replace = context.store.replace.bind(context.store);
+    const context = await setup(); const view = await context.library.create(owner, context.study.id, 1); const create = context.analyses.create.bind(context.analyses);
     let enter!: () => void; let release!: () => void; const entered = new Promise<void>(r => { enter = r; }); const gate = new Promise<void>(r => { release = r; });
-    jest.spyOn(context.store, 'replace').mockImplementationOnce(async (...args) => { enter(); await gate; return replace(...args); });
+    // Pause outside the parent write transaction: a held row lock must serialize writers.
+    jest.spyOn(context.analyses, 'create').mockImplementationOnce(async (...args) => { const result = await create(...args); enter(); await gate; return result; });
     const pending = context.library.append(owner, view.id, 0, question).then(() => null, (error: unknown) => error);
     try { await Promise.race([entered, pending.then(error => { throw new Error('Operation completed before reaching the scheduling barrier', { cause: error }); })]); const winner = await context.library.append(owner, view.id, 0, question); expect(winner.revision).toBe(1); }
     finally { release(); }
@@ -191,4 +192,18 @@ describe('conversation Application with real study/source/SQL/vector; explicit p
     expect(await database.client.aiAnalysis.count()).toBe(0); expect(await context.studies.read(owner, context.study.id, 1)).toMatchObject({ id: context.study.id });
     await expect(context.library.delete(owner, view.id)).rejects.toThrow(AiNotFoundError);
   });
+  it('lifecycle: does not create a conversation after the loaded study starts deletion', async () => {
+    const context = await setup(); const actualRead = context.studies.read.bind(context.studies);
+    jest.spyOn(context.studies, 'read').mockImplementationOnce(async (...args) => { const result = await actualRead(...args); await context.studyLibrary.beginDelete(owner, context.study.id); return result; });
+    await expect(context.library.create(owner, context.study.id, 1)).rejects.toThrow(AiNotFoundError);
+    expect(await database.client.aiConversation.count()).toBe(0);
+  });
+  it('lifecycle: rechecks the parent before turn CAS and compensates only the new analysis', async () => {
+    const context = await setup(); const conversation = await context.library.create(owner, context.study.id, 1); const actualCreate = context.analyses.create.bind(context.analyses);
+    jest.spyOn(context.analyses, 'create').mockImplementationOnce(async (...args) => { const result = await actualCreate(...args); await context.studyLibrary.beginDelete(owner, context.study.id); return result; });
+    await expect(context.library.append(owner, conversation.id, 0, question)).rejects.toThrow(AiNotFoundError);
+    expect(await database.client.aiAnalysis.count()).toBe(0);
+    expect((await database.client.aiConversation.findUniqueOrThrow({ where: { id: conversation.id } })).revision).toBe(0);
+  });
+
 });

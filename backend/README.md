@@ -1,5 +1,7 @@
 # Backend Bíblia App
 
+S07-T006 em validação: dez endpoints /workspace para estudos/histórico, notas pessoais CAS, favoritos privados idempotentes e eliminação retomável, conforme [contrato](../docs/sprints/S07/SPEC.md).26testes HTTP reais e recorte161testes PASS100%linhas94,65%branches; gates completos/nativo atuais pendentes. Migração9 somente no banco de teste; desenvolvimento permanece8 até backup/preservação.
+
 NestJS/TypeScript strict/Zod/OpenAPI/Prisma/PostgreSQL. Cânone bíblico, fontes e estudos privados versionados entregues em S01–S04; IA/RAG S05 concluída com14/14avaliações reais e revisão semântica PASS.
 
 POST /studies/:studyId/ai-analyses, GET/DELETE /ai-analyses/:analysisId implementados com Bearer/owner, fontes atuais autorizadas, citações literais e persistência de referências/proveniência. Conversas privadas S06 implementadas e verificadas; release/exposição pública permanecem S08. Sem runtime/índice configurados, criação503; leitura/eliminação próprias continuam disponíveis.

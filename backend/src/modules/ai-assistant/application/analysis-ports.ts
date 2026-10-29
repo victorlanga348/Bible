@@ -1,9 +1,10 @@
+import type { WriteScope } from '../../../application/write-scope';
 import type { AnalysisDocument } from '../domain/analysis-document';
 import type { ConsultedSegmentProps } from '../domain/analysis-values';
 import type { AnalysisReferenceProps } from '../domain/analysis-values';
 
 export interface AnalysisStorePort {
-  create(document: AnalysisDocument, signal?: AbortSignal): Promise<void>;
+  create(document: AnalysisDocument, signal?: AbortSignal, scope?: WriteScope): Promise<void>;
   find(ownerId: string, id: string): Promise<AnalysisDocument | null>;
   delete(ownerId: string, id: string): Promise<boolean>;
 }
@@ -29,7 +30,7 @@ export interface AdmittedAiExcerpt extends EligibleAiSourceRef {
 export interface AiSourcesPort { listAdmitted(): readonly EligibleAiSourceRef[]; read(excerptId: string): Promise<AdmittedAiExcerpt | null> }
 export interface AiStudyEvidenceRef extends EligibleAiSourceRef { readonly locator: string }
 export interface AiStudyContext { readonly id: string; readonly version: number; readonly reference: AnalysisReferenceProps; readonly evidenceRefs: readonly AiStudyEvidenceRef[] }
-export interface StudyContextPort { read(ownerId: string, studyId: string, version: number): Promise<AiStudyContext> }
+export interface StudyContextPort { guardActive<T>(ownerId: string, studyId: string, write: (scope: WriteScope) => Promise<T>): Promise<T>; read(ownerId: string, studyId: string, version: number): Promise<AiStudyContext> }
 export interface AiOperationPort { run<T>(execute: (signal: AbortSignal) => Promise<T>, signal?: AbortSignal): Promise<T> }
 export interface AiIdentityClockPort { newId(): string; now(): string }
 export interface AiAnalysisSettings {
