@@ -1,5 +1,17 @@
 # S06 — Relatório de testes
 
+## T006 ? fecho t?cnico2026-10-29
+
+[Fecho](T006_COMPLETION_REPORT.md) e [muta??o](MUTATION_REVIEW.md) consolidam os sete gates: fonte4a34ddb/CI40695319164 oito jobs SUCCESS,1840testes83suites/79tooling,100%linhas97,84%branches;5051mutantes global90,2332%/IA89,4138%,zero RuntimeError/NoCoverage. Prova C01 nativa3/3 e revis?o sem?ntica separada PASS, raw SHA bc08ff2b5caa5888e9a42eb391419f73ab4e2dd3ddef2ac3206553322e7da601; tr?s turnos122713/52287/43129ms. Preserva??o/owner/GET/DELETE/recursos PASS, sem atribuir causa n?o provada ao503 anterior. T006 DONE, T007 READY para seis turnos restantes; S06 IN_PROGRESS.
+
+Auditoria documental real `node backend/reports/check-completion-docs.cjs` PASS2026-10-29T03:30:06.533Z,9Markdown39links,zero missing/secretHits/whitespace/prohibited/staged. Comando nativo do verificador usa git diff --check por ERR-0021. Primeiro arranque da prova foi recusado pelo shell antes de executar por cwd/log destino errado; corrigido para backend, sem tentativa de modelo nem dados a contar. Nenhum script npm fict?cio.
+
+## T006 — contexto v3: bloqueio operacional e diagnóstico controlado
+
+2026-10-28: execução v3 fonte4a34ddb ficou BLOCKED, não FAIL semântico nem PASS. Raw `backend/reports/ai-conversation-local-Y6BaUK/report.json`, SHA256 `1f71c95163b0b6f34a9804f8b338e340de12b52d90d34da5b2f12c9334b7b63c`: C01-T01 PASS106276ms, T02 HTTP50360572ms, T03 BLOCKED por dependência. Auditoria `s06-native-verify-07fdd99e-80be-42b6-a214-433ddc0e4acc.json`: todos os originais preservados; uma adição própria de estudo/versão; análises/conversas removidas e recursos fechados. Causas do503 ainda não demonstradas; cerca de730MB livres é observação, não diagnóstico de falta de memória.
+
+Antes de nova execução: diagnóstico isolado `node reports/s06-runtime-diagnostic.cjs` delegou integralmente ao provider/runtime nativos, sem respostas substituídas. Consulta de embeddings exata do segundo turno passou em20,4s, HTTP200 tokenize/embeddings, encerramento SIGTERM normal; log ignorado `s06-runtime-diagnostic.log`. Não prova a geração nem o diálogo. Decisão de investigação: uma execução adicional da mesma versão congelada via wrapper preservador, com preload exclusivamente observacional que regista fase/kind/endpoint/status/código seguro e indicadores de erro do processo; nunca corpos, ambiente, chave, prompts ou respostas substituídas. É necessário reiniciar os três turnos porque a conversa anterior foi corretamente eliminada; não reconstruir histórico artificial. Preservar o raw BLOCKED original, não ajustar modelo/limites/perguntas/expectativas. Qualquer novo erro exige causa observada antes de outra tentativa. Este diagnóstico não substitui a revisão semântica nem o gate de mutação corrente.
+
 ## T006 — falha real C01v1 e correção versionada em validação
 
 Fonte743d110/CI40686183795: foundation PASS; partes0/4/5 falharam (sem gate aceite).0falhou no dry-run por PID588 ainda visível imediatamente após disconnect do cliente AI; recorrência ERR-0011, teste alinhado à observação já existente2s/10ms exigindo zero, sem alterar timeout/produto.4/5 concluíram análise mas falharam no ledger porque Stryker atualizou a fonte de histórico fora do escopo. Correção RED1→GREEN23 permite fonte histórica intacta ou fonte atual exatamente igual ao inventário atual de nome conhecido, rotulando esta como updated-out-of-scope sem usar seus estados como evidência. Todas as fontes/mutantes atuais continuam obrigatórias no agregado. Brutos/entradas permanecem intactos; falhas não são PASS.

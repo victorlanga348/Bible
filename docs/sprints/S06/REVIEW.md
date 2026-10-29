@@ -1,5 +1,7 @@
 # S06 — Revisão técnica
 
+Estado vigente2026-10-29: T006 DONE t?cnico ap?s [fecho](T006_COMPLETION_REPORT.md), CI40695319164/gates atuais/C01 nativo e sem?ntica3/3PASS. S06 IN_PROGRESS; T007 READY, seis turnos C02?C04 pendentes. Entradas anteriores abaixo s?o hist?ricas.
+
 Estado vigente2026-10-28: T005 DONE técnico após CI40670440360/cc157ea,1759testes75tooling/100%linhas97,82%branches/mutação90,37%global89,59%AI98,28%domínio/zeroRuntimeError+NoCoverage. [Fecho T005](T005_COMPLETION_REPORT.md) reúne digests/327sobreviventes (324históricos+3guards revistos). Auditoria documental antes de commit; T006 READY/T007dependente, S06 IN_PROGRESS. Entradas seguintes históricas.
 
 Revisão T0042026-10-28 pelo agente delegado: [SPEC](SPEC.md) fixa contexto limitado/owner/CAS/retention/riscos/rubrica antes do código, S05 satisfeita1b19623. Nenhum gate de produto S06 cumprido por esta preparação. Contexto de retoma compacto reduz releituras sem remover normas/evidências; decisões concretas são do agente, não escolhas individuais do utilizador. Auditoria documental antes do commit. T005 pode iniciar sequencialmente após fecho T004.
