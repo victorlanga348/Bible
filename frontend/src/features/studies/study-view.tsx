@@ -1,12 +1,30 @@
 import { useState, useEffect } from 'react';
-import { api, type StudyView as IStudyView } from '../../shared/api/services';
+import { useCreateStudy, useStudy } from '../../shared/api/hooks';
 import { useSession } from '../../shared/hooks/use-session';
 import { useToast } from '../../shared/ui/toast';
 import { Button } from '../../shared/ui/button';
 import { Input } from '../../shared/ui/input';
 import { Badge, EpistemicBadge, type EpistemicClassification } from '../../shared/ui/badge';
 import { StudyCardSkeleton } from '../../shared/ui/skeleton';
-import { Compass, Sparkles, BookOpen, Layers } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../shared/ui/dialog';
+import {
+  Compass,
+  Sparkles,
+  BookOpen,
+  Layers,
+  History,
+  FileCheck2,
+  ExternalLink,
+  ShieldCheck,
+  AlertCircle,
+} from 'lucide-react';
+import type { StudyEvidenceDto, StudyViewDto } from '../../shared/api/contracts';
 
 interface StudyViewProps {
   initialReference?: string;
@@ -16,9 +34,18 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
   const { token, isAuthenticated } = useSession();
   const { toast } = useToast();
   const [referenceInput, setReferenceInput] = useState<string>(initialReference);
-  const [study, setStudy] = useState<IStudyView | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [activeStudy, setActiveStudy] = useState<StudyViewDto | null>(null);
+  const [selectedEvidence, setSelectedEvidence] = useState<StudyEvidenceDto | null>(null);
+
+  const createStudyMutation = useCreateStudy();
+
+  // Se houver estudo ativo e quisermos consultar uma versão específica
+  const {
+    data: fetchedStudy,
+    isLoading: loadingStudyDetail,
+  } = useStudy(activeStudy?.id, activeStudy?.version);
+
+  const study = activeStudy || fetchedStudy;
 
   const sectionLabels: Record<string, string> = {
     'immediate-context': '1. Contexto Imediato',
@@ -29,38 +56,46 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
     'interpretations': '6. Interpretações Comparadas',
   };
 
-  const loadOrGenerateStudy = async (refStr: string) => {
+  const handleGenerateStudy = async (refStr: string) => {
     if (!isAuthenticated || !token) {
-      toast('Autenticação necessária.', {
+      toast('Autenticação necessária', {
         description: 'Configure o token JWT local do operador na barra lateral.',
         type: 'warning',
       });
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    const trimmed = refStr.trim();
+    if (!trimmed) return;
 
     try {
-      // Cria ou recupera estudo para a referência informada
-      const result = await api.createStudy('porbr2018', refStr.trim(), token);
-      setStudy(result);
-      toast('Estudo estruturado carregado com sucesso.', { type: 'success' });
+      const result = await createStudyMutation.mutateAsync({
+        translationId: 'porbr2018',
+        reference: trimmed,
+      });
+      setActiveStudy(result);
+      toast(`Estudo criado para ${result.reference.normalized}`, { type: 'success' });
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Não foi possível carregar o estudo.';
-      setError(msg);
-      toast('Erro ao processar estudo', { description: msg, type: 'error' });
-    } finally {
-      setLoading(false);
+      const msg = err instanceof Error ? err.message : 'Falha ao processar o estudo.';
+      toast('Erro ao gerar estudo', { description: msg, type: 'error' });
     }
   };
 
-  // Se já houver token e referência, carrega no primeiro render
   useEffect(() => {
-    if (isAuthenticated && token && initialReference && !study) {
-      loadOrGenerateStudy(initialReference);
+    if (isAuthenticated && token && initialReference && !activeStudy) {
+      handleGenerateStudy(initialReference);
     }
   }, [isAuthenticated, token, initialReference]);
+
+  const openEvidenceModal = (evidenceId: string) => {
+    if (!study) return;
+    const ev = study.evidence.find((e) => e.excerptId === evidenceId);
+    if (ev) {
+      setSelectedEvidence(ev);
+    } else {
+      toast('Evidência não encontrada no estudo atual.', { type: 'warning' });
+    }
+  };
 
   return (
     <div className="flex flex-col h-full max-w-[min(100%,76ch)] mx-auto px-[1.25rem] py-[1.5rem]">
@@ -81,12 +116,13 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
               value={referenceInput}
               onChange={(e) => setReferenceInput(e.target.value)}
               placeholder="Ex: GEN 1:1-3, ROM 8:28"
-              className="w-[11rem]"
+              className="w-[12rem] h-[2.25rem] text-[0.825rem]"
             />
             <Button
               size="sm"
-              loading={loading}
-              onClick={() => loadOrGenerateStudy(referenceInput)}
+              loading={createStudyMutation.isPending}
+              onClick={() => handleGenerateStudy(referenceInput)}
+              className="h-[2.25rem]"
             >
               <Sparkles className="w-[0.9rem] h-[0.9rem]" />
               Gerar Estudo
@@ -97,7 +133,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
 
       {/* Conteúdo do Estudo */}
       <div className="flex-1 py-[1.5rem]">
-        {loading ? (
+        {createStudyMutation.isPending || loadingStudyDetail ? (
           <div className="space-y-[1.25rem]">
             <StudyCardSkeleton />
             <StudyCardSkeleton />
@@ -111,38 +147,36 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                 Sessão do Operador Necessária
               </h3>
               <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui max-w-[42ch] mx-auto leading-relaxed">
-                Para consultar ou criar estudos estruturados com controle de versão (CAS), insira seu Bearer Token gerado via CLI no terminal.
+                Para consultar ou criar estudos estruturados com versionamento CAS, insira seu Bearer Token gerado via CLI no terminal.
               </p>
             </div>
             <code className="inline-block p-[0.4rem] rounded bg-[var(--surface-muted)] text-[0.75rem] font-mono select-all">
               npm --prefix backend run auth:token -- local-owner
             </code>
           </div>
-        ) : error ? (
-          <div className="p-[1.5rem] rounded-[var(--radius-md)] border border-rose-900/30 bg-rose-950/10 text-rose-300 space-y-[0.5rem]">
-            <div className="font-semibold text-[0.95rem]">Falha ao Obter Estudo</div>
-            <p className="text-[0.85rem] leading-relaxed">{error}</p>
-          </div>
         ) : study ? (
-          <div className="space-y-[2rem]">
+          <div className="space-y-[2.5rem]">
             {/* Metadados da Passagem Estudada */}
             <header className="p-[1.25rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] space-y-[0.75rem]">
               <div className="flex flex-wrap items-center justify-between gap-[0.5rem]">
                 <div className="flex items-center gap-[0.5rem]">
                   <BookOpen className="w-[1.125rem] h-[1.125rem] text-[var(--accent)]" />
-                  <span className="font-editorial-heading text-[1.2rem] font-semibold text-[var(--foreground)]">
+                  <span className="font-editorial-heading text-[1.25rem] font-semibold text-[var(--foreground)]">
                     {study.reference.normalized}
                   </span>
                 </div>
                 <div className="flex items-center gap-[0.5rem]">
-                  <Badge classification="neutral">Versão {study.version}</Badge>
+                  <Badge classification="neutral" className="gap-[0.25rem]">
+                    <History className="w-[0.75rem] h-[0.75rem]" />
+                    Versão {study.version}
+                  </Badge>
                   <span className="text-[0.75rem] text-[var(--foreground-muted)] font-ui">
                     {new Date(study.createdAt).toLocaleDateString('pt-BR')}
                   </span>
                 </div>
               </div>
 
-              {/* Texto canônico da passagem em destaque */}
+              {/* Versículos do Estudo */}
               <div className="pt-[0.5rem] border-t border-[var(--border)] text-[0.95rem] font-scripture italic text-[var(--foreground-muted)] leading-relaxed">
                 {study.passage.verses.map((v) => (
                   <span key={v.number} className="mr-[0.35rem]">
@@ -154,7 +188,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
             </header>
 
             {/* As 6 Seções Canônicas de Investigação */}
-            <div className="space-y-[1.5rem]">
+            <div className="space-y-[1.25rem]">
               <h2 className="flex items-center gap-[0.5rem] text-[0.85rem] uppercase tracking-wider font-semibold text-[var(--foreground-muted)] font-ui">
                 <Layers className="w-[1rem] h-[1rem]" />
                 Seções de Análise e Evidência
@@ -164,7 +198,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                 {study.sections.map((sec) => (
                   <section
                     key={sec.kind}
-                    className="p-[1.25rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] space-y-[0.65rem] transition-all hover:border-[var(--accent)]/50"
+                    className="p-[1.25rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] space-y-[0.75rem] transition-all hover:border-[var(--accent)]/50"
                   >
                     <div className="flex items-center justify-between gap-[0.5rem]">
                       <h3 className="font-ui font-semibold text-[0.95rem] text-[var(--foreground)]">
@@ -182,9 +216,18 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                     </p>
 
                     {sec.evidenceIds.length > 0 && (
-                      <div className="pt-[0.5rem] text-[0.75rem] text-[var(--foreground-muted)] font-ui flex items-center gap-[0.35rem]">
-                        <span className="font-medium">Evidências vinculadas:</span>
-                        {sec.evidenceIds.join(', ')}
+                      <div className="pt-[0.5rem] border-t border-[var(--border)]/60 text-[0.75rem] text-[var(--foreground-muted)] font-ui flex items-center gap-[0.5rem] flex-wrap">
+                        <span className="font-medium">Fontes documentadas:</span>
+                        {sec.evidenceIds.map((evId) => (
+                          <button
+                            key={evId}
+                            onClick={() => openEvidenceModal(evId)}
+                            className="inline-flex items-center gap-[0.25rem] px-[0.45rem] py-[0.15rem] rounded-[var(--radius-sm)] bg-[var(--surface-muted)] text-[var(--accent)] hover:underline cursor-pointer"
+                          >
+                            <FileCheck2 className="w-[0.75rem] h-[0.75rem]" />
+                            {evId}
+                          </button>
+                        ))}
                       </div>
                     )}
                   </section>
@@ -214,6 +257,23 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                 </div>
               </div>
             )}
+
+            {/* Limitações Hermenêuticas e Metodológicas */}
+            {study.limitations.length > 0 && (
+              <div className="p-[1rem] rounded-[var(--radius-md)] border border-amber-900/30 bg-amber-950/10 text-[0.8rem] text-amber-200/90 space-y-[0.35rem]">
+                <div className="flex items-center gap-[0.35rem] font-medium text-amber-300">
+                  <AlertCircle className="w-[0.95rem] h-[0.95rem]" />
+                  Limitações do Estudo
+                </div>
+                <ul className="list-disc list-inside space-y-[0.2rem] pl-[0.25rem]">
+                  {study.limitations.map((lim, idx) => (
+                    <li key={idx} className="leading-relaxed">
+                      {lim}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-center py-[4rem] text-[var(--foreground-muted)] font-ui">
@@ -221,6 +281,62 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
           </div>
         )}
       </div>
+
+      {/* Modal de Detalhe de Evidência Histórica Documentada */}
+      <Dialog open={!!selectedEvidence} onOpenChange={(open) => !open && setSelectedEvidence(null)}>
+        <DialogContent>
+          {selectedEvidence && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Evidência Histórica Documentada</DialogTitle>
+                <DialogDescription>
+                  Trecho extraído e auditado criptograficamente das fontes homologadas.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-[1rem] py-[0.5rem] font-ui text-[0.85rem]">
+                <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] space-y-[0.35rem]">
+                  <div className="text-[0.75rem] text-[var(--foreground-muted)]">Localizador na Obra:</div>
+                  <div className="font-semibold text-[var(--foreground)]">{selectedEvidence.locator}</div>
+                  <div className="text-[0.75rem] text-[var(--foreground-muted)] font-mono">
+                    SHA-256: {selectedEvidence.textSha256.substring(0, 24)}...
+                  </div>
+                </div>
+
+                {selectedEvidence.quote && (
+                  <blockquote className="border-l-2 border-[var(--accent)] pl-[0.85rem] italic text-[0.9rem] font-serif text-[var(--foreground)] leading-relaxed">
+                    "{selectedEvidence.quote}"
+                  </blockquote>
+                )}
+
+                <div className="text-[0.8rem] text-[var(--foreground-muted)] space-y-[0.25rem]">
+                  <p>
+                    <strong>Atribuição:</strong> {selectedEvidence.attribution}
+                  </p>
+                  <p>
+                    <strong>Direitos:</strong> {selectedEvidence.rightsStatement}
+                  </p>
+                </div>
+
+                <div className="flex justify-between items-center pt-[0.5rem] border-t border-[var(--border)]">
+                  <Badge classification="documented-fact" className="gap-[0.25rem]">
+                    <ShieldCheck className="w-[0.8rem] h-[0.8rem]" />
+                    Status: {selectedEvidence.availability}
+                  </Badge>
+                  <a
+                    href={selectedEvidence.rightsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-[0.25rem] text-[var(--accent)] hover:underline text-[0.75rem]"
+                  >
+                    Ver Licença <ExternalLink className="w-[0.75rem] h-[0.75rem]" />
+                  </a>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
