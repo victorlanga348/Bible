@@ -9,3 +9,5 @@ Decisão: fixar typescript6.0.3 no frontend, a mesma versão já validada no bac
 Alternativas rejeitadas: remover o checker/gate, afirmar que dry-run falhado passou, remendar módulos de terceiros ou manter compiladores diferentes ocultamente para burlar o erro. Vantagem: API estável usada pelos gates existentes e uma versão consistente; custo: abandonar por agora a versão nativa7na interface. Uma migração futura para7 exige suporte real do toolchain e provas próprias.
 
 Até build strict e Stryker executarem corretamente, compatibilidade continua BLOCKED. Documentar falhas anteriores sem substituir os brutos.
+
+Prova intermédia: TS6.0.3/build strict e dry-run80testes PASS. A primeira execução completa abortou quando tentou alterar vite.config.ts sem watcher no projeto app, após instrumentar os cinco ficheiros/271mutantes. Correção explícita de infraestrutura: tsconfig.mutation.json estende o app strict e inclui também Vite/Vitest, para não retirar configuração do escopo nem desligar o checker. Novo relatório completo necessário; nenhuma pontuação anterior é aproveitada como PASS.
