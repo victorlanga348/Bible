@@ -1,0 +1,41 @@
+name: Frontend session quality
+on:
+  push:
+    branches: ['feat/biblia-integracao']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
+  pull_request:
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  session-quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.16.0'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test:coverage:session -- --maxWorkers=1
+      - run: npm run test:mutation:session:ci
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: frontend-session-quality
+          path: |
+            frontend/reports/coverage/session
+            frontend/reports/mutation/session
+          if-no-files-found: error
+          retention-days: 7
