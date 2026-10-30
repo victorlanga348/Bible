@@ -30,7 +30,14 @@ function verifyFrontendMutationReport(report, expected) {
   if (100 * detected <= 85 * valid) fail('Mutation score must be strictly greater than 85%');
   return { detected, valid, score: 100 * detected / valid };
 }
-module.exports = { verifyFrontendMutationReport };
+function frontendMutationScope(mode) {
+  const transport = ['src/shared/api/api-url.ts', 'src/shared/api/client.ts', 'src/shared/api/http-client.ts', 'src/server/api-proxy.ts', 'vite.config.ts'];
+  if (mode === 'transport') return transport;
+  if (mode === 'session') return [...transport, 'src/App.tsx', 'src/shared/api/query-client.ts', 'src/shared/hooks/use-session.tsx', 'src/shared/auth/google-identity.ts', 'src/shared/auth/google-sign-in.tsx', 'src/shared/ui/shell.tsx'];
+  if (mode === 'global') return ['src/**/*.ts', 'src/**/*.tsx', '!src/test/**', '!src/**/*.d.ts', 'vite.config.ts'];
+  fail('Invalid mutation scope');
+}
+module.exports = { verifyFrontendMutationReport, frontendMutationScope };
 
 function collect(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
@@ -40,13 +47,11 @@ function collect(directory) {
   });
 }
 async function main(mode = 'global') {
-  if (!['transport', 'global'].includes(mode)) fail('Invalid mutation scope');
-  const transport = ['src/shared/api/api-url.ts', 'src/shared/api/client.ts', 'src/shared/api/http-client.ts', 'src/server/api-proxy.ts', 'vite.config.ts'];
-  const patterns = ['src/**/*.ts', 'src/**/*.tsx', '!src/test/**', '!src/**/*.d.ts', 'vite.config.ts'];
-  const config = JSON.parse(text(mode === 'transport' ? 'stryker.transport.config.json' : 'stryker.config.json'));
-  if (!equal(config.mutate, mode === 'transport' ? transport : patterns)
+  const patterns = frontendMutationScope(mode);
+  const config = JSON.parse(text(mode === 'global' ? 'stryker.config.json' : `stryker.${mode}.config.json`));
+  if (!equal(config.mutate, patterns)
     || config.mutator || config.ignorers || config.thresholds?.break !== 85) fail('Mutation scope configuration differs');
-  const names = mode === 'transport' ? transport : [...collect('src').filter(name => /\.tsx?$/.test(name) && !name.startsWith('src/test/') && !name.endsWith('.d.ts')), 'vite.config.ts'];
+  const names = mode === 'global' ? [...collect('src').filter(name => /\.tsx?$/.test(name) && !name.startsWith('src/test/') && !name.endsWith('.d.ts')), 'vite.config.ts'] : patterns;
   const expected = Object.fromEntries(names.sort().map(name => [name, { source: text(name), mutants: [] }]));
   const { Instrumenter } = await import('@stryker-mutator/instrumenter');
   const logger = { debug() {}, info() {}, warn() {}, error() {}, trace() {}, isDebugEnabled: () => false };

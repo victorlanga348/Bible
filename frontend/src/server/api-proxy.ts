@@ -11,6 +11,7 @@ export function apiProxy(configured?: string) {
     '^/api(?:/|$)': {
       target: target.origin,
       changeOrigin: false,
+      cookiePathRewrite: { '/auth/google': '/api/auth/google' },
       rewrite: (path: string) => path.replace(/^\/api(?=\/|$)/, '') || '/',
     },
   };

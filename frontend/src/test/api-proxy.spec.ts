@@ -35,6 +35,14 @@ describe('local API reverse proxy contract', () => {
     const proxy = Object.values(settings.server?.proxy ?? {})[0] as ProxyOptions | undefined;
     expect(proxy?.target).toBe('http://127.0.0.1:32123');
   });
+  it('keeps the Google challenge cookie inside the same-origin API path', async () => {
+    const settings = await config();
+    const proxy = Object.values(settings.server?.proxy ?? {})[0] as ProxyOptions;
+    expect(proxy.cookiePathRewrite).toEqual({ '/auth/google': '/api/auth/google' });
+    expect(settings.server?.headers?.['Cross-Origin-Opener-Policy']).toBe('same-origin-allow-popups');
+    expect(settings.preview?.headers?.['Cross-Origin-Opener-Policy']).toBe('same-origin-allow-popups');
+    expect(settings.server?.headers?.['Referrer-Policy']).toBe('strict-origin-when-cross-origin');
+  });
   it.each(['http://localhost:32123', 'http://[::1]:32123'])('supports the loopback alias %s', async target => {
     vi.stubEnv('BIBLE_API_PROXY_TARGET', target);
     const settings = await config();

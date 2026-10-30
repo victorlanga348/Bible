@@ -10,7 +10,7 @@
 | [ADR-0006](ADR-0006-ia-local-e-indice-reconstruivel.md) | Decisão estrutural delegada2026-10-26; runtime local/índice próprio, perfil final condicionado à viabilidade/avaliação S05-T004 |
 | [Template](template.md) | Modelo para novas decisões |
 
-Próximo ID: ADR-0011. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
+Próximo ID: ADR-0013. ADR-0011 reservado ao rascunho Gemini preservado fora desta branch; nenhuma aceitação implícita desse escopo. Não reescrever ADR aceite para apagar história; criar sucessora ligada e indicar alcance.
 Aprovação exige decisor, data e origem verificável. Specs definem comportamento; ADR não aprova endpoint/schema ou instalação. Pendências na [stack](../stack.md).
 
 - [ADR-0007 — Ciclo de vida e workspace](ADR-0007-study-lifecycle-and-workspace.md): aceite pelo agente delegado2026-10-29, antes de S07; guard curto por estudo e eliminação modular repetível.
@@ -20,3 +20,5 @@ Aprovação exige decisor, data e origem verificável. Specs definem comportamen
 - [ADR-0009 — Google ID token e acesso local](ADR-0009-google-id-token-local-access.md): aceite delegado2026-10-30 antes de S08-T008, pedido explícito pós-release.
 
 - [ADR-0010 — Compilador frontend compatível com os gates](ADR-0010-frontend-toolchain-compatibility.md): decisão S10-T001 após falha real do compilador7; fixar6.0.3/strict e comprovar runner/checker, sem dispensar mutação.
+
+- [ADR-0012 — Google na interface e fronteira de sessão](ADR-0012-frontend-google-session.md): decisão delegada S10-T002 antes de código; GSI/runtime/whitelist local e isolamento de UI/cache por sessão.

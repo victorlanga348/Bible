@@ -1,5 +1,7 @@
 Estado S07-T006: dez operações privadas de workspace implementadas conforme [SPEC S07](../sprints/S07/SPEC.md), com26testes Nest/JWT/Supertest/PostgreSQL PASS. Notas CAS/revision e favoritos idempotentes referem estudo/versão; históricos são metadados sem regeneração. Eliminação retomável devolve204 só após todos os proprietários confirmarem.400/401/404/409WORKSPACE_CONFLICT/503WORKSPACE_UNAVAILABLE sanitizados e OpenAPI real. Gate completo atual e prova nativa ainda pendentes; implementação não equivale a fecho da tarefa. Registos históricos abaixo preservados.
 
+Adenda S10-T002: [bootstrap Google runtime, origens locais5173, cookie e sessao](../sprints/S10/T002_SESSION_SPEC.md), fixada antes de codigo. GET /auth/google/bootstrap e POST /auth/google preservam identidade/seguranca da S08 com whitelist local explicitamente ampliada; sem CORS global. Implementacao/gates em [relatorio proprio](../sprints/S10/T002_TEST_REPORT.md).
+
 # Contratos de API
 
 S07 contratos aceites pelo agente delegado2026-10-29 antes de código: [SPEC S07](../sprints/S07/SPEC.md), relações privadas com fundamento/fontes atuais, notas/favoritos versionados, histórico keyset e eliminação modular repetível. Ainda NOT_RUN; entrega S06 permanece comprovada. Sem campos/endpoints implícitos além da SPEC.

@@ -3,14 +3,46 @@ on:
   pull_request:
     paths: ['backend/**', '.github/workflows/backend.yml']
   push:
-    branches: ['feat/biblia-backend']
+    branches: ['feat/biblia-backend', 'feat/biblia-integracao']
     paths: ['backend/**', '.github/workflows/backend.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
+  admitted-canon-inputs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # GitHub draft assets require repository push visibility. Keep this token
+    # out of dependency installation, tests, mutation workers and databases.
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.16.0'
+      - name: Retrieve exact admitted originals without publishing the draft
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/provision-canon-ci.cjs
+          python3 scripts/prepare-canon.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: admitted-canon-inputs
+          path: |
+            backend/data/biblical-canon/porbr2018/source.zip
+            backend/data/biblical-canon/porbr2018/catalog.source.html
+          if-no-files-found: error
+          retention-days: 1
   foundation:
+    needs: [admitted-canon-inputs]
     runs-on: ubuntu-24.04
     # Regular tests/coverage run once; isolated mutation partitions follow.
     timeout-minutes: 360
@@ -46,22 +78,15 @@ jobs:
           printf '%s\n' "TEST_DATABASE_URL=postgresql://biblia_test@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/biblia_test?schema=app" >> "$GITHUB_ENV"
       - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
       - run: npm run prisma:generate
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: admitted-canon-inputs
+          path: backend/data/biblical-canon/porbr2018
       - name: Provision admitted biblical corpus
         shell: bash
         run: |
           set -euo pipefail
-          directory=data/biblical-canon/porbr2018
-          mkdir -p "$directory"
-          original="$(mktemp "$directory/source.zip.XXXXXX")"
-          trap 'rm -f "$original"' EXIT
-          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$original" 'https://ebible.org/Scriptures/porbr2018_vpl.zip'
-          printf '%s  %s\n' '1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682' "$original" | sha256sum --check --status
-          mv "$original" "$directory/source.zip"
-          catalog="$(mktemp "$directory/catalog.source.html.XXXXXX")"
-          trap 'rm -f "$original" "$catalog"' EXIT
-          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --user-agent 'Mozilla/5.0' --output "$catalog" 'https://ebible.org/porbr2018/'
-          printf '%s  %s\n' 'badc2d6d8ca22e91911898995000d2acaa16f988cdc33519a5530c838e9ddcf1' "$catalog" | sha256sum --check --status
-          mv "$catalog" "$directory/catalog.source.html"
+          node scripts/provision-canon-ci.cjs
           python3 scripts/prepare-canon.py
       - name: Provision admitted source original
         shell: bash
@@ -131,22 +156,15 @@ jobs:
           printf '%s\n' "TEST_DATABASE_URL=postgresql://biblia_test@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/biblia_test?schema=app" >> "$GITHUB_ENV"
       - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
       - run: npm run prisma:generate
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: admitted-canon-inputs
+          path: backend/data/biblical-canon/porbr2018
       - name: Provision admitted biblical corpus
         shell: bash
         run: |
           set -euo pipefail
-          directory=data/biblical-canon/porbr2018
-          mkdir -p "$directory"
-          original="$(mktemp "$directory/source.zip.XXXXXX")"
-          trap 'rm -f "$original"' EXIT
-          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --output "$original" 'https://ebible.org/Scriptures/porbr2018_vpl.zip'
-          printf '%s  %s\n' '1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682' "$original" | sha256sum --check --status
-          mv "$original" "$directory/source.zip"
-          catalog="$(mktemp "$directory/catalog.source.html.XXXXXX")"
-          trap 'rm -f "$original" "$catalog"' EXIT
-          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 120 --retry 2 --user-agent 'Mozilla/5.0' --output "$catalog" 'https://ebible.org/porbr2018/'
-          printf '%s  %s\n' 'badc2d6d8ca22e91911898995000d2acaa16f988cdc33519a5530c838e9ddcf1' "$catalog" | sha256sum --check --status
-          mv "$catalog" "$directory/catalog.source.html"
+          node scripts/provision-canon-ci.cjs
           python3 scripts/prepare-canon.py
       - name: Provision admitted source original
         shell: bash

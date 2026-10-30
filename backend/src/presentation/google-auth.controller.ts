@@ -11,12 +11,22 @@ import { googleAuthClient, googleAuthPage } from './google-auth-page';
 
 const exchangeBody = z.strictObject({ credential: z.string().min(1).max(16384).regex(/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/), csrfToken: z.string().length(43).regex(/^[A-Za-z0-9_-]+$/) });
 const accessView = z.strictObject({ accessToken: z.string(), tokenType: z.literal('Bearer'), expiresIn: z.literal(3600) });
+const bootstrapView = z.strictObject({ clientId: z.string(), nonce: z.string().length(43).regex(/^[A-Za-z0-9_-]+$/) });
 
 @ApiTags('authentication')
 @UseFilters(GoogleAuthFilter)
 @Controller('auth')
 export class GoogleAuthController {
   constructor(@Inject(GoogleLoginService) private readonly service: GoogleLoginService, @Inject(GoogleIdentityVerifier) private readonly identity: GoogleIdentityVerifier) {}
+  @Get('google/bootstrap')
+  @ApiResponse({ status: 200, standardSchema: bootstrapView })
+  @ApiResponse({ status: 503, description: 'Google não configurado ou capacidade de desafios esgotada.' })
+  bootstrap(@Res({ passthrough: true }) response: Response) {
+    const nonce = this.service.challenge();
+    response.setHeader('Cache-Control', 'no-store');
+    response.cookie('biblia_google_login', nonce, { httpOnly: true, sameSite: 'strict', path: '/auth/google', maxAge: 300000 });
+    return bootstrapView.parse({ clientId: this.identity.clientId, nonce });
+  }
   @Get('google')
   @ApiResponse({ status: 200, description: 'Página Google local com desafio de uso único.' })
   @ApiResponse({ status: 503, description: 'Google não configurado ou temporariamente indisponível.' })

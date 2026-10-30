@@ -52,6 +52,14 @@ describe('Google exchange protocol and private persistence, controlled real infr
     const verified = await jwtVerify(response.body.accessToken, new TextEncoder().encode(secret), { issuer: 'biblia-local', audience: 'biblia-backend', algorithms: ['HS256'] }); expect(verified.payload.sub).toMatch(/^google-[A-Za-z0-9_-]{43}$/); expect(keyRequests).toBeGreaterThan(0);
     const me = await request(app.getHttpServer()).get('/auth/me').auth(response.body.accessToken, { type: 'bearer' }).expect(200); expect(me.body).toEqual({ ownerId: verified.payload.sub });
   });
+  it.each(['http://127.0.0.1:5173', 'http://localhost:5173'])('exchanges JSON bootstrap from exact frontend origin %s with real HTTP JWKS/RSA', async origin => {
+    const bootstrap = await request(app.getHttpServer()).get('/auth/google/bootstrap').expect(200);
+    const access = await request(app.getHttpServer()).post('/auth/google').set('Origin', origin)
+      .set('Cookie', String(bootstrap.headers['set-cookie']).split(';')[0]!)
+      .send({ credential: await signed(bootstrap.body.nonce), csrfToken: bootstrap.body.nonce }).expect(200);
+    const me = await request(app.getHttpServer()).get('/auth/me').auth(access.body.accessToken, { type: 'bearer' }).expect(200);
+    expect(me.body.ownerId).toMatch(/^google-[A-Za-z0-9_-]{43}$/);
+  });
   it('persists a real private study for Google owner, denying local and other Google owners', async () => {
     const a = await login(), b = await login({ sub: 'protocol-google-sub-2' }); expect(a.status).toBe(200); expect(b.status).toBe(200);
     const created = await request(app.getHttpServer()).post('/studies').auth(a.body.accessToken, { type: 'bearer' }).send({ translationId: 'porbr2018', reference: 'GEN 1:1' }).expect(201);

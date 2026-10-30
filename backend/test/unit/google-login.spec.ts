@@ -17,6 +17,13 @@ async function input(nonce: string, sub = 'protocol-google-sub-1'): Promise<Goog
   return { credential, csrfToken: nonce, cookie: `biblia_google_login=${nonce}`, origin: 'http://localhost:3000', contentType: 'application/json' };
 }
 describe('one-use Google login challenge and local access with real technical RSA/HS256', () => {
+  it.each(['http://127.0.0.1:5173', 'http://localhost:5173'])('accepts the exact local application origin %s with every existing cryptographic check', async origin => {
+    const result = await service.login({ ...await input(service.challenge()), origin });
+    expect(await tokens.verify(result.accessToken)).toMatch(/^google-/);
+  });
+  it.each(['http://127.0.0.1:5174', 'https://localhost:5173', 'http://localhost:5173.evil.example', 'null'])('refuses an origin outside the local application contract: %s', async origin => {
+    await expect(service.login({ ...await input(service.challenge()), origin })).rejects.toThrow(AuthenticationError);
+  });
   it('issues independent 256-bit base64url challenges', () => {
     const first = service.challenge(), second = service.challenge(); expect(first).toMatch(/^[A-Za-z0-9_-]{43}$/); expect(second).not.toBe(first);
   });

@@ -15,7 +15,7 @@ export class GoogleLoginService {
   }
   async login(input: GoogleLoginRequest): Promise<GoogleAccess> {
     if (!this.identity) throw new GoogleAuthUnavailableError();
-    const origins = [`http://localhost:${this.port}`, `http://127.0.0.1:${this.port}`];
+    const origins = [`http://localhost:${this.port}`, `http://127.0.0.1:${this.port}`, 'http://127.0.0.1:5173', 'http://localhost:5173'];
     if (!origins.includes(input.origin ?? '') || input.contentType?.split(';')[0]?.trim().toLowerCase() !== 'application/json') throw new AuthenticationError();
     const cookies = (input.cookie ?? '').split(';').map(value => value.trim()).filter(value => value.startsWith('biblia_google_login='));
     const nonce = cookies.length === 1 ? cookies[0]!.slice('biblia_google_login='.length) : '';

@@ -21,8 +21,8 @@ Construído em **React 19**, **TypeScript strict**, **Vite**, **Tailwind CSS v4*
    - Toda afirmação de estudo é rotulada como **Fato Documentado**, **Inferência**, **Tradição**, **Hipótese** ou **Evidência Insuficiente**.
    - Integração de IA com RAG local com exibição de proveniência (trechos extraídos, fonte Josefo e auditoria de tokens).
 4. **Segurança e Gestão de Sessão**:
-   - Token JWT (`local-owner`) mantido em memória durante a sessão (`useSession`), eliminando riscos de persistência insegura em `localStorage`.
-   - Suporte a injeção em ambiente local de desenvolvimento através de `VITE_LOCAL_AUTH_TOKEN`.
+   - JWT mantido apenas em memória; qualquer acesso precisa de confirmação `/auth/me`, sem owner inventado ou ligação automática entre contas.
+   - Google pelo botão oficial e token local como alternativa secundária. `VITE_LOCAL_AUTH_TOKEN` foi removido na S10; nunca introduzir tokens no bundle.
    - Tratamento contratual de erros de rede e códigos HTTP (`400`, `401`, `404`, `409 Conflict/CAS`, `422`, `503`, `504`).
 
 ---
@@ -55,9 +55,6 @@ Crie um arquivo `.env` baseado em `.env.example`:
 # URL do backend NestJS (padrão: http://127.0.0.1:3000)
 VITE_API_URL=http://127.0.0.1:3000
 
-# Token JWT local-owner (opcional em desenvolvimento para sessão imediata)
-# Gerado no backend via: npm run auth:token -- local-owner
-VITE_LOCAL_AUTH_TOKEN=
 ```
 
 ---

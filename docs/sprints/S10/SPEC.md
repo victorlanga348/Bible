@@ -14,4 +14,4 @@ Referência primária consultada: [Vite server.proxy](https://vite.dev/config/se
 
 ## Incrementos seguintes
 
-T002 deve fixar contrato de login/retorno/nonce/validação de origem e sessão antes de implementar; manter [ADR-0009](../../architecture/adr/ADR-0009-google-id-token-local-access.md), sem ligar owners por email ou persistir tokens em storage. T003 fixa ações e contratos reais antes de corrigir cada fluxo. T004 não autoriza trocar o modelo pinado, fontes ou envio remoto sem a adenda própria e provas. API paga não é pré-requisito assumido.
+T002 tem [contrato próprio](T002_SESSION_SPEC.md) e ADR-0012 antes de código, preservando o verificador/owners da [ADR-0009](../../architecture/adr/ADR-0009-google-id-token-local-access.md); adenda explícita de duas origens locais5173, sem CORS global/ligação por email/storage. T003 fixa ações e contratos reais antes de corrigir cada fluxo. T004 não autoriza trocar o modelo pinado, fontes ou envio remoto sem a adenda própria e provas. API paga não é pré-requisito assumido.

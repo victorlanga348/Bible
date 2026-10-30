@@ -11,8 +11,10 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:coverage:transport": "vitest run --config vitest.transport.config.ts --coverage",
+    "test:coverage:session": "vitest run --config vitest.session.config.ts --coverage",
     "test:mutation": "stryker run && node scripts/check-mutation.cjs global",
     "test:mutation:transport": "stryker run stryker.transport.config.json && node scripts/check-mutation.cjs transport",
+    "test:mutation:session": "stryker run stryker.session.config.json && node scripts/check-mutation.cjs session",
     "test:mutation:dry-run": "stryker run stryker.transport.config.json --dryRunOnly",
     "test:e2e": "playwright test",
     "preview": "vite preview"

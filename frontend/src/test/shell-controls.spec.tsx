@@ -1,0 +1,44 @@
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { ThemeProvider } from '../shared/hooks/use-theme';
+import { SessionProvider } from '../shared/hooks/use-session';
+import { AppShell } from '../shared/ui/shell';
+beforeEach(() => {
+  localStorage.clear(); vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
+  vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 503 })));
+});
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+const wrap = (view: React.ReactNode) => <ThemeProvider><SessionProvider>{view}</SessionProvider></ThemeProvider>;
+it('supports desktop/mobile navigation, account entry and both theme states', () => {
+  const navigate = vi.fn();
+  render(wrap(<AppShell activeTab="reader" onTabChange={navigate}>Technical public content</AppShell>));
+  fireEvent.click(screen.getByRole('button', { name: 'Ativar Modo Claro' }));
+  expect(document.documentElement).not.toHaveClass('dark');
+  fireEvent.click(screen.getByRole('button', { name: 'Ativar Modo Escuro' }));
+  expect(document.documentElement).toHaveClass('dark');
+  fireEvent.click(screen.getByRole('button', { name: 'Abrir Menu' }));
+  fireEvent.click(screen.getAllByRole('button', { name: 'Fontes Históricas' }).at(-1)!);
+  expect(navigate).toHaveBeenCalledWith('sources');
+  expect(screen.queryByRole('button', { name: 'Fechar Menu' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Abrir Menu' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar Menu' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Abrir Menu' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Conta e acesso' }));
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar' }));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
+it('honors focus keyboard shortcuts and optional callbacks without intercepting ordinary keys', () => {
+  const focus = vi.fn(), context = vi.fn();
+  const { rerender } = render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} onToggleFocusMode={focus} onToggleContext={context} contextPanel={<span>Context</span>}>Public</AppShell>));
+  fireEvent.keyDown(window, { key: 'F' });
+  fireEvent.keyDown(window, { key: 'Escape' }); expect(focus).not.toHaveBeenCalled();
+  fireEvent.keyDown(window, { key: 'F', ctrlKey: true, shiftKey: true });
+  fireEvent.keyDown(window, { key: 'f', metaKey: true, shiftKey: true }); expect(focus).toHaveBeenCalledTimes(2);
+  fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' })); expect(context).toHaveBeenCalledTimes(1);
+  rerender(wrap(<AppShell activeTab="study" onTabChange={() => {}} isFocusMode onToggleFocusMode={focus}>Focused</AppShell>));
+  fireEvent.keyDown(window, { key: 'Escape' });
+  fireEvent.click(screen.getByRole('button', { name: /Sair do Modo Foco/ })); expect(focus).toHaveBeenCalledTimes(4);
+  rerender(wrap(<AppShell activeTab="history" onTabChange={() => {}}>No focus callback</AppShell>));
+  fireEvent.keyDown(window, { key: 'f', ctrlKey: true, shiftKey: true }); expect(focus).toHaveBeenCalledTimes(4);
+});

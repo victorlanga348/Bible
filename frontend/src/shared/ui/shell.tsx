@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
   BookOpen,
   Compass,
@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  ShieldCheck,
   Minimize2,
 } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
@@ -26,6 +25,7 @@ import {
   DialogFooter,
 } from './dialog';
 import { Input } from './input';
+import { GoogleSignIn } from '../auth/google-sign-in';
 
 export type NavTab = 'reader' | 'study' | 'sources' | 'history';
 
@@ -51,10 +51,14 @@ export function AppShell({
   onToggleFocusMode,
 }: ShellProps) {
   const { theme, toggleTheme } = useTheme();
-  const { token, isAuthenticated, setSession, clearSession } = useSession();
+  const { isAuthenticated, status, setSession, clearSession } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [tokenInput, setTokenInput] = useState(token || '');
+  const [tokenInput, setTokenInput] = useState('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const closeAuth = useCallback(() => {
+    setAuthDialogOpen(false); setTokenInput(''); setAuthError(null);
+  }, []);
 
   // Atalhos de teclado para acessibilidade e navegação fluida
   useEffect(() => {
@@ -81,11 +85,10 @@ export function AppShell({
     { id: 'history', label: 'Histórico & Workspace', icon: <Clock className="w-[1.125rem] h-[1.125rem]" /> },
   ];
 
-  const handleSaveToken = () => {
-    if (tokenInput.trim()) {
-      setSession(tokenInput.trim());
-      setAuthDialogOpen(false);
-    }
+  const handleSaveToken = async () => {
+    setAuthError(null);
+    try { if (await setSession(tokenInput)) closeAuth(); }
+    catch { setAuthError('Não foi possível confirmar a sessão. Verifica o token e tenta novamente.'); }
   };
 
   return (
@@ -158,16 +161,16 @@ export function AppShell({
                   }`}
                 />
                 <span className="text-[0.75rem] text-[var(--foreground-muted)] font-ui">
-                  {isAuthenticated ? 'Sessão Ativa' : 'Sem Token'}
+                  {isAuthenticated ? 'Sessão Ativa' : status === 'validating' ? 'A confirmar acesso…' : 'Sem sessão'}
                 </span>
               </div>
               <button
                 onClick={() => {
-                  setTokenInput(token || '');
+                  setTokenInput('');
                   setAuthDialogOpen(true);
                 }}
-                aria-label="Configurar Bearer Token da Sessão"
-                title="Configurar Bearer Token"
+                aria-label={isAuthenticated ? 'Gerir conta' : 'Entrar na conta'}
+                title={isAuthenticated ? 'Gerir conta' : 'Entrar na conta'}
                 className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] p-[0.25rem] rounded-[var(--radius-sm)] hover:bg-[var(--surface-muted)] cursor-pointer"
               >
                 <KeyRound className="w-[0.95rem] h-[0.95rem]" />
@@ -269,7 +272,7 @@ export function AppShell({
                 }}
               >
                 <KeyRound className="w-[0.85rem] h-[0.85rem]" />
-                Token da Sessão
+                Conta e acesso
               </Button>
               <button
                 onClick={toggleTheme}
@@ -301,56 +304,40 @@ export function AppShell({
         </div>
       </div>
 
-      {/* Modal de Configuração de Sessão / Token do Operador */}
-      <Dialog open={authDialogOpen} onOpenChange={setAuthDialogOpen}>
+      <Dialog open={authDialogOpen} onOpenChange={open => { setAuthDialogOpen(open); setTokenInput(''); setAuthError(null); }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Sessão do Operador (Local Token)</DialogTitle>
+            <DialogTitle>Entra no teu espaço de estudo.</DialogTitle>
             <DialogDescription>
-              O backend utiliza tokens simétricos HS256 (`biblia-local`) emitidos exclusivamente via terminal para o proprietário local.
+              Acede aos teus estudos, notas e favoritos com a tua conta Google. A sessão fica apenas neste navegador enquanto a página estiver aberta.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-[1rem] py-[0.5rem]">
-            <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] text-[0.8rem] font-ui space-y-[0.35rem] text-[var(--foreground-muted)] border border-[var(--border)]">
-              <div className="flex items-center gap-[0.35rem] text-[var(--foreground)] font-medium">
-                <ShieldCheck className="w-[1rem] h-[1rem] text-[var(--accent)]" />
-                Como gerar o token:
-              </div>
-              <code className="block p-[0.35rem] rounded bg-[var(--background)] font-mono text-[0.75rem] select-all">
-                npm --prefix backend run auth:token -- local-owner
-              </code>
-            </div>
-
-            <div className="space-y-[0.35rem]">
-              <label className="text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
-                Bearer Token JWT (Válido por 1 hora):
-              </label>
-              <Input
-                placeholder="Cole o token emitido..."
-                value={tokenInput}
-                onChange={(e) => setTokenInput(e.target.value)}
-              />
-            </div>
+            {authDialogOpen && <GoogleSignIn onAccess={closeAuth} />}
+            <details className="border-t border-[var(--border)] pt-[1rem]">
+              <summary className="text-[0.8rem] text-[var(--foreground-muted)] cursor-pointer">Usar um token local</summary>
+              <form className="space-y-[0.75rem] mt-[0.75rem]" onSubmit={event => { event.preventDefault(); void handleSaveToken(); }}>
+                <label htmlFor="local-access-token" className="block text-[0.8rem] font-medium">Token de acesso local</label>
+                <Input id="local-access-token" type="password" autoComplete="off" spellCheck={false}
+                  value={tokenInput} onChange={event => setTokenInput(event.target.value)} />
+                {authError && <p role="alert" className="text-[0.8rem] text-[var(--foreground-muted)]">{authError}</p>}
+                <Button type="submit" disabled={!tokenInput.trim() || status === 'validating'}>Confirmar acesso local</Button>
+              </form>
+            </details>
           </div>
 
-          <DialogFooter>
-            {token && (
+          {isAuthenticated && <DialogFooter>
               <Button
                 variant="ghost"
                 onClick={() => {
                   clearSession();
-                  setTokenInput('');
-                  setAuthDialogOpen(false);
+                  closeAuth();
                 }}
               >
-                Limpar Sessão
+                Sair da conta
               </Button>
-            )}
-            <Button onClick={handleSaveToken}>
-              Salvar na Memória
-            </Button>
-          </DialogFooter>
+          </DialogFooter>}
         </DialogContent>
       </Dialog>
     </div>

@@ -14,6 +14,24 @@ describe('Google entry routes in the real application', () => {
     disabled = await createApplication(config); await disabled.init();
   });
   afterAll(async () => { await app?.close(); await disabled?.close(); });
+  it('exposes only the public Google configuration and a unique cookie-bound JSON challenge', async () => {
+    const first = await request(app.getHttpServer()).get('/auth/google/bootstrap').expect(200);
+    const second = await request(app.getHttpServer()).get('/auth/google/bootstrap').expect(200);
+    expect(Object.keys(first.body).sort()).toEqual(['clientId', 'nonce']);
+    expect(first.body).toEqual({ clientId: client, nonce: expect.stringMatching(/^[A-Za-z0-9_-]{43}$/) });
+    expect(second.body.nonce).not.toBe(first.body.nonce);
+    expect(first.headers['cache-control']).toBe('no-store');
+    expect(first.headers['content-type']).toContain('application/json');
+    expect(String(first.headers['set-cookie'])).toContain(`biblia_google_login=${first.body.nonce}`);
+    expect(String(first.headers['set-cookie'])).toContain('Path=/auth/google');
+    expect(String(first.headers['set-cookie'])).toContain('HttpOnly');
+    expect(String(first.headers['set-cookie'])).toContain('SameSite=Strict');
+  });
+  it('keeps disabled Google bootstrap unavailable and documents its strict response', async () => {
+    await request(disabled.getHttpServer()).get('/auth/google/bootstrap').expect(503);
+    const response = await request(app.getHttpServer()).get('/openapi.json').expect(200);
+    expect(response.body.paths['/auth/google/bootstrap'].get.responses['200']).toBeDefined();
+  });
   it('serves a no-store Google button bound to a private challenge cookie', async () => {
     const response = await request(app.getHttpServer()).get('/auth/google').expect(200);
     expect(response.headers['content-type']).toContain('text/html'); expect(response.headers['cache-control']).toBe('no-store');

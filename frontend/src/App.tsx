@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './shared/api/query-client';
+import { createQueryClient } from './shared/api/query-client';
 import { ThemeProvider } from './shared/hooks/use-theme';
 import { ToastProvider } from './shared/ui/toast';
-import { SessionProvider } from './shared/hooks/use-session';
+import { SessionProvider, useSession } from './shared/hooks/use-session';
 import { AppShell, type NavTab } from './shared/ui/shell';
 import { ReaderView } from './features/canon/reader-view';
 import { StudyView } from './features/studies/study-view';
@@ -54,17 +54,24 @@ export function AppContent() {
   );
 }
 
+function SessionGeneration() {
+  const [client] = useState(createQueryClient);
+  useEffect(() => () => { void client.cancelQueries(); client.clear(); }, [client]);
+  return <QueryClientProvider client={client}>
+    <ToastProvider><AppContent /></ToastProvider>
+  </QueryClientProvider>;
+}
+
+function SessionContent() {
+  const { version } = useSession();
+  return <SessionGeneration key={version} />;
+}
+
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <SessionProvider>
-          <ToastProvider>
-            <AppContent />
-          </ToastProvider>
-        </SessionProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <SessionProvider><SessionContent /></SessionProvider>
+    </ThemeProvider>
   );
 }
 
