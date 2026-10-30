@@ -1,14 +1,30 @@
 import { useState, useEffect } from 'react';
 import { api, type HistoricalSource } from '../../shared/api/services';
+import type { SourceExcerptDto } from '../../shared/api/contracts';
 import { Badge } from '../../shared/ui/badge';
 import { Skeleton } from '../../shared/ui/skeleton';
-import { Library, ShieldCheck, ExternalLink, AlertCircle } from 'lucide-react';
+import { Input } from '../../shared/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../shared/ui/dialog';
+import { Library, ShieldCheck, ExternalLink, AlertCircle, FileText } from 'lucide-react';
+import { request } from '../../shared/api/http-client';
 
 export function SourcesView() {
   const [sources, setSources] = useState<HistoricalSource[]>([]);
+  const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
+  const [excerpts, setExcerpts] = useState<SourceExcerptDto[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingExcerpts, setLoadingExcerpts] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeExcerpt, setActiveExcerpt] = useState<SourceExcerptDto | null>(null);
 
+  // Carrega catálogo de fontes
   useEffect(() => {
     let active = true;
     api
@@ -16,6 +32,9 @@ export function SourcesView() {
       .then((res) => {
         if (active) {
           setSources(res.sources);
+          if (res.sources.length > 0 && !selectedSourceId) {
+            setSelectedSourceId(res.sources[0].id);
+          }
           setLoading(false);
         }
       })
@@ -30,8 +49,37 @@ export function SourcesView() {
     };
   }, []);
 
+  // Carrega trechos/excerpts da fonte selecionada
+  useEffect(() => {
+    if (!selectedSourceId) return;
+    let active = true;
+    setLoadingExcerpts(true);
+
+    request<{ excerpts: SourceExcerptDto[] }>(`/sources/${selectedSourceId}/excerpts`, {
+      params: { q: searchQuery.trim() || undefined, limit: 20 },
+    })
+      .then((res) => {
+        if (active) {
+          setExcerpts(res.excerpts);
+          setLoadingExcerpts(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setExcerpts([]);
+          setLoadingExcerpts(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [selectedSourceId, searchQuery]);
+
+  const activeSource = sources.find((s) => s.id === selectedSourceId);
+
   return (
-    <div className="flex flex-col h-full max-w-[min(100%,76ch)] mx-auto px-[1.25rem] py-[1.5rem]">
+    <div className="flex flex-col h-full max-w-[min(100%,76ch)] mx-auto px-[1.25rem] py-[1.5rem] space-y-[1.5rem]">
       {/* Cabeçalho */}
       <div className="pb-[1.5rem] border-b border-[var(--border)] space-y-[0.35rem]">
         <h1 className="font-editorial-heading font-semibold text-[clamp(1.5rem,1.35rem+0.8vw,2.2rem)] text-[var(--foreground)]">
@@ -43,7 +91,7 @@ export function SourcesView() {
       </div>
 
       {/* Conteúdo */}
-      <div className="flex-1 py-[1.5rem]">
+      <div className="flex-1 space-y-[1.5rem]">
         {loading ? (
           <div className="space-y-[1rem]">
             <Skeleton className="w-full h-[10rem]" />
@@ -59,24 +107,22 @@ export function SourcesView() {
             Nenhuma fonte histórica cadastrada no banco.
           </div>
         ) : (
-          <div className="space-y-[1.5rem]">
-            {sources.map((s) => (
-              <article
-                key={s.id}
-                className="p-[1.5rem] rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] space-y-[1rem] shadow-xs"
-              >
+          <div className="space-y-[2rem]">
+            {/* Cartão de Detalhe da Obra */}
+            {activeSource && (
+              <article className="p-[1.5rem] rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] space-y-[1rem] shadow-xs">
                 <div className="flex flex-wrap items-start justify-between gap-[0.75rem]">
                   <div className="space-y-[0.25rem]">
-                    <h2 className="font-editorial-heading text-[1.25rem] font-semibold text-[var(--foreground)]">
-                      {s.title}
+                    <h2 className="font-editorial-heading text-[1.35rem] font-semibold text-[var(--foreground)]">
+                      {activeSource.title}
                     </h2>
                     <p className="text-[0.825rem] text-[var(--foreground-muted)] font-ui">
-                      Autor: <strong className="text-[var(--foreground)]">{s.author}</strong> · Tradução:{' '}
-                      <strong className="text-[var(--foreground)]">{s.translator || 'Original'}</strong>
+                      Autor: <strong className="text-[var(--foreground)]">{activeSource.author}</strong> · Tradução:{' '}
+                      <strong className="text-[var(--foreground)]">{activeSource.translator || 'Original'}</strong>
                     </p>
                   </div>
                   <Badge classification="neutral">
-                    {s.kind === 'historical-work' ? 'Obra Histórica' : s.kind}
+                    {activeSource.kind === 'historical-work' ? 'Obra Histórica' : activeSource.kind}
                   </Badge>
                 </div>
 
@@ -87,14 +133,14 @@ export function SourcesView() {
                     Declaração de Direitos & Proveniência
                   </div>
                   <p className="text-[var(--foreground-muted)] leading-relaxed">
-                    {s.rightsStatement}
+                    {activeSource.rightsStatement}
                   </p>
                   <div className="flex flex-wrap items-center justify-between gap-[0.5rem] pt-[0.35rem]">
                     <span className="font-mono text-[0.7rem] text-[var(--foreground-muted)]">
-                      SHA-256: {s.snapshotSha256.substring(0, 16)}...
+                      SHA-256: {activeSource.snapshotSha256.substring(0, 16)}...
                     </span>
                     <a
-                      href={s.originUrl}
+                      href={activeSource.originUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-[0.25rem] text-[var(--accent)] hover:underline text-[0.75rem]"
@@ -111,14 +157,98 @@ export function SourcesView() {
                     Limitações Acadêmicas e de Escopo
                   </div>
                   <p className="leading-relaxed">
-                    {s.limitations}
+                    {activeSource.limitations}
                   </p>
                 </div>
               </article>
-            ))}
+            )}
+
+            {/* Trechos Homologados da Obra */}
+            <div className="space-y-[1rem]">
+              <div className="flex flex-wrap items-center justify-between gap-[0.75rem]">
+                <h3 className="flex items-center gap-[0.5rem] text-[0.9rem] uppercase tracking-wider font-semibold text-[var(--foreground-muted)] font-ui">
+                  <FileText className="w-[1rem] h-[1rem]" />
+                  Trechos e Parágrafos Admitidos
+                </h3>
+
+                <div className="w-full sm:w-[16rem]">
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Filtrar trechos..."
+                    icon
+                    className="h-[2.1rem] text-[0.8rem]"
+                  />
+                </div>
+              </div>
+
+              {loadingExcerpts ? (
+                <div className="space-y-[0.75rem]">
+                  <Skeleton className="w-full h-[4rem]" />
+                  <Skeleton className="w-full h-[4rem]" />
+                </div>
+              ) : excerpts.length === 0 ? (
+                <div className="p-[2rem] text-center border border-[var(--border)] rounded-[var(--radius-md)] bg-[var(--surface)] text-[var(--foreground-muted)] font-ui text-[0.85rem]">
+                  Nenhum trecho encontrado para a busca especificada.
+                </div>
+              ) : (
+                <div className="grid gap-[0.75rem]">
+                  {excerpts.map((ex) => (
+                    <div
+                      key={ex.id}
+                      onClick={() => setActiveExcerpt(ex)}
+                      className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)]/60 transition-all cursor-pointer space-y-[0.35rem]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-ui font-medium text-[0.85rem] text-[var(--foreground)]">
+                          {ex.locator}
+                        </span>
+                        <span className="font-mono text-[0.7rem] text-[var(--foreground-muted)]">
+                          SHA: {ex.textSha256.substring(0, 10)}...
+                        </span>
+                      </div>
+                      <p className="text-[0.825rem] font-serif text-[var(--foreground-muted)] line-clamp-2 italic">
+                        "{ex.text}"
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
+
+      {/* Modal de Leitura Integral do Trecho Histórico */}
+      <Dialog open={!!activeExcerpt} onOpenChange={(open) => !open && setActiveExcerpt(null)}>
+        <DialogContent>
+          {activeExcerpt && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{activeExcerpt.locator}</DialogTitle>
+                <DialogDescription>
+                  Texto histórico integral verificado e auditado criptograficamente.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-[1rem] py-[0.5rem] font-ui text-[0.85rem]">
+                <blockquote className="border-l-2 border-[var(--accent)] pl-[1rem] italic text-[0.95rem] font-serif text-[var(--foreground)] leading-relaxed">
+                  "{activeExcerpt.text}"
+                </blockquote>
+
+                <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] text-[0.75rem] font-ui space-y-[0.25rem] text-[var(--foreground-muted)]">
+                  <div>
+                    <strong>Hash SHA-256 do Texto:</strong>
+                  </div>
+                  <code className="block p-[0.25rem] bg-[var(--background)] font-mono select-all">
+                    {activeExcerpt.textSha256}
+                  </code>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
