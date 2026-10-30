@@ -3,6 +3,9 @@
  * Comunicação direta com o backend NestJS, tratamento de erros contratuais e eventos de autenticação
  */
 
+import { apiRequestUrl } from './api-url';
+export { getApiBaseUrl } from './api-url';
+
 export interface ApiErrorPayload {
   code: string;
   message: string;
@@ -22,11 +25,6 @@ export class ApiError extends Error {
   }
 }
 
-export function getApiBaseUrl(): string {
-  const envUrl = typeof import.meta !== 'undefined' ? (import.meta.env.VITE_API_URL as string) : undefined;
-  return (envUrl || 'http://127.0.0.1:3000').replace(/\/$/, '');
-}
-
 export interface HttpRequestOptions extends Omit<RequestInit, 'body'> {
   token?: string | null;
   params?: Record<string, string | number | boolean | undefined | null>;
@@ -35,9 +33,7 @@ export interface HttpRequestOptions extends Omit<RequestInit, 'body'> {
 }
 
 export async function request<T>(endpoint: string, options: HttpRequestOptions = {}): Promise<T> {
-  const baseUrl = getApiBaseUrl();
-  const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  const url = new URL(`${baseUrl}${path}`);
+  const url = apiRequestUrl(endpoint);
 
   if (options.params) {
     Object.entries(options.params).forEach(([key, value]) => {

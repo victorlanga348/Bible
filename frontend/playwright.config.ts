@@ -10,6 +10,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:5173',
     trace: 'on-first-retry',
+    channel: process.env.PLAYWRIGHT_CHANNEL || undefined,
   },
   projects: [
     {
@@ -22,7 +23,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: process.env.PLAYWRIGHT_PREVIEW === '1' ? 'npm run preview' : 'npm run dev',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

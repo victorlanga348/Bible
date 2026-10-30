@@ -24,3 +24,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated quality artifacts can contain private runtime data.
+test-results/
+playwright-report/
+coverage/
+reports/
+.stryker-tmp/

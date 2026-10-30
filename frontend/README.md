@@ -1,5 +1,9 @@
 # Bíblia App — Frontend Client
 
+Incremento S10 em execução na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. Comunicação local agora por `/api`, proxy dev/preview para NestJS loopback e TypeScript6.0.3/strict conforme [ADR](../docs/architecture/adr/ADR-0010-frontend-toolchain-compatibility.md). Leitura real por Chrome/API/PostgreSQL comprovada, sem escrita. [Plano/limites atuais](../docs/sprints/S10/README.md), [gates em curso](../docs/sprints/S10/TEST_REPORT.md). Não inferir aplicação integrada/Google/IA completa pelas métricas históricas S09 abaixo.
+
+Arranque integrado: backend disponível em127.0.0.1:3000 e `npm run dev` nesta pasta, abrindo127.0.0.1:5173. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE. Sessão Google na interface é a tarefa seguinte; login de conta real continua adiado.
+
 Frontend de alta fidelidade para a plataforma de estudo e investigação bíblica assistida por inteligência artificial.
 
 Construído em **React 19**, **TypeScript strict**, **Vite**, **Tailwind CSS v4** e **Radix UI**, com foco em leitura imersiva, tipografia editorial, tokens fluidos (`clamp()`, `rem`), ausência total de dados fictícios e integração direta com o backend NestJS.

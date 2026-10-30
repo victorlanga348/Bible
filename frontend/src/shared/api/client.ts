@@ -1,3 +1,6 @@
+import { apiRequestUrl } from './api-url';
+export { getApiBaseUrl } from './api-url';
+
 export interface ApiErrorPayload {
   code: string;
   message: string;
@@ -15,19 +18,13 @@ export class ApiError extends Error {
   }
 }
 
-export function getApiBaseUrl(): string {
-  const envUrl = typeof import.meta !== 'undefined' ? (import.meta.env.VITE_API_URL as string) : undefined;
-  return (envUrl || 'http://127.0.0.1:3000').replace(/\/$/, '');
-}
-
 export interface RequestOptions extends RequestInit {
   token?: string | null;
   params?: Record<string, string | number | undefined>;
 }
 
 export async function apiClient<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-  const baseUrl = getApiBaseUrl();
-  const url = new URL(`${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`);
+  const url = apiRequestUrl(endpoint);
 
   if (options.params) {
     Object.entries(options.params).forEach(([key, value]) => {
