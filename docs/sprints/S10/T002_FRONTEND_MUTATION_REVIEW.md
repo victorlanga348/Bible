@@ -1,0 +1,26 @@
+# S10-T002 — revisão da mutação frontend
+
+[CI41131759411](https://github.com/victorlanga348/Bible/actions/runs/41131759411), revisão6c6f2cd. Build strict/lint/cobertura/Stryker/auditoria SUCCESS.182testes/22ficheiros23,78s;262/262linhas100%,266/270branches98,51%,85/85funções. Dez módulos runtime presentes; configuração Vite mantém prova estrutural/browser/mutação conforme QUALITY_PLAN.
+
+Artefacto13014431592: ZIP SHA25654ca96c1e2c56d379518950139a10bea59bd9a23ba604fd862d84e3350019053. Relatório JSON SHA2560051c48ae9bb719f738fb8e530384e0c1e29a66cdbf0e7af1d9ff289a7a7cfaa. Reinstrumentação local independente comparou onze fontes atuais/commit, todas as871assinaturas, estados, cobertura e auditoria remota. Brutos e auditoria estão conservados em LOCALAPPDATA/BibleAI/quality-artifacts/41131759411 e backend/reports.
+
+Resultado completo:530Killed2Timeout85Survived254CompileError, zeroRuntimeError/NoCoverage.532/617=86,2236628849%bruto, acima85%. O primeiro relatório FAIL foi entrada incremental intacta e verificada:323resultados reaproveitados/548revalidados de871. Não se mudou estado nem se retirou fonte/operador. Novo inventário reflete os dois TSX corrigidos; o score antigo72,80% permanece histórico FAIL.
+
+Os85sobreviventes foram inspecionados por ID/localização/trecho exato, incluindo linhas com várias mutações distintas:
+
+| Fonte; quantidade | Revisão dos sobreviventes |
+|---|---|
+| server/api-proxy.ts;1 | Âncora inicial do rewrite é redundante para o domínio de paths já limitado pelo matcher /api. Mantida no bruto. |
+| shared/api/client.ts;2 | Fallback de JSON inválido para objeto ou undefined coincide em erros, mas difere numa resposta200malformada fora do contrato backend; mensagem vazia recebe fallback do ApiError. Não alegar equivalência universal. |
+| shared/api/http-client.ts;7 | Limpeza incondicional de timer aceita undefined; guard window redundante no cliente browser; JSON inválido e mensagens têm fallbacks. Não há suporte SSR anunciado: URL depende de window. A cópia específica da mensagem é lacuna de deteção, sem remover lógica de transporte. |
+| shared/api/query-client.ts;3 | Remover guard de tipo não afeta os erros atualmente exercitados; objeto mutations vazio herda retryfalse da biblioteca, mas não é contrato para alterações futuras do SDK. Tests reais de cache exercitam GC30min/foco/limites de retry/escrita sem repetição. |
+| shared/auth/google-identity.ts;5 | once em listeners e guard de libertação do promise têm proteção adicional pela resolução única. Podem mudar retenção/reação a eventos artificiais repetidos, não comprovam equivalência completa. Sem credencial nessa cache e sem conta Google real. |
+| shared/auth/google-sign-in.tsx;9 | Mensagens internas não escapam o erro genérico; token não string também é rejeitado por setSession. Alterações no último guard active, exclusão mútua após resultado e ordem de attempt não são todas equivalentes: são lacunas de corridas/cleanup. Fonte original mantém guards; callbacks duplicados, resultado após unmount, falha de confirmação e estados visíveis foram exercitados. Não converter esses sobreviventes em mortes por inferência. |
+| shared/hooks/use-session.tsx;12 | Dependências de callbacks estáveis e geração descendente conservam isolamento; retenção do último controller já concluído não reativa sessão. Restantes guard de owner/código401/path de recheck são lacunas reais de cenários adversários específicos. Código original continua a usar /auth/me, preservar sessão em erro transitório e verificar geração; recheck normal, identidade diferente, erro de rede, rejeição tardia e logout/troca de owner passaram. |
+| shared/ui/shell.tsx;44 | Incluem classes/indicadores visuais, ícones, titles redundantes com aria-label, keyboard modifiers, spellcheck, preventDefault e limpeza de mensagens/modal em combinações ainda não exercitadas. Nenhum foi eliminado por ser UI. Capturas/provas reais confirmam o desenho e os percursos originais nos dois tamanhos, mas não contam como mortes no Stryker. Foco/skip target/aria-current/form password/erros/recuperação/modal/logout têm regressões; lacunas restantes são explícitas. |
+| vite.config.ts;1 | Prefixo vazio no loadEnv lê mais variáveis server-side, porém o retorno consome só BIBLE_API_PROXY_TARGET; não injeta variáveis/segredos no browser. Código original conserva prefixo restrito. |
+| App.tsx;1 | Dependência de effect trocada por array vazio equivale enquanto client é estado imutável por instância; a geração continua remontada. Regressão exige cancelar/limpar cache antigo e impede callback velho de preencher o novo. |
+
+Os dois Timeout(#348/#349) pertencem ao retry do QueryClient: trocar returnfalse por true para erros4xx, ou tornar failureCount<1 sempre true, impede as requisições falhadas de terminarem no limite esperado. Deteção por deadline do runner é aceite pela política; conservar Timeout e não reclassificar como Killed. A aplicação original passa o teste de número limitado de pedidos, sem retry de escritas.
+
+Gate de mutação do recorte T002 PASS; Gates globais frontend/T003–T005 ainda não medidos por este relatório. O resultado não comprova semântica da IA, consentimento Google pessoal, persistência dos próximos fluxos ou hospedagem pública.
