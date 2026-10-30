@@ -15,10 +15,15 @@ export function AppContent() {
   const [activeTab, setActiveTab] = useState<NavTab>('reader');
   const [activeStudyReference, setActiveStudyReference] = useState<string>('GEN 1:1-3');
   const [isContextOpen, setIsContextOpen] = useState<boolean>(true);
+  const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
 
   const handleStudyPassage = (refStr: string) => {
     setActiveStudyReference(refStr);
     setActiveTab('study');
+  };
+
+  const toggleFocusMode = () => {
+    setIsFocusMode((prev) => !prev);
   };
 
   return (
@@ -27,10 +32,16 @@ export function AppContent() {
       onTabChange={setActiveTab}
       isContextOpen={isContextOpen}
       onToggleContext={() => setIsContextOpen(!isContextOpen)}
+      isFocusMode={isFocusMode}
+      onToggleFocusMode={toggleFocusMode}
       contextPanel={<ContextPanel />}
     >
       {activeTab === 'reader' && (
-        <ReaderView onSelectPassageForStudy={handleStudyPassage} />
+        <ReaderView
+          onSelectPassageForStudy={handleStudyPassage}
+          isFocusMode={isFocusMode}
+          onToggleFocusMode={toggleFocusMode}
+        />
       )}
       {activeTab === 'study' && (
         <StudyView initialReference={activeStudyReference} />
