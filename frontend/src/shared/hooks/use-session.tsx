@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface SessionContextType {
   token: string | null;
@@ -25,6 +25,17 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     setTokenState(null);
     setOwnerId(null);
   };
+
+  // Escuta evento global de rejeição de autenticação (HTTP 401)
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      clearSession();
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('biblia:unauthorized', handleUnauthorized);
+      return () => window.removeEventListener('biblia:unauthorized', handleUnauthorized);
+    }
+  }, []);
 
   return (
     <SessionContext.Provider

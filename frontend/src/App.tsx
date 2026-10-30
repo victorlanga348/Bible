@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './shared/api/query-client';
 import { ThemeProvider } from './shared/hooks/use-theme';
 import { ToastProvider } from './shared/ui/toast';
 import { SessionProvider } from './shared/hooks/use-session';
@@ -43,13 +45,15 @@ export function AppContent() {
 
 export function App() {
   return (
-    <ThemeProvider>
-      <SessionProvider>
-        <ToastProvider>
-          <AppContent />
-        </ToastProvider>
-      </SessionProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <SessionProvider>
+          <ToastProvider>
+            <AppContent />
+          </ToastProvider>
+        </SessionProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
