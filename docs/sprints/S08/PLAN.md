@@ -1,5 +1,7 @@
 # S08 — Plano de hardening e release
 
+Adenda2026-10-30: pedido explícito reabre apenas [T008 Google Sign-In](tasks/S08-T008-google-login.md), com [contrato](GOOGLE_AUTH_SPEC.md)/ADR-0009 antes de código. Implementação/gates atuais no [relatório próprio](GOOGLE_AUTH_TEST_REPORT.md); prova real adiada pelo utilizador. O plano/fecho abaixo é o histórico da release local anterior, sem aprovação automática do incremento.
+
 Estado DONE técnico2026-10-29, sob autorização integral. T004–T007 DONE após revisão/gates/auditoria documental PASS. Decisões operacionais do agente delegado na [SPEC](SPEC.md), antes da implementação; não atribuídas a escolhas individuais prévias do utilizador. Branch feat/biblia-backend, uma tarefa por vez, sem agentes.
 
 Objetivo: release pessoal local recuperável, sem gate obrigatório falhado/bloqueado. Escopo: auditoria de limites, regressões das lacunas S05/S06/S07, preparação operacional independente de fixtures, segurança/configuração, uma inferência real congelada, desempenho básico, backups e restauro isolado, gates completos e runbooks. Frontend/OAuth/serviço público/remoto/HA fora do escopo; dados/modelos/segredos/main/serviços alheios preservados.

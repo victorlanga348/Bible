@@ -8,6 +8,7 @@ export interface RuntimeConfig extends AiRuntimeSettings {
   readonly port: number;
   readonly databaseUrl: string;
   readonly jwtSecret?: string;
+  readonly googleClientId?: string;
 }
 
 export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
@@ -20,5 +21,8 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
   if (!url.success) throw new Error(`Invalid configuration: ${key}`);
   const jwtSecret = input.jwtSecret;
   if (jwtSecret && new TextEncoder().encode(jwtSecret).byteLength < 32) throw new Error('Invalid configuration: jwtSecret');
-  return { environment: environment.data, port: port.data, databaseUrl: url.data, ...(jwtSecret ? { jwtSecret } : {}), ...parseAiRuntimeSettings({ ...input, NODE_ENV: environment.data }) };
+  const googleClientId = input.GOOGLE_CLIENT_ID;
+  if (googleClientId && (googleClientId.length > 256 || googleClientId !== googleClientId.trim() || !/^[0-9]+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(googleClientId))) throw new Error('Invalid configuration: GOOGLE_CLIENT_ID');
+  if (googleClientId && !jwtSecret) throw new Error('Invalid configuration: jwtSecret');
+  return { environment: environment.data, port: port.data, databaseUrl: url.data, ...(jwtSecret ? { jwtSecret } : {}), ...(googleClientId ? { googleClientId } : {}), ...parseAiRuntimeSettings({ ...input, NODE_ENV: environment.data }) };
 }

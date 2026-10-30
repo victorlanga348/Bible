@@ -1,5 +1,7 @@
 # Bíblia App
 
+Atualização2026-10-30: incremento [S08-T008 Google Sign-In](docs/sprints/S08/tasks/S08-T008-google-login.md) em validação, solicitado após o fecho local. Client ID existente agora é consumido; confirmação real com a conta Google fica pendente porque o utilizador optou por testar depois. Release anterior e suas métricas abaixo permanecem históricas.
+
 Backend concluído tecnicamente para uso pessoal local: S00–S08, seis módulos NestJS, cânone bíblico, fontes, estudos privados versionados, IA/RAG local, conversas, referências cruzadas, notas, favoritos e eliminação retomável. [Fecho e limites](docs/sprints/S08/T007_COMPLETION_REPORT.md).
 
 Validação da revisão f71a735: [CI40912125811](https://github.com/victorlanga348/Bible/actions/runs/40912125811), oito jobs SUCCESS;2249testes107suites89tooling,100%linhas97,94%branches; mutação90,96%global89,87%IA, zeroRuntimeError/NoCoverage. Backups dos dois bancos restaurados em ambiente isolado, recursos recuperados por HTTP, índice/vetores e dados anteriores preservados. [Relatório](docs/sprints/S08/TEST_REPORT.md).

@@ -1,5 +1,7 @@
 # Backend Bíblia App
 
+Incremento2026-10-30: Google Sign-In implementado em S08-T008, em validação dos gates atuais; consentimento real do utilizador pendente por sua decisão de testar depois. [Contrato](../docs/sprints/S08/GOOGLE_AUTH_SPEC.md)/[retoma](../docs/sprints/S08/tasks/S08-T008-google-login.md). As métricas da release anterior abaixo não substituem validação do incremento.
+
 Release pessoal local S00–S08 concluída tecnicamente2026-10-29. [Fecho](../docs/sprints/S08/T007_COMPLETION_REPORT.md), [provas](../docs/sprints/S08/TEST_REPORT.md), [inventário](../docs/operations/environments.md) e [recuperação](../docs/operations/runbooks.md). Histórico anterior conservado no Git f71a735; esta entrada substitui instruções de sprints antigas.
 
 NestJS12.2.0/TypeScript6.0.3 strict/Zod4.6.7/Prisma7.10.1/PostgreSQL. Seis módulos: biblical-canon, source-library, study, cross-references, ai-assistant e study-workspace. REST/OpenAPI, consultas parametrizadas e transações curtas; inferência fora do lock. CI40912125811:2249testes107suites89tooling,100%linhas97,94%branches, mutação90,96%global89,87%IA/zeroRuntimeError+NoCoverage.
@@ -23,10 +25,11 @@ Em instalação nova, copiar `.env.example` para `.env` e `.env.test.example` pa
 | DATABASE_URL | Principal; neste PC localhost:5432/bible_db?schema=app |
 | TEST_DATABASE_URL | Somente teste;127.0.0.1:55433/biblia_test?schema=app/rolebiblia_test |
 | jwtSecret | Chave local >=32bytes para JWT; sem chave as rotas privadas recusam autenticação |
+| GOOGLE_CLIENT_ID | Opcional, web client Google Identity Services; exige jwtSecret e origem localhost autorizada |
 | BIBLE_AI_HOME | Diretório absoluto privado do runtime/modelos admitidos, fora Git/OneDrive |
 | BIBLE_AI_DATABASE_URL | Índice real em127.0.0.1:55436/bible_ai?schema=ai/rolebible_ai_owner |
 
-Passwords de URL exigem codificação. DATABASE_URL é a fonte da ligação, não interpolação dos campos auxiliares POSTGRES_*. GOOGLE_CLIENT_ID não habilita OAuth. BIBLE_DEV_DB_PASSWORD/BIBLE_TEST_DB_PASSWORD pertencem ao Compose, não mudam passwords de volumes já criados. [Configuração e fusos dos bancos](../docs/operations/environments.md).
+Passwords de URL exigem codificação. DATABASE_URL é a fonte da ligação, não interpolação dos campos auxiliares POSTGRES_*. GOOGLE_CLIENT_ID agora habilita a verificação Google de S08-T008; não é chave de IA nem acesso a outras APIs Google. BIBLE_DEV_DB_PASSWORD/BIBLE_TEST_DB_PASSWORD pertencem ao Compose, não mudam passwords de volumes já criados. [Configuração e fusos dos bancos](../docs/operations/environments.md).
 
 ## Arranque e uso
 
@@ -43,6 +46,8 @@ npm run auth:token -- local-owner
 ```
 
 Usar o resultado apenas em `Authorization: Bearer <token>`. É saída deliberada do operador: não enviar ao chat/Git/log. HS256/issuerbiblia-local/audiencebiblia-backend/validade1h; owner é o subject. Rotação de jwtSecret e reinício invalidam tokens anteriores. Não existe emissão pública por username.
+
+Login Google: com o servidor ativo, abrir `http://localhost:3000/auth/google`. O botão oficial usa GOOGLE_CLIENT_ID e verifica assinatura Google/issuer/audience/expiração/nonce no servidor, depois emite o mesmo Bearer local1h. No Console Google, autorizar as origens `http://localhost` e `http://localhost:3000` (ou a porta configurada) para o web client existente; popup/callback não exige client secret/redirect URI novo. Conta em projeto de teste pode precisar estar entre os test users autorizados. Não enviar tokens ao chat. A página confirma `/auth/me` e permite copiar token deliberadamente; não o guarda em localStorage/URL. Owner vem de sub Google com namespace/hash, sem ligar por email aos estudos do owner local antigo. Prova real pendente deve ser executada pelo utilizador no navegador; testes RSA/JWKS técnicos não a substituem.
 
 API inclui leitura/pesquisa do cânone e fontes, criação/versões de estudos, análises e conversas privadas, relações com evidências, notas CAS, favoritos por versão e histórico paginado. Contratos específicos no OpenAPI e nas [specs de sprints](../docs/sprints/README.md). Owner alheio404; token inválido401; conflitos CAS409; falha técnica503. Não confundir insuficiência de evidência com indisponibilidade técnica.
 

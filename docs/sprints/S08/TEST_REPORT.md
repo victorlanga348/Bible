@@ -1,5 +1,7 @@
 # S08 — Relatório de testes
 
+Incremento pós-release2026-10-30: [T008 Google Sign-In](GOOGLE_AUTH_TEST_REPORT.md) tem relatório/gates próprios; conta real Google NOT_RUN/BLOCKED até teste do utilizador. Métricas abaixo validam somente f71a735, não o incremento novo.
+
 PASS2026-10-29 para a release pessoal local da [SPEC](SPEC.md), revisão executável f71a7356b6fb445284d6713d47d7f6552f98d750. [Evidência com hashes, contagens e medições](evidence/release-verification.json), [mutação](MUTATION_REVIEW.md) e [cronologia/falhas T005](tasks/S08-T005-hardening-recovery.md). Alterações posteriores são documentais/diagnósticos ignorados; `git diff --exit-code` dos diretórios de produto/testes/Prisma/admissões/scripts/configuração exit0.
 
 ## Gates executáveis
