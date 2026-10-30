@@ -1,75 +1,48 @@
-import { useState, useEffect } from 'react';
-import { api, type Book, type ChapterPassage } from '../../shared/api/services';
+import { useState, useMemo } from 'react';
+import { useBooks, usePassage } from '../../shared/api/hooks';
 import { VerseSkeleton } from '../../shared/ui/skeleton';
 import { Button } from '../../shared/ui/button';
-import { ChevronLeft, ChevronRight, BookOpen, Sparkles, Copy, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Sparkles, Copy, Check, Info } from 'lucide-react';
 import { useToast } from '../../shared/ui/toast';
+import { ReferenceSearch } from './reference-search';
+import { ReadingPreferences, type FontSizeOption, type ReaderWidthOption } from './reading-preferences';
 
 interface ReaderViewProps {
   onSelectPassageForStudy?: (reference: string) => void;
+  isFocusMode?: boolean;
+  onToggleFocusMode?: () => void;
 }
 
-export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
-  const [books, setBooks] = useState<Book[]>([]);
+export function ReaderView({
+  onSelectPassageForStudy,
+  isFocusMode = false,
+  onToggleFocusMode,
+}: ReaderViewProps) {
   const [selectedBook, setSelectedBook] = useState<string>('GEN');
   const [selectedChapter, setSelectedChapter] = useState<number>(1);
-  const [passage, setPassage] = useState<ChapterPassage | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedVerses, setSelectedVerses] = useState<number[]>([]);
   const [copied, setCopied] = useState<boolean>(false);
+  const [fontSize, setFontSize] = useState<FontSizeOption>('md');
+  const [readerWidth, setReaderWidth] = useState<ReaderWidthOption>('normal');
   const { toast } = useToast();
 
-  // 1. Carrega livros da Bíblia Livre (porbr2018)
-  useEffect(() => {
-    let active = true;
-    api
-      .books('porbr2018')
-      .then((res) => {
-        if (active) {
-          setBooks(res.books);
-          if (res.books.length > 0 && !selectedBook) {
-            setSelectedBook(res.books[0].code);
-          }
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          setError(err.message || 'Não foi possível carregar o catálogo de livros.');
-        }
-      });
-    return () => {
-      active = false;
+  // Carrega catálogo canônico real
+  const { data: books = [], isLoading: loadingBooks, error: booksError } = useBooks('porbr2018');
+
+  // Carrega versículos do capítulo selecionado
+  const {
+    data: passage,
+    isLoading: loadingPassage,
+    error: passageError,
+  } = usePassage('porbr2018', selectedBook, selectedChapter);
+
+  // Divisão canônica: Antigo Testamento (1-39) e Novo Testamento (40-66)
+  const { oldTestament, newTestament } = useMemo(() => {
+    return {
+      oldTestament: books.filter((b) => b.order <= 39),
+      newTestament: books.filter((b) => b.order > 39),
     };
-  }, []);
-
-  // 2. Carrega o texto canônico do capítulo selecionado
-  useEffect(() => {
-    if (!selectedBook) return;
-    let active = true;
-    setLoading(true);
-    setError(null);
-    setSelectedVerses([]);
-
-    api
-      .passage('porbr2018', selectedBook, selectedChapter)
-      .then((res) => {
-        if (active) {
-          setPassage(res);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          setError(err.message || 'Erro ao carregar a passagem bíblica.');
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [selectedBook, selectedChapter]);
+  }, [books]);
 
   const currentBookObj = books.find((b) => b.code === selectedBook);
 
@@ -93,31 +66,77 @@ export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
     });
   };
 
+  const handlePassageResolved = (bookCode: string, chapter: number, fromVerse?: number, toVerse?: number) => {
+    setSelectedBook(bookCode);
+    setSelectedChapter(chapter);
+    if (fromVerse && toVerse) {
+      const range = Array.from({ length: toVerse - fromVerse + 1 }, (_, i) => fromVerse + i);
+      setSelectedVerses(range);
+    } else if (fromVerse) {
+      setSelectedVerses([fromVerse]);
+    } else {
+      setSelectedVerses([]);
+    }
+  };
+
+  const fontSizeClasses: Record<FontSizeOption, string> = {
+    sm: 'text-[0.95rem] leading-[1.6]',
+    md: 'text-[clamp(1.05rem,0.95rem+0.45vw,1.35rem)] leading-[clamp(1.65,1.55+0.25vw,1.9)]',
+    lg: 'text-[clamp(1.2rem,1.1rem+0.5vw,1.5rem)] leading-[clamp(1.75,1.65+0.3vw,2.05)]',
+    xl: 'text-[clamp(1.35rem,1.25rem+0.6vw,1.75rem)] leading-[clamp(1.85,1.75+0.35vw,2.2)]',
+  };
+
+  const readerWidthClasses: Record<ReaderWidthOption, string> = {
+    compact: 'max-w-[min(100%,64ch)]',
+    normal: 'max-w-[min(100%,76ch)]',
+    wide: 'max-w-[min(100%,92ch)]',
+  };
+
   return (
-    <div className="flex flex-col h-full max-w-[min(100%,76ch)] mx-auto px-[1.25rem] py-[1.5rem]">
-      {/* Barra de Controle de Leitura */}
+    <div className={`flex flex-col h-full mx-auto px-[1.25rem] py-[1.5rem] ${readerWidthClasses[readerWidth]}`}>
+      {/* 1. Barra Superior de Navegação & Pesquisa Rápida */}
       <div className="flex flex-wrap items-center justify-between gap-[0.75rem] pb-[1rem] border-b border-[var(--border)]">
-        {/* Seletor de Livro e Capítulo */}
-        <div className="flex items-center gap-[0.5rem]">
+        {/* Seletor Canônico com Agrupamento por Testamento */}
+        <div className="flex items-center gap-[0.5rem] flex-wrap">
           <select
             value={selectedBook}
             onChange={(e) => {
               setSelectedBook(e.target.value);
               setSelectedChapter(1);
+              setSelectedVerses([]);
             }}
+            disabled={loadingBooks}
             className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-[0.75rem] py-[0.4rem] text-[0.875rem] font-ui font-medium text-[var(--foreground)] cursor-pointer"
           >
-            {books.map((b) => (
-              <option key={b.code} value={b.code}>
-                {b.name} ({b.code})
-              </option>
-            ))}
+            {loadingBooks ? (
+              <option>Carregando livros...</option>
+            ) : (
+              <>
+                <optgroup label="Antigo Testamento">
+                  {oldTestament.map((b) => (
+                    <option key={b.code} value={b.code}>
+                      {b.name} ({b.code})
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Novo Testamento">
+                  {newTestament.map((b) => (
+                    <option key={b.code} value={b.code}>
+                      {b.name} ({b.code})
+                    </option>
+                  ))}
+                </optgroup>
+              </>
+            )}
           </select>
 
           {currentBookObj && (
             <select
               value={selectedChapter}
-              onChange={(e) => setSelectedChapter(Number(e.target.value))}
+              onChange={(e) => {
+                setSelectedChapter(Number(e.target.value));
+                setSelectedVerses([]);
+              }}
               className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-[0.75rem] py-[0.4rem] text-[0.875rem] font-ui font-medium text-[var(--foreground)] cursor-pointer"
             >
               {Array.from({ length: currentBookObj.chapterCount }, (_, i) => i + 1).map((ch) => (
@@ -127,43 +146,68 @@ export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
               ))}
             </select>
           )}
+
+          {/* Botões Capítulo Anterior / Próximo */}
+          <div className="flex items-center gap-[0.25rem]">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!passage?.previousChapter}
+              onClick={() => {
+                if (passage?.previousChapter) {
+                  setSelectedBook(passage.previousChapter.bookCode);
+                  setSelectedChapter(passage.previousChapter.chapter);
+                  setSelectedVerses([]);
+                }
+              }}
+              title="Capítulo Anterior"
+              className="w-[2rem] h-[2rem] p-0"
+            >
+              <ChevronLeft className="w-[1rem] h-[1rem]" />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!passage?.nextChapter}
+              onClick={() => {
+                if (passage?.nextChapter) {
+                  setSelectedBook(passage.nextChapter.bookCode);
+                  setSelectedChapter(passage.nextChapter.chapter);
+                  setSelectedVerses([]);
+                }
+              }}
+              title="Próximo Capítulo"
+              className="w-[2rem] h-[2rem] p-0"
+            >
+              <ChevronRight className="w-[1rem] h-[1rem]" />
+            </Button>
+          </div>
         </div>
 
-        {/* Navegação Sequencial de Capítulos */}
-        <div className="flex items-center gap-[0.35rem]">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!passage?.previousChapter}
-            onClick={() => {
-              if (passage?.previousChapter) {
-                setSelectedBook(passage.previousChapter.bookCode);
-                setSelectedChapter(passage.previousChapter.chapter);
-              }
-            }}
-            title="Capítulo Anterior"
-          >
-            <ChevronLeft className="w-[1rem] h-[1rem]" />
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!passage?.nextChapter}
-            onClick={() => {
-              if (passage?.nextChapter) {
-                setSelectedBook(passage.nextChapter.bookCode);
-                setSelectedChapter(passage.nextChapter.chapter);
-              }
-            }}
-            title="Próximo Capítulo"
-          >
-            <ChevronRight className="w-[1rem] h-[1rem]" />
-          </Button>
-        </div>
+        {/* Campo de Resolução Rápida de Referências ("GEN 1:1-3", "Jo 3:16") */}
+        <ReferenceSearch onPassageResolved={handlePassageResolved} />
       </div>
 
-      {/* Barra de Ações Contextuais quando versículos estão selecionados */}
+      {/* 2. Barra de Preferências de Leitura */}
+      <div className="flex flex-wrap items-center justify-between gap-[0.5rem] py-[0.75rem] border-b border-[var(--border)]">
+        <span className="text-[0.75rem] text-[var(--foreground-muted)] font-ui">
+          Bíblia Livre (BLIVRE) · porbr2018 · Cânone de 66 Livros
+        </span>
+
+        {onToggleFocusMode && (
+          <ReadingPreferences
+            fontSize={fontSize}
+            onFontSizeChange={setFontSize}
+            readerWidth={readerWidth}
+            onReaderWidthChange={setReaderWidth}
+            isFocusMode={isFocusMode}
+            onToggleFocusMode={onToggleFocusMode}
+          />
+        )}
+      </div>
+
+      {/* 3. Barra de Ações ao Selecionar Versículos */}
       {selectedVerses.length > 0 && (
         <div className="my-[1rem] p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-between gap-[0.5rem] animate-in fade-in-50">
           <span className="text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
@@ -193,33 +237,38 @@ export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
         </div>
       )}
 
-      {/* Conteúdo Bíblico (Tipografia Fluida Editorial) */}
+      {/* 4. Corpo do Texto Canônico (Tipografia Fluida e Numeração Discreta) */}
       <div className="flex-1 py-[1.5rem]">
-        {loading ? (
+        {loadingPassage ? (
           <div className="space-y-[1.25rem]">
             {Array.from({ length: 6 }).map((_, idx) => (
               <VerseSkeleton key={idx} />
             ))}
           </div>
-        ) : error ? (
+        ) : passageError || booksError ? (
           <div className="p-[1.5rem] rounded-[var(--radius-md)] border border-rose-900/30 bg-rose-950/10 text-rose-300 space-y-[0.5rem]">
-            <div className="font-semibold text-[0.95rem]">Falha de Conectividade com o Backend</div>
-            <p className="text-[0.85rem] leading-relaxed">{error}</p>
+            <div className="font-semibold text-[0.95rem] flex items-center gap-[0.5rem]">
+              <Info className="w-[1.125rem] h-[1.125rem]" />
+              Erro ao Carregar o Texto Bíblico
+            </div>
+            <p className="text-[0.85rem] leading-relaxed">
+              {passageError instanceof Error ? passageError.message : 'Verifique se o backend NestJS está em execução na porta 3000.'}
+            </p>
           </div>
         ) : passage ? (
-          <article className="space-y-[1.25rem]">
+          <article className="space-y-[1.5rem]">
             {/* Título do Capítulo */}
-            <header className="mb-[2rem] text-center space-y-[0.25rem]">
-              <h1 className="font-editorial-heading font-semibold text-[clamp(1.75rem,1.5rem+1vw,2.5rem)] text-[var(--foreground)]">
+            <header className="mb-[2.5rem] text-center space-y-[0.35rem]">
+              <h1 className="font-editorial-heading font-semibold text-[clamp(1.85rem,1.5rem+1.2vw,2.75rem)] text-[var(--foreground)]">
                 {currentBookObj?.name} {passage.chapter}
               </h1>
               <p className="text-[0.75rem] uppercase tracking-widest text-[var(--foreground-muted)] font-ui">
-                Bíblia Livre (BLIVRE) · Cânone Protestante
+                Texto integral · {passage.verses.length} versículos
               </p>
             </header>
 
-            {/* Versículos com tipografia fluida e numeração discreta */}
-            <div className="font-scripture text-[var(--foreground)] leading-relaxed space-y-[0.85rem]">
+            {/* Versículos */}
+            <div className={`font-scripture text-[var(--foreground)] space-y-[0.85rem] ${fontSizeClasses[fontSize]}`}>
               {passage.verses.map((v) => {
                 const isSelected = selectedVerses.includes(v.number);
                 return (
@@ -228,7 +277,7 @@ export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
                     onClick={() => toggleVerseSelection(v.number)}
                     className={`group relative rounded-[var(--radius-sm)] p-[0.35rem] transition-colors cursor-pointer select-text ${
                       isSelected
-                        ? 'bg-[var(--highlight)] text-[#141B1A] font-medium'
+                        ? 'bg-[var(--highlight)] text-[#141B1A] font-medium shadow-xs'
                         : 'hover:bg-[var(--surface-muted)]/50'
                     }`}
                   >
@@ -241,8 +290,8 @@ export function ReaderView({ onSelectPassageForStudy }: ReaderViewProps) {
               })}
             </div>
 
-            {/* Rodapé de Atribuição e Licenciamento Canônico */}
-            <footer className="mt-[3rem] pt-[1.5rem] border-t border-[var(--border)] text-[0.75rem] text-[var(--foreground-muted)] font-ui space-y-[0.25rem]">
+            {/* Rodapé Canônico */}
+            <footer className="mt-[4rem] pt-[1.5rem] border-t border-[var(--border)] text-[0.75rem] text-[var(--foreground-muted)] font-ui space-y-[0.25rem]">
               <p className="leading-relaxed">{passage.attribution}</p>
               <a
                 href={passage.licenseUrl}
