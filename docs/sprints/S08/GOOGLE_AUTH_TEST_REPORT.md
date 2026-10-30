@@ -2,6 +2,8 @@
 
 IN_PROGRESS2026-10-30, implementação preparada para teste real do utilizador. [Contrato](GOOGLE_AUTH_SPEC.md)/[plano e RED/GREEN](tasks/S08-T008-google-login.md). O utilizador respondeu «Vou testar depois»; Google real permanece NOT_RUN/BLOCKED. Nenhum token/credencial/PII foi pedido ou gravado em prova. Não declarar DONE ou autenticação real Google PASS por chaves técnicas.
 
+Checkpointf3bd642/CI41071764566 FAIL no provisionamento bíblico, antes de typecheck/suites: fornecedor reempacotou ZIP e atualizou catálogo; hashes divergentes preservados, XML/aviso iguais. [Correção de dependência CI](CI_ADMITTED_INPUT_ARCHIVE.md) usa draft privado no mesmo GitHub com exatos originais admitidos/hashes intactos. Download e preparação real do consumidor já PASS/snapshot14c2103d… idêntico; leitura pelo token mínimo da CI ainda deve ser provada. Fonte Google/IA/manifestos/dados não alterados para aceitar o fornecedor novo. Worktree isolada backend evita interferir no frontend paralelo do utilizador.
+
 ## Resultados locais do checkpoint
 
 | Verificação | Estado | Prova |

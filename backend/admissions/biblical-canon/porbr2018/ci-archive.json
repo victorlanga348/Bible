@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "purpose": "private-ci-distribution-of-existing-admitted-originals",
+  "repository": "victorlanga348/Bible",
+  "releaseId": 429143549,
+  "draft": true,
+  "archivedAt": "2026-10-30",
+  "sourceRetrievedAt": "2026-10-21T13:35:20.764Z",
+  "sourceUrl": "https://ebible.org/Scriptures/porbr2018_vpl.zip",
+  "catalogUrl": "https://ebible.org/porbr2018/",
+  "attribution": "Bíblia Livre (BLIVRE), copyright © 2018 Diego Santos, Mario Sérgio e Marco Teles. Original source notices and catalogue preserved byte for byte.",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "files": [
+    { "name": "source.zip", "assetId": 692411770, "bytes": 4379838, "sha256": "1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682" },
+    { "name": "catalog.source.html", "assetId": 692412018, "bytes": 5085, "sha256": "badc2d6d8ca22e91911898995000d2acaa16f988cdc33519a5530c838e9ddcf1" }
+  ]
+}
