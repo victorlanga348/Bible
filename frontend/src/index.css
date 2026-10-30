@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #F8F7F3;
+    --surface: #FFFFFF;
+    --surface-muted: #F0EFEA;
+    --foreground: #202A28;
+    --foreground-muted: #66716D;
+    --accent: #315F58;
+    --accent-hover: #244B45;
+    --accent-foreground: #FFFFFF;
+    --border: #E3E5DF;
+    --highlight: #F3E8C7;
+    
+    /* Epistemological classifications */
+    --epistemic-fact-bg: rgba(22, 101, 52, 0.08);
+    --epistemic-fact-text: #166534;
+    --epistemic-fact-border: rgba(22, 101, 52, 0.25);
+    
+    --epistemic-inference-bg: rgba(30, 64, 175, 0.08);
+    --epistemic-inference-text: #1e40af;
+    --epistemic-inference-border: rgba(30, 64, 175, 0.25);
+    
+    --epistemic-tradition-bg: rgba(154, 52, 18, 0.08);
+    --epistemic-tradition-text: #9a3412;
+    --epistemic-tradition-border: rgba(154, 52, 18, 0.25);
+    
+    --epistemic-hypothesis-bg: rgba(88, 28, 135, 0.08);
+    --epistemic-hypothesis-text: #581c87;
+    --epistemic-hypothesis-border: rgba(88, 28, 135, 0.25);
+    
+    --epistemic-insufficient-bg: rgba(87, 83, 78, 0.08);
+    --epistemic-insufficient-text: #57534e;
+    --epistemic-insufficient-border: rgba(87, 83, 78, 0.3);
+
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+  }
+
+  .dark {
+    --background: #141B1A;
+    --surface: #1D2624;
+    --surface-muted: #26312E;
+    --foreground: #F1F1EB;
+    --foreground-muted: #A8B5AE;
+    --accent: #8DB9A8;
+    --accent-hover: #A4CCBC;
+    --accent-foreground: #141B1A;
+    --border: #35413D;
+    --highlight: #4B4531;
+    
+    /* Epistemological classifications */
+    --epistemic-fact-bg: rgba(74, 222, 128, 0.12);
+    --epistemic-fact-text: #86efac;
+    --epistemic-fact-border: rgba(74, 222, 128, 0.3);
+    
+    --epistemic-inference-bg: rgba(96, 165, 250, 0.12);
+    --epistemic-inference-text: #93c5fd;
+    --epistemic-inference-border: rgba(96, 165, 250, 0.3);
+    
+    --epistemic-tradition-bg: rgba(251, 146, 60, 0.12);
+    --epistemic-tradition-text: #fdba74;
+    --epistemic-tradition-border: rgba(251, 146, 60, 0.3);
+    
+    --epistemic-hypothesis-bg: rgba(192, 132, 252, 0.12);
+    --epistemic-hypothesis-text: #d8b4fe;
+    --epistemic-hypothesis-border: rgba(192, 132, 252, 0.3);
+    
+    --epistemic-insufficient-bg: rgba(168, 162, 158, 0.1);
+    --epistemic-insufficient-text: #d6d3d1;
+    --epistemic-insufficient-border: rgba(168, 162, 158, 0.35);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+  }
+}
+
+/* Custom utility classes for fluid typography and responsive reading */
+.font-scripture {
+  font-family: 'Source Serif 4', 'Literata', Georgia, serif;
+  font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.35rem);
+  line-height: clamp(1.65, 1.55 + 0.25vw, 1.9);
+}
+
+.font-editorial-heading {
+  font-family: 'Newsreader', 'Source Serif 4', Georgia, serif;
+}
+
+.font-ui {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Accessible focus outlines */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Subtle scrollbars */
+::-webkit-scrollbar {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
