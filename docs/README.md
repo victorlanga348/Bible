@@ -10,7 +10,7 @@ Fonte normativa e estado real. S00/S01 DONE e commitadas; [S02](sprints/S02/READ
 
 ## Entrada
 [PRD](PRD.md), [linguagem](glossary.md), [regras](product/business-rules.md), [governança](documentation-governance.md), [stack](architecture/stack.md), [arquitetura](architecture/README.md), [ADRs](architecture/adr/README.md).
-[Estado operacional](megabrain/agent-context/project-state.md), [sprints S00–S08](sprints/README.md), [roadmap](roadmap/README.md), [ações externas](external-actions/README.md).
+[Estado operacional](megabrain/agent-context/project-state.md), [sprints S00–S09](sprints/README.md), [roadmap](roadmap/README.md), [ações externas](external-actions/README.md).
 
 ## Fontes por responsabilidade
 | Área | Fonte |

@@ -13,6 +13,7 @@ Estado2026-10-29: S00–S07 DONE técnico sob autorização integral; [fecho S07
 | [S06](S06/README.md) | Conversas contextuais | DONE | Nove turnos nativos/semântica e sete gates aplicáveis demonstrados |
 | [S07](S07/README.md) | Referências cruzadas e workspace | DONE | S06 concluída |
 | [S08](S08/README.md) | Hardening e release | DONE | Gates/recuperação reais/auditoria final PASS; release pessoal local |
+| [S09](S09/README.md) | Frontend da Plataforma de Investigação Bíblica | DONE | S08 e autorização formal do frontend |
 
 Cada sprint mantém PLAN, TASKS, ACCEPTANCE_CRITERIA, TEST_REPORT e REVIEW. README da sprint é fonte do estado da sprint; TASKS dos estados das tarefas. Fontes normativas em /docs, ADRs aceites e autorização vigente do AGENTS; histórico não substitui normas/estado atual.
 
