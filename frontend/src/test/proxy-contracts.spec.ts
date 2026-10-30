@@ -2,6 +2,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resolve } from 'node:path';
 import type { PluginOption } from 'vite';
+import { mkdtempSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import viteConfig from '../../vite.config.ts';
 import { apiProxy } from '../server/api-proxy';
 
@@ -35,5 +37,17 @@ describe('frontend server capabilities', () => {
     expect(settings.server?.port).toBe(5173);
     expect(settings.preview?.port).toBe(5173);
     expect(settings.preview?.strictPort).toBe(true);
+  });
+  it('loads the proxy destination from the server environment for the selected mode', async () => {
+    vi.stubEnv('BIBLE_API_PROXY_TARGET', undefined);
+    const directory = mkdtempSync(resolve(tmpdir(), 'bible-s10-mode-'));
+    const file = resolve(directory, '.env.s10-fixture');
+    writeFileSync(file, 'BIBLE_API_PROXY_TARGET=http://127.0.0.1:32123\n');
+    const cwd = vi.spyOn(process, 'cwd').mockReturnValue(directory);
+    try {
+      const settings = typeof viteConfig === 'function' ? await viteConfig({ command: 'serve', mode: 's10-fixture' }) : await viteConfig;
+      expect(Object.values(settings.server?.proxy ?? {})[0]).toMatchObject({ target: 'http://127.0.0.1:32123' });
+      expect(settings.preview?.proxy).toEqual(settings.server?.proxy);
+    } finally { cwd.mockRestore(); unlinkSync(file); rmdirSync(directory); }
   });
 });

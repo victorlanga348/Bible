@@ -44,6 +44,20 @@ exports.startSessionApi = async function startSessionApi() {
     }).overrideProvider(GoogleIdentityVerifier).useValue(identity).compile();
     app = module.createNestApplication({ logger: false });
     own('app.js').configureTransport(app);
+    // Preserve real behavior; expose only safe error codes if a native PG read fails.
+    const studies = app.get(own('modules/study/application/study-library.js').StudyLibrary);
+    const list = studies.list.bind(studies);
+    studies.list = async (...args) => {
+      try { return await list(...args); }
+      catch (error) {
+        const chain = [];
+        for (let item = error; item; item = item.cause ?? item.meta?.driverAdapterError?.cause) {
+          chain.push({ name: item.name, code: item.code, kind: item.kind, originalCode: item.originalCode });
+        }
+        console.info(JSON.stringify({ component: 'native-test-study-read', chain }));
+        throw error;
+      }
+    };
     await app.init(); await app.listen(32123, '127.0.0.1');
     return {
       sign: async nonce => {

@@ -6,6 +6,7 @@ const { startSessionApi } = dependency('./support/session-api.cjs') as {
 };
 let api: Awaited<ReturnType<typeof startSessionApi>>;
 test.use({ trace: 'off', screenshot: 'off', video: 'off' });
+test.setTimeout(60000); // Three access attempts plus real Nest/PG setup on the local PC.
 test.beforeAll(async () => { api = await startSessionApi(); });
 test.afterAll(async () => { await api?.close(); });
 
@@ -33,6 +34,16 @@ test('verifies native browser/proxy/cookie/RSA/local JWT/PostgreSQL session tran
     else await page.getByRole('button', { name: /Entrar na conta|Gerir conta/ }).click();
   };
   await openAccount();
+  await page.getByText('Usar um token local', { exact: true }).click();
+  await page.getByLabel('Token de acesso local').fill(`${await api.manualToken()}x`);
+  const rejected = page.waitForResponse(response => new URL(response.url()).pathname === '/api/auth/me');
+  await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
+  expect((await rejected).status()).toBe(401);
+  await expect(page.getByRole('alert')).toContainText('Não foi possível confirmar a sessão');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.getByRole('button', { name: 'Fechar', exact: true }).click();
+  await openAccount();
+  await expect(page.getByLabel('Token de acesso local')).toHaveValue('');
   await expect(page.getByRole('button', { name: 'Continuar com Google (teste técnico)' })).toBeVisible();
   const challenge = (await page.context().cookies()).find(cookie => cookie.name === 'biblia_google_login');
   expect(challenge?.httpOnly).toBe(true); expect(challenge?.sameSite).toBe('Strict'); expect(challenge?.path).toBe('/api/auth/google');

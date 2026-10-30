@@ -8,6 +8,7 @@ it('reuses the official SDK already loaded in this page', async () => {
   await expect(loadGoogleIdentity()).resolves.toBe(sdk);
 });
 it('loads one official script for concurrent consumers and resolves only after the SDK is available', async () => {
+  vi.useFakeTimers();
   vi.stubGlobal('google', undefined);
   const first = loadGoogleIdentity(), second = loadGoogleIdentity();
   void first.catch(() => {}); void second.catch(() => {});
@@ -16,12 +17,15 @@ it('loads one official script for concurrent consumers and resolves only after t
   expect(scripts[0]?.async).toBe(true);
   vi.stubGlobal('google', { accounts: { id: sdk } }); scripts[0]!.dispatchEvent(new Event('load'));
   await expect(first).resolves.toBe(sdk); await expect(second).resolves.toBe(sdk);
+  expect(vi.getTimerCount()).toBe(0);
 });
 it('rejects a failed load without exposing diagnostics and allows an explicit retry', async () => {
+  vi.useFakeTimers();
   vi.stubGlobal('google', undefined);
   const failed = loadGoogleIdentity(); const rejection = expect(failed).rejects.toThrow('Google indisponível');
   document.querySelector('script[src="https://accounts.google.com/gsi/client"]')?.dispatchEvent(new Event('error'));
   await rejection;
+  expect(vi.getTimerCount()).toBe(0);
   expect(document.querySelector('script[src="https://accounts.google.com/gsi/client"]')).toBeNull();
   const retry = loadGoogleIdentity();
   vi.stubGlobal('google', { accounts: { id: sdk } });

@@ -4,7 +4,7 @@ import { createQueryClient } from './shared/api/query-client';
 import { ThemeProvider } from './shared/hooks/use-theme';
 import { ToastProvider } from './shared/ui/toast';
 import { SessionProvider, useSession } from './shared/hooks/use-session';
-import { AppShell, type NavTab } from './shared/ui/shell';
+import { AccountAccessProvider, AppShell, type NavTab } from './shared/ui/shell';
 import { ReaderView } from './features/canon/reader-view';
 import { StudyView } from './features/studies/study-view';
 import { SourcesView } from './features/sources/sources-view';
@@ -70,7 +70,7 @@ function SessionContent() {
 export function App() {
   return (
     <ThemeProvider>
-      <SessionProvider><SessionContent /></SessionProvider>
+      <SessionProvider><AccountAccessProvider><SessionContent /></AccountAccessProvider></SessionProvider>
     </ThemeProvider>
   );
 }

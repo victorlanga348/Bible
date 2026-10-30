@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { createContext, useContext, useCallback, useState, useEffect } from 'react';
 import {
   BookOpen,
   Compass,
@@ -29,6 +29,63 @@ import { GoogleSignIn } from '../auth/google-sign-in';
 
 export type NavTab = 'reader' | 'study' | 'sources' | 'history';
 
+const AccountAccessContext = createContext<(() => void) | null>(null);
+
+function useAccountAccess() {
+  const openAccount = useContext(AccountAccessContext);
+  if (!openAccount) throw new Error('AppShell requires AccountAccessProvider');
+  return openAccount;
+}
+
+// Access feedback survives replacement of the private UI/cache generation.
+export function AccountAccessProvider({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, status, setSession, clearSession } = useSession();
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [tokenInput, setTokenInput] = useState('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const closeAuth = useCallback(() => {
+    setAuthDialogOpen(false); setTokenInput(''); setAuthError(null);
+  }, []);
+  const openAuth = useCallback(() => {
+    setTokenInput(''); setAuthError(null); setAuthDialogOpen(true);
+  }, []);
+  const handleSaveToken = async () => {
+    setAuthError(null);
+    try { if (await setSession(tokenInput)) closeAuth(); }
+    catch { setAuthError('Não foi possível confirmar a sessão. Verifica o token e tenta novamente.'); }
+  };
+
+  return <AccountAccessContext.Provider value={openAuth}>
+    {children}
+    <Dialog open={authDialogOpen} onOpenChange={open => { if (open) openAuth(); else closeAuth(); }}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Entra no teu espaço de estudo.</DialogTitle>
+          <DialogDescription>
+            Acede aos teus estudos, notas e favoritos com a tua conta Google. A sessão fica apenas neste navegador enquanto a página estiver aberta.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-[1rem] py-[0.5rem]">
+          {authDialogOpen && <GoogleSignIn onAccess={closeAuth} />}
+          <details className="border-t border-[var(--border)] pt-[1rem]">
+            <summary className="text-[0.8rem] text-[var(--foreground-muted)] cursor-pointer">Usar um token local</summary>
+            <form className="space-y-[0.75rem] mt-[0.75rem]" onSubmit={event => { event.preventDefault(); void handleSaveToken(); }}>
+              <label htmlFor="local-access-token" className="block text-[0.8rem] font-medium">Token de acesso local</label>
+              <Input id="local-access-token" type="password" autoComplete="off" spellCheck={false}
+                value={tokenInput} onChange={event => setTokenInput(event.target.value)} />
+              {authError && <p role="alert" className="text-[0.8rem] text-[var(--foreground-muted)]">{authError}</p>}
+              <Button type="submit" disabled={!tokenInput.trim() || status === 'validating'}>Confirmar acesso local</Button>
+            </form>
+          </details>
+        </div>
+        {isAuthenticated && <DialogFooter>
+          <Button variant="ghost" onClick={() => { clearSession(); closeAuth(); }}>Sair da conta</Button>
+        </DialogFooter>}
+      </DialogContent>
+    </Dialog>
+  </AccountAccessContext.Provider>;
+}
+
 interface ShellProps {
   activeTab: NavTab;
   onTabChange: (tab: NavTab) => void;
@@ -51,14 +108,9 @@ export function AppShell({
   onToggleFocusMode,
 }: ShellProps) {
   const { theme, toggleTheme } = useTheme();
-  const { isAuthenticated, status, setSession, clearSession } = useSession();
+  const { isAuthenticated, status } = useSession();
+  const openAccount = useAccountAccess();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [tokenInput, setTokenInput] = useState('');
-  const [authError, setAuthError] = useState<string | null>(null);
-  const closeAuth = useCallback(() => {
-    setAuthDialogOpen(false); setTokenInput(''); setAuthError(null);
-  }, []);
 
   // Atalhos de teclado para acessibilidade e navegação fluida
   useEffect(() => {
@@ -84,12 +136,6 @@ export function AppShell({
     { id: 'sources', label: 'Fontes Históricas', icon: <Library className="w-[1.125rem] h-[1.125rem]" /> },
     { id: 'history', label: 'Histórico & Workspace', icon: <Clock className="w-[1.125rem] h-[1.125rem]" /> },
   ];
-
-  const handleSaveToken = async () => {
-    setAuthError(null);
-    try { if (await setSession(tokenInput)) closeAuth(); }
-    catch { setAuthError('Não foi possível confirmar a sessão. Verifica o token e tenta novamente.'); }
-  };
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)] relative">
@@ -165,10 +211,7 @@ export function AppShell({
                 </span>
               </div>
               <button
-                onClick={() => {
-                  setTokenInput('');
-                  setAuthDialogOpen(true);
-                }}
+                onClick={openAccount}
                 aria-label={isAuthenticated ? 'Gerir conta' : 'Entrar na conta'}
                 title={isAuthenticated ? 'Gerir conta' : 'Entrar na conta'}
                 className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] p-[0.25rem] rounded-[var(--radius-sm)] hover:bg-[var(--surface-muted)] cursor-pointer"
@@ -268,7 +311,7 @@ export function AppShell({
                 size="sm"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setAuthDialogOpen(true);
+                  openAccount();
                 }}
               >
                 <KeyRound className="w-[0.85rem] h-[0.85rem]" />
@@ -304,42 +347,6 @@ export function AppShell({
         </div>
       </div>
 
-      <Dialog open={authDialogOpen} onOpenChange={open => { setAuthDialogOpen(open); setTokenInput(''); setAuthError(null); }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Entra no teu espaço de estudo.</DialogTitle>
-            <DialogDescription>
-              Acede aos teus estudos, notas e favoritos com a tua conta Google. A sessão fica apenas neste navegador enquanto a página estiver aberta.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-[1rem] py-[0.5rem]">
-            {authDialogOpen && <GoogleSignIn onAccess={closeAuth} />}
-            <details className="border-t border-[var(--border)] pt-[1rem]">
-              <summary className="text-[0.8rem] text-[var(--foreground-muted)] cursor-pointer">Usar um token local</summary>
-              <form className="space-y-[0.75rem] mt-[0.75rem]" onSubmit={event => { event.preventDefault(); void handleSaveToken(); }}>
-                <label htmlFor="local-access-token" className="block text-[0.8rem] font-medium">Token de acesso local</label>
-                <Input id="local-access-token" type="password" autoComplete="off" spellCheck={false}
-                  value={tokenInput} onChange={event => setTokenInput(event.target.value)} />
-                {authError && <p role="alert" className="text-[0.8rem] text-[var(--foreground-muted)]">{authError}</p>}
-                <Button type="submit" disabled={!tokenInput.trim() || status === 'validating'}>Confirmar acesso local</Button>
-              </form>
-            </details>
-          </div>
-
-          {isAuthenticated && <DialogFooter>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  clearSession();
-                  closeAuth();
-                }}
-              >
-                Sair da conta
-              </Button>
-          </DialogFooter>}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

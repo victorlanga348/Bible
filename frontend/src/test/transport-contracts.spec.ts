@@ -7,6 +7,19 @@ afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 const respond = (body = '{}', status = 200) => vi.stubGlobal('fetch', vi.fn(async () => new Response(body, { status })));
 
 describe('request contracts and session-safe error feedback', () => {
+  it.each(['primary', 'service'])('keeps a usable error message when the server sends a malformed failure: %s', async client => {
+    respond('not-json', 503);
+    await expect(client === 'primary' ? request('/technical') : apiClient('/technical'))
+      .rejects.toMatchObject({ status: 503, name: 'ApiError', message: expect.stringMatching(/\S/) });
+  });
+  it.each([new Error('TIMEOUT'), Object.assign(new Error('technical abort'), { name: 'AbortError' })])('presents deadline/abort failures as a recoverable timeout: %j', async error => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw error; }));
+    await expect(request('/technical')).rejects.toMatchObject({ status: 504, code: 'TIMEOUT', message: expect.stringMatching(/\S/) });
+  });
+  it('keeps a usable network failure message without exposing transport internals', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new TypeError('technical transport internal'); }));
+    await expect(request('/technical')).rejects.toMatchObject({ status: 0, code: 'NETWORK_ERROR', message: expect.stringMatching(/\S/) });
+  });
   it('requests JSON in the existing service client', async () => {
     respond(); await apiClient('/technical');
     expect(new Headers(vi.mocked(fetch).mock.calls[0]![1]?.headers).get('Accept')).toBe('application/json');

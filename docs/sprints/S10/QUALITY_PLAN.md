@@ -1,5 +1,17 @@
 # S10 — Medição de qualidade do frontend
 
+## Retoma T002 — análise completa e reutilização verificável
+
+A primeira análise CI completa41127242854 em acd90ec terminou FAIL72,8013%/862mutantes:445Killed2Timeout166Survived1NoCoverage248CompileError. ZIP13013295757/digest e relatório SHA25684a2050baf0f12e4dbfe3844f676a4a259db29adbc49ab5e808d4cc95fe5d0a9 conferidos. Reinstrumentação independente das onze fontes originais via git show comprova fontes/862assinaturas/estados íntegros; qualidade continua FAIL. Não editar brutos para transformar NoCoverage, Timeout ou sobreviventes.
+
+Decisão antes da nova configuração: usar incremental oficial como entrada de análise, exclusivamente desse relatório completo. Actions download-artifact com execução fixa/nome do artefacto/token efémero somente leitura; verificar SHA do JSON e identidade SHA de lock/configs de compiler/Vitest/Stryker antes de copiar para incremental.json. Única mudança de configuração de execução é ativar incremental; concorrência2/checker/perTest/operadores/inventário/limites preservados. Stryker revalida testes/diferenças de fontes (App/shell corrigidos), deve produzir inventário completo novo e passar a auditoria atual, inclusive zeroNoCoverage. Nenhum resultado parcial local é entrada. Relatório antigo não recebe PASS por servir de seed; mudanças futuras de lock/configs exigem rever compatibilidade.
+
+Seed é otimização opcional: se o download estiver ausente/expirado, executar análise integral sem seed. Se um download existir mas falhar identidade, a verificação bloqueia a execução; não ignorar corrupção. Cobertura/build/lint/mutação/auditoria atuais continuam sempre obrigatórios. Assim a expiração de um artefacto não torna o CI dependente de evidência antiga nem dispensa gate.
+
+Novas regressões testam contratos esquecidos, sem alegar RED de funcionalidades já corretas: concorrência/rejeição tardia de sessão, libertação de cache/timers, GC30min, limites de retry400–499, ausência de repetição de escritas, campos de exchange isolados, fronteiras de bootstrap, sinais/estados e callback duplicado/obsoleto, navegação/foco e ficheiro de ambiente por modo. Harness inicial tinha DOMException de realm jsdom não equivalente ao Error nominal do transporte, uma suposição incorreta de SSR num cliente dependente de window e um teste longo excedeu5s sob concorrência local; conservar FAIL e corrigir fixtures/escopo de teste, sem alterar produto para satisfazer o harness. Não criar testes de constantes/classes meramente para elevar score.
+
+## Plano e histórico anteriores
+
 Decisão delegada2026-10-30 antes de instalar dependências/configurar medições. S09 tem Vitest5.0.5 e Playwright1.64.1, mas nenhum provider de coverage ou runner Stryker frontend instalado. O pedido «faz a tua parte» autoriza a infraestrutura de qualidade necessária, sem contratação paga. Jest30.5.2/Stryker10.0.0 do backend permanecem intactos; frontend mantém o Vitest já utilizado na S09.
 
 Adicionar somente devDependencies exatas: @vitest/coverage-v8@5.0.5, @stryker-mutator/core@10.1.1, @stryker-mutator/vitest-runner@10.1.1 e @stryker-mutator/typescript-checker@10.1.1. Registry real confirma Node>=22/core10.1.1/Vitest>=2 e provider5.0.5 compatível com Vitest5.0.5; compatibilidade executável ainda precisa de prova. Não assumir score por peer range. Não mudar versões runtime React/Vite/TS ou pacotes backend. Lockfile é obrigatório.

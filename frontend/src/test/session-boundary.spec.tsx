@@ -37,7 +37,12 @@ it('isolates previous owner cache, local state and late callbacks across real ap
   fireEvent.click(screen.getByText('Store private'));
   expect(screen.getByTestId('private-cache')).toHaveTextContent('private-a');
   const oldClient = clients.at(-1)!;
+  const cancelled = vi.spyOn(oldClient, 'cancelQueries');
+  const cleared = vi.spyOn(oldClient, 'clear');
   fireEvent.click(screen.getByText('Leave'));
+  expect(cancelled).toHaveBeenCalled();
+  expect(cleared).toHaveBeenCalled();
+  expect(oldClient.getQueryCache().getAll()).toHaveLength(0);
   expect(screen.getByTestId('private-local')).toHaveTextContent('empty');
   expect(screen.getByTestId('private-cache')).toHaveTextContent('empty');
   fireEvent.click(screen.getByText('Access B'));
@@ -47,4 +52,49 @@ it('isolates previous owner cache, local state and late callbacks across real ap
   act(() => { oldClient.setQueryData(['technical-private'], 'late-private-a'); });
   expect(newClient.getQueryData(['technical-private'])).toBeUndefined();
   expect(screen.getByTestId('private-local')).toHaveTextContent('empty');
+});
+
+it.each(['manual', 'google'])('keeps %s identity validation and its recoverable failure visible across the application boundary', async method => {
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
+  let callback!: (response: { credential: string }) => void;
+  vi.stubGlobal('google', { accounts: { id: {
+    initialize: (options: { callback: typeof callback }) => { callback = options.callback; },
+    renderButton: (element: HTMLElement) => {
+      const button = document.createElement('button'); button.textContent = 'Technical Google access';
+      button.onclick = () => callback({ credential: 'technical-google-credential' }); element.replaceChildren(button);
+    },
+  } } });
+  let finish!: (response: Response) => void;
+  const identity = new Promise<Response>(resolve => { finish = resolve; });
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+    if (url.endsWith('/bootstrap')) return Response.json({ clientId: '123456789012-protocoltest.apps.googleusercontent.com', nonce: 'n'.repeat(43) });
+    if (url.endsWith('/auth/google')) return Response.json({ accessToken: 'technical-local-token', tokenType: 'Bearer', expiresIn: 3600 });
+    return identity;
+  }));
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Entrar na conta' }));
+  if (method === 'manual') {
+    fireEvent.click(screen.getByText('Usar um token local'));
+    fireEvent.change(screen.getByLabelText('Token de acesso local'), { target: { value: 'technical-rejected-token' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar acesso local' }));
+  } else fireEvent.click(await screen.findByRole('button', { name: 'Technical Google access' }));
+  await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith('/auth/me'))).toBe(true));
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByText('A confirmar acesso…')).toBeInTheDocument();
+  if (method === 'manual') expect(screen.getByRole('button', { name: 'Confirmar acesso local' })).toBeDisabled();
+  expect(screen.queryByText('Sessão Ativa')).not.toBeInTheDocument();
+  await act(async () => { finish(new Response('{}', { status: 401 })); });
+  expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível');
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.queryByText('Sessão Ativa')).not.toBeInTheDocument();
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => String(url).endsWith('/auth/me')
+    ? Response.json({ ownerId: 'recovered-owner' }) : original(url, options));
+  if (method === 'manual') fireEvent.click(screen.getByRole('button', { name: 'Confirmar acesso local' }));
+  else {
+    fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Technical Google access' }));
+  }
+  await waitFor(() => expect(screen.getByTestId('owner')).toHaveTextContent('recovered-owner'));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });

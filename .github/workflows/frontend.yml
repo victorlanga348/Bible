@@ -29,6 +29,37 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:coverage:session -- --maxWorkers=1
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        id: session-seed
+        continue-on-error: true # Expired/missing optimization falls back to full analysis.
+        with:
+          name: frontend-session-quality
+          run-id: 41127242854
+          github-token: ${{ github.token }}
+          path: frontend/reports/session-seed
+      - name: Verify the complete analysis seed and toolchain identity
+        if: steps.session-seed.outcome == 'success'
+        run: |
+          node --input-type=commonjs <<'NODE'
+          const fs = require('node:fs'), assert = require('node:assert/strict'), crypto = require('node:crypto');
+          const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+          const identities = {
+            'package-lock.json': '0d204cf5a64ffe5f99ad523d89f3090bcd9d7600775b640c4352568521b9c868',
+            'tsconfig.mutation.json': '4fed69ba6a1b1b43ae824f0af2978d26c8343fba502903111a6356890d19391b',
+            'vitest.config.ts': '983a1f04419b3d9933baea0ce73201dfa172880c5a35165af6b8c5ceac82d80d',
+            'vitest.session.config.ts': '8c0e697b281caec63f50c293464924c0e503db1636306d57f0c78bf9478b8093',
+            'stryker.session.config.json': '790f167fc5a5a235ee7d2cf9616e768fa9a035c7f3931bdac4ec9999379213b7',
+          };
+          for (const [file, expected] of Object.entries(identities)) assert.equal(sha(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')), expected, 'Toolchain identity differs');
+          const bytes = fs.readFileSync('reports/session-seed/mutation/session/mutation.json');
+          assert.equal(sha(bytes), '84a2050baf0f12e4dbfe3844f676a4a259db29adbc49ab5e808d4cc95fe5d0a9', 'Seed identity differs');
+          const report = JSON.parse(bytes);
+          assert.equal(Object.keys(report.files).length, 11);
+          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 862);
+          fs.mkdirSync('reports/mutation/session', { recursive: true });
+          fs.writeFileSync('reports/mutation/session/incremental.json', bytes);
+          console.log('Verified complete seed: original quality gate FAIL; current analysis and audit remain mandatory.');
+          NODE
       - run: npm run test:mutation:session:ci
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

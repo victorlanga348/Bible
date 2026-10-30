@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createQueryClient, queryKeys as keys } from '../shared/api/query-client';
+import { MutationObserver, focusManager, QueryObserver } from '@tanstack/react-query';
 const clients: ReturnType<typeof createQueryClient>[] = [];
 const create = () => { const client = createQueryClient(); clients.push(client); return client; };
 afterEach(() => { for (const client of clients) client.clear(); clients.length = 0; vi.useRealTimers(); });
@@ -26,10 +27,10 @@ describe('query cache separation and retry behavior', () => {
     expect(client.getQueryCache().getAll()).toHaveLength(queries.length);
     expect(create().getQueryCache().getAll()).toHaveLength(0);
   });
-  it.each([400, 401, 404, 409, 422, 503])('does not repeat client errors but permits one transient retry: %i', async status => {
+  it.each([399, 400, 401, 404, 409, 422, 499, 500, 503])('does not repeat client errors but permits one transient retry: %i', async status => {
     const client = create(); const fetcher = vi.fn(async () => { throw { status }; });
     await expect(client.fetchQuery({ queryKey: ['technical-retry'], queryFn: fetcher, retryDelay: 0 })).rejects.toMatchObject({ status });
-    expect(fetcher).toHaveBeenCalledTimes(status < 500 ? 1 : 2);
+    expect(fetcher).toHaveBeenCalledTimes(status >= 400 && status < 500 ? 1 : 2);
   });
   it('retries a generic transport failure only once', async () => {
     const client = create(); const fetcher = vi.fn(async () => { throw new Error('technical offline'); });
@@ -47,4 +48,31 @@ describe('query cache separation and retry behavior', () => {
     await client.fetchQuery({ queryKey: ['technical-freshness'], queryFn: fetcher });
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
+});
+it('keeps an inactive query for 30 minutes, then releases it from memory', async () => {
+  vi.useFakeTimers();
+  const client = create(); client.setQueryData(['retained-private-data'], 'technical-value');
+  await vi.advanceTimersByTimeAsync(29 * 60 * 1000);
+  expect(client.getQueryData(['retained-private-data'])).toBe('technical-value');
+  await vi.advanceTimersByTimeAsync(60 * 1000 + 1);
+  expect(client.getQueryData(['retained-private-data'])).toBeUndefined();
+});
+it('does not silently retry a private write after its first failure', async () => {
+  const client = create();
+  const write = vi.fn().mockRejectedValueOnce(new Error('technical-write-failure')).mockResolvedValue('unexpected-second-write');
+  const observer = new MutationObserver(client, { mutationFn: write, retryDelay: 0 });
+  await expect(observer.mutate(undefined)).rejects.toThrow('technical-write-failure');
+  expect(write).toHaveBeenCalledTimes(1);
+});
+it('does not refetch stale private data merely because the browser gains focus', async () => {
+  const client = create(); client.mount();
+  const fetcher = vi.fn(async () => 'technical-value');
+  const observer = new QueryObserver(client, { queryKey: ['focus-data'], queryFn: fetcher, staleTime: 0 });
+  const unsubscribe = observer.subscribe(() => {});
+  try {
+    await observer.refetch();
+    focusManager.setFocused(false); focusManager.setFocused(true);
+    await Promise.resolve(); await Promise.resolve();
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  } finally { unsubscribe(); client.unmount(); focusManager.setFocused(undefined); }
 });

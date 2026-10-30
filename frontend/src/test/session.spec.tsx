@@ -71,8 +71,8 @@ describe('verified in-memory application session', () => {
     vi.stubGlobal('fetch', vi.fn(async () => identity('new-owner')));
     const { result } = setup();
     await act(async () => { await result.current.setSession('new-token'); });
-    act(() => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    await act(async () => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
+    expect(fetch).toHaveBeenCalledTimes(2);
     expect(result.current.isAuthenticated).toBe(true);
     expect(result.current.ownerId).toBe('new-owner');
   });
@@ -134,4 +134,58 @@ describe('verified in-memory application session', () => {
   it('requires the session provider rather than silently creating a default identity', () => {
     expect(() => renderHook(() => useSession())).toThrow('useSession must be used within SessionProvider');
   });
+});
+
+it('ignores an unauthorized event when no token is active', async () => {
+  vi.stubGlobal('fetch', vi.fn()); setup();
+  await act(async () => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
+  expect(fetch).not.toHaveBeenCalled();
+});
+it('keeps the newer owner when an old identity request fails after another login', async () => {
+  const old = deferred();
+  vi.stubGlobal('fetch', vi.fn().mockReturnValueOnce(old.promise).mockResolvedValueOnce(identity('new-owner')));
+  const { result } = setup(); let stale!: Promise<boolean>;
+  act(() => { stale = result.current.setSession('old-token'); });
+  await act(async () => { await result.current.setSession('new-token'); });
+  await act(async () => { old.resolve(new Response('{}', { status: 401 })); expect(await stale).toBe(false); });
+  expect(result.current.ownerId).toBe('new-owner'); expect(result.current.isAuthenticated).toBe(true);
+});
+it('does not let an older request clear the cancellation handle of a newer check', async () => {
+  const first = deferred(), second = deferred();
+  vi.stubGlobal('fetch', vi.fn().mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise));
+  const { result } = setup(); let old!: Promise<boolean>, recent!: Promise<boolean>;
+  act(() => { old = result.current.setSession('old-token'); });
+  act(() => { recent = result.current.setSession('new-token'); });
+  const signal = vi.mocked(fetch).mock.calls[1]![1]?.signal;
+  await act(async () => { first.resolve(identity()); await old; });
+  act(() => result.current.clearSession());
+  expect(signal?.aborted).toBe(true);
+  await act(async () => { second.resolve(identity()); expect(await recent).toBe(false); });
+});
+it('clears identity timers after success and rejection, and cancels pending work on unmount', async () => {
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(identity()).mockResolvedValueOnce(new Response('{}', { status: 401 })));
+  const { result, unmount } = setup();
+  await act(async () => { await result.current.setSession('valid-token'); });
+  expect(vi.getTimerCount()).toBe(0);
+  await act(async () => { await expect(result.current.setSession('rejected-token')).rejects.toThrow('Não foi possível confirmar a sessão. Tenta novamente.'); });
+  expect(vi.getTimerCount()).toBe(0);
+  const pending = deferred(); vi.mocked(fetch).mockReturnValueOnce(pending.promise);
+  let login!: Promise<boolean>;
+  act(() => { login = result.current.setSession('pending-token'); });
+  const signal = vi.mocked(fetch).mock.calls.at(-1)![1]?.signal;
+  unmount(); expect(signal?.aborted).toBe(true);
+  await act(async () => { pending.resolve(identity()); expect(await login).toBe(false); });
+  expect(vi.getTimerCount()).toBe(0);
+});
+it('preserves a newer session when an old successful recheck returns a different owner', async () => {
+  const old = deferred();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(identity('owner-a')).mockReturnValueOnce(old.promise).mockResolvedValueOnce(identity('owner-b')));
+  const { result } = setup();
+  await act(async () => { await result.current.setSession('token-a'); });
+  act(() => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
+  const recheck = vi.mocked(fetch).mock.calls[1]![1];
+  expect(recheck?.cache).toBe('no-store'); expect(recheck?.redirect).toBe('error'); expect(recheck?.signal).toBeDefined();
+  await act(async () => { await result.current.setSession('token-b'); old.resolve(identity('owner-a')); });
+  expect(result.current.ownerId).toBe('owner-b'); expect(result.current.isAuthenticated).toBe(true);
 });
