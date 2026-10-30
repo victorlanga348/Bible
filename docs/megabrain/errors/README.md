@@ -33,3 +33,5 @@ Manter um índice de ID, título, estado, módulo e tarefa quando houver registo
 [ERR-0025 — fixture interrompida de workspace](ERR-0025-interrupted-workspace-fixture.md): recuperação guardada/testada, CI integral atual em validação.
 
 [ERR-0026 — TimeZone no restauro](ERR-0026-restore-timezone.md): causa demonstrada, procedimento corrigido apenas na cópia e HTTP/preservação PASS.
+
+[ERR-0027 — corpus mutável na CI](ERR-0027-mutable-corpus-ci.md): originais admitidos preservados; identidade de leitura da CI comprovada em job isolado, sem trocar pins.

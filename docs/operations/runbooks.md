@@ -6,9 +6,11 @@ Procedimentos apoiados pela [prova S08](../sprints/S08/TEST_REPORT.md) e [evidê
 
 Em backend, `npm run build` e `npm start`; HTTP127.0.0.1:3000. Verificar GET /health/live e /health/ready. Sem banco pronto, não afirmar gravação. Conferir serviço nativo principal e identidade; não substituir URL por banco de testes ou de outro projeto. Readiness não prova existência de migrações/corpus. Migrações de desenvolvimento têm scripts guardados próprios; não repetir DDL sem inspecionar a tabela de migrações/backup.
 
-Token só via CLI `npm run auth:token -- local-owner`, saída deliberada privada do operador.401: verificar token, issuer/audience/expiração1h e chave local;404 de owner alheio não autoriza procurar dados de outro utilizador. Rotação: substituir jwtSecret somente no ficheiro privado por chave >=32bytes, reiniciar a aplicação e emitir novo token. Tokens antigos deixam de verificar; nunca imprimir chave. Não há endpoint de login por username/OAuth.
+Acesso CLI existente: `npm run auth:token -- local-owner`, saída deliberada privada do operador. Com GOOGLE_CLIENT_ID configurado, S08-T008 acrescenta `http://localhost:3000/auth/google` e GET /auth/me; conta real ainda depende do teste humano adiado. [Contrato Google](../sprints/S08/GOOGLE_AUTH_SPEC.md).401: verificar token, issuer/audience/expiração1h e chave local;404 de owner alheio não autoriza procurar dados de outro utilizador. Rotação: substituir jwtSecret somente no ficheiro privado por chave >=32bytes, reiniciar a aplicação e emitir novo token. Tokens antigos deixam de verificar; nunca imprimir chave. Identidades Google usam owner próprio e não herdam estudos do owner CLI; sessão Bearer local expira em1h.
 
 503AI_UNAVAILABLE é falha técnica, não insuficiência de evidência. Conferir admissão/perfil/pins, índice e processos/lease próprios; não iniciar várias inferências ou ampliar prazos para esconder falhas. Runtime local precisa de memória; parar somente processos próprios após verificar PID/parent/comando/lease. Não parar OneDrive/Docker/Domus nem apagar lock de processo vivo/desconhecido. Guardar diagnóstico sanitizado e corpo HTTP antes de asserts/cleanup. Não repetir caso semântico para obter resposta favorável.
+
+Para entender o recorte de IA existente e as escolhas necessárias para estudos completos, consultar [próximos passos da IA](../integrations/ai-next-steps.md). Google não fornece credencial de IA.
 
 ## Backup consistente e privado
 

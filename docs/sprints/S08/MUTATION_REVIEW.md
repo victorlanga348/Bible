@@ -1,5 +1,7 @@
 # S08 — Revisão dos sobreviventes
 
+Revisão histórica da release anterior. O incremento posterior T008 tem [inventário e revisão próprios](GOOGLE_AUTH_MUTATION_REVIEW.md), sem estender as métricas abaixo ao novo código Google.
+
 CI40912125811/f71a7356b6fb445284d6713d47d7f6552f98d750, oito jobs SUCCESS. Agregado oficial12916142991, ZIP1268765bytes/SHA2044327c24792dcbc04ceb1a2f272073874541e159b47de5db8bdca8cd6eb6b0; mutation.json SHA1e8864535e7cf6cb72a3ad4c0bec411a4634670ef05d64eb96ce0677ea50e5bc. Auditoria local `node reports/audit-s08-ci.cjs` em backend: PASS, todas as132fontes inventariadas com Instrumenter Stryker10/operadores padrão,107fontes mutáveis e6540assinaturas conferidas, fontes idênticas ao commit e à árvore atual. Seis partições completas/fingerprint fba5674a3e8e6732c3989335f7d198185b35f0ef02ece05b190308c9f05640a9. Nenhum operador/exclusão/threshold/estado alterado.
 
 4269Killed50Timeout429Survived1792CompileError; zeroRuntimeError/NoCoverage. Bruto4319/4748=90,9646166807%; IA2130/2370=89,8734177215%. CompileError fica fora do denominador e Timeout conta detetado conforme política. Todos os thresholds passam; nenhum sobrevivente foi apagado ou declarado Equivalent.

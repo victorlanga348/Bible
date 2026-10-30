@@ -1,6 +1,6 @@
 # Backend Bíblia App
 
-Incremento2026-10-30: Google Sign-In implementado em S08-T008, em validação dos gates atuais; consentimento real do utilizador pendente por sua decisão de testar depois. [Contrato](../docs/sprints/S08/GOOGLE_AUTH_SPEC.md)/[retoma](../docs/sprints/S08/tasks/S08-T008-google-login.md). As métricas da release anterior abaixo não substituem validação do incremento.
+Incremento2026-10-30: Google Sign-In implementado em S08-T008. CI41078164874/db7f08d:2332testes113suites100tooling,100%linhas97,82%branches, mutação90,6426%global89,9578%IA/zeroRuntimeError+NoCoverage. Consentimento real adiado pelo utilizador; tarefa BLOCKED apenas nessa integração. [Contrato](../docs/sprints/S08/GOOGLE_AUTH_SPEC.md)/[relatório](../docs/sprints/S08/GOOGLE_AUTH_TEST_REPORT.md)/[retoma](../docs/sprints/S08/tasks/S08-T008-google-login.md). Métricas da release anterior abaixo são históricas.
 
 Release pessoal local S00–S08 concluída tecnicamente2026-10-29. [Fecho](../docs/sprints/S08/T007_COMPLETION_REPORT.md), [provas](../docs/sprints/S08/TEST_REPORT.md), [inventário](../docs/operations/environments.md) e [recuperação](../docs/operations/runbooks.md). Histórico anterior conservado no Git f71a735; esta entrada substitui instruções de sprints antigas.
 
@@ -52,6 +52,8 @@ Login Google: com o servidor ativo, abrir `http://localhost:3000/auth/google`. O
 API inclui leitura/pesquisa do cânone e fontes, criação/versões de estudos, análises e conversas privadas, relações com evidências, notas CAS, favoritos por versão e histórico paginado. Contratos específicos no OpenAPI e nas [specs de sprints](../docs/sprints/README.md). Owner alheio404; token inválido401; conflitos CAS409; falha técnica503. Não confundir insuficiência de evidência com indisponibilidade técnica.
 
 ## Dados e IA
+
+[O que já funciona e o que depende do utilizador para estudos completos](../docs/integrations/ai-next-steps.md). Google é autenticação; a ampliação de IA exige perfil, fontes e avaliações próprios.
 
 Principal: Bíblia Livre/porbr2018 integral66/1189/31102, fontes operacionais e nove migrações. Preparação canónica `python scripts/prepare-canon.py` usa admissão em `admissions/biblical-canon/porbr2018/manifest.json`, ZIP/XML/aviso/catálogo autenticados em `data/`; não depende de fixtures. Ausência/adulteração impede preparação. Test/fixtures permanece exclusivamente para testes.
 
