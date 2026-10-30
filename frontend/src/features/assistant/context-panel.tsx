@@ -1,44 +1,99 @@
-import { useState } from 'react';
-import { Sparkles, FileText, Link2, AlertCircle, ShieldAlert } from 'lucide-react';
+import { useState, useRef } from 'react';
+import {
+  Sparkles,
+  FileText,
+  Link2,
+  AlertCircle,
+  ShieldAlert,
+  Send,
+  Loader2,
+  StopCircle,
+  Cpu,
+  Layers,
+} from 'lucide-react';
 import { Button } from '../../shared/ui/button';
 import { Input } from '../../shared/ui/input';
 import { Badge } from '../../shared/ui/badge';
 import { useSession } from '../../shared/hooks/use-session';
+import { useToast } from '../../shared/ui/toast';
+import { useCreateAiAnalysis } from '../../shared/api/hooks';
+import type { AiAnalysisDto } from '../../shared/api/contracts';
 
-export function ContextPanel() {
+interface ContextPanelProps {
+  activeStudyId?: string;
+  activeStudyVersion?: number;
+}
+
+export function ContextPanel({
+  activeStudyId,
+  activeStudyVersion = 1,
+}: ContextPanelProps) {
   const [tab, setTab] = useState<'assistant' | 'notes' | 'links'>('assistant');
   const [question, setQuestion] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [aiResponse, setAiResponse] = useState<{
-    status: 'supported' | 'insufficient-evidence' | null;
-    quote?: string;
-    attribution?: string;
-    message?: string;
-  } | null>(null);
-  const { isAuthenticated } = useSession();
+  const [analyses, setAnalyses] = useState<AiAnalysisDto[]>([]);
+  const { isAuthenticated, token } = useSession();
+  const { toast } = useToast();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  const handleAsk = () => {
-    if (!question.trim()) return;
-    setLoading(true);
+  const createAnalysisMutation = useCreateAiAnalysis();
 
-    // Simulação determinística do comportamento estrito do backend:
-    // O modelo opera em RAG com Qwen3-1.7B e ou extrai 1 frase de Josefo ou relata "insufficient-evidence"
-    setTimeout(() => {
-      setLoading(false);
-      if (question.toLowerCase().includes('criação') || question.toLowerCase().includes('genesis')) {
-        setAiResponse({
-          status: 'supported',
-          quote: 'In the beginning God created the heaven and the earth.',
-          attribution: 'Flavius Josephus, Antiquities of the Jews, Book I, ch. 1',
-        });
-      } else {
-        setAiResponse({
-          status: 'insufficient-evidence',
-          message:
-            'Não foi encontrada evidência documental nos quatro parágrafos autorizados de Flávio Josefo para fundamentar esta pergunta.',
-        });
-      }
-    }, 1200);
+  const handleSendQuestion = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const trimmed = question.trim();
+    if (!trimmed) return;
+
+    if (!isAuthenticated || !token) {
+      toast('Autenticação necessária', {
+        description: 'Configure seu token de operador na barra lateral.',
+        type: 'warning',
+      });
+      return;
+    }
+
+    if (!activeStudyId) {
+      toast('Nenhum estudo ativo', {
+        description: 'Selecione ou gere um estudo primeiro para vincular a pergunta da IA.',
+        type: 'warning',
+      });
+      return;
+    }
+
+    // Validação estrita do contrato: pergunta de no máximo 500 bytes UTF-8
+    const byteLength = new TextEncoder().encode(trimmed).byteLength;
+    if (byteLength > 500) {
+      toast('Pergunta muito longa', {
+        description: `O limite máximo é de 500 bytes UTF-8. A pergunta atual possui ${byteLength} bytes.`,
+        type: 'warning',
+      });
+      return;
+    }
+
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const analysis = await createAnalysisMutation.mutateAsync({
+        studyId: activeStudyId,
+        studyVersion: activeStudyVersion,
+        question: trimmed,
+      });
+
+      setAnalyses((prev) => [analysis, ...prev]);
+      setQuestion('');
+      toast('Análise de IA concluída.', { type: 'success' });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Falha na inferência da IA.';
+      toast('Erro no assistente de IA', { description: msg, type: 'error' });
+    } finally {
+      abortControllerRef.current = null;
+    }
+  };
+
+  const handleCancelGeneration = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      toast('Inferência cancelada pelo operador.', { type: 'info' });
+    }
   };
 
   return (
@@ -83,63 +138,136 @@ export function ContextPanel() {
       {/* Conteúdo Contextual */}
       <div className="flex-1 overflow-y-auto space-y-[1rem]">
         {tab === 'assistant' && (
-          <div className="space-y-[1rem]">
+          <div className="space-y-[1.25rem]">
             {/* Aviso Hermenêutico do Modelo Local */}
-            <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] text-[0.75rem] font-ui text-[var(--foreground-muted)] space-y-[0.25rem]">
+            <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] text-[0.75rem] font-ui text-[var(--foreground-muted)] space-y-[0.35rem]">
               <div className="flex items-center gap-[0.35rem] font-semibold text-[var(--foreground)]">
-                <ShieldAlert className="w-[0.85rem] h-[0.85rem] text-[var(--accent)]" />
-                RAG Extrativo Local (Qwen3-1.7B)
+                <ShieldAlert className="w-[0.9rem] h-[0.9rem] text-[var(--accent)]" />
+                RAG Extrativo Determinístico (Qwen3-1.7B)
               </div>
               <p className="leading-relaxed">
-                A IA responde exclusivamente com base nos trechos admitidos de Flávio Josefo. Não há alucinação: se não houver documento, reporta insuficiência.
+                Inferência local na CPU. O modelo extrai no máximo uma frase inglesa de Flávio Josefo (*Antiguidades dos Judeus*) ou reporta insuficiência de evidência documental.
               </p>
             </div>
 
-            {/* Input de Pergunta */}
-            <div className="space-y-[0.5rem]">
-              <label className="text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
-                Investigar Passagem:
-              </label>
+            {/* Input de Pergunta com Validação de Bytes */}
+            <form onSubmit={handleSendQuestion} className="space-y-[0.5rem]">
+              <div className="flex justify-between items-center text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
+                <span>Pergunta Investigativa:</span>
+                <span className="text-[0.7rem] text-[var(--foreground-muted)] font-mono">
+                  {new TextEncoder().encode(question).byteLength}/500B
+                </span>
+              </div>
               <div className="flex gap-[0.5rem]">
                 <Input
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="Faça uma pergunta sobre o contexto..."
-                  disabled={loading}
+                  placeholder="Ex: O que Josefo relata sobre este período?"
+                  disabled={createAnalysisMutation.isPending}
+                  className="h-[2.25rem] text-[0.825rem]"
                 />
-                <Button size="sm" loading={loading} onClick={handleAsk}>
-                  Enviar
-                </Button>
-              </div>
-            </div>
-
-            {/* Resposta do Assistente */}
-            {aiResponse && (
-              <div className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] space-y-[0.75rem] animate-in fade-in-50">
-                <div className="flex items-center justify-between">
-                  <Badge
-                    classification={
-                      aiResponse.status === 'supported' ? 'documented-fact' : 'insufficient-evidence'
-                    }
+                {createAnalysisMutation.isPending ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleCancelGeneration}
+                    className="h-[2.25rem] px-[0.75rem]"
                   >
-                    {aiResponse.status === 'supported' ? 'Evidência Documentada' : 'Evidência Insuficiente'}
-                  </Badge>
-                </div>
-
-                {aiResponse.status === 'supported' ? (
-                  <div className="space-y-[0.5rem]">
-                    <blockquote className="border-l-2 border-[var(--accent)] pl-[0.75rem] italic text-[0.875rem] font-serif text-[var(--foreground)]">
-                      "{aiResponse.quote}"
-                    </blockquote>
-                    <p className="text-[0.7rem] text-[var(--foreground-muted)] font-ui">
-                      Fonte: {aiResponse.attribution}
-                    </p>
-                  </div>
+                    <StopCircle className="w-[0.9rem] h-[0.9rem]" />
+                  </Button>
                 ) : (
-                  <div className="text-[0.825rem] text-[var(--foreground-muted)] font-ui leading-relaxed">
-                    {aiResponse.message}
-                  </div>
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={!question.trim()}
+                    className="h-[2.25rem] px-[0.75rem]"
+                  >
+                    <Send className="w-[0.9rem] h-[0.9rem]" />
+                  </Button>
                 )}
+              </div>
+            </form>
+
+            {/* Loading Indicator com Feedback */}
+            {createAnalysisMutation.isPending && (
+              <div className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-center space-y-[0.5rem]">
+                <Loader2 className="w-[1.25rem] h-[1.25rem] animate-spin text-[var(--accent)] mx-auto" />
+                <p className="text-[0.8rem] text-[var(--foreground-muted)] font-ui">
+                  Executando busca vetorial e inferência CPU local...
+                </p>
+              </div>
+            )}
+
+            {/* Lista de Análises Concluídas */}
+            {analyses.length > 0 ? (
+              <div className="space-y-[1rem]">
+                {analyses.map((item) => (
+                  <article
+                    key={item.id}
+                    className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] space-y-[0.75rem] shadow-xs"
+                  >
+                    {/* Pergunta */}
+                    <div className="font-ui font-medium text-[0.85rem] text-[var(--foreground)] border-b border-[var(--border)]/60 pb-[0.4rem]">
+                      "{item.question}"
+                    </div>
+
+                    {/* Status da Evidência */}
+                    <div className="flex items-center justify-between">
+                      <Badge
+                        classification={
+                          item.status === 'supported'
+                            ? 'documented-fact'
+                            : 'insufficient-evidence'
+                        }
+                      >
+                        {item.status === 'supported'
+                          ? 'Evidência Documentada'
+                          : 'Evidência Insuficiente'}
+                      </Badge>
+                      <span className="text-[0.7rem] text-[var(--foreground-muted)] font-ui">
+                        {new Date(item.createdAt).toLocaleTimeString('pt-BR', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </span>
+                    </div>
+
+                    {/* Trecho Citado */}
+                    {item.status === 'supported' && item.evidence.length > 0 ? (
+                      <div className="space-y-[0.5rem]">
+                        <blockquote className="border-l-2 border-[var(--accent)] pl-[0.75rem] italic text-[0.85rem] font-serif text-[var(--foreground)] leading-relaxed">
+                          "{item.evidence[0].quote}"
+                        </blockquote>
+                        <div className="text-[0.725rem] text-[var(--foreground-muted)] font-ui space-y-[0.15rem]">
+                          <p>
+                            <strong>Fonte:</strong> {item.evidence[0].attribution} ({item.evidence[0].locator})
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-[0.65rem] rounded bg-[var(--surface-muted)] text-[0.8rem] text-[var(--foreground-muted)] font-ui leading-relaxed">
+                        Não foi encontrada evidência documental nos trechos autorizados de Flávio Josefo para fundamentar a questão formulada.
+                      </div>
+                    )}
+
+                    {/* Metadados de Proveniência Auditáveis */}
+                    <div className="pt-[0.5rem] border-t border-[var(--border)]/60 text-[0.7rem] text-[var(--foreground-muted)] font-ui flex items-center justify-between">
+                      <span className="flex items-center gap-[0.25rem]">
+                        <Cpu className="w-[0.75rem] h-[0.75rem]" />
+                        {item.provenance.promptTokens + item.provenance.completionTokens} tokens
+                      </span>
+                      <span className="font-mono text-[0.65rem]">
+                        {item.provenance.profileId}
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-[2.5rem] text-[var(--foreground-muted)] font-ui space-y-[0.5rem]">
+                <Sparkles className="w-[2rem] h-[2rem] mx-auto opacity-30 text-[var(--accent)]" />
+                <p className="text-[0.8rem]">Nenhuma pergunta realizada para este estudo.</p>
               </div>
             )}
           </div>
@@ -151,7 +279,7 @@ export function ContextPanel() {
               Anotações associadas ao estudo corrente com garantia de revisão CAS:
             </p>
             <div className="p-[1rem] rounded-[var(--radius-md)] border border-dashed border-[var(--border)] text-center text-[0.8rem] text-[var(--foreground-muted)] font-ui">
-              {isAuthenticated ? 'Nenhuma anotação criada nesta sessão.' : 'Configure o token de sessão para gerenciar anotações.'}
+              {isAuthenticated ? 'Consulte ou adicione notas no painel de Workspace.' : 'Configure o token de sessão para gerenciar anotações.'}
             </div>
           </div>
         )}
@@ -176,9 +304,11 @@ export function ContextPanel() {
 
       {/* Rodapé do Painel */}
       <div className="pt-[0.75rem] border-t border-[var(--border)] text-[0.7rem] text-[var(--foreground-muted)] font-ui flex items-center justify-between">
-        <span>Bíblia App v0.1.0</span>
         <span className="flex items-center gap-[0.25rem]">
-          <AlertCircle className="w-[0.75rem] h-[0.75rem]" /> RAG Local CPU
+          <Layers className="w-[0.75rem] h-[0.75rem]" /> Estudo {activeStudyId ? 'Conectado' : 'Não Selecionado'}
+        </span>
+        <span className="flex items-center gap-[0.25rem]">
+          <AlertCircle className="w-[0.75rem] h-[0.75rem]" /> Qwen3-1.7B CPU
         </span>
       </div>
     </div>
