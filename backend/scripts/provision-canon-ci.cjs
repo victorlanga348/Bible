@@ -4,22 +4,22 @@ const crypto = require('node:crypto');
 const { fetch, AbortSignal } = globalThis;
 const archive = require('../admissions/biblical-canon/porbr2018/ci-archive.json');
 const admission = require('../admissions/biblical-canon/porbr2018/manifest.json');
-const failed = () => { throw new Error('CANON_ARCHIVE_PROVISIONING_FAILED'); };
+const failed = (code = 'INPUT') => { const error = new Error('CANON_ARCHIVE_PROVISIONING_FAILED'); error.code = /^(INPUT|NO_TOKEN|REDIRECT|SIZE|INTEGRITY|HTTP_[0-9]{3})$/.test(code) ? code : 'INPUT'; throw error; };
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 
 async function downloadCanonAsset(item, token = process.env.GITHUB_TOKEN, request = fetch) {
-  if (!token) failed();
+  if (!token) failed('NO_TOKEN');
   let response = await request(`https://api.github.com/repos/victorlanga348/Bible/releases/assets/${item.assetId}`, {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/octet-stream', 'X-GitHub-Api-Version': '2022-11-28' }, redirect: 'manual', signal: AbortSignal.timeout(120000),
   });
   if (response.status === 302) {
     const location = new URL(response.headers.get('location'));
-    if (location.protocol !== 'https:' || !['release-assets.githubusercontent.com', 'objects.githubusercontent.com'].includes(location.hostname)) failed();
+    if (location.protocol !== 'https:' || !['release-assets.githubusercontent.com', 'objects.githubusercontent.com'].includes(location.hostname)) failed('REDIRECT');
     response = await request(location, { redirect: 'error', signal: AbortSignal.timeout(120000) });
   }
-  if (response.status !== 200 || !response.body) failed();
+  if (response.status !== 200 || !response.body) failed('HTTP_' + response.status);
   const chunks = []; let count = 0;
-  for await (const chunk of response.body) { count += chunk.length; if (count > item.bytes) failed(); chunks.push(Buffer.from(chunk)); }
+  for await (const chunk of response.body) { count += chunk.length; if (count > item.bytes) failed('SIZE'); chunks.push(Buffer.from(chunk)); }
   return Buffer.concat(chunks);
 }
 
@@ -34,7 +34,7 @@ async function provisionCanon(directory = 'data/biblical-canon/porbr2018', fetch
       if (pins[item.name] !== item.sha256 || !Number.isSafeInteger(item.assetId) || item.assetId <= 0 || !Number.isSafeInteger(item.bytes) || item.bytes <= 0) failed();
       const target = path.join(directory, item.name), exists = fs.existsSync(target);
       const bytes = exists ? fs.readFileSync(target) : await fetchBytes(item);
-      if (bytes.length !== item.bytes || sha(bytes) !== item.sha256) failed();
+      if (bytes.length !== item.bytes || sha(bytes) !== item.sha256) failed('INTEGRITY');
       if (!exists) missing.push({ item, target, bytes });
     }
     fs.mkdirSync(directory, { recursive: true });
@@ -42,8 +42,8 @@ async function provisionCanon(directory = 'data/biblical-canon/porbr2018', fetch
     // Hard-link promotion is exclusive and atomic; it cannot replace an existing input.
     for (const row of missing) fs.linkSync(row.temporary, row.target);
     return { result: 'PASS', files: archive.files.map(({ name, sha256, bytes }) => ({ name, sha256, bytes })), reused: missing.length === 0 };
-  } catch { failed(); }
+  } catch (error) { if (error.message === 'CANON_ARCHIVE_PROVISIONING_FAILED') throw error; failed(); }
   finally { for (const name of temporary) fs.unlinkSync(name); }
 }
 module.exports = { provisionCanon, downloadCanonAsset };
-if (require.main === module) provisionCanon().then(result => console.log(JSON.stringify(result))).catch(() => { console.error('CANON_ARCHIVE_PROVISIONING_FAILED'); process.exitCode = 1; });
+if (require.main === module) provisionCanon().then(result => console.log(JSON.stringify(result))).catch(error => { console.error('CANON_ARCHIVE_PROVISIONING_FAILED', /^(INPUT|NO_TOKEN|REDIRECT|SIZE|INTEGRITY|HTTP_[0-9]{3})$/.test(error.code) ? error.code : 'INPUT'); process.exitCode = 1; });
