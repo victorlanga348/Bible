@@ -9,6 +9,7 @@ async function run() {
     const { SourceLibrary } = require('../dist/modules/source-library/application/source-library.js');
     const { SourcePassageLinks } = require('../dist/modules/source-library/application/source-passage-links.js');
     const { admitAiSources } = require('../dist/operations/admit-ai-sources.js');
+    const { admitAiCoverage } = require('../dist/operations/admit-ai-coverage.js');
     const app = await createApplication(parseRuntimeConfig({ ...process.env, DATABASE_URL: target }));
     try {
       await app.init();
@@ -16,7 +17,8 @@ async function run() {
       const result = await admitAiSources(app.get(SourceLibrary), app.get(SourcePassageLinks), {
         source: 'data/source-library/josephus-antiquities-pg2848-en/source.html', manifest: `${directory}/manifest.json`, excerpts: `${directory}/excerpts.json`, notice: `${directory}/NOTICE.source.txt`,
       }, 'local-ai');
-      console.info(JSON.stringify({ component: 'ai-development-source-admission', result }));
+      const coverage = await admitAiCoverage(app.get(SourcePassageLinks), 'admissions/ai-coverage-v1.json', 'local-ai');
+      console.info(JSON.stringify({ component: 'ai-development-source-admission', result, coverage }));
     } finally { await app.close(); }
   });
 }

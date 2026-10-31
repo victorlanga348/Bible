@@ -1,0 +1,52 @@
+{
+  "id": "ai-coverage-v1",
+  "purpose": "test-ai",
+  "runtimeProfileSha256": "cf12565112a0c5b84a7065200ee01362052f1ae3dee6296c16a8dccabbc5dc0f",
+  "sourceManifestSha256": "46469116db968afc44f32d4e6cc5fecc5890910c038cbaac5363aa80dacb66d4",
+  "curatedPassageLinks": [
+    {
+      "id": "local-ai-coverage-v1-gen-light",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p1",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 1,
+      "fromVerse": 3,
+      "toVerse": 5,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate light and the separation and naming of day and night; narrative parallel only, no independent historical confirmation."
+    },
+    {
+      "id": "local-ai-coverage-v1-gen-garden",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p3",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 2,
+      "fromVerse": 8,
+      "toVerse": 9,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate the garden in the east and the trees of life and knowledge; narrative parallel only, no independent geographical verification."
+    },
+    {
+      "id": "local-ai-coverage-v1-gen-woman",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p2",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 2,
+      "fromVerse": 21,
+      "toVerse": 22,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate the sleep of Adam and the formation of the woman from a rib; narrative parallel only, not independent biological evidence."
+    },
+    {
+      "id": "local-ai-coverage-v1-gen-fruit",
+      "excerptId": "josephus-antiquities-pg2848-en-local-ai-v1-b1-c1-p4",
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "chapter": 3,
+      "fromVerse": 6,
+      "toVerse": 6,
+      "nature": "narrative-parallel",
+      "rationale": "Both passages narrate the woman and Adam eating the fruit; narrative parallel only, no independent historical confirmation."
+    }
+  ]
+}

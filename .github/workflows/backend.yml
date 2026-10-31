@@ -3,7 +3,7 @@ on:
   pull_request:
     paths: ['backend/**', '.github/workflows/backend.yml']
   push:
-    branches: ['feat/biblia-backend', 'feat/biblia-integracao']
+    branches: ['feat/biblia-backend', 'feat/biblia-integracao', 'feat/biblia-integracao-validacao']
     paths: ['backend/**', '.github/workflows/backend.yml']
   workflow_dispatch:
 permissions:

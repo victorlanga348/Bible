@@ -1,0 +1,9 @@
+# Fixture autêntica — cobertura adicional de IA
+
+Uso exclusivo de teste, nunca seed de desenvolvimento. Curadoria e critérios em [S10-T004](../../../../../docs/sprints/S10/T004_AI_COVERAGE_SPEC.md). Não contém conteúdo histórico ou bíblico gerado: canon.json deriva do XML porbr2018 pinado e foi comparado versículo a versículo com o snapshot completo original. Atribuição/licença integrais permanecem no objeto translation.
+
+São doze versículos de Génesis: quatro antigos (1:1,2:7,2:10,3:1) e oito novos (1:3–5,2:8–9,2:21–22,3:6). Arquivo original SHA2561f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682; XML5e2845e9d5551b86aaffef56d689a77946fdf8eabfb672b15d15fa8a23e627db; snapshot14c2103dc8fedc80007b4c37a05f09c43926f05e8a0dc8ccd62b3443dccd0a27; fixture40e759585755a5c3270d1181a796bc2899a2f57533e7a15c516ee67de6d263dc. Teste tooling verifica os bytes e cada linha contra o original provisionado.
+
+manifest.json tem propósito test-ai e pin a286a7f83aca32955b3d461c8a9532097abd843a34a33c1ed33b54041350137e. A distribuição operacional separada está em admissions/ai-coverage-v1.json, pin f67ede1ba6c6146c39202699bcc0d812ada9e5b1a05f8ba7251d4a54c2d2274a. As associações narrativas referenciam os quatro parágrafos já admitidos, sem alterar os seus textos, direitos ou aviso integral. Fonte/aviso originais continuam na distribuição própria de source-library; não duplicar nem abreviar o aviso para esta fixture.
+
+Reprodução da verificação: provisionar os originais conforme o guia canónico existente e executar `npm run test:tooling` no backend. Prova opcional com modelos nativos: `npm run test:ai:coverage:native`, exclusivamente com .env.test real guardado, PostgreSQL de teste isolado/migrado, HTML original autenticado e BIBLE_AI_HOME admitido. Não executar em paralelo com suites ou outro modelo. Sem credenciais no comando; o script guarda relatório privado e separa revisão semântica do resultado determinístico. Não é um teste de conta Google humana.

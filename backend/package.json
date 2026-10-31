@@ -19,6 +19,7 @@
     "test:coverage": "npm run test -- --coverage",
     "test:architecture": "node --test scripts/architecture.test.cjs",
     "test:tooling": "node --test scripts/*.test.cjs",
+    "test:ai:coverage:native": "npm run build && node --env-file-if-exists=.env.test scripts/evaluate-ai-coverage-test.cjs",
     "test:mutation": "stryker run && node scripts/check-mutation.cjs",
     "test:mutation:dry-run": "stryker run --dryRunOnly",
     "test:mutation:incremental": "node scripts/mutation-incremental.cjs",

@@ -1,0 +1,113 @@
+{
+  "translation": {
+    "id": "porbr2018",
+    "name": "Bíblia Livre",
+    "language": "pt-BR",
+    "canonId": "protestant-66",
+    "sourceUrl": "https://ebible.org/Scriptures/porbr2018_vpl.zip",
+    "sourceSha256": "1f71b7765795ae7cc416a9255c7d9c3a3932ce868206fa762606c7438c8fc682",
+    "retrievedAt": "2026-10-21T13:35:20.764Z",
+    "licenseId": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Bíblia Livre (BLIVRE), copyright © 2018 Diego Santos, Mario Sérgio e Marco Teles. https://ebible.org/porbr2018/ . CC BY 4.0. Aviso editorial 2022-03-08; snapshot identificado pelo SHA-256 da fonte."
+  },
+  "books": [
+    {
+      "translationId": "porbr2018",
+      "code": "GEN",
+      "name": "Gênesis",
+      "order": 1
+    }
+  ],
+  "chapters": [
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 1
+    },
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 2
+    },
+    {
+      "translationId": "porbr2018",
+      "bookCode": "GEN",
+      "number": 3
+    }
+  ],
+  "verses": [
+    {
+      "bookCode": "GEN",
+      "chapter": 1,
+      "number": 1,
+      "text": "No princípio criou Deus os céus e a terra. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 1,
+      "number": 3,
+      "text": "E disse Deus: Haja luz; e houve luz. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 1,
+      "number": 4,
+      "text": "E viu Deus que a luz era boa: e separou Deus a luz das trevas. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 1,
+      "number": 5,
+      "text": "E chamou Deus à luz Dia, e às trevas chamou Noite: e foi a tarde e a manhã o primeiro dia. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 7,
+      "text": "Formou, pois, o SENHOR Deus ao homem do pó da terra, e assoprou em seu nariz sopro de vida; e foi o homem em alma vivente. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 8,
+      "text": "E havia o SENHOR Deus plantado um jardim em Éden ao oriente, e pôs ali ao homem que havia formado. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 9,
+      "text": "E havia o SENHOR Deus feito nascer da terra toda árvore agradável à vista, e boa para comer: também a árvore da vida em meio do jardim, e a árvore do conhecimento do bem e do mal. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 10,
+      "text": "E saía de Éden um rio para regar o jardim, e dali se repartia em quatro ramificações. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 21,
+      "text": "E o SENHOR Deus fez cair sonho sobre Adão, e ele adormeceu: então tomou uma de suas costelas, e fechou a carne em seu lugar; "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 2,
+      "number": 22,
+      "text": "E da costela que o SENHOR Deus tomou do homem, fez uma mulher, e trouxe-a ao homem. "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 3,
+      "number": 1,
+      "text": "Porém a serpente era astuta, mais que todos os animais do campo que o SENHOR Deus havia feito. E ela disse à mulher: Deus vos disse: Não comais de toda árvore do jardim? "
+    },
+    {
+      "bookCode": "GEN",
+      "chapter": 3,
+      "number": 6,
+      "text": "E a mulher viu que a árvore era boa para se comer, agradável aos olhos, e árvore desejável para se obter conhecimento. E ela tomou de seu fruto, e comeu; e deu também ao seu marido com ela, e ele comeu. "
+    }
+  ]
+}
