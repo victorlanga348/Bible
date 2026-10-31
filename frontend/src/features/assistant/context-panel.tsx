@@ -17,16 +17,21 @@ import { Badge } from '../../shared/ui/badge';
 import { useSession } from '../../shared/hooks/use-session';
 import { useToast } from '../../shared/ui/toast';
 import { useCreateAiAnalysis } from '../../shared/api/hooks';
+import { CrossRefPanel } from '../cross-ref/cross-ref-panel';
 import type { AiAnalysisDto } from '../../shared/api/contracts';
 
 interface ContextPanelProps {
   activeStudyId?: string;
   activeStudyVersion?: number;
+  activeReference?: string;
+  onNavigateToPassage?: (reference: string) => void;
 }
 
 export function ContextPanel({
   activeStudyId,
   activeStudyVersion = 1,
+  activeReference = 'GEN 1:1-3',
+  onNavigateToPassage,
 }: ContextPanelProps) {
   const [tab, setTab] = useState<'assistant' | 'notes' | 'links'>('assistant');
   const [question, setQuestion] = useState('');
@@ -105,9 +110,26 @@ export function ContextPanel({
 
   return (
     <div className="flex flex-col h-full p-[1.25rem] space-y-[1.25rem]">
+      {/* Live Region para Leitores de Tela */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {createAnalysisMutation.isPending
+          ? 'Executando busca vetorial e inferência CPU local.'
+          : analyses.length > 0
+          ? `Última análise: ${analyses[0].status === 'supported' ? 'Evidência documentada' : 'Evidência insuficiente'}.`
+          : ''}
+      </div>
+
       {/* Seletor de Abas da Região Direita */}
-      <div className="flex border-b border-[var(--border)] pb-[0.5rem] gap-[0.5rem]">
+      <div
+        role="tablist"
+        aria-label="Painel Contextual"
+        className="flex border-b border-[var(--border)] pb-[0.5rem] gap-[0.5rem]"
+      >
         <button
+          role="tab"
+          id="tab-assistant"
+          aria-controls="panel-assistant"
+          aria-selected={tab === 'assistant'}
           onClick={() => setTab('assistant')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'assistant'
@@ -119,6 +141,10 @@ export function ContextPanel({
           Assistente IA
         </button>
         <button
+          role="tab"
+          id="tab-notes"
+          aria-controls="panel-notes"
+          aria-selected={tab === 'notes'}
           onClick={() => setTab('notes')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'notes'
@@ -130,6 +156,10 @@ export function ContextPanel({
           Anotações
         </button>
         <button
+          role="tab"
+          id="tab-links"
+          aria-controls="panel-links"
+          aria-selected={tab === 'links'}
           onClick={() => setTab('links')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'links'
@@ -145,7 +175,12 @@ export function ContextPanel({
       {/* Conteúdo Contextual */}
       <div className="flex-1 overflow-y-auto space-y-[1rem]">
         {tab === 'assistant' && (
-          <div className="space-y-[1.25rem]">
+          <div
+            role="tabpanel"
+            id="panel-assistant"
+            aria-labelledby="tab-assistant"
+            className="space-y-[1.25rem]"
+          >
             {/* Aviso Hermenêutico do Modelo Local */}
             <div className="p-[0.75rem] rounded-[var(--radius-md)] bg-[var(--surface-muted)] border border-[var(--border)] text-[0.75rem] font-ui text-[var(--foreground-muted)] space-y-[0.35rem]">
               <div className="flex items-center gap-[0.35rem] font-semibold text-[var(--foreground)]">
@@ -281,7 +316,12 @@ export function ContextPanel({
         )}
 
         {tab === 'notes' && (
-          <div className="space-y-[0.75rem]">
+          <div
+            role="tabpanel"
+            id="panel-notes"
+            aria-labelledby="tab-notes"
+            className="space-y-[0.75rem]"
+          >
             <p className="text-[0.8rem] text-[var(--foreground-muted)] font-ui">
               Anotações associadas ao estudo corrente com garantia de revisão CAS:
             </p>
@@ -292,19 +332,19 @@ export function ContextPanel({
         )}
 
         {tab === 'links' && (
-          <div className="space-y-[0.75rem]">
+          <div
+            role="tabpanel"
+            id="panel-links"
+            aria-labelledby="tab-links"
+            className="space-y-[0.75rem]"
+          >
             <p className="text-[0.8rem] text-[var(--foreground-muted)] font-ui">
               Passagens paralelas e referências cruzadas vinculadas:
             </p>
-            <div className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[0.8rem] font-ui space-y-[0.35rem]">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-[var(--foreground)]">Jo 1:1-3</span>
-                <Badge classification="inference">Paralelo Teológico</Badge>
-              </div>
-              <p className="text-[0.75rem] text-[var(--foreground-muted)]">
-                Eco explícito ao relato da criação em Gênesis 1:1.
-              </p>
-            </div>
+            <CrossRefPanel
+              reference={activeReference}
+              onNavigateToPassage={onNavigateToPassage}
+            />
           </div>
         )}
       </div>

@@ -37,6 +37,14 @@ export function AppContent() {
 
   const handleStudyChange = useCallback((s: import('./shared/api/contracts').StudyViewDto) => {
     setActiveStudy({ id: s.id, version: s.version });
+    if (s.reference?.normalized) {
+      setActiveStudyReference(s.reference.normalized);
+    }
+  }, []);
+
+  const handleNavigatePassage = useCallback((refStr: string) => {
+    setActiveStudyReference(refStr);
+    setActiveTab('reader');
   }, []);
 
   const toggleFocusMode = useCallback(() => {
@@ -55,6 +63,8 @@ export function AppContent() {
         <ContextPanel
           activeStudyId={activeStudy?.id}
           activeStudyVersion={activeStudy?.version}
+          activeReference={activeStudyReference}
+          onNavigateToPassage={handleNavigatePassage}
         />
       }
     >
