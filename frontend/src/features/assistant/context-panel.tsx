@@ -33,6 +33,8 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
   const [notice, setNotice] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const running = useRef<AbortController | null>(null);
+  const selectionGeneration = useRef(0);
+  const selectConversation = (id: string | null) => { selectionGeneration.current++; setSelectedId(id); };
   const history = useWorkspaceConversations(activeStudyId, cursors[page]);
   const choices = (history.data?.items ?? []).filter(item => item.studyVersion === activeStudyVersion);
   const conversationId = selectedId ?? choices[0]?.id;
@@ -56,7 +58,7 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
     try {
       const current = conversation ?? await createConversation.mutateAsync({ studyId: activeStudyId, studyVersion: activeStudyVersion, signal: controller.signal });
       if (controller.signal.aborted || running.current !== controller) return;
-      setSelectedId(current.id);
+      selectConversation(current.id);
       await append.mutateAsync({ conversationId: current.id, expectedRevision: current.revision, question: trimmed, signal: controller.signal });
       if (controller.signal.aborted || running.current !== controller) return;
       setQuestion(''); toast('Resposta guardada na conversa.', { type: 'success' });
@@ -76,7 +78,7 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
     try {
       const created = await createConversation.mutateAsync({ studyId: activeStudyId, studyVersion: activeStudyVersion, signal: controller.signal });
       if (controller.signal.aborted || running.current !== controller) return;
-      setSelectedId(created.id); setQuestion('');
+      selectConversation(created.id); setQuestion('');
     } catch (failure) {
       if (!controller.signal.aborted && running.current === controller) setError(failure instanceof Error ? failure.message : 'Não foi possível criar a conversa.');
     } finally { if (running.current === controller) { running.current = null; setPending(false); } }
@@ -88,9 +90,15 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
   };
   const handleDelete = async () => {
     if (!conversationId) return;
+    const generation = selectionGeneration.current;
     setError(null);
-    try { await remove.mutateAsync(conversationId); setSelectedId(null); setConfirmDelete(false); setQuestion(''); }
-    catch (failure) { setError(failure instanceof Error ? failure.message : 'Não foi possível eliminar a conversa.'); }
+    try {
+      await remove.mutateAsync(conversationId);
+      if (generation !== selectionGeneration.current) return;
+      selectConversation(null); setConfirmDelete(false); setQuestion('');
+    } catch (failure) {
+      if (generation === selectionGeneration.current) setError(failure instanceof Error ? failure.message : 'Não foi possível eliminar a conversa.');
+    }
   };
   const refresh = async () => { await Promise.all([history.refetch(), ...(conversationId ? [conversationQuery.refetch()] : [])]); setNotice(null); };
 
@@ -107,7 +115,7 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
         {activeStudyId && <div className="space-y-[0.5rem]">
           <label htmlFor="study-conversation" className="block text-[0.8rem]">Conversas guardadas · versão {activeStudyVersion}</label>
           <select id="study-conversation" aria-label="Conversa guardada" value={conversationId ?? ''} disabled={pending || loading}
-            onChange={event => { setSelectedId(event.target.value || null); setQuestion(''); setError(null); setNotice(null); }}
+            onChange={event => { selectConversation(event.target.value || null); setQuestion(''); setError(null); setNotice(null); }}
             className="w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-[0.5rem] text-[0.8rem]">
             <option value="">Nenhuma conversa selecionada</option>
             {conversationId && !choices.some(item => item.id === conversationId) && <option value={conversationId}>Conversa atual</option>}
@@ -119,9 +127,9 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
             {conversationId && <Button size="sm" variant="ghost" disabled={pending} onClick={() => setConfirmDelete(true)}>Eliminar conversa</Button>}
           </div>
           {(page > 0 || history.data?.nextCursor) && <div className="flex justify-between gap-[0.5rem]">
-            <Button size="sm" variant="ghost" disabled={page === 0 || pending} onClick={() => { setPage(value => value - 1); setSelectedId(null); }}>Conversas anteriores</Button>
+            <Button size="sm" variant="ghost" disabled={page === 0 || pending} onClick={() => { setPage(value => value - 1); selectConversation(null); }}>Conversas anteriores</Button>
             <Button size="sm" variant="ghost" disabled={!history.data?.nextCursor || pending} onClick={() => {
-              if (history.data?.nextCursor) { setCursors(values => [...values.slice(0, page + 1), history.data.nextCursor]); setPage(value => value + 1); setSelectedId(null); }
+              if (history.data?.nextCursor) { setCursors(values => [...values.slice(0, page + 1), history.data.nextCursor]); setPage(value => value + 1); selectConversation(null); }
             }}>Conversas seguintes</Button>
           </div>}
         </div>}

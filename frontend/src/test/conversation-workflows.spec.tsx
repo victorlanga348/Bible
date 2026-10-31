@@ -29,6 +29,33 @@ function mount() {
   return render(<QueryClientProvider client={client}><ToastProvider><ContextPanel activeStudyId={studyId} activeStudyVersion={3} /></ToastProvider></QueryClientProvider>);
 }
 const turnCalls = () => vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/turns'));
+it.each(['success', 'failure'] as const)('preserves another conversation draft after an earlier deletion returns %s following a selection change', async outcome => {
+  const secondId = '40000000-0000-4000-8000-000000000002';
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let finishDelete!: (response: Response) => void; const pending = new Promise<Response>(resolve => { finishDelete = resolve; });
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    if (path.endsWith(`/studies/${studyId}/conversations`)) return Response.json({ items: [
+      ...(exists ? [{ id: conversationId, studyId, studyVersion: 3, revision: 1, createdAt }] : []),
+      { id: secondId, studyId, studyVersion: 3, revision: 1, createdAt },
+    ], nextCursor: null });
+    if (path === `/api/conversations/${conversationId}` && options?.method === 'DELETE') return pending;
+    if (path === `/api/conversations/${secondId}`) return Response.json({ ...conversationFixture(1, 'Second technical conversation'), id: secondId });
+    return original(address, options);
+  });
+  mount(); await screen.findByText('"Questão técnica anterior."');
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar conversa' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Confirmar eliminação da conversa' }));
+  await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'DELETE')).toBe(true));
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar' }));
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversa guardada' }), { target: { value: secondId } });
+  await screen.findByText('"Second technical conversation"');
+  const draft = screen.getByPlaceholderText(/O que Josefo relata/); fireEvent.change(draft, { target: { value: 'Draft belonging to the second conversation' } });
+  await act(async () => { exists = outcome !== 'success'; finishDelete(outcome === 'success' ? new Response(null, { status: 204 }) : Response.json({ error: { code: 'UNAVAILABLE', message: 'Obsolete deletion error' } }, { status: 503 })); });
+  await waitFor(() => expect(screen.getByRole('combobox', { name: 'Conversa guardada' })).toHaveValue(secondId));
+  expect(draft).toHaveValue('Draft belonging to the second conversation'); expect(turnCalls()).toHaveLength(0);
+  expect(screen.queryByText('Obsolete deletion error')).not.toBeInTheDocument();
+});
 it('keeps empty questions unsent even when the form is submitted directly', async () => {
   stored = conversationFixture(0); mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
   const field = screen.getByPlaceholderText(/O que Josefo relata/);

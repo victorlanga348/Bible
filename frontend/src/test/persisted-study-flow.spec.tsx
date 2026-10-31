@@ -97,6 +97,43 @@ it('does not create a private study merely by navigating to the study screen', a
   await new Promise(resolve => setTimeout(resolve, 25));
   expect(calls().filter(call => call.options?.method === 'POST')).toHaveLength(0);
 });
+it.each(['saved', 'created'] as const)('starts a distinct study from the reader after a %s study without revising the previous id', async previous => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let postpone = false, requested = false, finish!: (response: Response) => void;
+  const pending = new Promise<Response>(resolve => { finish = resolve; });
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (postpone && new URL(String(address)).pathname === '/api/studies' && options?.method === 'POST') { requested = true; return pending; }
+    return original(address, options);
+  });
+  mount();
+  if (previous === 'saved') { fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' })); fireEvent.click(await screen.findByRole('button', { name: 'Abrir' })); }
+  else fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(previous === 'saved' ? `${studyId}:3` : `${secondStudyId}:1`));
+  fireEvent.click(screen.getByRole('button', { name: 'Bíblia' })); postpone = true;
+  fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' })); await waitFor(() => expect(requested).toBe(true));
+  expect(screen.getByTestId('active-context')).toHaveTextContent('none');
+  const thirdId = '10000000-0000-4000-8000-000000000003';
+  await act(async () => { finish(Response.json(studyFixture({ id: thirdId, version: 1 }))); });
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${thirdId}:1`));
+  expect(calls().some(call => call.path.endsWith('/versions'))).toBe(false);
+});
+it.each(['saved', 'created'] as const)('preserves the active %s study when a different workspace study is deleted', async previous => {
+  let items = [studyFixture(), studyFixture({ id: secondStudyId, version: 1 })]; const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    if (path === '/api/workspace/studies') return Response.json({ items, nextCursor: null });
+    if (options?.method === 'DELETE') { items = items.filter(item => !path.endsWith(item.id)); return new Response(null, { status: 204 }); }
+    return original(address, options);
+  });
+  mount();
+  if (previous === 'saved') { fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' })); fireEvent.click((await screen.findAllByRole('button', { name: 'Abrir' }))[0]); }
+  else fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  const active = previous === 'saved' ? `${studyId}:3` : `${secondStudyId}:1`;
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(active));
+  fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: `Eliminar estudo GEN 1:1 versão ${previous === 'saved' ? 1 : 3}` }));
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo' })); await screen.findByText('Estudo e dados associados eliminados.');
+  expect(screen.getByTestId('active-context')).toHaveTextContent(active);
+});
 it('recovers a failed saved-study read with GET rather than creating a replacement study', async () => {
   const original = vi.mocked(fetch).getMockImplementation()!; let attempts = 0;
   vi.mocked(fetch).mockImplementation(async (url, options) => {
@@ -175,6 +212,9 @@ it('opens notes directly for the active study and version from the contextual pa
   fireEvent.click(screen.getByRole('button', { name: 'Open current notes' }));
   expect(await screen.findByPlaceholderText(/Escreva uma nova anotação/)).toBeInTheDocument();
   expect(screen.getByRole('combobox')).toHaveDisplayValue('GEN 1:1 (v3)');
+  fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  expect(screen.getByRole('button', { name: /Estudos Recentes/ })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'Anotações Pessoais' })).toHaveAttribute('aria-pressed', 'false');
 });
 it('disconnects the assistant when its newly created study is deleted', async () => {
   const original = vi.mocked(fetch).getMockImplementation()!; let created = false, deleted = false;

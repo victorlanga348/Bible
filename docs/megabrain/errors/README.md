@@ -39,3 +39,7 @@ Manter um índice de ID, título, estado, módulo e tarefa quando houver registo
 [ERR-0028 — Citação longa escondia o botão de fechar](ERR-0028-source-dialog-viewport.md): RED2FAIL/GREEN2PASS em preview real desktop/mobile; altura/scroll corrigidos, mutação atual pendente.
 
 [ERR-0029 — Deadline nativo era apresentado como erro de rede](ERR-0029-native-timeout-classification.md): motivo nativo RED1FAIL/GREEN48PASS, classificação504/TIMEOUT corrigida sem alterar budgets.
+
+[ERR-0030 — Eliminação antiga apagava rascunho de outra conversa](ERR-0030-late-conversation-deletion.md): RED2FAIL/GREEN49PASS e preview/PG real PASS com entrega204 atrasada.
+
+[ERR-0031 — Erro inline sem associação acessível](ERR-0031-input-error-association.md): RED2FAIL/GREEN44PASS; IDs/aria-describedby/aria-invalid e atributos do chamador preservados.

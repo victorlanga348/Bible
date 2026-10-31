@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { createRef } from 'react';
 import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { Button } from '../shared/ui/button';
@@ -73,6 +74,28 @@ describe('Design System Primitives', () => {
   });
 
   describe('Input', () => {
+    it('connects inline errors to the field, preserves caller descriptions and restores the valid state', () => {
+      const ref = createRef<HTMLInputElement>();
+      const view = render(<><p id="technical-help">Technical helper text.</p><Input ref={ref} id="technical-field" aria-label="Technical field" aria-describedby="technical-help" error="Technical field error" /></>);
+      const field = screen.getByRole('textbox', { name: 'Technical field' }), error = screen.getByText('Technical field error');
+      expect(ref.current).toBe(field); expect(field).toHaveAttribute('aria-invalid', 'true');
+      expect(error.id).not.toBe(''); expect(field.getAttribute('aria-describedby')?.split(' ')).toEqual(['technical-help', error.id]);
+      view.rerender(<><p id="technical-help">Technical helper text.</p><Input ref={ref} id="technical-field" aria-label="Technical field" aria-describedby="technical-help" /></>);
+      expect(field).not.toHaveAttribute('aria-invalid'); expect(field).toHaveAttribute('aria-describedby', 'technical-help'); expect(screen.queryByText('Technical field error')).not.toBeInTheDocument();
+    });
+    it('generates distinct error associations without requiring callers to supply field ids', () => {
+      render(<><Input aria-label="First technical field" error="First technical error" /><Input aria-label="Second technical field" error="Second technical error" /></>);
+      const first = screen.getByRole('textbox', { name: 'First technical field' }), second = screen.getByRole('textbox', { name: 'Second technical field' });
+      expect(first.id).not.toBe(''); expect(first.id).not.toBe(second.id);
+      expect(first).toHaveAttribute('aria-describedby', screen.getByText('First technical error').id);
+      expect(second).toHaveAttribute('aria-describedby', screen.getByText('Second technical error').id);
+    });
+    it('preserves caller-managed validation and does not create a phantom inline error', () => {
+      render(<><p id="caller-error">Caller-managed technical message</p><Input aria-label="Caller-managed field" aria-invalid="grammar" aria-describedby="caller-error" /></>);
+      const field = screen.getByRole('textbox', { name: 'Caller-managed field' });
+      expect(field).toHaveAttribute('aria-invalid', 'grammar'); expect(field).toHaveAttribute('aria-describedby', 'caller-error');
+      expect(screen.getAllByText('Caller-managed technical message')).toHaveLength(1);
+    });
     it('renders input with placeholder and accessible error', () => {
       render(<Input placeholder="Buscar passagem..." error="Referência não encontrada" />);
       expect(screen.getByPlaceholderText('Buscar passagem...')).toBeInTheDocument();

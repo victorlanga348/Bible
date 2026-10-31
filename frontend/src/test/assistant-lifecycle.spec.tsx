@@ -96,6 +96,27 @@ it('returns from contextual notes and references to the assistant without creati
   expect(screen.getByRole('textbox', { name: /Pergunta investigativa/ })).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
 });
+it('exposes one selected contextual tab and only the content belonging to that tab', async () => {
+  mount(); const names = ['Assistente IA', 'Anotações', 'Referências'];
+  for (const selected of names) {
+    fireEvent.click(screen.getByRole('button', { name: selected }));
+    for (const name of names) expect(screen.getByRole('button', { name })).toHaveAttribute('aria-pressed', String(name === selected));
+    expect(screen.queryByPlaceholderText(/O que Josefo relata/) !== null).toBe(selected === 'Assistente IA');
+    expect(screen.queryByText(/não são evidência histórica validada/) !== null).toBe(selected === 'Anotações');
+    if (selected === 'Referências') await screen.findByText('Nenhuma referência cruzada catalogada para esta passagem.');
+    else expect(screen.queryByText('Nenhuma referência cruzada catalogada para esta passagem.')).not.toBeInTheDocument();
+  }
+  fireEvent.click(screen.getByRole('button', { name: 'Assistente IA' }));
+  expect(screen.queryByText(/não são evidência histórica validada/)).not.toBeInTheDocument();
+  expect(screen.queryByText('Nenhuma referência cruzada catalogada para esta passagem.')).not.toBeInTheDocument();
+});
+it.each([false, true])('does not offer an inert notes action with a selected study=%s', selected => {
+  const client = createQueryClient(); clients.push(client);
+  const openNotes = selected ? undefined : vi.fn();
+  render(<QueryClientProvider client={client}><ToastProvider><ContextPanel activeStudyId={selected ? studyId : undefined} onOpenNotes={openNotes} /></ToastProvider></QueryClientProvider>);
+  fireEvent.click(screen.getByRole('button', { name: 'Anotações' }));
+  expect(screen.getByRole('button', { name: 'Abrir anotações deste estudo' })).toBeDisabled();
+});
 it('refreshes an empty conversation list without issuing a detail read or a write', async () => {
   mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
   const before = vi.mocked(fetch).mock.calls.length;

@@ -220,6 +220,57 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual([]);
   });
 
+  test('preserves a second conversation draft after a real deletion response arrives late', async ({ page }, info) => {
+    test.skip(info.project.name !== 'chromium');
+    const token = await api.token(), headers = { authorization: `Bearer ${token}` };
+    const created = await page.request.post('/api/studies', { headers, data: { translationId: 'porbr2018', reference: 'GEN 1:1' } });
+    expect(created.status()).toBe(201); const study = await created.json();
+    let releaseResponse!: () => void;
+    const delivery = new Promise<void>(resolve => { releaseResponse = resolve; });
+    try {
+      const conversations = [];
+      for (let index = 0; index < 2; index++) {
+        const response = await page.request.post(`/api/studies/${study.id}/conversations`, { headers, data: { studyVersion: 1 } });
+        expect(response.status()).toBe(201); conversations.push(await response.json());
+      }
+      const [first, second] = conversations;
+      let observedDeletion!: (status: number) => void;
+      const deletedAtServer = new Promise<number>(resolve => { observedDeletion = resolve; });
+      await page.route(`**/api/conversations/${first.id}`, async route => {
+        if (route.request().method() !== 'DELETE') { await route.continue(); return; }
+        // Real proxy/Nest/PostgreSQL deletion. Delay only delivery of its actual response.
+        const response = await route.fetch(); observedDeletion(response.status());
+        await delivery; await route.fulfill({ response });
+      });
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.getByRole('button', { name: 'Entrar na conta' }).click();
+      await page.getByText('Usar um token local', { exact: true }).click();
+      await page.getByLabel('Token de acesso local').fill(token); await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
+      await expect(page.getByRole('dialog')).not.toBeVisible();
+      await page.getByRole('button', { name: 'Histórico & Workspace', exact: true }).click();
+      await page.getByRole('button', { name: 'Abrir', exact: true }).click();
+      const selector = page.getByRole('combobox', { name: 'Conversa guardada' });
+      await selector.selectOption(first.id); await expect(page.getByText('0/20 turnos', { exact: true })).toBeVisible();
+      await page.getByRole('button', { name: 'Eliminar conversa', exact: true }).click();
+      const completed = page.waitForResponse(response => new URL(response.url()).pathname === `/api/conversations/${first.id}` && response.request().method() === 'DELETE');
+      await page.getByRole('button', { name: 'Confirmar eliminação da conversa' }).click();
+      expect(await deletedAtServer).toBe(204);
+      await page.getByRole('button', { name: 'Fechar', exact: true }).click();
+      await selector.selectOption(second.id);
+      const draft = page.getByRole('textbox', { name: /Pergunta investigativa/ });
+      await draft.fill('Rascunho da segunda conversa, conservado após eliminar a primeira.');
+      releaseResponse(); expect((await completed).status()).toBe(204);
+      await expect(selector).toHaveValue(second.id);
+      await expect(draft).toHaveValue('Rascunho da segunda conversa, conservado após eliminar a primeira.');
+      expect((await page.request.get(`/api/conversations/${first.id}`, { headers })).status()).toBe(404);
+      const saved = await page.request.get(`/api/conversations/${second.id}`, { headers }); expect(saved.status()).toBe(200); expect((await saved.json()).revision).toBe(0);
+      expect(api.turns).toHaveLength(0); // No model call or accidental turn write.
+    } finally {
+      releaseResponse();
+      expect((await page.request.delete(`/api/workspace/studies/${study.id}`, { headers })).status()).toBe(204);
+    }
+  });
+
   test('cancels the browser form once without submitting it again', async ({ page }, info) => {
     test.skip(info.project.name !== 'chromium', 'Desktop protocol proof; responsive workflows have their own case');
     // Only the pending turn transport is a declared double. This isolates browser default activation;

@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { HistoryView } from '../features/workspace/history-view';
@@ -43,6 +43,27 @@ it('exposes exactly one selected workspace view to assistive technology', async 
     fireEvent.click(active);
     for (const button of [studies, notes, favorites]) expect(button).toHaveAttribute('aria-pressed', String(button === active));
   }
+});
+it.each(['studies', 'favorites'] as const)('keeps %s pagination bounded while loading and after returning to page one', async kind => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let finish!: (response: Response) => void;
+  const pending = new Promise<Response>(resolve => { finish = resolve; });
+  const pageOne = kind === 'studies' ? studyFixture() : { id: 'technical-first-favorite', studyId, studyVersion: 1, createdAt, reference };
+  const pageTwo = kind === 'studies' ? studyFixture({ id: secondStudyId, version: 2 }) : { id: 'technical-second-favorite', studyId: secondStudyId, studyVersion: 2, createdAt, reference };
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const url = new URL(String(address));
+    if (url.pathname === `/api/workspace/${kind}`) return url.searchParams.has('cursor') ? pending : Response.json({ items: [pageOne], nextCursor: `opaque-${kind}-cursor` });
+    return original(address, options);
+  });
+  mount(); if (kind === 'favorites') fireEvent.click(screen.getByRole('button', { name: /^Favoritos/ }));
+  const prefix = kind === 'studies' ? 'Estudos' : 'Favoritos';
+  const firstLabel = kind === 'studies' ? 'v3' : 'GEN 1:1 (v1)', secondLabel = kind === 'studies' ? 'v2' : 'GEN 1:1 (v2)';
+  await screen.findByText(firstLabel); const previous = screen.getByRole('button', { name: `${prefix} anteriores` }), next = screen.getByRole('button', { name: `${prefix} seguintes` });
+  expect(previous).toBeDisabled(); expect(next).toBeEnabled(); fireEvent.click(next);
+  await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([address]) => new URL(String(address)).searchParams.get('cursor') === `opaque-${kind}-cursor`)).toBe(true));
+  expect(previous).toBeDisabled(); expect(next).toBeDisabled();
+  await act(async () => { finish(Response.json({ items: [pageTwo], nextCursor: null })); });
+  await screen.findByText(secondLabel); expect(previous).toBeEnabled(); expect(next).toBeDisabled();
+  fireEvent.click(previous); await screen.findByText(firstLabel); expect(previous).toBeDisabled(); expect(next).toBeEnabled();
 });
 it.each([1, 3])('retains the exact selected study version %s without duplicating it or substituting another id', async version => {
   const original = vi.mocked(fetch).getMockImplementation()!;

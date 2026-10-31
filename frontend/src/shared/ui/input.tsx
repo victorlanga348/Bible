@@ -8,7 +8,10 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = 'text', error, icon, ...props }, ref) => {
+  ({ className, type = 'text', error, icon, id, 'aria-describedby': describedBy, 'aria-invalid': ariaInvalid, ...props }, ref) => {
+    const generatedId = React.useId();
+    const inputId = id ?? generatedId;
+    const errorId = `${inputId}-error`;
     return (
       <div className="relative w-full">
         {icon && (
@@ -17,7 +20,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </div>
         )}
         <input
+          id={inputId}
           type={type}
+          aria-invalid={error ? true : ariaInvalid}
+          aria-describedby={[describedBy, error && errorId].filter(Boolean).join(' ') || undefined}
           className={cn(
             'flex w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-[0.875rem] py-[0.5rem] text-[0.875rem] font-ui text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] transition-colors focus-visible:border-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50',
             icon && 'pl-[2.25rem]',
@@ -28,7 +34,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p className="mt-[0.35rem] text-[0.75rem] text-rose-400 font-ui transition-all animate-in fade-in-50">
+          <p id={errorId} className="mt-[0.35rem] text-[0.75rem] text-rose-400 font-ui transition-all animate-in fade-in-50">
             {error}
           </p>
         )}
