@@ -1,0 +1,65 @@
+# S10-T003 — Fluxos integrados, contexto de estudo e cancelamento de IA
+
+Decisão delegada2026-10-30, antes da implementação. Dependência T002 DONE (CI frontend 41131759411 PASS mutação 86,22%, CI backend 41126297344 PASS 90,71%). Cumpre os critérios AC03 e AC04 da [S10](ACCEPTANCE_CRITERIA.md).
+
+## 1. Propagação do Contexto de Estudo ao Assistente
+
+1. `StudyView` emite `onStudyChange(study: StudyViewDto | null)` sempre que um estudo for criado ou carregado com sucesso, além de notificar `null` em caso de erro terminal ou troca de referência em andamento.
+2. `AppContent` mantém o estado do estudo ativo `{ id: string; version: number; reference: string } | null` compartilhado entre o painel central de estudo e a gaveta lateral do assistente.
+3. `<ContextPanel activeStudyId={study?.id} activeStudyVersion={study?.version} />` recebe os identificadores do estudo corrente.
+4. Quando nenhum estudo estiver ativo, o assistente orienta o usuário a selecionar ou gerar um estudo no leitor ou painel de estudos antes de submeter perguntas.
+5. Quando um estudo estiver ativo, o rodapé exibe `Estudo Conectado` e a requisição `POST /studies/:studyId/ai-analyses` vincula `studyId` e `studyVersion` reais.
+
+## 2. Cancelamento Efetivo de Inferência de IA (AbortController)
+
+1. A mutação `useCreateAiAnalysis` aceita opcionalmente `signal?: AbortSignal` em seus parâmetros de chamada, encaminhando-o diretamente às opções da função de transporte `request<AiAnalysisDto>`.
+2. O cliente HTTP de transporte propaga `signal` para a chamada global `fetch(url, { ..., signal })`.
+3. Ao clicar no botão de cancelamento (Stop), `handleCancelGeneration()` invoca `abortController.abort()` no controlador ativo.
+4. O fechamento da requisição HTTP pelo cliente emite o evento `'close'` na resposta Express do backend, acionando o `controller.abort()` registrado em `AiAnalysisController` e cancelando o slot de inferência na CPU.
+5. Tratamento de exceção no frontend:
+   - Se `signal.aborted` ou o erro for `AbortError`, o assistente exibe notificação informativa ("Inferência cancelada pelo operador.") e retorna sem apresentar alerta de falha de servidor.
+   - Se a operação já tiver sido concluída com sucesso antes do cancelamento, o resultado persistido é preservado e nenhuma mensagem de cancelamento tardio é disparada.
+6. Não é prometido rollback de análise de IA que já tenha completado a escrita no banco de dados antes da interrupção.
+
+## 3. Gestão e Persistência no Workspace
+
+1. Anotações: criação vinculada ao estudo corrente, edição atômica com CAS (`expectedRevision`) e remoção com diálogo de confirmação.
+2. Favoritos: alternância idempotente por par `(studyId, version)`.
+3. Limpeza determinística: troca de sessão limpa o cache e desmonta o estado das anotações e estudos do operador anterior.
+
+## 4. Estratégia TDD e Critérios Verificáveis
+
+1. **RED**: Teste de componente e hook comprovando a ausência do sinal de cancelamento em `useCreateAiAnalysis`, a falta de propagação do estudo ativo em `AppContent` e a falha de tratamento de `AbortError`.
+2. **GREEN**: Implementação cirúrgica mínima em `hooks.ts`, `context-panel.tsx`, `study-view.tsx` e `App.tsx`.
+3. **REFACTOR / GATES**: Typecheck strict, lint oxlint, testes de regressão Vitest, cobertura de linhas >= 90% e branches >= 85%.
+
+## 5. Adenda de conclusão — 2026-10-31, antes das correções seguintes
+
+Pedido «continue» retoma o trabalho aqui. As sete alterações herdadas foram copiadas para snapshot privado em backend/reports/s10-t003-resume-20261031-052128, com hashes; dois testes herdados passaram18,87s. Isso é regressão observada, não prova retroativa de RED. Houve novas escritas concorrentes durante a primeira tentativa de RED, inclusive workspace e planos T004; essa tentativa não é prova estável. Decisão do agente antes das correções: checkout isolado em LOCALAPPDATA/BibleAI/worktrees/integracao-20261031, branch feat/biblia-integracao-validacao de ca5d914. Preserva a branch original e seus ficheiros; não faz merge/rewrite automático. Copiados só os seis fontes/testes do snapshot inicial e quatro documentos/testes desta retoma, com hashes verificados na cópia. Dependências existentes ligadas por pacote, com caches/.bin próprios; cliente gerado e .env.test copiados sem imprimir valores. Nenhuma instalação nova. Uma tarefa de cada vez, sem agentes.
+
+O incremento inicial de quatro ficheiros não cobre integralmente AC03/AC04. As decisões abaixo são do agente sob autorização vigente, derivadas de S09/S10 e dos schemas backend existentes; não criam endpoints, dependências, migrações ou fontes/modelos de IA.
+
+Os itens1.1–1.3 do desenho inicial são substituídos explicitamente pela composição no App descrita abaixo; StudyView deixa de emitir criação por effect e passa a apresentar o estado recebido. Os contratos HTTP e critérios de contexto permanecem os mesmos. A cópia de cancelamento passa a «Pedido interrompido; atualiza para confirmar o estado guardado», sem atribuir ao utilizador um timeout real.
+
+1. **Criação e consulta distintas.** Navegar ao painel de estudo só apresenta a passagem; criar exige «Gerar Estudo» ou a ação explícita de iniciar estudo no leitor. Esses eventos, sem POST em effect, criam uma única vez mesmo em StrictMode. Reabrir histórico/favorito passa id e versão reais e usa GET /studies/:id?version=..., sem gerar outro registo. App compõe criação, consulta e estudo ativo; StudyView apresenta o resultado/controlos. Id/versão/referência derivam da resposta real. Troca em andamento ou erro não deixam o assistente ligado a estudo anterior. Navegar entre painéis conserva o estudo ativo; logout/troca de owner conservam a fronteira privada de T002.
+2. **Versões.** «Criar nova versão» usa POST /studies/:id/versions com {expectedVersion}. Sucesso atualiza o estudo/assistente;409não repete escrita e oferece consulta atual. Não alterar o conteúdo imutável de uma versão guardada nem inventar versão por referência.
+3. **Workspace completo.** Notas usam a versão selecionada, não1fixo. Favorito é o par id/versão; a referência já existente na resposta backend deve aparecer e permitir abrir essa versão. Listas usam os cursores existentes e permitem avançar/voltar. CAS preserva o rascunho em409e oferece carregar a revisão atual antes de novo envio. Nota/estudo têm confirmação de eliminação e atualização de cache. DELETE /workspace/studies/:id usa a eliminação retomável existente; só dados próprios de teste podem ser limpos na prova nativa.
+4. **Conversas persistidas.** O assistente usa POST /studies/:id/conversations, GET /workspace/studies/:id/conversations, GET /conversations/:id, POST /conversations/:id/turns e DELETE /conversations/:id. Campos seguem conversation-schemas e workspace/schemas, incluindo expectedRevision, versão, máximo20turnos e nextCursor; não há endpoint novo. Selecionar conversa carrega turnos/citações reais, falhas ou resposta indisponível ficam explícitas. A criação inicial pode preceder envio do primeiro turno; cancelamento não promete desfazer recursos já persistidos, e recarregar a lista recupera o estado confirmado pelo servidor.
+5. **Cancelamento e corridas.** Sinal chega a fetch para criação de análise/conversa/turno. Cancelar, mudar estudo/versão ou desmontar invalida o pedido e impede publicar sucesso tardio, mesmo que um transporte ignore abort. Pedidos de IA não usam o timeout genérico15s como limite de uma inferência local; o backend conserva budgets pinados. Timeout/rede reais continuam erros recuperáveis, sem serem anunciados como cancelamento do utilizador. Botões têm nomes acessíveis e não permitem escrita duplicada enquanto o pedido está ativo.
+6. **Conteúdo e direitos.** Retirar a referência Jo1:1-3 fabricada do painel; consultar CrossRefPanel/API para o estudo real ou mostrar estado vazio. «Anotações» oferece acesso ao workspace do estudo corrente. Resposta de IA distingue supported/insufficient/restricted/unavailable e mostra citações/direitos/limitações efetivamente recebidos; nota pessoal não é evidência histórica. Uso local do perfil extrativo permanece explícito; ampliação é T004.
+
+Vantagem da composição no App: uma seleção por id/versão rege painel/assistente/workspace e elimina criação por remontagem. Custo: mais coordenação de estado no compositor; manter componentes e hooks específicos, sem router/store/dependência novos. Alternativa de manter cópias independentes e sincronizar por effects rejeitada pelas corridas e duplicação de POST. Risco de cancelar depois de persistir é mitigado por mensagem honesta/consulta ao servidor, não rollback fictício. Risco de dados de outro owner continua mitigado por T002 e autorização backend.
+
+Sequência de prova: RED/GREEN afetados por comportamento; strict/lint/build e regressões; Chrome dev/preview desktop/mobile→API Nest→PostgreSQL de teste identificado, corpus autêntico e recursos técnicos próprios; criar/reabrir/versionar/nota CAS/favorito/conversa/eliminação, leitura de outro owner negada. Uma prova de cancelamento técnico não é chamada real ao modelo. Quando o fluxo chamar IA, usar o perfil real e reportar separadamente execução/resultado; infraestrutura ausente é BLOCKED. Nunca escrever em desenvolvimento para simular teste isolado.
+
+Gates atuais incluem mutação obrigatória, inventário e revisão de sobreviventes, score bruto>85%/zeroRuntimeError+NoCoverage. Para evitar repetir uma medição parcial pouco antes do fecho, medir o frontend global nesta etapa: todo src TS/TSX e Vite config conforme QUALITY_PLAN, sem retirar componentes/hooks/entrypoint. Cobertura>=90%linhas/85%branches; configs só com tratamento estrutural já declarado. S10-T005 poderá reutilizar provas de fontes executáveis idênticos; qualquer alteração posterior exige revalidação pertinente. Backend inalterado conserva CI41126297344 auditada; não repetir a sua mutação por mudanças apenas frontend.
+
+## 6. Infraestrutura nativa isolada — decisão antes de provisionar
+
+Execução do gate global: o PC tem cerca8GB RAM e menos de1GB livre nas medições desta retoma; manter testes locais com um worker e não executar modelo durante suites pesadas. CI da candidata feat/biblia-integracao-validacao executa build/lint/cobertura global e análise Stryker global inicial integral, concorrência2/checker TypeScript/perTest/inventário/operadores intactos; sem seed de sessão por ser recorte diferente. Artefactos mesmo em falha e auditoria independente obrigatórios. Conservar o trigger da integração original; nenhuma publicação de serviço. Script e config específicos do browser nativo evitam misturar portas/infraestruturas com os testes existentes.
+
+Adenda responsiva antes da correção: AC03/04 aplicam-se também a ecrãs estreitos. O painel deve abrir/fechar pelo botão com nome e estado acessíveis, usando a área central em mobile; desktop conserva o painel lateral. Sem duplicar instâncias do assistente ou pedidos. RED Chrome mobile observado: após abrir, painel inexistente/oculto; falha de visibilidade independente das leituras de API não necessárias a esse critério.
+
+O PostgreSQL de teste partilhado pela outra execução pode receber limpezas de fixtures. Usar um container descartável próprio, com imagem idêntica ao CI já admitido: pgvector/pgvector0.8.7-pg17-bookworm@sha256ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d. Porta aleatória ligada só a127.0.0.1, db/rolebiblia_test e schemasapp/ai, preservando os guards existentes. Auth trust é exclusivamente do container local descartável sem dados pessoais. Labels/runId e ID guardados em relatório; remover só recursos próprios após conferir identidade. Nenhum serviço existente é parado.
+
+Alterar apenas .env.test ignorado do checkout privado para esse alvo, NODE_ENVtest e schemaai derivado; não imprimir credenciais nem editar .env originais. Aplicar migrações reais e importar snapshots operacionais autênticos pelos scripts existentes com paths explícitos/hashes/licenças; não preencher o corpus operacional com fixtures reduzidas de unidade. Prova com API própria32124/frontend5273 evita conflito com5173/3000/32123; os defaults de produto continuam intactos. Modelos/runtime admitidos vêm do diretório privado existente, sem serviço pago/download de modelo ou alteração de perfil nesta tarefa. Uma prova com fornecedor técnico fica identificada como tal, nunca substitui chamada real ao runtime.

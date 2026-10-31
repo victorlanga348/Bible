@@ -8,7 +8,7 @@ vi.mock('../features/canon/reader-view', () => ({ ReaderView: ({ onSelectPassage
 }) => <div><button onClick={() => onSelectPassageForStudy('JHN 3:16')}>Study selection</button><button onClick={onToggleFocusMode}>Focus reader</button><span>{isFocusMode ? 'Reader focused' : 'Reader normal'}</span></div> }));
 vi.mock('../features/studies/study-view', () => ({ StudyView: ({ initialReference }: { initialReference: string }) => <div>Study screen: {initialReference}</div> }));
 vi.mock('../features/sources/sources-view', () => ({ SourcesView: () => <div>Sources screen</div> }));
-vi.mock('../features/workspace/history-view', () => ({ HistoryView: ({ onOpenStudy }: { onOpenStudy: (reference: string) => void }) => <div>Workspace screen<button onClick={() => onOpenStudy('ROM 8:28')}>Open saved study</button></div> }));
+vi.mock('../features/workspace/history-view', () => ({ HistoryView: ({ onOpenStudy }: { onOpenStudy: (id: string, version: number, reference: string) => void }) => <div>Workspace screen<button onClick={() => onOpenStudy('10000000-0000-4000-8000-000000000001', 2, 'ROM 8:28')}>Open saved study</button></div> }));
 vi.mock('../features/assistant/context-panel', () => ({ ContextPanel: () => <div>Assistant panel</div> }));
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 it('navigates the real application shell, selected passage, focus and contextual panel', () => {
@@ -31,9 +31,10 @@ it('navigates the real application shell, selected passage, focus and contextual
   fireEvent.keyDown(window, { key: 'Escape' });
   expect(screen.getByText('Reader normal')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' }));
-  expect(screen.queryByText('Assistant panel')).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' }));
   expect(screen.getByText('Assistant panel')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Fechar Painel Contextual de IA' })).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar Painel Contextual de IA' }));
+  expect(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' })).toHaveAttribute('aria-expanded', 'false');
 });
 it('starts the study tab with the documented default passage', () => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));

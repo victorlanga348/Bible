@@ -1,6 +1,8 @@
 # S10 — Relatório de testes
 
-IN_PROGRESS2026-10-30. Baseline de diagnóstico anterior: frontend5173/API3000 sem proxy/CORS; OPTIONS /translations com origem5173 retornou404 e nenhum Access-Control-Allow-Origin. Leitura direta da API200/corpus real. Isto demonstra a fronteira quebrada, não RED de um teste ainda não escrito.
+IN_PROGRESS2026-10-31. T001/T002 DONE; evidências atuais de T003 em [T003_TEST_REPORT](T003_TEST_REPORT.md), plano/contratos fixados antes de código em [T003_WORKFLOWS_SPEC](T003_WORKFLOWS_SPEC.md). Primeiro gate global frontend207PASS mas cobertura72,87%linhas/69,21%branches FAIL; melhoria em curso, sem exclusões ou fecho presumido. Candidata isolada feat/biblia-integracao-validacao preserva escritas concorrentes do diretório original.
+
+Baseline de diagnóstico anterior: frontend5173/API3000 sem proxy/CORS; OPTIONS /translations com origem5173 retornou404 e nenhum Access-Control-Allow-Origin. Leitura direta da API200/corpus real. Isto demonstra a fronteira quebrada, não RED de um teste ainda não escrito.
 
 Branch feat/biblia-integracao criada de5210a54, frontend/backend/main preservadas e árvore inicialmente limpa. Nenhum comportamento novo implementado antes do contrato T001. Skill impeccable consultada: contexto ausente, PRODUCT.md consolidado somente das specs existentes; contexto imprimiu instruções e terminou com assertion libuv, não declarar execução limpa. Atualização da skill perguntada de forma opcional/assíncrona; não aguardar nem instalar sem resposta. Sem agentes/dependências novas.
 

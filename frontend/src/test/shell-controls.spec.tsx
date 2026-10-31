@@ -44,7 +44,8 @@ it('honors focus keyboard shortcuts and optional callbacks without intercepting 
   fireEvent.keyDown(window, { key: 'Escape' }); expect(focus).not.toHaveBeenCalled();
   fireEvent.keyDown(window, { key: 'F', ctrlKey: true, shiftKey: true });
   fireEvent.keyDown(window, { key: 'f', metaKey: true, shiftKey: true }); expect(focus).toHaveBeenCalledTimes(2);
-  fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' })); expect(context).toHaveBeenCalledTimes(1);
+  fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' }));
+  expect(screen.getByRole('button', { name: 'Fechar Painel Contextual de IA' })).toHaveAttribute('aria-expanded', 'true');
   rerender(wrap(<AppShell activeTab="study" onTabChange={() => {}} isFocusMode onToggleFocusMode={focus}>Focused</AppShell>));
   fireEvent.keyDown(window, { key: 'Escape' });
   fireEvent.click(screen.getByRole('button', { name: /Sair do Modo Foco/ })); expect(focus).toHaveBeenCalledTimes(4);

@@ -111,6 +111,8 @@ export function AppShell({
   const { isAuthenticated, status } = useSession();
   const openAccount = useAccountAccess();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileContextTab, setMobileContextTab] = useState<NavTab | null>(null);
+  const mobileContextOpen = mobileContextTab === activeTab;
 
   // Atalhos de teclado para acessibilidade e navegação fluida
   useEffect(() => {
@@ -267,8 +269,10 @@ export function AppShell({
             <div className="flex items-center gap-[0.5rem]">
               {onToggleContext && (
                 <button
-                  onClick={onToggleContext}
-                  aria-label="Abrir Painel Contextual de IA"
+                  onClick={() => setMobileContextTab(mobileContextOpen ? null : activeTab)}
+                  aria-label={mobileContextOpen ? 'Fechar Painel Contextual de IA' : 'Abrir Painel Contextual de IA'}
+                  aria-expanded={mobileContextOpen}
+                  aria-controls="study-context-panel"
                   className="p-[0.35rem] rounded-[var(--radius-md)] text-[var(--foreground-muted)] hover:bg-[var(--surface-muted)]"
                 >
                   <Sparkles className="w-[1.125rem] h-[1.125rem] text-[var(--accent)]" />
@@ -294,6 +298,7 @@ export function AppShell({
                 onClick={() => {
                   onTabChange(item.id);
                   setMobileMenuOpen(false);
+                  setMobileContextTab(null);
                 }}
                 className={`w-full flex items-center gap-[0.75rem] px-[0.75rem] py-[0.5rem] rounded-[var(--radius-md)] text-[0.875rem] font-ui ${
                   activeTab === item.id
@@ -330,16 +335,17 @@ export function AppShell({
         {/* Área Principal de Conteúdo e Painel Contextual */}
         <div className="flex flex-1 min-w-0 h-full overflow-hidden">
           {/* Palco Central (Leitor / Estudo / Fontes) */}
-          <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 h-full overflow-y-auto outline-none">
+          <main id="main-content" tabIndex={-1} className={`${mobileContextOpen ? 'hidden lg:block ' : ''}flex-1 min-w-0 h-full overflow-y-auto outline-none`}>
             {children}
           </main>
 
           {/* 3. Região Direita — Painel Contextual Inteligente (Oculto em Modo Foco) */}
-          {contextPanel && isContextOpen && !isFocusMode && (
+          {contextPanel && (isContextOpen || mobileContextOpen) && !isFocusMode && (
             <aside
+              id="study-context-panel"
               role="complementary"
               aria-label="Painel de Investigação e IA"
-              className="hidden lg:flex flex-col w-[min(38vw,26rem)] shrink-0 border-l border-[var(--border)] bg-[var(--surface)] h-full overflow-y-auto z-10 transition-all duration-200"
+              className={`${mobileContextOpen ? 'flex w-full' : 'hidden'} ${isContextOpen ? 'lg:flex' : 'lg:hidden'} lg:w-[min(38vw,26rem)] flex-col shrink-0 lg:border-l border-[var(--border)] bg-[var(--surface)] h-full overflow-y-auto z-10 transition-all duration-200`}
             >
               {contextPanel}
             </aside>

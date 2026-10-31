@@ -1,6 +1,6 @@
 # S10 — Revisão
 
-Estado IN_PROGRESS, sem encerramento ou critérios presumidos aprovados. Código/gates da release anterior são históricos. Tarefa corrente T002; restantes sequenciais em [TASKS](TASKS.md).
+Estado IN_PROGRESS, sem encerramento ou critérios presumidos aprovados. T002 DONE após CI41131759411 auditada/86,22366%mutação/100%linhas98,51%branches. Tarefa corrente T003 na candidata isolada feat/biblia-integracao-validacao (a árvore original recebeu escritas concorrentes); restantes sequenciais em [TASKS](TASKS.md). Backend inalterado conserva prova41126297344; frontend T003 necessita cobertura/mutação globais novas. Histórico abaixo refere-se à revisão T002 anterior ao seu fecho.
 
 Revisão T001: contrato /api implementado por TDD, sem alterar endpoints de domínio/CORS global; destinos restritos a loopback. Provas nativas de leitura dev/preview, build strict,97testes e coverage dos quatro módulos runtime100%linhas99,04%branches. Vite config validado por contrato/build/browser e incluído na mutação; exclusão automática do V8 declarada. Mutação integral do recorte93,333333%/271mutantes/zeroRuntimeError+NoCoverage, [13sobreviventes/1Timeout revistos](T001_MUTATION_REVIEW.md). Gate IA não aplicável porque não mudou. Gate documental42ficheiros/85links passou antes desta revisão; auditoria final deve incluir este documento e a revisão de mutantes. Autorização vigente permite encerrar T001 e publicar checkpoint sem repetir pedido; não encerra S10 nem substitui gates globais. Conta Google real continua adiada.
 

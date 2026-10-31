@@ -183,7 +183,7 @@ export interface WorkspaceFavoriteDto {
 }
 
 export interface WorkspaceFavoritesPageDto {
-  items: WorkspaceFavoriteDto[];
+  items: Array<WorkspaceFavoriteDto & { reference: ResolvedReferenceDto }>;
   nextCursor: string | null;
 }
 
@@ -256,6 +256,11 @@ export interface ConversationDto {
   createdAt: string;
   revision: number;
   turns: ConversationTurnDto[];
+}
+
+export interface WorkspaceConversationsPageDto {
+  items: Array<Omit<ConversationDto, 'turns'>>;
+  nextCursor: string | null;
 }
 
 export interface CrossReferenceRelationDto {

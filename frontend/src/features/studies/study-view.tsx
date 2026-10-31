@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useCreateStudy, useStudy } from '../../shared/api/hooks';
+import { useState } from 'react';
 import { useSession } from '../../shared/hooks/use-session';
 import { useToast } from '../../shared/ui/toast';
 import { Button } from '../../shared/ui/button';
@@ -28,24 +27,19 @@ import type { StudyEvidenceDto, StudyViewDto } from '../../shared/api/contracts'
 
 interface StudyViewProps {
   initialReference?: string;
+  study?: StudyViewDto | null;
+  isLoading?: boolean;
+  error?: string | null;
+  onGenerate: (reference: string) => void;
+  onRevise?: () => void;
+  onReload?: () => void;
 }
 
-export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
-  const { token, isAuthenticated } = useSession();
+export function StudyView({ initialReference = 'GEN 1:1-3', study, isLoading = false, error, onGenerate, onRevise, onReload }: StudyViewProps) {
+  const { isAuthenticated } = useSession();
   const { toast } = useToast();
   const [referenceInput, setReferenceInput] = useState<string>(initialReference);
-  const [activeStudy, setActiveStudy] = useState<StudyViewDto | null>(null);
   const [selectedEvidence, setSelectedEvidence] = useState<StudyEvidenceDto | null>(null);
-
-  const createStudyMutation = useCreateStudy();
-
-  // Se houver estudo ativo e quisermos consultar uma versão específica
-  const {
-    data: fetchedStudy,
-    isLoading: loadingStudyDetail,
-  } = useStudy(activeStudy?.id, activeStudy?.version);
-
-  const study = activeStudy || fetchedStudy;
 
   const sectionLabels: Record<string, string> = {
     'immediate-context': '1. Contexto Imediato',
@@ -55,37 +49,6 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
     'comparison': '5. Comparação Textual',
     'interpretations': '6. Interpretações Comparadas',
   };
-
-  const handleGenerateStudy = async (refStr: string) => {
-    if (!isAuthenticated || !token) {
-      toast('Autenticação necessária', {
-        description: 'Configure o token JWT local do operador na barra lateral.',
-        type: 'warning',
-      });
-      return;
-    }
-
-    const trimmed = refStr.trim();
-    if (!trimmed) return;
-
-    try {
-      const result = await createStudyMutation.mutateAsync({
-        translationId: 'porbr2018',
-        reference: trimmed,
-      });
-      setActiveStudy(result);
-      toast(`Estudo criado para ${result.reference.normalized}`, { type: 'success' });
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Falha ao processar o estudo.';
-      toast('Erro ao gerar estudo', { description: msg, type: 'error' });
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated && token && initialReference && !activeStudy) {
-      handleGenerateStudy(initialReference);
-    }
-  }, [isAuthenticated, token, initialReference]);
 
   const openEvidenceModal = (evidenceId: string) => {
     if (!study) return;
@@ -114,14 +77,16 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
           <div className="flex items-center gap-[0.5rem]">
             <Input
               value={referenceInput}
+              aria-label="Passagem do estudo"
               onChange={(e) => setReferenceInput(e.target.value)}
               placeholder="Ex: GEN 1:1-3, ROM 8:28"
               className="w-[12rem] h-[2.25rem] text-[0.825rem]"
             />
             <Button
               size="sm"
-              loading={createStudyMutation.isPending}
-              onClick={() => handleGenerateStudy(referenceInput)}
+              loading={isLoading}
+              disabled={!isAuthenticated || !referenceInput.trim()}
+              onClick={() => onGenerate(referenceInput)}
               className="h-[2.25rem]"
             >
               <Sparkles className="w-[0.9rem] h-[0.9rem]" />
@@ -131,9 +96,14 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
         </div>
       </div>
 
+      {error && <div role="alert" className="py-[1rem] text-[var(--foreground)] space-y-[0.5rem]">
+        <p>{error}</p>
+        {onReload && <Button variant="secondary" onClick={onReload}>Consultar versão atual</Button>}
+      </div>}
+
       {/* Conteúdo do Estudo */}
       <div className="flex-1 py-[1.5rem]">
-        {createStudyMutation.isPending || loadingStudyDetail ? (
+        {isLoading ? (
           <div className="space-y-[1.25rem]">
             <StudyCardSkeleton />
             <StudyCardSkeleton />
@@ -144,15 +114,12 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
             <Compass className="w-[3rem] h-[3rem] mx-auto text-[var(--accent)] opacity-80" />
             <div className="space-y-[0.35rem]">
               <h3 className="font-editorial-heading text-[1.25rem] font-semibold text-[var(--foreground)]">
-                Sessão do Operador Necessária
+                Entra no teu espaço de estudo
               </h3>
               <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui max-w-[42ch] mx-auto leading-relaxed">
-                Para consultar ou criar estudos estruturados com versionamento CAS, insira seu Bearer Token gerado via CLI no terminal.
+                Entra na tua conta para criar, guardar e consultar os teus estudos.
               </p>
             </div>
-            <code className="inline-block p-[0.4rem] rounded bg-[var(--surface-muted)] text-[0.75rem] font-mono select-all">
-              npm --prefix backend run auth:token -- local-owner
-            </code>
           </div>
         ) : study ? (
           <div className="space-y-[2.5rem]">
@@ -170,6 +137,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                     <History className="w-[0.75rem] h-[0.75rem]" />
                     Versão {study.version}
                   </Badge>
+                  {onRevise && <Button size="sm" variant="secondary" onClick={onRevise}>Criar nova versão</Button>}
                   <span className="text-[0.75rem] text-[var(--foreground-muted)] font-ui">
                     {new Date(study.createdAt).toLocaleDateString('pt-BR')}
                   </span>
