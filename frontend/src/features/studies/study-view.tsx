@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useCreateStudy, useStudy } from '../../shared/api/hooks';
+import { useState, useEffect, useRef } from 'react';
+import { useCreateStudy, useStudy, useReviseStudy } from '../../shared/api/hooks';
 import { useSession } from '../../shared/hooks/use-session';
 import { useToast } from '../../shared/ui/toast';
 import { Button } from '../../shared/ui/button';
@@ -28,9 +28,11 @@ import type { StudyEvidenceDto, StudyViewDto } from '../../shared/api/contracts'
 
 interface StudyViewProps {
   initialReference?: string;
+  activeStudyId?: string;
+  onStudyChange?: (study: StudyViewDto | null) => void;
 }
 
-export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
+export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStudyChange }: StudyViewProps) {
   const { token, isAuthenticated } = useSession();
   const { toast } = useToast();
   const [referenceInput, setReferenceInput] = useState<string>(initialReference);
@@ -38,14 +40,28 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
   const [selectedEvidence, setSelectedEvidence] = useState<StudyEvidenceDto | null>(null);
 
   const createStudyMutation = useCreateStudy();
+  const reviseStudyMutation = useReviseStudy();
+
+  const studyIdToFetch = activeStudyId || activeStudy?.id;
 
   // Se houver estudo ativo e quisermos consultar uma versão específica
   const {
     data: fetchedStudy,
     isLoading: loadingStudyDetail,
-  } = useStudy(activeStudy?.id, activeStudy?.version);
+  } = useStudy(studyIdToFetch, activeStudy?.version);
 
   const study = activeStudy || fetchedStudy;
+  const lastReported = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (study) {
+      const key = `${study.id}:${study.version}`;
+      if (lastReported.current !== key) {
+        lastReported.current = key;
+        onStudyChange?.(study);
+      }
+    }
+  }, [study, onStudyChange]);
 
   const sectionLabels: Record<string, string> = {
     'immediate-context': '1. Contexto Imediato',
@@ -74,6 +90,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
         reference: trimmed,
       });
       setActiveStudy(result);
+      onStudyChange?.(result);
       toast(`Estudo criado para ${result.reference.normalized}`, { type: 'success' });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Falha ao processar o estudo.';
@@ -81,11 +98,21 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated && token && initialReference && !activeStudy) {
-      handleGenerateStudy(initialReference);
+  const handleCreateNewVersion = async () => {
+    if (!study) return;
+    try {
+      const nextStudy = await reviseStudyMutation.mutateAsync({
+        studyId: study.id,
+        expectedVersion: study.version,
+      });
+      setActiveStudy(nextStudy);
+      onStudyChange?.(nextStudy);
+      toast(`Versão ${nextStudy.version} criada para ${nextStudy.reference.normalized}`, { type: 'success' });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Falha ao criar nova versão.';
+      toast('Erro ao criar versão', { description: msg, type: 'error' });
     }
-  }, [isAuthenticated, token, initialReference]);
+  };
 
   const openEvidenceModal = (evidenceId: string) => {
     if (!study) return;
@@ -170,6 +197,14 @@ export function StudyView({ initialReference = 'GEN 1:1-3' }: StudyViewProps) {
                     <History className="w-[0.75rem] h-[0.75rem]" />
                     Versão {study.version}
                   </Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCreateNewVersion}
+                    loading={reviseStudyMutation.isPending}
+                  >
+                    Criar nova versão
+                  </Button>
                   <span className="text-[0.75rem] text-[var(--foreground-muted)] font-ui">
                     {new Date(study.createdAt).toLocaleDateString('pt-BR')}
                   </span>

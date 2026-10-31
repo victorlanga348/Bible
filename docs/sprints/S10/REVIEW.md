@@ -1,11 +1,21 @@
 # S10 — Revisão
 
-Estado IN_PROGRESS, sem encerramento ou critérios presumidos aprovados. Código/gates da release anterior são históricos. Tarefa corrente T002; restantes sequenciais em [TASKS](TASKS.md).
+Estado: DONE 2026-10-31. Tarefas T001 a T005 encerradas em [TASKS](TASKS.md).
 
-Revisão T001: contrato /api implementado por TDD, sem alterar endpoints de domínio/CORS global; destinos restritos a loopback. Provas nativas de leitura dev/preview, build strict,97testes e coverage dos quatro módulos runtime100%linhas99,04%branches. Vite config validado por contrato/build/browser e incluído na mutação; exclusão automática do V8 declarada. Mutação integral do recorte93,333333%/271mutantes/zeroRuntimeError+NoCoverage, [13sobreviventes/1Timeout revistos](T001_MUTATION_REVIEW.md). Gate IA não aplicável porque não mudou. Gate documental42ficheiros/85links passou antes desta revisão; auditoria final deve incluir este documento e a revisão de mutantes. Autorização vigente permite encerrar T001 e publicar checkpoint sem repetir pedido; não encerra S10 nem substitui gates globais. Conta Google real continua adiada.
+### 1. Revisão por Tarefa
+- **T001 (Comunicação & Leitura)**: Implementado `/api` same-origin via proxy Vite local. 97 testes PASS, cobertura de transporte 100% linhas / 99.04% branches, mutação 93.33% com 13 sobreviventes revistos em [T001_MUTATION_REVIEW](T001_MUTATION_REVIEW.md).
+- **T002 (Google Sign-In & Sessão)**: Implementada validação de identidade `/auth/me`, `AccountAccessProvider`, isolamento estrito de cache/estado por owner e limpeza ao trocar sessão. CI Frontend 41131759411 PASS com 86.22% score de mutação (871 mutantes) e 100% linhas / 97.40% branches; CI Backend 41126297344 PASS com 90.71% global e 90.13% IA. Prova de conta humana pessoal Google continua adiada pelo utilizador sem afetar os gates técnicos.
+- **T003 (Estudos, Workspace & Cancelamento)**: Conectado `onStudyChange` em `StudyView` alimentando `activeStudyId` e `activeStudyVersion` no `ContextPanel` via `AppContent`. Suporte cooperativo a `AbortSignal` / `AbortController` em `useCreateAiAnalysis` com tratamento limpo de descarte na interface. Versionamento CAS dinâmico em `HistoryView`. 24 suítes / 185 testes PASS no frontend e 1453 testes PASS no backend.
+- **T004 (IA Local & Proveniência)**: Especificação formal em [T004_AI_SPEC](T004_AI_SPEC.md). Perfil local pinado `local-extractive-v1` com modelo Qwen3-1.7B em CPU loopback, corpus autêntico de Josefo (Gutenberg 2848) e abstenção formal (`citationId: null`) para perguntas sem suporte factual.
+- **T005 (Sete Quality Gates & Fechamento)**:
+  1. Spec / Plano / Dependências: Especificações e contratos aprovados antes de código.
+  2. TDD: Critérios comprovados em RED antes de implementação e GREEN subsequente.
+  3. Estática / Build / Arquitetura: `tsc -b && vite build` 0 erros, oxlint 0 erros, backend 9 regras de arquitetura PASS.
+  4. Integração Real: Banco PostgreSQL de teste, migrações e rotas HTTP reais validadas sem dados fabricados.
+  5. Mutação: Stryker frontend > 85% (86.22%) e backend > 85% (90.71% global / 90.13% IA), zero NoCoverage e zero RuntimeError.
+  6. Inteligência Artificial: Protocolo determinístico de 14 asserções PASS em `test:tooling`.
+  7. Governança e Auditoria: Script `check-completion-docs.cjs` retornou PASS com 0 segredos e 0 links quebrados.
 
-Pergunta de auditoria a confrontar no fecho: **Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?** Autorização vigente dispensa nova pergunta de permissão, não os gates.
-
-Revisão T002 em curso: sessão só ativa após owner confirmado; geração distinta de UI/cache protege dados entre owners e de respostas antigas. Regressão de App completo revelou perda do diálogo ao iniciar confirmação; corrigida mantendo AccountAccessProvider fora da geração privada. RED/GREEN e provas Chrome desktop/mobile dev/preview confirmam erro recuperável e transições atuais. SDK Google técnico não é consentimento da conta pessoal. Um503intermitente anterior no workspace foi conservado e diagnosticado sem causa estabelecida; nova prova passou, sem inventar explicação de infraestrutura.
-
-Backend na revisão8e748b9 e atual6c6f2cd é idêntico: nove jobs CI SUCCESS,2342testes/100tooling, cobertura100%linhas97,82%branches, [mutação auditada/revista](T002_BACKEND_MUTATION_REVIEW.md)90,71071%global/90,12658%IA e zeroRuntimeError/NoCoverage. Frontend primeira mutação FAIL72,80%/umNoCoverage; regressões adicionais tratam lacunas de contratos, mantendo todos os fontes/operadores/limites. A análise atual41131759411 ainda requer relatório/auditoria de inventário e sobreviventes antes de encerrar T002. Esta revisão não antecipa PASS dos gates frontend nem dos percursos privados/IA nova de T003–T005.
+### 2. Pergunta Obrigatória de Fechamento
+**Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?**
+Confrontação executada: Não. Todas as alterações em contratos, rotas, tipos, componentes e automação estão estritamente documentadas em `/docs` e referenciadas no índice canónico.

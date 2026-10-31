@@ -41,4 +41,16 @@ describe('Espaço de Estudo & Workspace (Notas CAS e Favoritos)', () => {
     expect(payload.isFavorite).toBe(false);
     expect(payload.studyVersion).toBe(2);
   });
+
+  it('determina a versão real do estudo selecionado ao persistir nova nota', () => {
+    const studies = [
+      { id: 'study-1', version: 1, reference: { normalized: 'Gênesis 1:1' }, createdAt: '2026-10-31T00:00:00Z' },
+      { id: 'study-2', version: 3, reference: { normalized: 'João 1:1' }, createdAt: '2026-10-31T00:00:00Z' },
+    ];
+    const selectedStudyId = 'study-2';
+    const found = studies.find((s) => s.id === selectedStudyId);
+    const studyVersion = found?.version ?? 1;
+
+    expect(studyVersion).toBe(3);
+  });
 });

@@ -68,23 +68,30 @@ export function ContextPanel({
       return;
     }
 
-    abortControllerRef.current = new AbortController();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     try {
       const analysis = await createAnalysisMutation.mutateAsync({
         studyId: activeStudyId,
         studyVersion: activeStudyVersion,
         question: trimmed,
+        signal: controller.signal,
       });
 
       setAnalyses((prev) => [analysis, ...prev]);
       setQuestion('');
       toast('Análise de IA concluída.', { type: 'success' });
     } catch (err: unknown) {
+      if (controller.signal.aborted || (err instanceof Error && (err.name === 'AbortError' || err.message === 'TIMEOUT'))) {
+        return;
+      }
       const msg = err instanceof Error ? err.message : 'Falha na inferência da IA.';
       toast('Erro no assistente de IA', { description: msg, type: 'error' });
     } finally {
-      abortControllerRef.current = null;
+      if (abortControllerRef.current === controller) {
+        abortControllerRef.current = null;
+      }
     }
   };
 

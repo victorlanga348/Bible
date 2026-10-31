@@ -126,6 +126,24 @@ export function useCreateStudy() {
   });
 }
 
+export function useReviseStudy() {
+  const { token } = useSession();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ studyId, expectedVersion }: { studyId: string; expectedVersion: number }) =>
+      request<StudyViewDto>(`/studies/${studyId}/versions`, {
+        method: 'POST',
+        token,
+        body: { expectedVersion },
+      }),
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: queryKeys.studies.detail(data.id) });
+      qc.invalidateQueries({ queryKey: ['workspace', 'studies'] });
+    },
+  });
+}
+
 // 5. Workspace (Studies, Notes, Favorites)
 export function useWorkspaceStudies(cursor?: string | null) {
   const { token } = useSession();
@@ -304,15 +322,18 @@ export function useCreateAiAnalysis() {
       studyId,
       studyVersion,
       question,
+      signal,
     }: {
       studyId: string;
       studyVersion: number;
       question: string;
+      signal?: AbortSignal;
     }) =>
       request<AiAnalysisDto>(`/studies/${studyId}/ai-analyses`, {
         method: 'POST',
         token,
         body: { studyVersion, question },
+        signal,
       }),
   });
 }

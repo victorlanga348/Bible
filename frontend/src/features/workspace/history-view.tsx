@@ -34,10 +34,10 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { useToast } from '../../shared/ui/toast';
-import type { WorkspaceNoteDto } from '../../shared/api/contracts';
+import type { WorkspaceNoteDto, WorkspaceStudyItemDto } from '../../shared/api/contracts';
 
 interface HistoryViewProps {
-  onOpenStudy?: (reference: string) => void;
+  onOpenStudy?: (study: WorkspaceStudyItemDto | string) => void;
 }
 
 export function HistoryView({ onOpenStudy }: HistoryViewProps) {
@@ -70,10 +70,13 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
     e.preventDefault();
     if (!selectedStudyId || !newNoteContent.trim()) return;
 
+    const selectedStudy = studies.find((s) => s.id === selectedStudyId);
+    const studyVersion = selectedStudy?.version ?? 1;
+
     try {
       await createNoteMutation.mutateAsync({
         studyId: selectedStudyId,
-        studyVersion: 1,
+        studyVersion,
         content: newNoteContent.trim(),
       });
       setNewNoteContent('');
@@ -220,7 +223,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
             ) : (
               <div className="space-y-[0.75rem]">
                 {studies.map((item) => {
-                  const isFav = favorites.some((f) => f.studyId === item.id);
+                  const isFav = favorites.some((f) => f.studyId === item.id && f.studyVersion === item.version);
                   return (
                     <article
                       key={item.id}
@@ -254,7 +257,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => onOpenStudy(item.reference.normalized)}
+                            onClick={() => onOpenStudy(item)}
                           >
                             Abrir
                             <ChevronRight className="w-[0.85rem] h-[0.85rem]" />
