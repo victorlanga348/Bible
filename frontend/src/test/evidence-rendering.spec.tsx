@@ -9,7 +9,7 @@ import { CrossRefPanel } from '../features/cross-ref/cross-ref-panel';
 import { AnalysisResult } from '../features/assistant/analysis-result';
 import { ToastProvider } from '../shared/ui/toast';
 import { createQueryClient } from '../shared/api/query-client';
-import { analysisFixture, reference, studyFixture, studyId, createdAt } from './workflow-fixtures';
+import { analysisFixture, reference, studyFixture, studyId, secondStudyId, createdAt } from './workflow-fixtures';
 import type { CrossReferenceRelationDto, StudyEvidenceDto } from '../shared/api/contracts';
 
 // Exact admitted metadata/text. Any relation/rationale is an explicitly technical UI protocol case.
@@ -36,6 +36,7 @@ beforeEach(() => {
     const mode = url.pathname === '/api/cross-references' ? crossMode : sourceMode;
     if (mode === 'pending') return new Promise<Response>(() => {});
     if (mode === 'error') return Response.json({ error: { code: 'UNAVAILABLE', message: 'Consulta indisponível' } }, { status: 503 });
+    if (mode === 'excerpt-error' && url.pathname.endsWith('/excerpts') && !url.searchParams.get('q')) return Response.json({ error: { code: 'UNAVAILABLE', message: 'Consulta indisponível' } }, { status: 503 });
     if (url.pathname === '/api/cross-references') return Response.json({ items: mode === 'empty' ? [] : relations, nextCursor: null });
     if (url.pathname === '/api/sources') return Response.json({ sources: mode === 'empty' ? [] : [source] });
     return Response.json({ excerpts: url.searchParams.get('q') ? [] : [excerpt] });
@@ -65,6 +66,28 @@ it.each(['empty', 'error', 'pending'])('distinguishes source catalog state %s', 
   if (mode === 'empty') await screen.findByText('Nenhuma fonte histórica cadastrada no banco.');
   if (mode === 'error') await screen.findByText('Consulta indisponível');
   if (mode === 'pending') expect(screen.queryByText(source.title)).not.toBeInTheDocument();
+});
+it('distinguishes a failed excerpt request from an empty search and recovers without losing the source', async () => {
+  sourceMode = 'excerpt-error'; mount(<SourcesView />); await screen.findByText(source.title);
+  expect(await screen.findByRole('alert')).toHaveTextContent('Consulta indisponível');
+  expect(screen.queryByText('Nenhum trecho encontrado para a busca especificada.')).not.toBeInTheDocument();
+  fireEvent.change(screen.getByPlaceholderText('Filtrar trechos...'), { target: { value: 'recover' } });
+  await screen.findByText('Nenhum trecho encontrado para a busca especificada.');
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument(); expect(screen.getByText(source.title)).toBeInTheDocument();
+});
+it('explicitly retries the same failed source query without clearing the selected source or changing the search', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let attempts = 0;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (new URL(String(address)).pathname.endsWith('/excerpts') && ++attempts === 1)
+      return Response.json({ error: { code: 'UNAVAILABLE', message: 'Consulta indisponível' } }, { status: 503 });
+    return original(address, options);
+  });
+  mount(<SourcesView />); await screen.findByRole('alert');
+  fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }));
+  await screen.findByText(excerpt.locator); expect(screen.getByText(source.title)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText('Filtrar trechos...')).toHaveValue('');
+  const reads = vi.mocked(fetch).mock.calls.filter(([address]) => new URL(String(address)).pathname.endsWith('/excerpts'));
+  expect(reads).toHaveLength(2); expect(reads[0][0]).toBe(reads[1][0]);
 });
 it('displays structured study evidence, classifications and limitations without making a request', () => {
   const study = studyFixture({ sections: [
@@ -97,6 +120,10 @@ it.each(['supported', 'insufficient-evidence', 'restricted'] as const)('renders 
   const analysis = { ...analysisFixture(), status, evidence: [{ ...evidence, quote: excerpt.text, startOffset: 0, endOffset: excerpt.text.length }] };
   mount(<AnalysisResult analysis={analysis} />);
   expect(screen.getByText(`"${analysis.question}"`)).toBeInTheDocument();
+  const labels = { supported: 'Evidência documentada', restricted: 'Acesso limitado', 'insufficient-evidence': 'Evidência insuficiente' };
+  expect(screen.getByText(labels[status])).toBeInTheDocument();
+  expect(screen.queryByText('Sem evidência documental nas fontes admitidas para esta pergunta.')).toBe(status === 'insufficient-evidence' ? screen.getByText('Sem evidência documental nas fontes admitidas para esta pergunta.') : null);
+  expect(screen.queryByText('A política de acesso da fonte limita a apresentação desta resposta.')).toBe(status === 'restricted' ? screen.getByText('A política de acesso da fonte limita a apresentação desta resposta.') : null);
   if (status === 'supported') {
     expect(screen.getByText(excerpt.text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Direitos da fonte' })).toHaveAttribute('href', source.rightsUrl);
@@ -107,6 +134,24 @@ it.each(['supported', 'insufficient-evidence', 'restricted'] as const)('renders 
 it('does not render an executable rights URL', () => {
   mount(<AnalysisResult analysis={{ ...analysisFixture(), status: 'supported', limitations: [], evidence: [{ ...evidence, quote: excerpt.text, startOffset: 0, endOffset: excerpt.text.length, rightsUrl: 'javascript:alert(1)' }] }} />);
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  expect(within(screen.getByRole('article')).queryByRole('list')).not.toBeInTheDocument();
+});
+it('retains an admitted HTTP rights URL and its safe external-link attributes', () => {
+  mount(<AnalysisResult analysis={{ ...analysisFixture(), status: 'supported', evidence: [{ ...evidence, quote: excerpt.text, startOffset: 0, endOffset: excerpt.text.length, rightsUrl: 'http://example.test/rights' }] }} />);
+  const link = screen.getByRole('link', { name: 'Direitos da fonte' });
+  expect(link).toHaveAttribute('href', 'http://example.test/rights'); expect(link).toHaveAttribute('target', '_blank'); expect(link).toHaveAttribute('rel', 'noreferrer');
+});
+it.each([
+  ['direct-citation', 'Citação Direta', 'high', 'Conexão Alta'],
+  ['allusion', 'Alusão Textual', 'moderate', 'Conexão Moderada'],
+  ['prophetic-fulfillment', 'Cumprimento Profético', 'traditional', 'Interpretação Tradicional'],
+] as const)('preserves the %s relation classification and caveated assessment', async (type, label, assessment, assessmentLabel) => {
+  relations = [{ ...relations[0], type, assessment }, { ...relations[0], id: secondStudyId }];
+  mount(<CrossRefPanel reference="GEN 1:1" />);
+  expect(await screen.findByText(label)).toBeInTheDocument();
+  expect(screen.getByText(`Avaliação: ${assessmentLabel}`)).toBeInTheDocument(); expect(screen.getByText('2 conexões')).toBeInTheDocument();
+  const request = vi.mocked(fetch).mock.calls.find(([url]) => new URL(String(url)).pathname === '/api/cross-references');
+  expect(new URL(String(request![0])).searchParams.get('translationId')).toBe('porbr2018');
 });
 it('renders relation targets, caveated assessment and calls navigation only when selected', async () => {
   const navigate = vi.fn(); mount(<CrossRefPanel reference="GEN 1:1" onNavigateToPassage={navigate} />);

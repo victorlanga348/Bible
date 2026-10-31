@@ -1,12 +1,44 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { Button } from '../shared/ui/button';
 import { EpistemicBadge, Badge } from '../shared/ui/badge';
 import { Input } from '../shared/ui/input';
 import { ApiError } from '../shared/api/client';
+import { ThemeProvider, useTheme } from '../shared/hooks/use-theme';
+import { ToastProvider, useToast } from '../shared/ui/toast';
+
+function ThemeProbe() {
+  const { setTheme } = useTheme(); return <button onClick={() => setTheme('light')}>Escolher tema claro</button>;
+}
+function ToastProbe() {
+  const { toast } = useToast();
+  return <><button onClick={() => toast('Primeiro aviso')}>Primeiro</button>
+    <button onClick={() => toast('Segundo aviso', { type: 'success', description: 'Descrição preservada.' })}>Segundo</button></>;
+}
 
 describe('Design System Primitives', () => {
+  it('requires providers for the theme and toast public APIs', () => {
+    expect(() => render(<ThemeProbe />)).toThrow('useTheme must be used within ThemeProvider');
+    expect(() => render(<ToastProbe />)).toThrow('useToast must be used within ToastProvider');
+  });
+  it('persists an explicitly chosen theme through the provider API', () => {
+    localStorage.clear(); vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
+    try {
+      render(<ThemeProvider><ThemeProbe /></ThemeProvider>);
+      expect(document.documentElement).toHaveClass('dark');
+      fireEvent.click(screen.getByRole('button', { name: 'Escolher tema claro' }));
+      expect(document.documentElement).not.toHaveClass('dark'); expect(localStorage.getItem('biblia-app-theme')).toBe('light');
+    } finally { cleanup(); vi.unstubAllGlobals(); localStorage.clear(); }
+  });
+  it('dismisses only the selected notification and preserves the remaining description', async () => {
+    render(<ToastProvider><ToastProbe /></ToastProvider>);
+    fireEvent.click(screen.getByRole('button', { name: 'Primeiro' })); fireEvent.click(screen.getByRole('button', { name: 'Segundo' }));
+    const first = await screen.findByText('Primeiro aviso');
+    fireEvent.click(within(first.closest('li')!).getByRole('button'));
+    await waitFor(() => expect(screen.queryByText('Primeiro aviso')).not.toBeInTheDocument());
+    expect(screen.getByText('Segundo aviso')).toBeInTheDocument(); expect(screen.getByText('Descrição preservada.')).toBeInTheDocument();
+  });
   describe('Button', () => {
     it('renders text with primary variant by default', () => {
       render(<Button>Estudar</Button>);

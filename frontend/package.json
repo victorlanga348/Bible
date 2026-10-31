@@ -13,7 +13,7 @@
     "test:coverage:transport": "vitest run --config vitest.transport.config.ts --coverage",
     "test:coverage:session": "vitest run --config vitest.session.config.ts --coverage",
     "test:mutation": "stryker run && node scripts/check-mutation.cjs global",
-    "test:mutation:ci": "stryker run --concurrency 2 && node scripts/check-mutation.cjs global",
+    "test:mutation:ci": "stryker run --concurrency 2 --incremental --incrementalFile reports/mutation/global/incremental.json && node scripts/check-mutation.cjs global",
     "test:mutation:transport": "stryker run stryker.transport.config.json && node scripts/check-mutation.cjs transport",
     "test:mutation:session": "stryker run stryker.session.config.json && node scripts/check-mutation.cjs session",
     "test:mutation:session:ci": "stryker run stryker.session.config.json --concurrency 2 --incremental --incrementalFile reports/mutation/session/incremental.json && node scripts/check-mutation.cjs session",

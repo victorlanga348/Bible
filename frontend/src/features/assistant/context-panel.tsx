@@ -133,7 +133,7 @@ function StudyContextPanel({ activeStudyId, activeStudyVersion = 1, activeRefere
           <label htmlFor="assistant-question" className="flex justify-between text-[0.8rem]">Pergunta investigativa<span>{new TextEncoder().encode(question.trim()).byteLength}/500B</span></label>
           <div className="flex gap-[0.5rem]">
             <Input id="assistant-question" value={question} onChange={event => setQuestion(event.target.value)} placeholder="Ex: O que Josefo relata sobre este período?" disabled={pending || !activeStudyId || !isAuthenticated} />
-            {pending ? <Button type="button" variant="destructive" aria-label="Cancelar pedido" onClick={handleCancel}><StopCircle className="w-[1rem] h-[1rem]" /></Button>
+            {pending ? <Button type="button" variant="destructive" aria-label="Cancelar pedido" onClick={event => { event.preventDefault(); handleCancel(); }}><StopCircle className="w-[1rem] h-[1rem]" /></Button>
               : <Button type="submit" aria-label="Enviar pergunta" disabled={!question.trim() || !activeStudyId || !isAuthenticated || loading || (conversation?.revision ?? 0) >= 20}><Send className="w-[1rem] h-[1rem]" /></Button>}
           </div>
         </form>

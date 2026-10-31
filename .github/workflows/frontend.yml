@@ -29,6 +29,38 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:coverage -- --maxWorkers=1
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        id: global-seed
+        continue-on-error: true # Missing/expired optimization falls back to full analysis.
+        with:
+          name: frontend-global-quality
+          run-id: 41168600897
+          github-token: ${{ github.token }}
+          path: frontend/reports/global-seed
+      - name: Verify complete global seed and unchanged toolchain
+        if: steps.global-seed.outcome == 'success'
+        run: |
+          node --input-type=commonjs <<'NODE'
+          const fs = require('node:fs'), assert = require('node:assert/strict'), crypto = require('node:crypto');
+          const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+          const identities = {
+            'package-lock.json': '0d204cf5a64ffe5f99ad523d89f3090bcd9d7600775b640c4352568521b9c868',
+            'tsconfig.mutation.json': '4fed69ba6a1b1b43ae824f0af2978d26c8343fba502903111a6356890d19391b',
+            'tsconfig.app.json': '29c1f3dd12026c2a5604741b4249f12504a8de655531d14b8bdf741226b8a45e',
+            'tsconfig.node.json': '38952a786a5ea2e5aafe18d34db62ff241ace6e2790a1333cb2723462db94deb',
+            'vitest.config.ts': '983a1f04419b3d9933baea0ce73201dfa172880c5a35165af6b8c5ceac82d80d',
+            'stryker.config.json': '32f05ff7a3312231b8e8f2cb9c8282c2c50b6d1966316ed8dfc0f5ec7c23f244',
+          };
+          for (const [file, expected] of Object.entries(identities)) assert.equal(sha(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')), expected, 'Toolchain identity differs');
+          const bytes = fs.readFileSync('reports/global-seed/mutation/global/mutation.json');
+          assert.equal(sha(bytes), 'ac03bfac0714c4ef7231f291e442f4bb8398e948ccc3a573e533211688877680', 'Seed identity differs');
+          const report = JSON.parse(bytes);
+          assert.equal(Object.keys(report.files).length, 31);
+          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 2770);
+          fs.mkdirSync('reports/mutation/global', { recursive: true });
+          fs.writeFileSync('reports/mutation/global/incremental.json', bytes);
+          console.log('Verified complete global seed; its quality remains FAIL. Current analysis and audit are mandatory.');
+          NODE
       - run: npm run test:mutation:ci
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

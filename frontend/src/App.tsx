@@ -29,7 +29,6 @@ export function AppContent() {
   const reviseStudy = useReviseStudy();
   const storedStudy = useStudy(studyTarget?.id, studyTarget?.version);
   const activeStudy = createdStudy ?? storedStudy.data ?? null;
-  const [isContextOpen, setIsContextOpen] = useState<boolean>(true);
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [workspaceIntent, setWorkspaceIntent] = useState<'studies' | 'notes'>('studies');
 
@@ -77,8 +76,6 @@ export function AppContent() {
     <AppShell
       activeTab={activeTab}
       onTabChange={tab => { if (tab === 'history') setWorkspaceIntent('studies'); setActiveTab(tab); }}
-      isContextOpen={isContextOpen}
-      onToggleContext={() => setIsContextOpen(!isContextOpen)}
       isFocusMode={isFocusMode}
       onToggleFocusMode={toggleFocusMode}
       contextPanel={

@@ -33,3 +33,7 @@ Manter um índice de ID, título, estado, módulo e tarefa quando houver registo
 [ERR-0025 — fixture interrompida de workspace](ERR-0025-interrupted-workspace-fixture.md): recuperação guardada/testada, CI integral atual em validação.
 
 [ERR-0026 — TimeZone no restauro](ERR-0026-restore-timezone.md): causa demonstrada, procedimento corrigido apenas na cópia e HTTP/preservação PASS.
+
+[ERR-0027 — Cancelar voltou a submeter o formulário](ERR-0027-cancel-button-submit.md): causa isolada por browser/dois pedidos e flush discreto; correção mínima/17testes PASS, prova nativa e gates atuais em validação.
+
+[ERR-0028 — Citação longa escondia o botão de fechar](ERR-0028-source-dialog-viewport.md): RED2FAIL/GREEN2PASS em preview real desktop/mobile; altura/scroll corrigidos, mutação atual pendente.

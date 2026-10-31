@@ -33,6 +33,35 @@ it('loads saved conversation history before any write', async () => {
   mount(); expect(await screen.findByText('"Questão técnica anterior."')).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
 });
+it('opens another saved conversation by id and clears only the unsent question', async () => {
+  const secondId = '40000000-0000-4000-8000-000000000002';
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    if (path.endsWith(`/studies/${studyId}/conversations`)) return Response.json({ items: [
+      { id: conversationId, studyId, studyVersion: 3, revision: 1, createdAt },
+      { id: secondId, studyId, studyVersion: 3, revision: 1, createdAt },
+    ], nextCursor: null });
+    if (path === `/api/conversations/${secondId}`) return Response.json({ ...conversationFixture(1, 'Segunda conversa técnica.'), id: secondId });
+    return original(address, options);
+  });
+  mount(); await screen.findByText('"Questão técnica anterior."');
+  fireEvent.change(screen.getByPlaceholderText(/O que Josefo relata/), { target: { value: 'Rascunho local.' } });
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversa guardada' }), { target: { value: secondId } });
+  await screen.findByText('"Segunda conversa técnica."'); expect(screen.getByPlaceholderText(/O que Josefo relata/)).toHaveValue('');
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversa guardada' }), { target: { value: conversationId } });
+  await screen.findByText('"Questão técnica anterior."'); expect(turnCalls()).toHaveLength(0);
+});
+it('keeps a failed new conversation recoverable without retrying its creation', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => options?.method === 'POST'
+    ? Response.json({ error: { code: 'AI_UNAVAILABLE', message: 'Conversa não criada. Tenta novamente.' } }, { status: 503 }) : original(address, options));
+  mount(); await screen.findByText('"Questão técnica anterior."');
+  fireEvent.click(screen.getByRole('button', { name: 'Nova conversa' }));
+  expect(await screen.findByRole('alert')).toHaveTextContent('Conversa não criada.');
+  expect(screen.getByRole('button', { name: 'Nova conversa' })).toBeEnabled();
+  expect(vi.mocked(fetch).mock.calls.filter(([, options]) => options?.method === 'POST')).toHaveLength(1);
+});
 it('appends against the actual conversation revision and restores its result after a fresh mount', async () => {
   const view = mount(); await screen.findByText('"Questão técnica anterior."');
   fireEvent.change(screen.getByPlaceholderText(/O que Josefo relata/), { target: { value: 'Nova pergunta técnica.' } });

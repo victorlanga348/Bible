@@ -92,7 +92,6 @@ interface ShellProps {
   children: React.ReactNode;
   contextPanel?: React.ReactNode;
   isContextOpen?: boolean;
-  onToggleContext?: () => void;
   isFocusMode?: boolean;
   onToggleFocusMode?: () => void;
 }
@@ -103,7 +102,6 @@ export function AppShell({
   children,
   contextPanel,
   isContextOpen = true,
-  onToggleContext,
   isFocusMode = false,
   onToggleFocusMode,
 }: ShellProps) {
@@ -267,7 +265,7 @@ export function AppShell({
               <span className="font-editorial-heading font-semibold text-[1rem]">Bíblia App</span>
             </div>
             <div className="flex items-center gap-[0.5rem]">
-              {onToggleContext && (
+              {contextPanel && (
                 <button
                   onClick={() => setMobileContextTab(mobileContextOpen ? null : activeTab)}
                   aria-label={mobileContextOpen ? 'Fechar Painel Contextual de IA' : 'Abrir Painel Contextual de IA'}

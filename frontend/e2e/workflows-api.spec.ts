@@ -7,6 +7,8 @@ const { startWorkflowApi } = dependency('./support/workflow-api.cjs') as {
     owner: string; token: () => Promise<string>; otherToken: () => Promise<string>;
     query: (sql: string, values: unknown[]) => Promise<unknown[]>; close: () => Promise<void>;
     turns: { completed: boolean; closed: boolean }[]; runtimeLocks: () => boolean;
+    nativeChildren: () => Promise<number[]>;
+    rpcEvents: Record<string, unknown>[];
   }>;
 };
 let api: Awaited<ReturnType<typeof startWorkflowApi>>;
@@ -54,6 +56,9 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     await page.getByRole('button', { name: 'Criar nova versão' }).click();
     expect((await revised).status()).toBe(201);
     await expect(page.getByText('Versão 2', { exact: true })).toBeVisible();
+    await page.screenshot({ path: info.outputPath('study.png') });
+    console.info(JSON.stringify({ component: 'native-study-layout', project: info.project.name,
+      main: await page.getByRole('main').evaluate(element => ({ width: element.clientWidth, scrollWidth: element.scrollWidth })) }));
     await navigate('Histórico & Workspace');
     await page.getByTitle('Marcar favorito').click();
     await expect(page.getByTitle('Remover favorito')).toBeVisible();
@@ -88,6 +93,7 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     await expect(page.getByRole('dialog')).not.toBeVisible();
     expect((await (await page.request.get(`/api/workspace/studies/${study.id}/notes?studyVersion=2`, { headers })).json()).items[0].revision).toBe(3);
     await page.getByRole('button', { name: /^Favoritos/ }).click();
+    await page.screenshot({ path: info.outputPath('favorites.png') });
     const read = page.waitForResponse(r => new URL(r.url()).pathname === `/api/studies/${study.id}` && new URL(r.url()).searchParams.get('version') === '2');
     await page.getByRole('button', { name: 'Abrir favorito GEN 1:1 versão 2' }).click();
     expect((await read).status()).toBe(200);
@@ -123,6 +129,161 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     expect(await api.query('SELECT id FROM app.study_record WHERE id = $1::uuid', [study.id])).toEqual([]);
     expect(await api.query('SELECT id FROM app.workspace_note WHERE study_id = $1::uuid', [study.id])).toEqual([]);
     expect(await api.query('SELECT id FROM app.workspace_favorite WHERE study_id = $1::uuid', [study.id])).toEqual([]);
+  });
+
+  test('reads the admitted source and quotation through the public library UI', async ({ page }, info) => {
+    const catalog = await page.request.get('/api/sources'); expect(catalog.status()).toBe(200);
+    const source = (await catalog.json()).sources[0];
+    const listing = await page.request.get(`/api/sources/${source.id}/excerpts?limit=20`); expect(listing.status()).toBe(200);
+    const excerpt = (await listing.json()).excerpts[0];
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    if (info.project.name === 'Mobile Chrome') await page.getByRole('button', { name: 'Abrir Menu' }).click();
+    await page.getByRole('button', { name: 'Fontes Históricas', exact: true }).click();
+    await expect(page.getByRole('heading', { name: source.title, exact: true })).toBeVisible();
+    await expect(page.getByText(source.rightsStatement, { exact: true })).toBeVisible();
+    await page.getByText(excerpt.locator, { exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.locator('blockquote')).toHaveText(`"${excerpt.text}"`);
+    await expect(dialog.locator('code')).toHaveText(excerpt.textSha256);
+    const bounds = await dialog.boundingBox(); expect(bounds).not.toBeNull();
+    expect(bounds!.y).toBeGreaterThanOrEqual(0);
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+    await page.screenshot({ path: info.outputPath('source-quote.png') });
+    await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+    const search = page.getByPlaceholder('Filtrar trechos...');
+    await search.fill('__technical_unmatched_s10_68cc3fed__');
+    await expect(page.getByText('Nenhum trecho encontrado para a busca especificada.')).toBeVisible();
+    await search.fill(''); await expect(page.getByText(excerpt.locator, { exact: true })).toBeVisible();
+  });
+
+  test('isolates the persisted workspace and active study when the browser changes owner', async ({ page }, info) => {
+    const mobile = info.project.name === 'Mobile Chrome';
+    const firstToken = await api.token(), secondToken = await api.otherToken();
+    const firstHeaders = { authorization: `Bearer ${firstToken}` }, secondHeaders = { authorization: `Bearer ${secondToken}` };
+    const create = await page.request.post('/api/studies', { headers: firstHeaders, data: { translationId: 'porbr2018', reference: 'GEN 1:1' } });
+    expect(create.status()).toBe(201); const study = await create.json();
+    const privateNote = `Nota privada de teste ${api.owner}.`;
+    const note = await page.request.post(`/api/workspace/studies/${study.id}/notes`, { headers: firstHeaders, data: { studyVersion: 1, content: privateNote } });
+    expect(note.status()).toBe(201);
+    const account = async () => {
+      if (mobile) {
+        await page.getByRole('button', { name: 'Abrir Menu' }).click();
+        await page.getByRole('button', { name: 'Conta e acesso' }).click();
+      } else await page.getByRole('button', { name: /Entrar na conta|Gerir conta/ }).click();
+    };
+    const login = async (token: string) => {
+      await account(); await page.getByText('Usar um token local', { exact: true }).click();
+      await page.getByLabel('Token de acesso local').fill(token);
+      await page.getByRole('button', { name: 'Confirmar acesso local' }).click(); await expect(page.getByRole('dialog')).not.toBeVisible();
+    };
+    const workspace = async () => {
+      if (mobile) await page.getByRole('button', { name: 'Abrir Menu' }).click();
+      await page.getByRole('button', { name: 'Histórico & Workspace', exact: true }).click();
+    };
+    await page.goto('/', { waitUntil: 'domcontentloaded' }); await login(firstToken); await workspace();
+    await page.getByRole('article').filter({ hasText: 'GEN 1:1' }).getByRole('button', { name: 'Abrir', exact: true }).click();
+    await expect(page.getByText('Versão 1', { exact: true })).toBeVisible();
+    await workspace(); await page.getByRole('button', { name: 'Anotações Pessoais' }).click();
+    await expect(page.getByLabel('Selecione o Estudo para Consultar ou Criar Notas:')).toHaveValue(`${study.id}:1`);
+    await expect(page.getByText(privateNote, { exact: true })).toBeVisible();
+    await account(); await page.getByRole('button', { name: 'Sair da conta' }).click();
+    await expect(page.locator('body')).not.toContainText(privateNote);
+    await login(secondToken); await workspace();
+    await expect(page.getByText('Nenhum estudo persistido ainda no workspace.')).toBeVisible();
+    await expect(page.locator('body')).not.toContainText(privateNote);
+    await page.getByRole('button', { name: 'Anotações Pessoais' }).click();
+    await expect(page.getByLabel('Selecione o Estudo para Consultar ou Criar Notas:')).toHaveValue('');
+    await expect(page.getByText('Estudo Não Selecionado', { exact: true })).toHaveCount(1);
+    expect((await page.request.get(`/api/studies/${study.id}`, { headers: secondHeaders })).status()).toBe(404);
+    expect((await page.request.get(`/api/studies/${study.id}`, { headers: firstHeaders })).status()).toBe(200);
+    expect((await page.request.delete(`/api/workspace/studies/${study.id}`, { headers: firstHeaders })).status()).toBe(204);
+    expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual([]);
+  });
+
+  test('cancels the browser form once without submitting it again', async ({ page }, info) => {
+    test.skip(info.project.name !== 'chromium', 'Desktop protocol proof; responsive workflows have their own case');
+    // Only the pending turn transport is a declared double. This isolates browser default activation;
+    // it is neither model integration nor proof of server-side cancellation.
+    let turnCount = 0; let release!: () => void;
+    const pending = new Promise<void>(resolve => { release = resolve; });
+    await page.route('**/api/conversations/*/turns', async route => {
+      turnCount++; await pending; await route.abort().catch(() => undefined);
+    });
+    try {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.getByRole('button', { name: 'Entrar na conta' }).click();
+      await page.getByText('Usar um token local', { exact: true }).click();
+      await page.getByLabel('Token de acesso local').fill(await api.token());
+      await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
+      await expect(page.getByRole('dialog')).not.toBeVisible();
+      await page.getByRole('button', { name: 'Estudo Estruturado', exact: true }).click();
+      await page.getByRole('textbox', { name: 'Passagem do estudo' }).fill('GEN 2:7');
+      await page.getByRole('button', { name: 'Gerar Estudo' }).click();
+      await expect(page.getByText('Versão 1', { exact: true })).toBeVisible();
+      await page.getByRole('textbox', { name: /Pergunta investigativa/ }).fill('Caso técnico de cancelamento.');
+      await page.getByRole('button', { name: 'Enviar pergunta' }).click();
+      await expect.poll(() => turnCount).toBe(1);
+      await page.getByRole('button', { name: 'Cancelar pedido' }).click();
+      await expect(page.getByRole('button', { name: 'Enviar pergunta' })).toBeVisible();
+      expect(turnCount).toBe(1);
+      await expect(page.getByText('Pedido interrompido. Atualiza a conversa para confirmar o que ficou guardado.')).toBeVisible();
+    } finally {
+      console.info(JSON.stringify({ component: 'browser-cancel-form', turnRequests: turnCount }));
+      release();
+    }
+  });
+
+  test('observes native model API stages without starting a second browser', async ({ request }, info) => {
+    test.skip(process.env.S10_NATIVE_AI !== '1' || info.project.name !== 'chromium', 'Explicit diagnostic with the real native runtime');
+    test.setTimeout(720000);
+    const started = Date.now(), headers = { authorization: `Bearer ${await api.token()}` };
+    const create = await request.post('/api/studies', { headers, data: { translationId: 'porbr2018', reference: 'GEN 2:7' } });
+    expect(create.status()).toBe(201); const study = await create.json();
+    try {
+      const conversation = await request.post(`/api/studies/${study.id}/conversations`, { headers, data: { studyVersion: 1 } });
+      expect(conversation.status()).toBe(201); const current = await conversation.json();
+      const response = await request.post(`/api/conversations/${current.id}/turns`, { headers, timeout: 650000,
+        data: { expectedRevision: 0, question: 'Segundo a fonte, por que o primeiro homem é chamado Adam?' } });
+      const view = await response.json();
+      writeFileSync(info.outputPath('native-api-observation.json'), JSON.stringify({ status: response.status(), elapsedMs: Date.now() - started, rpcEvents: api.rpcEvents, view }, null, 2) + '\n');
+      console.info(JSON.stringify({ component: 'native-api-observation', status: response.status(), elapsedMs: Date.now() - started, stages: api.rpcEvents.map(row => ({ endpoint: row.endpoint, status: row.status, errorCode: row.errorCode, headersAfterMs: row.headersAfterMs, failedAfterMs: row.failedAfterMs })) }));
+      expect(response.status()).toBe(201); expect(view.turns[0].analysis.status).toBe('supported');
+      expect(view.turns[0].analysis.provenance.totalTokens).toBeGreaterThan(0);
+    } finally { expect((await request.delete(`/api/workspace/studies/${study.id}`, { headers })).status()).toBe(204); }
+  });
+
+  test('cancels an owned native model process and preserves the uncommitted conversation', async ({ page }, info) => {
+    test.skip(process.env.S10_NATIVE_AI !== '1' || info.project.name !== 'chromium', 'Explicit native Windows operation');
+    test.setTimeout(180000);
+    const headers = { authorization: `Bearer ${await api.token()}` };
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: 'Entrar na conta' }).click();
+    await page.getByText('Usar um token local', { exact: true }).click();
+    await page.getByLabel('Token de acesso local').fill(await api.token());
+    await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
+    await expect(page.getByRole('dialog')).not.toBeVisible();
+    await page.getByRole('button', { name: 'Estudo Estruturado', exact: true }).click();
+    await page.getByRole('textbox', { name: 'Passagem do estudo' }).fill('GEN 2:7');
+    const created = page.waitForResponse(r => new URL(r.url()).pathname === '/api/studies' && r.request().method() === 'POST');
+    await page.getByRole('button', { name: 'Gerar Estudo' }).click();
+    expect((await created).status()).toBe(201); const study = await (await created).json();
+    const conversationCreated = page.waitForResponse(r => new URL(r.url()).pathname === `/api/studies/${study.id}/conversations` && r.request().method() === 'POST');
+    await page.getByRole('textbox', { name: /Pergunta investigativa/ }).fill('Segundo a fonte, por que o primeiro homem é chamado Adam?');
+    await page.getByRole('button', { name: 'Enviar pergunta' }).click();
+    expect((await conversationCreated).status()).toBe(201); const conversation = await (await conversationCreated).json();
+    await expect.poll(() => api.turns.length, { timeout: 15000 }).toBe(1);
+    let childPids: number[] = [];
+    await expect.poll(async () => { childPids = await api.nativeChildren(); return childPids.length; }, { timeout: 120000 }).toBeGreaterThan(0);
+    expect(api.runtimeLocks()).toBe(true);
+    await page.getByRole('button', { name: 'Cancelar pedido' }).click();
+    await expect(page.getByRole('button', { name: 'Enviar pergunta' })).toBeVisible();
+    await expect.poll(() => api.turns[0].closed, { timeout: 30000 }).toBe(true); expect(api.turns[0].completed).toBe(false);
+    await expect.poll(() => api.runtimeLocks(), { timeout: 45000 }).toBe(false);
+    expect(await api.nativeChildren()).toEqual([]); expect(api.turns).toHaveLength(1);
+    const stored = await page.request.get(`/api/conversations/${conversation.id}`, { headers });
+    expect(stored.status()).toBe(200); expect((await stored.json()).revision).toBe(0);
+    expect((await page.request.delete(`/api/workspace/studies/${study.id}`, { headers })).status()).toBe(204);
+    console.info(JSON.stringify({ component: 'native-browser-cancellation', ownedChildCount: childPids.length, childProcessesClosed: true, httpClosedWithoutCompletion: true, turnRequests: api.turns.length, persistedRevision: 0 }));
   });
 
   test('executes one native model turn and cancels the next operation through the browser', async ({ page }, info) => {

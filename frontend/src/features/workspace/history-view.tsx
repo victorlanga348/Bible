@@ -180,7 +180,7 @@ export function HistoryView({ onOpenStudy, initialStudy, initialTab = 'studies',
             Espaço de Estudo & Workspace
           </h1>
           <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui">
-            Histórico de investigação, anotações atômicas com CAS e favoritos por versão.
+            Reúne os teus estudos, anotações e passagens favoritas.
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export function HistoryView({ onOpenStudy, initialStudy, initialTab = 'studies',
                 Workspace Protegido
               </h3>
               <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui max-w-[42ch] mx-auto leading-relaxed">
-                Insira o token JWT de operador na barra lateral para carregar os estudos e anotações gravados no banco de dados.
+                Entra na tua conta para consultar os estudos e as anotações que guardaste.
               </p>
             </div>
           </div>

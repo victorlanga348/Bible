@@ -1,0 +1,30 @@
+# S10-T003 — validação atual
+
+2026-10-31, candidata feat/biblia-integracao-validacao, checkpoint publicado3f33e2a e revisão posterior em validação. T003 IN_PROGRESS, T004/T005 ainda dependentes. Histórico/RED-GREEN em [relatório](T003_TEST_REPORT.md). Sem agentes, merge, deploy, novos modelos, serviços pagos ou alteração do backend/perfil.
+
+| Critério | Resultado | Evidência e limite |
+| --- | --- | --- |
+| Global unitários/cobertura atual | PASS | `npm run test:coverage -- --maxWorkers=1`,265casos/33ficheiros178,39s;848/848linhas100%,795/866branches91,8%,349/349funções100%,1029/1046statements98,37%. Log s10-t003-final-local-coverage.log. |
+| Lint atual | PASS | `npm run lint`, zero erros, cinco avisos já identificados; s10-t003-final-local-lint.log. |
+| Build strict atual | PASS | `npm run build`,2159módulos/4,03s, DXQJ4a3-.js/osB80hAv.css. |
+| Preview PG/API/browser desktop/mobile | PASS | 6PASS6SKIP/1,7min, s10-t003-native-preview.log; versões/notas/CAS/favoritos/conversas/vários owners/isolamento/eliminação/cancelamento técnico/painel mobile. SKIP de IA são NOT_RUN. |
+| Fonte pública/dialog longo preview | PASS | RED2FAIL: fechar fora do viewport; GREEN2PASS/1,1min após limitar altura/scroll e quebrar hash. s10-t003-source-dialog-green.log; texto/hash/direitos/filtro/retorno e bounds conferidos em desktop/mobile; capturas revistas. [ERR-0028](../../megabrain/errors/ERR-0028-source-dialog-viewport.md). |
+| Cancelamento nativo próprio | PASS | Um pedido, HTTP fechado sem finish, filho llama-server terminado, locks livres e revision0 persistida; s10-t003-native-cancel-only.log. Prova não exige geração concluída. |
+| C01-T01 pelo browser | PASS do caso | Resposta real supported, quote p2-s2/offsets221–404,652prompt+10completion/34embedding. JSON SHA3826d680fd63b8fc97d2978d1a6b09d05378dc65da42c2061b5cfedaf081b884. Determinística/semântica da resposta revistas; execução combinada falhou depois no cancelamento antes da correção. |
+| Repetições do percurso IA combinado | FAIL | Após correção de cancelamento, geração retornou504AI_TIMEOUT no dev e no preview quiescente, antes da etapa de cancelamento. Logs s10-t003-native-ai-cancel-fixed.log e s10-t003-native-preview-ai.log. Não apagados nem convertidos em PASS. |
+| Diagnóstico API/modelo real sem browser | PASS do caso | 201/189262ms. Trace somente de paths/portas/status/tempos, sem corpo/headers/chaves. Embedding1111ms; geração chat106880ms, perto do limite120s admitido. JSON SHA6d4b2d96580b859ff99cd94c92a1f832a6f83b482038093e6235a382f63c202f; s10-t003-native-api-stages.log. |
+| Auditoria determinística C01 diagnóstico | PASS | Validador existente ai-evaluation-result.cjs, manifesto/trecho originais, expectedSentenceIdp2-s2 e proveniência/uso/perfil/hashes exatos. Revisão semântica humana pelo agente PASS separada do semantic:PENDING automatizado: resposta atribui etimologia a Josefo/Whiston, sem afirmar consenso moderno. |
+| Global mutação checkpoint3f33e2a | FAIL | CI41168600897,2770mutantes:1229Killed2Timeout707Survived101NoCoverage731CompileError;1231/2039=60,3727317312%,zeroRuntimeError. Inventário exato32fontes/31mutáveis PASS por reinstrumentação independente dos bytes Git originais. Não valida mudanças posteriores. |
+| Global mutação atual | NOT_RUN | Nova análise incremental oficial do baseline completo configurada, com identidades conferidas. Qualidade atual não presumida por cobertura100%. |
+| Backend integral | PASS reutilizável | Bytes de backend/workflow invariantes perante8e748b9; CI41126297344 e auditoria T002 permanecem aplicáveis. Nenhum PASS atribuído a código diferente. |
+| Google pessoal | NOT_RUN/BLOCKED adiado | Escolha anterior do utilizador; não pedir novamente nem equiparar testes técnicos a consentimento pessoal. |
+
+A disponibilidade da geração neste PC continua um risco material aberto: duas falhas504 e uma geração medida a106,88s/limite120s. Pressão de memória observada numa tentativa não demonstra causa exclusiva; a tentativa sem suites/modelos concorrentes também falhou. Não aumentar timeouts nem mudar perfil/modelo/fontes nesta tarefa para esconder o resultado. Provas separadas de resposta, API e cancelamento são preservadas; o percurso combinado não está aprovado.
+
+Artefacto global13031998989: ZIP SHA9305b72cc4866e07ae2777dca9f0b4aaf286917f91d0225abe2a47d8410f5368; raw JSON ac03bfac0714c4ef7231f291e442f4bb8398e948ccc3a573e533211688877680. Cópias/audit sidecar privados em LOCALAPPDATA/BibleAI/quality-artifacts/41168600897; raw intacto. [Plano incremental e fallback](QUALITY_PLAN.md).
+
+Isolamento de cache: node_modules/.tmp ainda era junction para a árvore original. Depois de terminar o build, removido somente o link privado não recursivamente e criada pasta própria com cópia dos caches. Target original e hashes dos ficheiros conferidos invariantes. Não afirmar isolamento anterior desse cache. Nenhum source original editado; o banco/serviços e os outros caches já eram próprios.
+
+Antes da publicação seguinte: executor real extraído do YAML aceita seed íntegro/copia bytes exatos e rejeita separadamente JSON corrompido e toolchain divergente. Todos os testes desta verificação PASS, sem alterar raw. Regressões adicionais conferem rótulos/ausência de mensagens incompatíveis com o status, links HTTP de direitos e tipos/avaliações das referências cruzadas:31PASS/2ficheiros9,50s incluindo o gate adversário. Primeiro ensaio tinha asserção demasiado ampla sobre role=list, que apanhava a viewport do ToastProvider; corrigida para o article da análise. Falha de harness preservada, nunca RED de produto. Novo build strict PASS3,49s/mesmos hashes de bundle; testes adicionados não alteraram produto. RTK proxy rg devolveu pesquisa além do ficheiro pretendido num comando de inspeção; buscas seguintes usam rg nativo como fallback compatível.
+
+Pergunta de fechamento auditada, sem interromper autorização vigente: **Existe alguma alteração no projeto que não esteja refletida em /docs ou no README?** Em revisão: os resultados atuais estão aqui; o encerramento depende dos gates pendentes.

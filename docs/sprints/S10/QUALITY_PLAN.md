@@ -1,5 +1,11 @@
 # S10 — Medição de qualidade do frontend
 
+## T003 — baseline global e nova execução incremental
+
+Decisão delegada de 2026-10-31, antes de configurar a nova execução: CI41168600897/3f33e2a produziu análise global integral. ZIP SHA2569305b72cc4866e07ae2777dca9f0b4aaf286917f91d0225abe2a47d8410f5368; JSON ac03bfac0714c4ef7231f291e442f4bb8398e948ccc3a573e533211688877680. Reinstrumentação independente das fontes exatas do commit confirma32fontes/31mutáveis/2770assinaturas,1229Killed2Timeout707Survived101NoCoverage731CompileError, zeroRuntimeError. Score1231/2039=60,3727317312% FAIL; o inventário PASS não aprova a qualidade.
+
+Usar exclusivamente esse relatório completo como seed incremental oficial, com SHA do JSON e identidades de lock/compiler/Vitest/Stryker conferidos. Concorrência2/checker/perTest/operadores/escopo/limites preservados; só ativar incremental na invocação CI. Fontes/testes posteriores são revalidados pelo Stryker. Download ausente/expirado implica análise integral; download existente com identidade incorreta bloqueia. Auditoria independente do inventário atual e todos os gates continuam obrigatórios. Nunca alterar estados do relatório nem confundir reutilização com aprovação. Esta otimização reduz repetição de análise íntegra, sem reduzir o produto medido. As regressões atuais já passaram265casos/33ficheiros:848/848linhas,795/866branches; isso não antecipa o resultado da nova mutação.
+
 ## Retoma T002 — análise completa e reutilização verificável
 
 A primeira análise CI completa41127242854 em acd90ec terminou FAIL72,8013%/862mutantes:445Killed2Timeout166Survived1NoCoverage248CompileError. ZIP13013295757/digest e relatório SHA25684a2050baf0f12e4dbfe3844f676a4a259db29adbc49ab5e808d4cc95fe5d0a9 conferidos. Reinstrumentação independente das onze fontes originais via git show comprova fontes/862assinaturas/estados íntegros; qualidade continua FAIL. Não editar brutos para transformar NoCoverage, Timeout ou sobreviventes.

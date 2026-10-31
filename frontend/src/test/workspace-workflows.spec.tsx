@@ -7,11 +7,12 @@ import { ToastProvider } from '../shared/ui/toast';
 import { createdAt, noteFixture, reference, secondStudyId, studyFixture, studyId } from './workflow-fixtures';
 
 // Stateful HTTP protocol double, never a substitute for the native PG proof.
-vi.mock('../shared/hooks/use-session', () => ({ useSession: () => ({ isAuthenticated: true, token: 'technical-token' }) }));
+let authenticated = true;
+vi.mock('../shared/hooks/use-session', () => ({ useSession: () => ({ isAuthenticated: authenticated, token: authenticated ? 'technical-token' : null }) }));
 const clients: ReturnType<typeof createQueryClient>[] = [];
 let notes = [noteFixture()];
 beforeEach(() => {
-  notes = [noteFixture()];
+  notes = [noteFixture()]; authenticated = true;
   vi.stubGlobal('fetch', vi.fn(async (address: string, options?: RequestInit) => {
     const url = new URL(address), path = url.pathname;
     if (path === '/api/workspace/studies') return Response.json({ items: [studyFixture()], nextCursor: null });
@@ -26,6 +27,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); });
 function mount(onOpenStudy?: (id: string, version: number, reference: string) => void) {
   const client = createQueryClient(); clients.push(client);
+  client.setDefaultOptions({ ...client.getDefaultOptions(), queries: { ...client.getDefaultOptions().queries, retry: false } });
   return render(<QueryClientProvider client={client}><ToastProvider><HistoryView onOpenStudy={onOpenStudy} /></ToastProvider></QueryClientProvider>);
 }
 async function openNotes() {
@@ -114,4 +116,113 @@ it('requires confirmation before deleting an owned study and removes it from the
   fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo' }));
   await waitFor(() => expect(deleted).toBe(true));
   expect(await screen.findByText('Nenhum estudo persistido ainda no workspace.')).toBeInTheDocument();
+});
+it('opens account guidance without requesting any private workspace data when anonymous', () => {
+  authenticated = false; mount(); expect(screen.getByText('Workspace Protegido')).toBeInTheDocument(); expect(fetch).not.toHaveBeenCalled();
+});
+it('keeps a new-note draft after a failed write without retrying it automatically', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => options?.method === 'POST'
+    ? Response.json({ error: { code: 'UNAVAILABLE', message: 'Não foi possível guardar agora.' } }, { status: 503 }) : original(address, options));
+  mount(); await openNotes(); const draft = screen.getByRole('textbox', { name: 'Nova anotação' });
+  fireEvent.change(draft, { target: { value: 'Rascunho pessoal de teste.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Adicionar Nota' }));
+  await screen.findByText('Erro ao criar anotação'); expect(draft).toHaveValue('Rascunho pessoal de teste.');
+  expect(vi.mocked(fetch).mock.calls.filter(([, options]) => options?.method === 'POST')).toHaveLength(1);
+});
+it('preserves the draft when a conflicting note disappears before explicit reload', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (options?.method === 'PATCH') { notes = []; return Response.json({ error: { code: 'WORKSPACE_CONFLICT', message: 'A nota mudou.' } }, { status: 409 }); }
+    return original(address, options);
+  });
+  mount(); await openNotes(); fireEvent.click(screen.getByTitle('Editar nota'));
+  const draft = screen.getByRole('textbox', { name: 'Conteúdo da anotação' });
+  fireEvent.change(draft, { target: { value: 'Rascunho ainda disponível no editor.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Carregar revisão atual' }));
+  await screen.findByText('Não foi possível carregar a nota atual. O teu rascunho foi conservado.');
+  expect(draft).toHaveValue('Rascunho ainda disponível no editor.');
+});
+it('supports both explicit cancellation and closing the editor and note confirmation, then deletes deliberately', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (options?.method === 'DELETE') { notes = []; return new Response(null, { status: 204 }); }
+    return original(address, options);
+  });
+  mount(); await openNotes();
+  for (const action of ['Cancelar', 'Fechar']) {
+    fireEvent.click(screen.getByTitle('Editar nota')); fireEvent.click(screen.getByRole('button', { name: action }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('Eliminar Nota')); fireEvent.click(screen.getByRole('button', { name: action }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  }
+  expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'DELETE')).toBe(false);
+  fireEvent.click(screen.getByTitle('Eliminar Nota')); fireEvent.click(screen.getByRole('button', { name: 'Excluir Definitivamente' }));
+  await screen.findByText('Anotação eliminada com sucesso.');
+  expect(await screen.findByText('Nenhuma anotação associada a este estudo ainda.')).toBeInTheDocument();
+});
+it('reports a failed note deletion without dismissing its confirmation or erasing the note', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => options?.method === 'DELETE'
+    ? Response.json({ error: { code: 'UNAVAILABLE', message: 'Eliminação temporariamente indisponível.' } }, { status: 503 }) : original(address, options));
+  mount(); await openNotes(); fireEvent.click(screen.getByTitle('Eliminar Nota'));
+  fireEvent.click(screen.getByRole('button', { name: 'Excluir Definitivamente' }));
+  await screen.findByText('Erro ao eliminar anotação'); expect(screen.getByRole('dialog')).toBeInTheDocument(); expect(notes).toHaveLength(1);
+});
+it('keeps a failed study deletion recoverable and retries only on another confirmation', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let attempts = 0;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (options?.method === 'DELETE') return ++attempts === 1
+      ? Response.json({ error: { code: 'UNAVAILABLE', message: 'Eliminação ainda não concluída.' } }, { status: 503 }) : new Response(null, { status: 204 });
+    if (attempts === 2 && new URL(String(address)).pathname === '/api/workspace/studies') return Response.json({ items: [], nextCursor: null });
+    return original(address, options);
+  });
+  mount(); fireEvent.click(await screen.findByRole('button', { name: 'Eliminar estudo GEN 1:1 versão 3' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Cancelar' })); expect(attempts).toBe(0);
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo GEN 1:1 versão 3' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar' })); expect(attempts).toBe(0);
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo GEN 1:1 versão 3' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo' }));
+  await screen.findByRole('alert'); expect(attempts).toBe(1); expect(screen.getByRole('dialog')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo' }));
+  await screen.findByText('Nenhum estudo persistido ainda no workspace.'); expect(attempts).toBe(2);
+});
+it('adds the selected study version to favorites and removes it through the favorites tab', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let favorite = false;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    const item = { id: '30000000-0000-4000-8000-000000000001', studyId, studyVersion: 3, reference, createdAt };
+    if (path.endsWith('/favorites/3')) { favorite = options?.method === 'PUT'; return favorite ? Response.json(item) : new Response(null, { status: 204 }); }
+    if (path === '/api/workspace/favorites') return Response.json({ items: favorite ? [item] : [], nextCursor: null });
+    return original(address, options);
+  });
+  mount(); fireEvent.click(await screen.findByTitle('Marcar favorito'));
+  await screen.findByText('Adicionado aos favoritos.');
+  expect(await screen.findByTitle('Remover favorito')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /^Favoritos/ }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Remover' }));
+  await screen.findByText('Removido dos favoritos.'); expect(favorite).toBe(false);
+  await screen.findByText('Nenhum estudo marcado como favorito.');
+  fireEvent.click(screen.getByRole('button', { name: /^Estudos Recentes/ }));
+  expect(await screen.findByTitle('Marcar favorito')).toBeInTheDocument();
+});
+it('reports a favorite write failure without claiming it was saved', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => options?.method === 'PUT'
+    ? Response.json({ error: { code: 'UNAVAILABLE', message: 'Favorito não guardado.' } }, { status: 503 }) : original(address, options));
+  mount(); fireEvent.click(await screen.findByTitle('Marcar favorito'));
+  await screen.findByText('Erro ao atualizar favorito'); expect(screen.queryByText('Adicionado aos favoritos.')).not.toBeInTheDocument();
+});
+it('uses favorite cursors in both directions without substituting study pagination', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const url = new URL(String(address)); if (url.pathname !== '/api/workspace/favorites') return original(address, options);
+    const second = url.searchParams.has('cursor');
+    return Response.json({ items: [{ id: second ? 'favorite-page-two' : 'favorite-page-one', studyId, studyVersion: second ? 2 : 1, createdAt, reference }], nextCursor: second ? null : 'technical-favorite-cursor' });
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: /^Favoritos/ })); await screen.findByText('GEN 1:1 (v1)');
+  fireEvent.click(screen.getByRole('button', { name: 'Favoritos seguintes' })); await screen.findByText('GEN 1:1 (v2)');
+  expect(vi.mocked(fetch).mock.calls.some(([address]) => new URL(String(address)).searchParams.get('cursor') === 'technical-favorite-cursor')).toBe(true);
+  fireEvent.click(screen.getByRole('button', { name: 'Favoritos anteriores' })); await screen.findByText('GEN 1:1 (v1)');
 });

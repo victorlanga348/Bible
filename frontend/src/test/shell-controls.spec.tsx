@@ -36,8 +36,8 @@ it('supports desktop/mobile navigation, account entry and both theme states', ()
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 it('honors focus keyboard shortcuts and optional callbacks without intercepting ordinary keys', () => {
-  const focus = vi.fn(), context = vi.fn();
-  const { rerender } = render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} onToggleFocusMode={focus} onToggleContext={context} contextPanel={<span>Context</span>}>Public</AppShell>));
+  const focus = vi.fn();
+  const { rerender } = render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} onToggleFocusMode={focus} contextPanel={<span>Context</span>}>Public</AppShell>));
   fireEvent.keyDown(window, { key: 'F' });
   fireEvent.keyDown(window, { key: 'F', ctrlKey: true });
   fireEvent.keyDown(window, { key: 'x', ctrlKey: true, shiftKey: true });

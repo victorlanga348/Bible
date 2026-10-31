@@ -40,6 +40,22 @@ it('does not create a private study merely by navigating to the study screen', a
   await new Promise(resolve => setTimeout(resolve, 25));
   expect(calls().filter(call => call.options?.method === 'POST')).toHaveLength(0);
 });
+it('recovers a failed saved-study read with GET rather than creating a replacement study', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let attempts = 0;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    if (new URL(String(url)).pathname === `/api/studies/${studyId}` && ++attempts === 1)
+      return Response.json({ error: { code: 'UNAVAILABLE', message: 'Leitura temporariamente indisponível.' } }, { status: 503 });
+    return original(url, options);
+  });
+  mount(); const client = clients.at(-1)!;
+  client.setDefaultOptions({ ...client.getDefaultOptions(), queries: { ...client.getDefaultOptions().queries, retry: false } });
+  fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await screen.findByText('Leitura temporariamente indisponível.');
+  fireEvent.click(screen.getByRole('button', { name: 'Consultar versão atual' }));
+  await screen.findByText('Versão 3'); expect(attempts).toBe(2);
+  expect(calls().filter(call => call.options?.method === 'POST')).toHaveLength(0);
+});
 it('reopens the saved id/version without POST and keeps it active across navigation', async () => {
   mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
   fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));

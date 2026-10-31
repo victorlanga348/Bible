@@ -4,6 +4,7 @@ import type { SourceExcerptDto } from '../../shared/api/contracts';
 import { Badge } from '../../shared/ui/badge';
 import { Skeleton } from '../../shared/ui/skeleton';
 import { Input } from '../../shared/ui/input';
+import { Button } from '../../shared/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -22,6 +23,8 @@ export function SourcesView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingExcerpts, setLoadingExcerpts] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [excerptError, setExcerptError] = useState<string | null>(null);
+  const [excerptAttempt, setExcerptAttempt] = useState(0);
   const [activeExcerpt, setActiveExcerpt] = useState<SourceExcerptDto | null>(null);
 
   // Carrega catálogo de fontes
@@ -54,6 +57,7 @@ export function SourcesView() {
     if (!selectedSourceId) return;
     let active = true;
     setLoadingExcerpts(true);
+    setExcerptError(null);
 
     request<{ excerpts: SourceExcerptDto[] }>(`/sources/${selectedSourceId}/excerpts`, {
       params: { q: searchQuery.trim() || undefined, limit: 20 },
@@ -64,9 +68,10 @@ export function SourcesView() {
           setLoadingExcerpts(false);
         }
       })
-      .catch(() => {
+      .catch((failure: unknown) => {
         if (active) {
           setExcerpts([]);
+          setExcerptError(failure instanceof Error ? failure.message : 'Não foi possível consultar os trechos. Tenta outra vez.');
           setLoadingExcerpts(false);
         }
       });
@@ -74,7 +79,7 @@ export function SourcesView() {
     return () => {
       active = false;
     };
-  }, [selectedSourceId, searchQuery]);
+  }, [selectedSourceId, searchQuery, excerptAttempt]);
 
   const activeSource = sources.find((s) => s.id === selectedSourceId);
 
@@ -182,7 +187,10 @@ export function SourcesView() {
                 </div>
               </div>
 
-              {loadingExcerpts ? (
+              {excerptError ? <div className="space-y-[0.75rem]">
+                <p role="alert" className="text-[0.85rem] text-[var(--foreground)]">{excerptError}</p>
+                <Button variant="secondary" onClick={() => setExcerptAttempt(attempt => attempt + 1)}>Tentar novamente</Button>
+              </div> : loadingExcerpts ? (
                 <div className="space-y-[0.75rem]">
                   <Skeleton className="w-full h-[4rem]" />
                   <Skeleton className="w-full h-[4rem]" />
@@ -240,7 +248,7 @@ export function SourcesView() {
                   <div>
                     <strong>Hash SHA-256 do Texto:</strong>
                   </div>
-                  <code className="block p-[0.25rem] bg-[var(--background)] font-mono select-all">
+                  <code className="block p-[0.25rem] bg-[var(--background)] font-mono select-all break-all">
                     {activeExcerpt.textSha256}
                   </code>
                 </div>
