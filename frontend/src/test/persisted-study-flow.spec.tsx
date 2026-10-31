@@ -76,3 +76,13 @@ it('does not treat a favorite of an older version as a favorite of the latest on
   mount(<HistoryView />);
   expect(await screen.findByRole('button', { name: 'Marcar favorito' })).toBeInTheDocument();
 });
+
+it('clears active study when a new passage is started from the reader and updates input', async () => {
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`));
+  fireEvent.click(screen.getByRole('button', { name: 'Bíblia' }));
+  fireEvent.click(screen.getByText('Start selected passage'));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
+  expect(await screen.findByDisplayValue('GEN 1:1')).toBeInTheDocument();
+});

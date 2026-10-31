@@ -29,7 +29,7 @@ import type { StudyEvidenceDto, StudyViewDto } from '../../shared/api/contracts'
 interface StudyViewProps {
   initialReference?: string;
   activeStudyId?: string;
-  onStudyChange?: (study: StudyViewDto | null) => void;
+  onStudyChange?: (study: StudyViewDto) => void;
 }
 
 export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStudyChange }: StudyViewProps) {

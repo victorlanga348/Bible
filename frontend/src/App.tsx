@@ -15,39 +15,28 @@ export function AppContent() {
   const [activeTab, setActiveTab] = useState<NavTab>('reader');
   const [activeStudyReference, setActiveStudyReference] = useState<string>('GEN 1:1-3');
   const [activeStudy, setActiveStudy] = useState<{ id: string; version: number } | null>(null);
-  const [activeStudyId, setActiveStudyId] = useState<string | null>(null);
   const [isContextOpen, setIsContextOpen] = useState<boolean>(true);
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
 
   const handleStudyPassage = useCallback((refStr: string) => {
     setActiveStudyReference(refStr);
-    setActiveStudyId(null);
+    setActiveStudy(null);
     setActiveTab('study');
   }, []);
 
-  const handleOpenStudy = useCallback((studyItem: unknown) => {
+  const handleOpenStudy = useCallback((studyItem: import('./shared/api/contracts').WorkspaceStudyItemDto | string) => {
     if (typeof studyItem === 'string') {
       setActiveStudyReference(studyItem);
-      setActiveStudyId(null);
-    } else if (studyItem && typeof studyItem === 'object' && 'id' in studyItem && 'version' in studyItem) {
-      const item = studyItem as { id: string; version: number; reference?: { normalized?: string } };
-      if (item.reference?.normalized) {
-        setActiveStudyReference(item.reference.normalized);
-      }
-      setActiveStudyId(item.id);
-      setActiveStudy({ id: item.id, version: item.version });
+      setActiveStudy(null);
+    } else {
+      setActiveStudyReference(studyItem.reference.normalized);
+      setActiveStudy({ id: studyItem.id, version: studyItem.version });
     }
     setActiveTab('study');
   }, []);
 
-  const handleStudyChange = useCallback((s: import('./shared/api/contracts').StudyViewDto | null) => {
-    if (s) {
-      setActiveStudy({ id: s.id, version: s.version });
-      setActiveStudyId(s.id);
-    } else {
-      setActiveStudy(null);
-      setActiveStudyId(null);
-    }
+  const handleStudyChange = useCallback((s: import('./shared/api/contracts').StudyViewDto) => {
+    setActiveStudy({ id: s.id, version: s.version });
   }, []);
 
   const toggleFocusMode = useCallback(() => {
@@ -79,7 +68,7 @@ export function AppContent() {
       {activeTab === 'study' && (
         <StudyView
           initialReference={activeStudyReference}
-          activeStudyId={activeStudyId || undefined}
+          activeStudyId={activeStudy?.id}
           onStudyChange={handleStudyChange}
         />
       )}
