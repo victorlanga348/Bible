@@ -37,3 +37,5 @@ Manter um índice de ID, título, estado, módulo e tarefa quando houver registo
 [ERR-0027 — Cancelar voltou a submeter o formulário](ERR-0027-cancel-button-submit.md): causa isolada por browser/dois pedidos e flush discreto; correção mínima/17testes PASS, prova nativa e gates atuais em validação.
 
 [ERR-0028 — Citação longa escondia o botão de fechar](ERR-0028-source-dialog-viewport.md): RED2FAIL/GREEN2PASS em preview real desktop/mobile; altura/scroll corrigidos, mutação atual pendente.
+
+[ERR-0029 — Deadline nativo era apresentado como erro de rede](ERR-0029-native-timeout-classification.md): motivo nativo RED1FAIL/GREEN48PASS, classificação504/TIMEOUT corrigida sem alterar budgets.

@@ -34,7 +34,7 @@ jobs:
         continue-on-error: true # Missing/expired optimization falls back to full analysis.
         with:
           name: frontend-global-quality
-          run-id: 41168600897
+          run-id: 41175424282
           github-token: ${{ github.token }}
           path: frontend/reports/global-seed
       - name: Verify complete global seed and unchanged toolchain
@@ -53,10 +53,10 @@ jobs:
           };
           for (const [file, expected] of Object.entries(identities)) assert.equal(sha(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')), expected, 'Toolchain identity differs');
           const bytes = fs.readFileSync('reports/global-seed/mutation/global/mutation.json');
-          assert.equal(sha(bytes), 'ac03bfac0714c4ef7231f291e442f4bb8398e948ccc3a573e533211688877680', 'Seed identity differs');
+          assert.equal(sha(bytes), '7c911c9726ee19dbf9526f0bc08ae3d0bafe106b7e8178a852eca9c6958d3fa3', 'Seed identity differs');
           const report = JSON.parse(bytes);
           assert.equal(Object.keys(report.files).length, 31);
-          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 2770);
+          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 2775);
           fs.mkdirSync('reports/mutation/global', { recursive: true });
           fs.writeFileSync('reports/mutation/global/incremental.json', bytes);
           console.log('Verified complete global seed; its quality remains FAIL. Current analysis and audit are mandatory.');

@@ -75,6 +75,23 @@ it('selects, deselects, copies verbatim with attribution and explicitly requests
   fireEvent.click(screen.getByRole('button', { name: 'Estudar Passagem' })); expect(study).toHaveBeenLastCalledWith('GEN 1:1');
   fireEvent.click(screen.getByText(verses[0].text.trim())); expect(screen.queryByRole('button', { name: 'Copiar' })).not.toBeInTheDocument();
 });
+it('restores the copy action after its temporary confirmation without copying again', async () => {
+  mount(); await screen.findByRole('heading', { name: 'Gênesis 1' }); fireEvent.click(screen.getByText(verses[0].text.trim()));
+  const button = screen.getByRole('button', { name: 'Copiar' }), ordinaryAction = button.innerHTML;
+  vi.useFakeTimers();
+  fireEvent.click(button); await act(async () => { await Promise.resolve(); });
+  expect(button.innerHTML).not.toBe(ordinaryAction); expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+  await act(async () => { vi.advanceTimersByTime(1999); }); expect(button.innerHTML).not.toBe(ordinaryAction);
+  await act(async () => { vi.advanceTimersByTime(1); }); expect(button.innerHTML).toBe(ordinaryAction);
+  expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+});
+it('exposes the restore action while the reader is already in focus mode', async () => {
+  const client = createQueryClient(); clients.push(client); const restore = vi.fn();
+  render(<QueryClientProvider client={client}><ToastProvider><ReaderView isFocusMode onToggleFocusMode={restore} /></ToastProvider></QueryClientProvider>);
+  await screen.findByRole('heading', { name: 'Gênesis 1' });
+  fireEvent.click(screen.getByRole('button', { name: 'Restaurar' })); expect(restore).toHaveBeenCalledOnce();
+  expect(screen.getByTitle('Sair do Modo Foco (Esc)')).toBeInTheDocument();
+});
 it.each(['GEN 1:1-2', 'GEN 1:1', 'GEN 1'])('resolves %s through the real hook/HTTP contract', async reference => {
   mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
   const input = screen.getByPlaceholderText(/Ir para passagem/);
@@ -101,6 +118,15 @@ it('changes reading font/width and focus using actual controls', async () => {
   expect(screen.getByRole('heading', { name: 'Gênesis 1' }).closest('article')?.parentElement?.parentElement).toHaveClass('max-w-[min(100%,64ch)]');
   fireEvent.click(screen.getByRole('button', { name: 'Amplo' })); fireEvent.click(screen.getByRole('button', { name: 'Padrão' }));
   fireEvent.click(screen.getByRole('button', { name: 'Modo Foco' })); expect(focus).toHaveBeenCalledOnce();
+});
+it('exposes the chosen reading size and width without relying on visual color alone', async () => {
+  mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
+  for (const choices of [['SM', 'MD', 'LG', 'XL'], ['Estreito', 'Padrão', 'Amplo']]) {
+    for (const selected of choices) {
+      fireEvent.click(screen.getByRole('button', { name: selected }));
+      for (const choice of choices) expect(screen.getByRole('button', { name: choice })).toHaveAttribute('aria-pressed', String(choice === selected));
+    }
+  }
 });
 it('shows loading and actual API failure states', async () => {
   mode = 'pending'; const view = mount(); expect(screen.getByRole('option', { name: 'Carregando livros...' })).toBeInTheDocument();

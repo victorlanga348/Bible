@@ -1,8 +1,9 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import manifest from './fixtures/source-manifest.json';
 import excerpts from './fixtures/source-excerpts.json';
+import canon from './fixtures/canon.json';
 import { SourcesView } from '../features/sources/sources-view';
 import { StudyView } from '../features/studies/study-view';
 import { CrossRefPanel } from '../features/cross-ref/cross-ref-panel';
@@ -88,6 +89,45 @@ it('explicitly retries the same failed source query without clearing the selecte
   expect(screen.getByPlaceholderText('Filtrar trechos...')).toHaveValue('');
   const reads = vi.mocked(fetch).mock.calls.filter(([address]) => new URL(String(address)).pathname.endsWith('/excerpts'));
   expect(reads).toHaveLength(2); expect(reads[0][0]).toBe(reads[1][0]);
+});
+it.each(['success', 'failure'] as const)('does not overwrite a newer source search with an obsolete %s', async outcome => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let settle!: (response: Response) => void;
+  const old = new Promise<Response>(resolve => { settle = resolve; });
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const url = new URL(String(address));
+    if (url.pathname.endsWith('/excerpts')) return url.searchParams.get('q') ? Response.json({ excerpts: [excerpts[1]] }) : old;
+    return original(address, options);
+  });
+  mount(<SourcesView />); await screen.findByText(source.title);
+  fireEvent.change(screen.getByPlaceholderText('Filtrar trechos...'), { target: { value: 'newer technical search' } });
+  await screen.findByText(excerpts[1].locator);
+  await act(async () => { settle(outcome === 'success' ? Response.json({ excerpts: [excerpt] }) : Response.json({ error: { code: 'UNAVAILABLE', message: 'Obsolete source error' } }, { status: 503 })); });
+  expect(screen.getByText(excerpts[1].locator)).toBeInTheDocument(); expect(screen.queryByText(excerpt.locator)).not.toBeInTheDocument();
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument(); expect(screen.queryByText('Obsolete source error')).not.toBeInTheDocument();
+});
+it('preserves every structured-study section, real passage text, limitations and explicit empty evidence states', () => {
+  const kinds = ['immediate-context', 'book-argument', 'history-culture', 'authorship-audience-purpose', 'comparison', 'interpretations'] as const;
+  const labels = ['1. Contexto Imediato', '2. Argumento do Livro', '3. História e Cultura', '4. Autoria, Destinatários e Propósito', '5. Comparação Textual', '6. Interpretações Comparadas'];
+  const study = studyFixture({ passage: { ...studyFixture().passage, verses: canon.verses.map(row => ({ number: row.number, text: row.text })) },
+    sections: kinds.map((kind, index) => ({ kind, status: index % 2 ? 'insufficient-evidence' : 'available', text: `Technical section ${kind}`, evidenceIds: [] })),
+    limitations: [source.limitations] });
+  mount(<StudyView study={study} onGenerate={vi.fn()} />);
+  labels.forEach((label, index) => {
+    const section = screen.getByRole('heading', { name: label }).closest('section')!;
+    expect(within(section).getByText(index % 2 ? 'Evidência Insuficiente' : 'Evidência Documentada')).toBeInTheDocument();
+    expect(within(section).queryByText('Fontes documentadas:')).not.toBeInTheDocument();
+  });
+  for (const verse of canon.verses) expect(screen.getByText(verse.text.trim())).toBeInTheDocument();
+  expect(screen.getByText('Limitações do Estudo')).toBeInTheDocument(); expect(screen.getByText(source.limitations)).toBeInTheDocument();
+  expect(screen.queryByText('Classificação Epistemológica de Interpretações')).not.toBeInTheDocument();
+});
+it('does not add empty limitations, interpretations or citations to a study and rejects a whitespace draft', () => {
+  const generate = vi.fn(); mount(<StudyView study={studyFixture()} onGenerate={generate} />);
+  expect(screen.queryByText('Limitações do Estudo')).not.toBeInTheDocument();
+  expect(screen.queryByText('Classificação Epistemológica de Interpretações')).not.toBeInTheDocument();
+  const input = screen.getByRole('textbox'); expect(input).toHaveValue('GEN 1:1-3');
+  fireEvent.change(input, { target: { value: '   ' } }); const button = screen.getByRole('button', { name: 'Gerar Estudo' });
+  expect(button).toBeDisabled(); fireEvent.click(button); expect(generate).not.toHaveBeenCalled();
 });
 it('displays structured study evidence, classifications and limitations without making a request', () => {
   const study = studyFixture({ sections: [

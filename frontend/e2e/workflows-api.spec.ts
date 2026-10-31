@@ -28,6 +28,14 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     api = await startWorkflowApi({ index: process.env.S10_NATIVE_AI === '1' });
   });
   test.afterAll(async () => { await api?.close(); });
+  test.afterEach(() => {
+    if (process.env.S10_NATIVE_TRACE !== '1' || !api) return;
+    const info = test.info();
+    const observation = { status: info.status, expectedStatus: info.expectedStatus, stages: api.rpcEvents };
+    writeFileSync(info.outputPath('native-rpc-stages.json'), JSON.stringify(observation, null, 2) + '\n');
+    console.info(JSON.stringify({ component: 'native-browser-rpc-stages', status: info.status,
+      stages: api.rpcEvents.map(({ endpoint, status, errorCode, headersAfterMs, failedAfterMs }) => ({ endpoint, status, errorCode, headersAfterMs, failedAfterMs })) }));
+  });
 
   test('persists versions, notes and favorites and deletes only the selected owner’s study', async ({ page }, info) => {
     const mobile = info.project.name === 'Mobile Chrome';
@@ -46,6 +54,13 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
     await expect(page.getByRole('dialog')).not.toBeVisible();
     await expect(page.getByRole('heading', { name: 'Gênesis 1' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'MD', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'MD', exact: true })).toHaveCSS('font-weight', '600');
+    await page.getByRole('button', { name: 'SM', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'SM', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'SM', exact: true })).toHaveCSS('font-weight', '600');
+    await expect(page.getByRole('button', { name: 'MD', exact: true })).toHaveCSS('font-weight', '500');
+    await page.getByRole('button', { name: 'MD', exact: true }).click();
     const created = page.waitForResponse(r => new URL(r.url()).pathname === '/api/studies' && r.request().method() === 'POST');
     await page.getByText('No princípio criou Deus os céus e a terra.', { exact: true }).click();
     await page.getByRole('button', { name: 'Estudar Passagem', exact: true }).click();
@@ -60,9 +75,14 @@ test.describe('native browser → API → PostgreSQL workflows', () => {
     console.info(JSON.stringify({ component: 'native-study-layout', project: info.project.name,
       main: await page.getByRole('main').evaluate(element => ({ width: element.clientWidth, scrollWidth: element.scrollWidth })) }));
     await navigate('Histórico & Workspace');
+    await expect(page.getByRole('button', { name: /Estudos Recentes/ })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: /Estudos Recentes/ })).toHaveCSS('font-weight', '600');
     await page.getByTitle('Marcar favorito').click();
     await expect(page.getByTitle('Remover favorito')).toBeVisible();
     await page.getByRole('button', { name: 'Anotações Pessoais' }).click();
+    await expect(page.getByRole('button', { name: 'Anotações Pessoais' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'Anotações Pessoais' })).toHaveCSS('font-weight', '600');
+    await expect(page.getByRole('button', { name: /Estudos Recentes/ })).toHaveAttribute('aria-pressed', 'false');
     await expect(page.getByLabel('Selecione o Estudo para Consultar ou Criar Notas:')).toHaveValue(`${study.id}:2`);
     const content = `Nota pessoal de teste ${api.owner}\nSegunda linha`;
     await page.getByRole('textbox', { name: 'Nova anotação' }).fill(content);

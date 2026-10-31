@@ -1,6 +1,6 @@
 # S10 — Relatório de testes
 
-IN_PROGRESS2026-10-31. T001/T002 DONE; evidências atuais de T003 em [T003_TEST_REPORT](T003_TEST_REPORT.md), plano/contratos fixados antes de código em [T003_WORKFLOWS_SPEC](T003_WORKFLOWS_SPEC.md). Primeiro gate global frontend207PASS mas cobertura72,87%linhas/69,21%branches FAIL; melhoria em curso, sem exclusões ou fecho presumido. Candidata isolada feat/biblia-integracao-validacao preserva escritas concorrentes do diretório original.
+IN_PROGRESS2026-10-31. T001/T002 DONE; [validação atual T003](T003_CURRENT_VALIDATION.md), histórico/RED-GREEN em [T003_TEST_REPORT](T003_TEST_REPORT.md), contratos antes de código em [T003_WORKFLOWS_SPEC](T003_WORKFLOWS_SPEC.md). Global CI41175424282/fca52d9:269PASS/100%linhas91,8%branches; mutação67,1072%/25NoCoverage FAIL, inventário exato PASS. Reforço de testes e nova análise em preparação, sem excluir fontes. Browser/PG/C01/cancelamento nativos comprovados com limitações declaradas, sem conta pessoal Google. Candidata isolada feat/biblia-integracao-validacao preserva a árvore original; S10 não encerrada.
 
 Baseline de diagnóstico anterior: frontend5173/API3000 sem proxy/CORS; OPTIONS /translations com origem5173 retornou404 e nenhum Access-Control-Allow-Origin. Leitura direta da API200/corpus real. Isto demonstra a fronteira quebrada, não RED de um teste ainda não escrito.
 

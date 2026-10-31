@@ -188,33 +188,24 @@ export function HistoryView({ onOpenStudy, initialStudy, initialTab = 'studies',
         <div className="flex gap-[0.5rem] pt-[0.5rem]">
           <button
             onClick={() => setWorkspaceTab('studies')}
-            className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors ${
-              workspaceTab === 'studies'
-                ? 'bg-[var(--surface-muted)] text-[var(--foreground)] font-semibold shadow-xs'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
-            }`}
+            aria-pressed={workspaceTab === 'studies'}
+            className="flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors text-[var(--foreground-muted)] hover:text-[var(--foreground)] aria-pressed:bg-[var(--surface-muted)] aria-pressed:text-[var(--foreground)] aria-pressed:font-semibold aria-pressed:shadow-xs"
           >
             <Clock className="w-[0.9rem] h-[0.9rem]" />
             Estudos Recentes ({studies.length})
           </button>
           <button
             onClick={() => setWorkspaceTab('notes')}
-            className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors ${
-              workspaceTab === 'notes'
-                ? 'bg-[var(--surface-muted)] text-[var(--foreground)] font-semibold shadow-xs'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
-            }`}
+            aria-pressed={workspaceTab === 'notes'}
+            className="flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors text-[var(--foreground-muted)] hover:text-[var(--foreground)] aria-pressed:bg-[var(--surface-muted)] aria-pressed:text-[var(--foreground)] aria-pressed:font-semibold aria-pressed:shadow-xs"
           >
             <FileText className="w-[0.9rem] h-[0.9rem]" />
             Anotações Pessoais
           </button>
           <button
             onClick={() => setWorkspaceTab('favorites')}
-            className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors ${
-              workspaceTab === 'favorites'
-                ? 'bg-[var(--surface-muted)] text-[var(--foreground)] font-semibold shadow-xs'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
-            }`}
+            aria-pressed={workspaceTab === 'favorites'}
+            className="flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors text-[var(--foreground-muted)] hover:text-[var(--foreground)] aria-pressed:bg-[var(--surface-muted)] aria-pressed:text-[var(--foreground)] aria-pressed:font-semibold aria-pressed:shadow-xs"
           >
             <Star className="w-[0.9rem] h-[0.9rem]" />
             Favoritos ({favorites.length})

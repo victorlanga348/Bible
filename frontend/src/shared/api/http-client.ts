@@ -124,7 +124,7 @@ export async function request<T>(endpoint: string, options: HttpRequestOptions =
     }
 
     const isTimeout =
-      error instanceof Error && (error.name === 'AbortError' || error.message === 'TIMEOUT');
+      error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError' || error.message === 'TIMEOUT');
 
     throw new ApiError(isTimeout ? 504 : 0, {
       code: isTimeout ? 'TIMEOUT' : 'NETWORK_ERROR',

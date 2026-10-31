@@ -7,6 +7,14 @@ afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 const respond = (body = '{}', status = 200) => vi.stubGlobal('fetch', vi.fn(async () => new Response(body, { status })));
 
 describe('request contracts and session-safe error feedback', () => {
+  it('recognizes the actual reason from an expired native AbortSignal timeout', async () => {
+    const signal = AbortSignal.timeout(1);
+    await new Promise<void>(resolve => signal.addEventListener('abort', () => resolve(), { once: true }));
+    expect(signal.reason.name).toBe('TimeoutError');
+    vi.stubGlobal('fetch', vi.fn(async () => { throw signal.reason; }));
+    await expect(request('/technical', { signal })).rejects.toMatchObject({ status: 504, code: 'TIMEOUT', message: 'A requisição excedeu o tempo limite de resposta.' });
+    expect(vi.mocked(fetch).mock.calls).toHaveLength(1);
+  });
   it.each(['primary', 'service'])('keeps a usable error message when the server sends a malformed failure: %s', async client => {
     respond('not-json', 503);
     await expect(client === 'primary' ? request('/technical') : apiClient('/technical'))

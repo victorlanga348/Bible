@@ -37,11 +37,8 @@ export function ReadingPreferences({
           <button
             key={size}
             onClick={() => onFontSizeChange(size)}
-            className={`px-[0.5rem] py-[0.15rem] rounded-[var(--radius-sm)] text-[0.75rem] font-medium transition-colors cursor-pointer ${
-              fontSize === size
-                ? 'bg-[var(--surface)] text-[var(--foreground)] shadow-xs font-semibold'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
-            }`}
+            aria-pressed={fontSize === size}
+            className="px-[0.5rem] py-[0.15rem] rounded-[var(--radius-sm)] text-[0.75rem] font-medium transition-colors cursor-pointer text-[var(--foreground-muted)] hover:text-[var(--foreground)] aria-pressed:bg-[var(--surface)] aria-pressed:text-[var(--foreground)] aria-pressed:shadow-xs aria-pressed:font-semibold"
           >
             {size.toUpperCase()}
           </button>
@@ -54,11 +51,8 @@ export function ReadingPreferences({
           <button
             key={w.id}
             onClick={() => onReaderWidthChange(w.id)}
-            className={`px-[0.5rem] py-[0.15rem] rounded-[var(--radius-sm)] text-[0.75rem] font-medium transition-colors cursor-pointer ${
-              readerWidth === w.id
-                ? 'bg-[var(--surface)] text-[var(--foreground)] shadow-xs font-semibold'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
-            }`}
+            aria-pressed={readerWidth === w.id}
+            className="px-[0.5rem] py-[0.15rem] rounded-[var(--radius-sm)] text-[0.75rem] font-medium transition-colors cursor-pointer text-[var(--foreground-muted)] hover:text-[var(--foreground)] aria-pressed:bg-[var(--surface)] aria-pressed:text-[var(--foreground)] aria-pressed:shadow-xs aria-pressed:font-semibold"
           >
             {w.label}
           </button>

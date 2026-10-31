@@ -25,10 +25,10 @@ beforeEach(() => {
   }));
 });
 afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); });
-function mount(onOpenStudy?: (id: string, version: number, reference: string) => void) {
+function mount(onOpenStudy?: (id: string, version: number, reference: string) => void, initialStudy?: ReturnType<typeof studyFixture>, onDeleteStudy?: (id: string) => void) {
   const client = createQueryClient(); clients.push(client);
   client.setDefaultOptions({ ...client.getDefaultOptions(), queries: { ...client.getDefaultOptions().queries, retry: false } });
-  return render(<QueryClientProvider client={client}><ToastProvider><HistoryView onOpenStudy={onOpenStudy} /></ToastProvider></QueryClientProvider>);
+  return render(<QueryClientProvider client={client}><ToastProvider><HistoryView onOpenStudy={onOpenStudy} initialStudy={initialStudy} onDeleteStudy={onDeleteStudy} /></ToastProvider></QueryClientProvider>);
 }
 async function openNotes() {
   fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
@@ -36,6 +36,59 @@ async function openNotes() {
   fireEvent.change(screen.getByRole('combobox'), { target: { value: screen.getByRole('option', { name: 'GEN 1:1 (v3)' }).getAttribute('value') } });
   await screen.findByText(notes[0]!.content);
 }
+it('exposes exactly one selected workspace view to assistive technology', async () => {
+  mount(); await screen.findByRole('button', { name: /Estudos Recentes/ });
+  const studies = screen.getByRole('button', { name: /Estudos Recentes/ }), notes = screen.getByRole('button', { name: 'Anotações Pessoais' }), favorites = screen.getByRole('button', { name: /^Favoritos/ });
+  for (const active of [studies, notes, favorites, studies]) {
+    fireEvent.click(active);
+    for (const button of [studies, notes, favorites]) expect(button).toHaveAttribute('aria-pressed', String(button === active));
+  }
+});
+it.each([1, 3])('retains the exact selected study version %s without duplicating it or substituting another id', async version => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => new URL(String(address)).pathname === '/api/workspace/studies'
+    ? Response.json({ items: [studyFixture(), studyFixture({ id: secondStudyId, version: 1 })], nextCursor: null }) : original(address, options));
+  mount(undefined, studyFixture({ version })); await screen.findByRole('button', { name: 'Eliminar estudo GEN 1:1 versão 3' });
+  fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' })); const selection = screen.getByRole('combobox');
+  expect(selection).toHaveValue(`${studyId}:${version}`);
+  expect(selection.querySelectorAll(`option[value="${studyId}:${version}"]`)).toHaveLength(1);
+  expect(selection.querySelectorAll('option')).toHaveLength(version === 1 ? 4 : 3);
+  expect(vi.mocked(fetch).mock.calls.some(([url]) => new URL(String(url)).pathname.endsWith(`/studies/${studyId}/notes`) && new URL(String(url)).searchParams.get('studyVersion') === String(version))).toBe(true);
+  expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
+});
+it('keeps whitespace notes unsent and trims only the edges of a deliberate multiline note', async () => {
+  mount(); await openNotes(); const draft = screen.getByPlaceholderText(/Escreva uma nova anotação/);
+  expect(draft).toHaveValue(''); fireEvent.change(draft, { target: { value: '   ' } });
+  expect(screen.getByRole('button', { name: 'Adicionar Nota' })).toBeDisabled();
+  expect(fireEvent.submit(draft.closest('form')!)).toBe(false);
+  expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
+  fireEvent.change(draft, { target: { value: '  First technical line\nSecond technical line  ' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Adicionar Nota' })); await screen.findByText('Anotação adicionada ao estudo.');
+  expect(draft).toHaveValue(''); const write = vi.mocked(fetch).mock.calls.find(([, options]) => options?.method === 'POST')!;
+  expect(JSON.parse(String(write[1]?.body))).toEqual({ studyVersion: 3, content: 'First technical line\nSecond technical line' });
+});
+it.each(['selected', 'other'] as const)('clears note selection only when the %s study was deleted', async target => {
+  let studies = [studyFixture(), studyFixture({ id: secondStudyId, reference: { ...reference, normalized: 'GEN 1:2', fromVerse: 2, toVerse: 2 } })];
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    if (options?.method === 'DELETE') { studies = studies.filter(item => !path.endsWith(item.id)); return new Response(null, { status: 204 }); }
+    if (path === '/api/workspace/studies') return Response.json({ items: studies, nextCursor: null });
+    return original(address, options);
+  });
+  const deleted = vi.fn(); mount(undefined, studyFixture(), deleted); await openNotes();
+  fireEvent.change(screen.getByPlaceholderText(/Escreva uma nova anotação/), { target: { value: 'Technical draft tied to the selected study' } });
+  fireEvent.click(screen.getByRole('button', { name: /Estudos Recentes/ }));
+  const ref = target === 'selected' ? 'GEN 1:1' : 'GEN 1:2';
+  fireEvent.click(await screen.findByRole('button', { name: `Eliminar estudo ${ref} versão 3` }));
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument(); fireEvent.click(screen.getByRole('button', { name: 'Eliminar estudo' }));
+  await screen.findByText('Estudo e dados associados eliminados.'); expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(deleted).toHaveBeenCalledWith(target === 'selected' ? studyId : secondStudyId);
+  fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  expect(screen.getByRole('combobox')).toHaveValue(target === 'selected' ? '' : `${studyId}:3`);
+  if (target === 'other') expect(screen.getByPlaceholderText(/Escreva uma nova anotação/)).toHaveValue('Technical draft tied to the selected study');
+  else expect(screen.queryByPlaceholderText(/Escreva uma nova anotação/)).not.toBeInTheDocument();
+});
 
 it('reads notes for the selected version and refreshes that cache after creating a note', async () => {
   mount(); await openNotes();
@@ -64,6 +117,7 @@ it('retains a conflicting draft, explicitly reloads the current revision, then s
   expect(field).toHaveValue('Rascunho técnico a preservar.'); expect(revisions).toBe(1);
   fireEvent.click(reload);
   await waitFor(() => expect(field).toHaveValue('Outra edição técnica.'));
+  expect(screen.queryByRole('button', { name: 'Carregar revisão atual' })).not.toBeInTheDocument(); expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   fireEvent.change(field, { target: { value: 'Revisão técnica confirmada.' } });
   fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
   await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());

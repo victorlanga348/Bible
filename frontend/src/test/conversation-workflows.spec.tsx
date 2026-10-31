@@ -1,10 +1,10 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ContextPanel } from '../features/assistant/context-panel';
 import { createQueryClient } from '../shared/api/query-client';
 import { ToastProvider } from '../shared/ui/toast';
-import { conversationFixture, conversationId, createdAt, studyId } from './workflow-fixtures';
+import { conversationFixture, conversationId, createdAt, secondStudyId, studyId } from './workflow-fixtures';
 
 // Stateful protocol fixture: persistence and actual model execution have native tests.
 vi.mock('../shared/hooks/use-session', () => ({ useSession: () => ({ isAuthenticated: true, token: 'technical-token' }) }));
@@ -29,6 +29,75 @@ function mount() {
   return render(<QueryClientProvider client={client}><ToastProvider><ContextPanel activeStudyId={studyId} activeStudyVersion={3} /></ToastProvider></QueryClientProvider>);
 }
 const turnCalls = () => vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/turns'));
+it('keeps empty questions unsent even when the form is submitted directly', async () => {
+  stored = conversationFixture(0); mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
+  const field = screen.getByPlaceholderText(/O que Josefo relata/);
+  expect(field).toHaveValue(''); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+  fireEvent.change(field, { target: { value: '   ' } });
+  expect(screen.getByText('0/500B')).toBeInTheDocument();
+  expect(fireEvent.submit(field.closest('form')!)).toBe(false);
+  expect(turnCalls()).toHaveLength(0); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+});
+it('accepts exactly 500 UTF-8 bytes, trims the submitted question and enforces the twentieth-turn boundary', async () => {
+  stored = conversationFixture(19); mount(); await screen.findByText('19/20 turnos');
+  const field = screen.getByPlaceholderText(/O que Josefo relata/), question = 'é'.repeat(250);
+  expect(screen.queryByText('Esta conversa atingiu 20 turnos. Inicia uma nova conversa para continuar.')).not.toBeInTheDocument();
+  fireEvent.change(field, { target: { value: `  ${question}  ` } });
+  expect(screen.getByText('500/500B')).toBeInTheDocument(); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeEnabled();
+  fireEvent.submit(field.closest('form')!); await screen.findByText('20/20 turnos');
+  expect(JSON.parse(String(turnCalls()[0][1]?.body))).toEqual({ expectedRevision: 19, question });
+  expect(field).toHaveValue(''); expect(screen.getByText('Resposta guardada na conversa.')).toBeInTheDocument();
+  expect(screen.getByText('Esta conversa atingiu 20 turnos. Inicia uma nova conversa para continuar.')).toBeInTheDocument();
+  fireEvent.change(field, { target: { value: 'Queued twenty-first turn' } }); fireEvent.submit(field.closest('form')!);
+  expect(turnCalls()).toHaveLength(1); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+});
+it.each(['history', 'detail'] as const)('does not present %s loading as an empty conversation or allow a queued turn', async target => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  const address = target === 'history' ? `/api/workspace/studies/${studyId}/conversations` : `/api/conversations/${conversationId}`;
+  let settle!: (response: Response) => void;
+  const pending = new Promise<Response>(resolve => { settle = resolve; });
+  vi.mocked(fetch).mockImplementation(async (url, options) => new URL(String(url)).pathname === address ? pending : original(url, options));
+  mount(); await screen.findByText('A carregar a conversa…');
+  const field = screen.getByPlaceholderText(/O que Josefo relata/); fireEvent.change(field, { target: { value: 'Queued while loading' } }); fireEvent.submit(field.closest('form')!);
+  expect(turnCalls()).toHaveLength(0); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+  expect(screen.queryByText('Ainda não há perguntas nesta conversa.')).not.toBeInTheDocument();
+  await act(async () => { settle(Response.json(target === 'history' ? { items: [{ ...conversationFixture(), turns: undefined }], nextCursor: null } : stored)); });
+  await screen.findByText('"Questão técnica anterior."');
+  expect(screen.queryByText('A carregar a conversa…')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeEnabled();
+});
+it.each(['study', 'version'] as const)('does not render a conversation returned for a different %s', async mismatch => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    const path = new URL(String(address)).pathname;
+    if (path.endsWith(`/studies/${studyId}/conversations`)) return Response.json({ items: [
+      { id: '40000000-0000-4000-8000-000000000009', studyId, studyVersion: 2, revision: 20, createdAt },
+      { id: conversationId, studyId, studyVersion: 3, revision: 1, createdAt },
+    ], nextCursor: null });
+    if (path === `/api/conversations/${conversationId}`) return Response.json({ ...conversationFixture(1, 'Foreign version answer'), ...(mismatch === 'study' ? { studyId: secondStudyId } : { studyVersion: 2 }) });
+    return original(address, options);
+  });
+  mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
+  expect(screen.queryByText('"Foreign version answer"')).not.toBeInTheDocument(); expect(screen.queryByText('1/20 turnos')).not.toBeInTheDocument();
+  expect(screen.getByRole('combobox', { name: 'Conversa guardada' }).querySelector('option[value="40000000-0000-4000-8000-000000000009"]')).toBeNull();
+  expect(turnCalls()).toHaveLength(0);
+});
+it('locks only one in-flight turn, hides empty-state copy while pending and unlocks after success', async () => {
+  stored = conversationFixture(0); const original = vi.mocked(fetch).getMockImplementation()!;
+  let settle!: (response: Response) => void; const pending = new Promise<Response>(resolve => { settle = resolve; });
+  vi.mocked(fetch).mockImplementation(async (url, options) => String(url).endsWith('/turns') ? pending : original(url, options));
+  mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
+  const field = screen.getByPlaceholderText(/O que Josefo relata/); fireEvent.change(field, { target: { value: 'One pending question' } });
+  fireEvent.submit(field.closest('form')!); await screen.findByRole('button', { name: 'Cancelar pedido' }); fireEvent.submit(field.closest('form')!);
+  expect(turnCalls()).toHaveLength(1); expect(field).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Nova conversa' })).toBeDisabled(); expect(screen.getByRole('combobox')).toBeDisabled();
+  expect(screen.getByText('A processar o pedido. Podes cancelar.')).toBeInTheDocument();
+  expect(screen.queryByText('Ainda não há perguntas nesta conversa.')).not.toBeInTheDocument();
+  await act(async () => { stored = conversationFixture(1, 'One pending question'); settle(Response.json(stored)); });
+  await screen.findByText('"One pending question"'); expect(field).toBeEnabled(); expect(field).toHaveValue('');
+  expect(screen.queryByText('A processar o pedido. Podes cancelar.')).not.toBeInTheDocument();
+  expect(screen.queryByText('Ainda não há perguntas nesta conversa.')).not.toBeInTheDocument();
+});
 it('loads saved conversation history before any write', async () => {
   mount(); expect(await screen.findByText('"Questão técnica anterior."')).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);

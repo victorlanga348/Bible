@@ -71,6 +71,14 @@ it('shows the contextual content by default and removes it when explicitly close
   rerender(wrap(<AppShell activeTab="reader" onTabChange={() => {}} contextPanel={<p>Contextual content</p>} isContextOpen={false}>Public</AppShell>));
   expect(screen.queryByText('Contextual content')).not.toBeInTheDocument();
 });
+it('opens contextual content on mobile even when the desktop panel is explicitly closed', () => {
+  render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} contextPanel={<p>Mobile contextual content</p>} isContextOpen={false}>Public</AppShell>));
+  expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+  const open = screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' }); expect(open).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(open); expect(screen.getByRole('complementary')).toHaveTextContent('Mobile contextual content');
+  expect(screen.getByRole('button', { name: 'Fechar Painel Contextual de IA' })).toHaveAttribute('aria-expanded', 'true');
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar Painel Contextual de IA' })); expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+});
 it('prevents the browser default only for the complete focus shortcut', () => {
   const focus = vi.fn(); render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} onToggleFocusMode={focus}>Public</AppShell>));
   const shortcut = new KeyboardEvent('keydown', { key: 'f', ctrlKey: true, shiftKey: true, cancelable: true });

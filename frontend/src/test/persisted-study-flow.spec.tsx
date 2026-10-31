@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { AppContent } from '../App';
@@ -10,12 +10,14 @@ import { HistoryView } from '../features/workspace/history-view';
 import { createdAt, noteFixture, reference, secondStudyId, studyFixture, studyId } from './workflow-fixtures';
 
 // Transport/session doubles isolate UI orchestration. Native PG/browser proof is separate.
-vi.mock('../shared/hooks/use-session', () => ({ useSession: () => ({ isAuthenticated: true, token: 'technical-token', ownerId: 'technical-owner', status: 'authenticated', version: 1, clearSession: vi.fn(), setSession: vi.fn() }) }));
-vi.mock('../features/canon/reader-view', () => ({ ReaderView: ({ onSelectPassageForStudy }: { onSelectPassageForStudy: (reference: string) => void }) => <button onClick={() => onSelectPassageForStudy('GEN 1:1')}>Start selected passage</button> }));
+let authenticated = true, repeatSelection = false, selectedReference = 'GEN 1:1';
+vi.mock('../shared/hooks/use-session', () => ({ useSession: () => ({ isAuthenticated: authenticated, token: authenticated ? 'technical-token' : null, ownerId: 'technical-owner', status: authenticated ? 'authenticated' : 'anonymous', version: 1, clearSession: vi.fn(), setSession: vi.fn() }) }));
+vi.mock('../features/canon/reader-view', () => ({ ReaderView: ({ onSelectPassageForStudy }: { onSelectPassageForStudy: (reference: string) => void }) => <button onClick={() => { onSelectPassageForStudy(selectedReference); if (repeatSelection) onSelectPassageForStudy(selectedReference); }}>Start selected passage</button> }));
 vi.mock('../features/assistant/context-panel', () => ({ ContextPanel: ({ activeStudyId, activeStudyVersion, onOpenNotes }: { activeStudyId?: string; activeStudyVersion?: number; onOpenNotes?: () => void }) => <div><p data-testid="active-context">{activeStudyId ? `${activeStudyId}:${activeStudyVersion}` : 'none'}</p><button onClick={onOpenNotes}>Open current notes</button></div> }));
 const clients: ReturnType<typeof createQueryClient>[] = [];
 const calls = () => vi.mocked(fetch).mock.calls.map(([url, options]) => ({ path: new URL(String(url)).pathname, options }));
 beforeEach(() => {
+  authenticated = true; repeatSelection = false; selectedReference = 'GEN 1:1';
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
   vi.stubGlobal('fetch', vi.fn(async (url: string, options?: RequestInit) => {
     const path = new URL(url).pathname;
@@ -28,11 +30,66 @@ beforeEach(() => {
     return Response.json({ error: { code: 'NOT_FOUND', message: 'technical route not found' } }, { status: 404 });
   }));
 });
-afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); });
+afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 function mount(view: React.ReactNode = <AppContent />) {
   const client = createQueryClient(); clients.push(client);
   return render(<QueryClientProvider client={client}><ThemeProvider><ToastProvider><AccountAccessProvider>{view}</AccountAccessProvider></ToastProvider></ThemeProvider></QueryClientProvider>);
 }
+it('creates only one study when a caller synchronously repeats the same selection and trims the reference', async () => {
+  repeatSelection = true; selectedReference = '  GEN 1:1  ';
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${secondStudyId}:1`));
+  const writes = calls().filter(call => call.path === '/api/studies' && call.options?.method === 'POST');
+  expect(writes).toHaveLength(1); expect(JSON.parse(String(writes[0].options?.body))).toEqual({ translationId: 'porbr2018', reference: 'GEN 1:1' });
+  expect(screen.getByText('Estudo criado para GEN 1:1')).toBeInTheDocument();
+});
+it('rejects an empty or anonymous study selection without writing', async () => {
+  selectedReference = '   '; const view = mount(); fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  expect(calls().some(call => call.options?.method === 'POST')).toBe(false);
+  view.unmount(); authenticated = false; selectedReference = 'GEN 1:1'; mount();
+  fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  expect(await screen.findByText('Entra na tua conta para criar um estudo.')).toBeInTheDocument();
+  expect(calls().some(call => call.options?.method === 'POST')).toBe(false);
+});
+it.each(['success', 'failure'] as const)('aborts an obsolete study creation and ignores its late %s after opening a saved version', async outcome => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let settle!: (response: Response) => void; let signal: AbortSignal | null | undefined;
+  const pending = new Promise<Response>(resolve => { settle = resolve; });
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (new URL(String(address)).pathname === '/api/studies' && options?.method === 'POST') { signal = options.signal; return pending; }
+    return original(address, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  await waitFor(() => expect(signal).toBeDefined()); expect(screen.getByTestId('active-context')).toHaveTextContent('none');
+  fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' })); fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`)); expect(signal?.aborted).toBe(true);
+  await act(async () => { settle(outcome === 'success' ? Response.json(studyFixture({ id: secondStudyId, version: 1 })) : Response.json({ error: { code: 'UNAVAILABLE', message: 'Obsolete creation failure' } }, { status: 503 })); });
+  expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`); expect(screen.getByText('Versão 3')).toBeInTheDocument();
+  expect(screen.queryByText('Obsolete creation failure')).not.toBeInTheDocument(); expect(screen.queryByText('Estudo criado para GEN 1:1')).not.toBeInTheDocument();
+});
+it('aborts the active study write when the application generation unmounts', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let signal: AbortSignal | null | undefined;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (new URL(String(address)).pathname === '/api/studies' && options?.method === 'POST') { signal = options.signal; return new Promise<Response>(() => {}); }
+    return original(address, options);
+  });
+  const view = mount(); fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  await waitFor(() => expect(signal).toBeDefined()); expect(signal?.aborted).toBe(false); view.unmount(); expect(signal?.aborted).toBe(true);
+});
+it('propagates the bounded study-write deadline without replacing the caller cancellation signal', async () => {
+  const deadline = new AbortController(); const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal);
+  const original = vi.mocked(fetch).getMockImplementation()!; let signal: AbortSignal | null | undefined;
+  vi.mocked(fetch).mockImplementation(async (address, options) => {
+    if (new URL(String(address)).pathname === '/api/studies' && options?.method === 'POST') {
+      signal = options.signal;
+      return new Promise<Response>((_, reject) => signal?.addEventListener('abort', () => reject(Object.assign(new Error('Technical study deadline'), { name: 'AbortError' })), { once: true }));
+    }
+    return original(address, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Start selected passage' }));
+  await waitFor(() => expect(signal).toBeDefined()); expect(timeout).toHaveBeenCalledWith(15000); expect(signal?.aborted).toBe(false);
+  await act(async () => { deadline.abort(); });
+  expect(signal?.aborted).toBe(true); await screen.findByText('A requisição excedeu o tempo limite de resposta.'); expect(calls().filter(call => call.options?.method === 'POST')).toHaveLength(1);
+});
 
 it('does not create a private study merely by navigating to the study screen', async () => {
   mount(); fireEvent.click(screen.getByRole('button', { name: 'Estudo Estruturado' }));

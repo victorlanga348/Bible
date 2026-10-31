@@ -96,6 +96,15 @@ it('returns from contextual notes and references to the assistant without creati
   expect(screen.getByRole('textbox', { name: /Pergunta investigativa/ })).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
 });
+it('refreshes an empty conversation list without issuing a detail read or a write', async () => {
+  mount(); await screen.findByText('Ainda não há perguntas nesta conversa.');
+  const before = vi.mocked(fetch).mock.calls.length;
+  fireEvent.click(screen.getByRole('button', { name: 'Atualizar conversa' }));
+  await waitFor(() => expect(vi.mocked(fetch).mock.calls.length).toBeGreaterThan(before));
+  const refresh = vi.mocked(fetch).mock.calls.slice(before);
+  expect(refresh).toHaveLength(1); expect(new URL(String(refresh[0][0])).pathname).toBe(`/api/workspace/studies/${studyId}/conversations`);
+  expect(refresh[0][1]?.method).toBeUndefined(); expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+});
 it('rejects a queued form submission when authentication changes after drafting', async () => {
   const view = mount(); const input = screen.getByPlaceholderText(/O que Josefo relata/);
   fireEvent.change(input, { target: { value: 'Rascunho antes de expirar a sessão.' } });
