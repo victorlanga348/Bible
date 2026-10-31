@@ -1,5 +1,9 @@
 # S10 — Relatório de testes
 
+T003 DONE em 2026-10-31 após revisão/auditoria documental final29ficheiros/143links PASS, sob autorização vigente. Sete gates aplicáveis e limites em T003_CURRENT_VALIDATION; T004/T005 continuam pendentes. Parágrafos anteriores de retoma abaixo são históricos.
+
+Revisão T003 `6bc6fea`: CI [41198918785](https://github.com/victorlanga348/Bible/actions/runs/41198918785) SUCCESS, 396 testes/36 ficheiros, cobertura100%linhas95,62%branches; mutação bruta1743/2050=85,0243902439%, zeroNoCoverage/RuntimeError. Artefacto/inventários auditados e307sobreviventes/2Timeout revistos em [T003_MUTATION_REVIEW](T003_MUTATION_REVIEW.md). Provas reais browser/API/PG e IA/latência em [validação atual](T003_CURRENT_VALIDATION.md); conta Google humana adiada não é PASS. T003 DONE após auditoria documental final; T004/T005 não concluídas por esta execução.
+
 IN_PROGRESS2026-10-31. T001/T002 DONE; [validação atual T003](T003_CURRENT_VALIDATION.md), histórico/RED-GREEN em [T003_TEST_REPORT](T003_TEST_REPORT.md), contratos antes de código em [T003_WORKFLOWS_SPEC](T003_WORKFLOWS_SPEC.md). Global CI41175424282/fca52d9:269PASS/100%linhas91,8%branches; mutação67,1072%/25NoCoverage FAIL, inventário exato PASS. Reforço de testes e nova análise em preparação, sem excluir fontes. Browser/PG/C01/cancelamento nativos comprovados com limitações declaradas, sem conta pessoal Google. Candidata isolada feat/biblia-integracao-validacao preserva a árvore original; S10 não encerrada.
 
 Baseline de diagnóstico anterior: frontend5173/API3000 sem proxy/CORS; OPTIONS /translations com origem5173 retornou404 e nenhum Access-Control-Allow-Origin. Leitura direta da API200/corpus real. Isto demonstra a fronteira quebrada, não RED de um teste ainda não escrito.
