@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "task": "S10-T006",
-  "at": "2026-11-06T11:40:42.073Z",
+  "at": "2026-11-06T13:11:31.571Z",
   "scope": "Native local UI/API/PostgreSQL and one bounded extractive semantic case; not personal Google consent or global quality certification",
   "nativeWorkflows": [
     {
@@ -37,21 +37,36 @@
     "desktopLayoutAndTechnicalAuth": "PASS"
   },
   "currentBuild": {
-    "bundle": "index-Ad7ZbQHd.js",
-    "bundleSha256": "96dad4632136fd43e4f6341397ec6ebae4d7a4f331f6a66088e9d8dcb9acae3a",
-    "runtimeSourceFingerprint": "74ccef7169a422dad6929c96091456960b3040c1cfc751a53e06055698cfbb01",
+    "bundle": "index-CTFdxIex.js",
+    "bundleSha256": "331ea077e4779679892e358e20509fe55c609d7d4e638d3e12c440ea8e349dbf",
+    "runtimeSourceFingerprint": "e5c3dbb9e566efdce0396eed269deb6aadda72ac3b8c8291e917b344e9bc2450",
     "runtimeSourceUnchangedSinceRecordedProof": false,
     "changedModules": [
       "src/features/sources/sources-view.tsx",
-      "src/shared/ui/dialog.tsx"
+      "src/shared/ui/dialog.tsx",
+      "src/shared/ui/button.tsx",
+      "src/shared/ui/input.tsx",
+      "src/features/cross-ref/cross-ref-panel.tsx",
+      "src/features/workspace/history-view.tsx",
+      "src/features/studies/study-view.tsx",
+      "src/shared/ui/shell.tsx"
     ],
-    "changedScope": "Source selector controlled-state refactor and shared dialog viewport CSS only; exact diff assertions passed",
+    "changedScope": "Controlled source selection and exact approved CSS-class changes for dialogs, contrast, typography and tablet breakpoints; business callbacks/ports unchanged",
     "businessModulesUnchangedSinceRecordedProof": true,
     "cssSourceDiscovery": "Application sources explicitly included, tests excluded",
     "desktopLayoutAndTechnicalAuth": "PASS",
     "mobileLayoutAndTechnicalAuth": "PASS",
     "nativeSourceLibraryDesktopAndMobile": "PASS",
-    "finalBrowserLog": "backend/reports/s10-t006-sources-dialog-green.log"
+    "finalBrowserLog": "backend/reports/s10-t006-final-ui-native.log",
+    "nativeApiCases": 8,
+    "nativeStyleContracts": 22,
+    "styleEnvironment": {
+      "browserVersion": "156.0.8078.81",
+      "cssSha256": "1fda4a6ba735fbc8359f246904af7f7bb59bc033ad6522a5a859b0d1a3ecf2f6",
+      "cssSourceSha256": "cf7bcf3470d7be7aec6c619c12a2a4f381dd6a049b396c148b782a1be2f9fc16",
+      "harnessSha256": "a7b83b62e610a7d16bacf7917e9b78a52808a807039979d9f472ecb6a411d89b"
+    },
+    "nativeStyleLog": "backend/reports/s10-t006-native-styles-green-final.log"
   },
   "semanticReview": {
     "result": "PASS",

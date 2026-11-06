@@ -17,7 +17,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       secondary: 'bg-[var(--surface-muted)] text-[var(--foreground)] hover:bg-[var(--border)] active:scale-[0.99]',
       outline: 'border border-[var(--border)] bg-transparent text-[var(--foreground)] hover:bg-[var(--surface-muted)] active:scale-[0.99]',
       ghost: 'bg-transparent text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]',
-      destructive: 'bg-rose-900/20 text-rose-400 border border-rose-900/40 hover:bg-rose-900/30 active:scale-[0.99]',
+      destructive: 'bg-[var(--danger-bg)] text-[var(--danger-foreground)] border border-[var(--danger-border)] hover:bg-[var(--danger-hover)] active:scale-[0.99]',
     };
 
     const sizes = {

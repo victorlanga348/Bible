@@ -9,12 +9,19 @@
     --surface: #FFFFFF;
     --surface-muted: #F0EFEA;
     --foreground: #202A28;
-    --foreground-muted: #66716D;
+    --foreground-muted: #626D69;
     --accent: #315F58;
     --accent-hover: #244B45;
     --accent-foreground: #FFFFFF;
     --border: #E3E5DF;
     --highlight: #F3E8C7;
+    --danger-foreground: #9F1239;
+    --danger-bg: rgba(159, 18, 57, 0.08);
+    --danger-hover: rgba(159, 18, 57, 0.14);
+    --danger-border: rgba(159, 18, 57, 0.4);
+    --warning-foreground: #854D0E;
+    --warning-bg: rgba(133, 77, 14, 0.08);
+    --warning-border: rgba(133, 77, 14, 0.25);
     
     /* Epistemological classifications */
     --epistemic-fact-bg: rgba(22, 101, 52, 0.08);
@@ -53,6 +60,13 @@
     --accent-foreground: #141B1A;
     --border: #35413D;
     --highlight: #4B4531;
+    --danger-foreground: #FB7185;
+    --danger-bg: rgba(136, 19, 55, 0.2);
+    --danger-hover: rgba(136, 19, 55, 0.3);
+    --danger-border: rgba(136, 19, 55, 0.4);
+    --warning-foreground: #FCD34D;
+    --warning-bg: rgba(120, 53, 15, 0.18);
+    --warning-border: rgba(120, 53, 15, 0.3);
     
     /* Epistemological classifications */
     --epistemic-fact-bg: rgba(74, 222, 128, 0.12);
@@ -85,10 +99,12 @@
 }
 
 /* Custom utility classes for fluid typography and responsive reading */
-.font-scripture {
-  font-family: 'Source Serif 4', 'Literata', Georgia, serif;
-  font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.35rem);
-  line-height: clamp(1.65, 1.55 + 0.25vw, 1.9);
+@layer components {
+  .font-scripture {
+    font-family: 'Source Serif 4', 'Literata', Georgia, serif;
+    font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.35rem);
+    line-height: clamp(1.65, 1.55 + 0.25vw, 1.9);
+  }
 }
 
 .font-editorial-heading {

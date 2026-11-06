@@ -39,7 +39,7 @@ export function CrossRefPanel({ reference, onNavigateToPassage }: CrossRefPanelP
           <Skeleton className="w-full h-[4.5rem]" />
         </div>
       ) : error ? (
-        <div className="p-[0.75rem] rounded-[var(--radius-md)] border border-rose-900/30 bg-rose-950/10 text-rose-300 text-[0.75rem]">
+        <div className="p-[0.75rem] rounded-[var(--radius-md)] border border-[var(--danger-border)] bg-[var(--danger-bg)] text-[var(--danger-foreground)] text-[0.75rem]">
           {error instanceof Error ? error.message : 'Erro ao buscar referências cruzadas.'}
         </div>
       ) : relations.length === 0 ? (

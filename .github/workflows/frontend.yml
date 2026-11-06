@@ -30,12 +30,14 @@ jobs:
       - run: npm run lint
       - run: npm run test:tooling
       - run: npm run test:coverage -- --maxWorkers=1
+        env:
+          BIBLE_STYLE_REPORT: '1'
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         id: global-seed
         continue-on-error: true # Missing/expired optimization falls back to full analysis.
         with:
           name: frontend-global-quality
-          run-id: 42158781599
+          run-id: 42212247108
           github-token: ${{ github.token }}
           path: frontend/reports/global-seed
       - name: Verify the complete global seed and unchanged toolchain
@@ -63,15 +65,15 @@ jobs:
           };
           for (const [file, expected] of Object.entries(identities)) assert.equal(sha(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')), expected, 'Toolchain/helper identity differs');
           const bytes = fs.readFileSync('reports/global-seed/mutation/global/mutation.json');
-          assert.equal(sha(bytes), 'fd1e5af6a83e2da1e82433429486526be3154d151833e502ae75f791b8834c9b', 'Global seed identity differs');
+          assert.equal(sha(bytes), 'c564cc8c1a95b131a4b7f3b470d7158a40ad510c9389a312aa421e11a9601cf1', 'Global seed identity differs');
           const report = JSON.parse(bytes);
           assert.equal(Object.keys(report.files).length, 34);
-          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 3036);
+          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 3037);
           fs.mkdirSync('reports/mutation/global', { recursive: true });
           fs.writeFileSync('reports/mutation/global/incremental.json', bytes);
           console.log('Verified full seed, original gate FAIL. Current global analysis and independent audit remain mandatory.');
           NODE
-      - run: npm run test:mutation:ci
+      - run: npm run test:mutation:ci:force
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
@@ -79,5 +81,6 @@ jobs:
           path: |
             frontend/reports/coverage/global
             frontend/reports/mutation/global
+            frontend/reports/native-style-environment.json
           if-no-files-found: error
           retention-days: 7

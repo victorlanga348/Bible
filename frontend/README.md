@@ -74,8 +74,12 @@ A aplicação estará disponível em `http://127.0.0.1:5173`. Para o botão Goog
 
 Executar testes automatizados (Vitest):
 ```bash
+npm run build
 npm test
 ```
+O build atual e o Chrome instalado são pré-requisitos da suite global: `native-styles.spec.tsx` mede CSS real sobre o HTML produzido pelos componentes React sob teste, incluindo quando instrumentados pelo Stryker. Rede do browser bloqueada; isto não chama IA nem substitui e2e/API/PostgreSQL. Alterações em estilos exigem novo build antes dessa suite. Em CI, Chrome vem da imagem oficial ubuntu24.04; não há download de browser ou dependência nova nesta revisão. Testes afetados que não incluem esta suite visual mantêm o fluxo normal de Vitest.
+
+Qualidade global: `npm run test:coverage`, `npm run test:tooling` e `npm run test:mutation:ci`. O epoch visual S10-T006 usa temporariamente `npm run test:mutation:ci:force` no workflow, com inventário/limiares iguais, para revalidar resultados estáticos. [Plano e limites](../docs/sprints/S10/QUALITY_PLAN.md); nenhum recorte de sessão substitui o gate global.
 
 Executar suíte de testes ponta a ponta (Playwright E2E):
 ```bash

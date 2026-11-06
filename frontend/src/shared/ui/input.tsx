@@ -21,14 +21,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             'flex w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-[0.875rem] py-[0.5rem] text-[0.875rem] font-ui text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] transition-colors focus-visible:border-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50',
             icon && 'pl-[2.25rem]',
-            error && 'border-rose-500/70 focus-visible:border-rose-500',
+            error && 'border-[var(--danger-border)] focus-visible:border-[var(--danger-foreground)]',
             className
           )}
           ref={ref}
           {...props}
         />
         {error && (
-          <p className="mt-[0.35rem] text-[0.75rem] text-rose-400 font-ui transition-all animate-in fade-in-50">
+          <p className="mt-[0.35rem] text-[0.75rem] text-[var(--danger-foreground)] font-ui transition-all animate-in fade-in-50">
             {error}
           </p>
         )}

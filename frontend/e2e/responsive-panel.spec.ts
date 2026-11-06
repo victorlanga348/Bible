@@ -46,3 +46,12 @@ test('selects the actual admitted source and reads its provenance through the na
     }
   }
 });
+test('keeps the contextual drawer reachable at an intermediate tablet width', async ({ page }, info) => {
+  await page.setViewportSize({ width: 900, height: 900 }); await page.goto('/');
+  await page.getByRole('button', { name: 'Abrir Painel Contextual de IA' }).click();
+  const dialog = page.getByRole('dialog'); await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('tab', { name: 'Anotações' })).toBeVisible();
+  const bounds = await dialog.boundingBox(); expect(bounds!.x).toBeGreaterThanOrEqual(0); expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(900);
+  await page.screenshot({ path: info.outputPath('context-tablet.png') });
+  await dialog.getByRole('button', { name: 'Fechar', exact: true }).click(); await expect(dialog).not.toBeVisible();
+});

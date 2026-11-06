@@ -159,7 +159,7 @@ export function AppShell({
         <aside
           role="navigation"
           aria-label="Navegação Principal"
-          className="hidden md:flex flex-col w-[16rem] shrink-0 border-r border-[var(--border)] bg-[var(--surface)] p-[1rem] justify-between z-20 transition-all duration-200"
+          className="hidden lg:flex flex-col w-[16rem] shrink-0 border-r border-[var(--border)] bg-[var(--surface)] p-[1rem] justify-between z-20 transition-all duration-200"
         >
           <div className="space-y-[1.5rem]">
             {/* Logo e Identidade */}
@@ -264,7 +264,7 @@ export function AppShell({
       <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
         {/* Top Header Mobile (Oculto em Modo Foco) */}
         {!isFocusMode && (
-          <header className="md:hidden flex items-center justify-between px-[1rem] py-[0.75rem] border-b border-[var(--border)] bg-[var(--surface)] z-30">
+          <header className="lg:hidden flex items-center justify-between px-[1rem] py-[0.75rem] border-b border-[var(--border)] bg-[var(--surface)] z-30">
             <div className="flex items-center gap-[0.5rem]">
               <div className="w-[1.75rem] h-[1.75rem] rounded-[var(--radius-sm)] bg-[var(--accent)] text-[var(--accent-foreground)] font-serif font-bold text-[0.9rem] flex items-center justify-center">
                 Ω
@@ -294,7 +294,7 @@ export function AppShell({
 
         {/* Menu Dropdown Mobile */}
         {mobileMenuOpen && !isFocusMode && (
-          <div className="md:hidden border-b border-[var(--border)] bg-[var(--surface)] px-[1rem] py-[0.75rem] space-y-[0.5rem] z-20">
+          <div className="lg:hidden border-b border-[var(--border)] bg-[var(--surface)] px-[1rem] py-[0.75rem] space-y-[0.5rem] z-20">
             {navItems.map((item) => (
               <button
                 key={item.id}

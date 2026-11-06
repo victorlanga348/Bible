@@ -15,13 +15,16 @@ test('frontend CI measures global source coverage and mutation instead of the ol
   assert.match(workflow, /frontend\/reports\/coverage\/global/);
   assert.match(workflow, /frontend\/reports\/mutation\/global/);
   assert.match(scripts['test:mutation:ci'], /^stryker run --concurrency 2 --incremental --incrementalFile reports\/mutation\/global\/incremental\.json && node scripts\/check-mutation\.cjs global$/);
+  assert.match(scripts['test:mutation:ci:force'], /^stryker run --concurrency 2 --force --incremental --incrementalFile reports\/mutation\/global\/incremental\.json && node scripts\/check-mutation\.cjs global$/);
   assert.equal((workflow.match(/continue-on-error: true/g) ?? []).length, 1, 'Only the optional seed download may fail without failing the job');
   assert.match(workflow, /id: global-seed\s+continue-on-error: true/);
-  assert.match(workflow, /run-id: 42158781599/);
+  assert.match(workflow, /run-id: 42212247108/);
   assert.match(workflow, /if: steps\.global-seed\.outcome == 'success'/);
-  assert.match(workflow, /fd1e5af6a83e2da1e82433429486526be3154d151833e502ae75f791b8834c9b/);
+  assert.match(workflow, /c564cc8c1a95b131a4b7f3b470d7158a40ad510c9389a312aa421e11a9601cf1/);
   assert.match(workflow, /assert\.equal\(Object\.keys\(report\.files\)\.length, 34\)/);
-  assert.match(workflow, /3036\)/);
+  assert.match(workflow, /3037\)/);
+  assert.match(workflow, /BIBLE_STYLE_REPORT: '1'/);
+  assert.match(workflow, /frontend\/reports\/native-style-environment\.json/);
 });
 
 test('frontend source fixtures preserve the admitted backend fixture bytes across checkouts', () => {

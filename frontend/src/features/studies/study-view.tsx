@@ -318,8 +318,8 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, activ
 
             {/* Limitações Hermenêuticas e Metodológicas */}
             {study.limitations.length > 0 && (
-              <div className="p-[1rem] rounded-[var(--radius-md)] border border-amber-900/30 bg-amber-950/10 text-[0.8rem] text-amber-200/90 space-y-[0.35rem]">
-                <div className="flex items-center gap-[0.35rem] font-medium text-amber-300">
+              <div className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--warning-border)] bg-[var(--warning-bg)] text-[0.8rem] text-[var(--warning-foreground)] space-y-[0.35rem]">
+                <div className="flex items-center gap-[0.35rem] font-medium text-[var(--warning-foreground)]">
                   <AlertCircle className="w-[0.95rem] h-[0.95rem]" />
                   Limitações do Estudo
                 </div>

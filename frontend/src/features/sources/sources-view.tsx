@@ -100,7 +100,7 @@ export function SourcesView() {
             <Skeleton className="w-full h-[10rem]" />
           </div>
         ) : error ? (
-          <div className="p-[1.5rem] rounded-[var(--radius-md)] border border-rose-900/30 bg-rose-950/10 text-rose-300">
+          <div className="p-[1.5rem] rounded-[var(--radius-md)] border border-[var(--danger-border)] bg-[var(--danger-bg)] text-[var(--danger-foreground)]">
             {error}
           </div>
         ) : sources.length === 0 ? (
