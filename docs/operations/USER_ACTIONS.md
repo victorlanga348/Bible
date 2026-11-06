@@ -9,7 +9,7 @@ Atualizado em 2026-11-06. Rascunho inicial escrito pela agy sob coordenação do
 | ID | Ação tua | Quando | Prova de conclusão |
 |---|---|---|---|
 | G01 | Conferir o cliente Google existente e as origens no teu projeto da consola | Só se ainda não configuradas ou se houver erro de origem | Origens locais guardadas no mesmo cliente usado pela aplicação |
-| G02 | Abrir a aplicação local; arrancar os dois terminais apenas se não estiverem ativos | Ao usar o projeto | Leitor mostra texto real e `/api/health/ready` responde 200 |
+| G02 | Executar `npm.cmd run dev` na raiz num terminal e abrir a aplicação local | Ao usar o projeto | Mensagem `Bíblia App pronta`, leitor real e `/api/health/ready` responde 200 |
 | G03 | Entrar usando o botão oficial e concluir pessoalmente a seleção/consentimento da tua conta | Quando retomares o teste antes adiado | Diálogo fecha e a interface mostra `Sessão Ativa` |
 | G04 | Sair, voltar a entrar e confirmar os dados da mesma conta | Depois de G03 | Sessão termina; a nova entrada recupera os dados guardados |
 | G05 | Comunicar resultado ou erro sanitizado | Depois do teste | Mensagem curta conforme modelo no fim do guia |
@@ -60,7 +60,24 @@ Se as origens já estiverem corretas, não tens de as voltar a alterar. [Instru�
 > [!IMPORTANT]
 > **Preservação de Dados:** Não reinstalar dependências desnecessárias, não recriar volumes e **não executar resets de banco de dados**. O banco relacional principal (`bible_db`) e o índice vetorial (`bible_ai`) já estão provisionados e devem ser preservados.
 
-### 3.0. Pré-requisitos já configurados neste PC
+### 3.0. Um comando para arrancar tudo
+
+Num PowerShell, executar exatamente:
+
+```powershell
+Set-Location "C:\Users\victo\OneDrive\Documentos\Github\Bible"
+npm.cmd run dev
+```
+
+Esperar **Bíblia App pronta** e abrir **http://127.0.0.1:5173**. Mantém esse terminal aberto. O comando confere a configuração existente, inicia PostgreSQL/Docker/índice quando necessário, verifica os modelos e o índice sem inferência e inicia backend e frontend com atualização automática. Não precisas de executar build, arrancar Docker à mão nem abrir um segundo terminal. Não há instalação, download de modelo, migração ou importação automática.
+
+Para parar a aplicação, **Ctrl+C nesse terminal**. PostgreSQL e Docker ficam disponíveis. Para voltar a usar, repetir o mesmo comando. Se já tiveres uma instância tua nas portas3000/5173, usa-a ou encerra esse teu terminal antes; não iniciar duas instâncias nem matar processos desconhecidos.
+
+Se aparecer **Arranque interrompido na etapa …**, comunica a etapa e a hora, sem `.env`, passwords ou tokens. A correção técnica continua a cargo do Codex. [Contrato, validação e diagnóstico do arranque](DEV_STARTUP.md).
+
+### Alternativa manual — serviços já configurados
+
+Os passos seguintes servem somente para preferires o arranque manual. Não os executar em conjunto com o comando único acima.
 
 O PostgreSQL principal é um serviço Windows que já está configurado para arranque automático. O seu estado e a identidade `bible_db` foram conferidos pelo Codex; não precisas de criar um banco nem de alterar passwords/URLs.
 
@@ -73,7 +90,7 @@ docker ps --filter "name=^/biblia-ai-index-development$" --format "{{.Names}} {{
 
 Resultado esperado: `biblia-ai-index-development` com estado `Up` e porta local `127.0.0.1:55436`. O Codex conferiu o nome, as labels do Bíblia App e o binding antes de o iniciar nesta entrega. O comando não cria bases de dados nem importa conteúdo. Se o container não existir ou não arrancar, comunica esse erro; não executar `docker compose down`, remover volumes ou criar um substituto. Leitura bíblica e gestão de estudos não exigem nova inferência. Não precisas de abrir Ollama, trocar modelos ou instalar serviços de IA.
 
-### 3.1. Arranque do Backend (Terminal 1)
+### Alternativa manual — Backend (Terminal 1)
 Abrir uma janela do PowerShell e executar:
 
 ```powershell
@@ -88,7 +105,7 @@ npm.cmd start
 
 Antes de tentar autenticação, abrir `http://127.0.0.1:3000/health/ready` no navegador: deve responder HTTP 200 e `{"status":"ok","database":"up"}`. `/health/live` sozinho só prova que o processo responde. Se houver erro, deixa o terminal aberto e comunica a mensagem sanitizada; a correção da configuração/banco é responsabilidade do Codex. Não executar migrações nem importações para tentar resolver.
 
-### 3.2. Arranque do Frontend (Terminal 2)
+### Alternativa manual — Frontend (Terminal 2)
 Abrir uma segunda janela do PowerShell e executar:
 
 ```powershell

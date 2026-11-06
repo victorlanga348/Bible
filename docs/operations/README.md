@@ -2,6 +2,8 @@
 
 Estado2026-11-06: frontend local e integração S10 em revisão S10-T006. [Guia de uso e ações humanas](USER_ACTIONS.md), com comandos reais, Google, arranque do índice e divisão de responsabilidades; [evidências atuais](../sprints/S10/T006_TEST_REPORT.md). A release backend abaixo é histórica e não certifica o frontend atual.
 
+[Arranque completo por `npm run dev` na raiz](DEV_STARTUP.md), verificado com os serviços existentes, Chrome/HMR e recompilação real. Um terminal inicia a aplicação e verifica IA/índice; não cria bases nem instala dependências.
+
 Release pessoal local S00–S08 verificada2026-10-29. [Fecho](../sprints/S08/T007_COMPLETION_REPORT.md), [relatório](../sprints/S08/TEST_REPORT.md), [evidência](../sprints/S08/evidence/release-verification.json).
 
 [Inventário e configuração](environments.md), [observabilidade](observability.md), [runbooks de recuperação/incidente](runbooks.md), [arranque/token/testes](../../backend/README.md), [IA local](../integrations/local-ai.md). Uma validação pesada por vez neste PC8GB. Apenas processos/recursos próprios; main, segredos e serviços alheios preservados.

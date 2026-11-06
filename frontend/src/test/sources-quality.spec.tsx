@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { SourcesView } from '../features/sources/sources-view';
 import { source } from './fixtures/josephus-pg2848/manifest.json';
@@ -23,6 +23,10 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 it('shows authentic provenance and opens the excerpt for keyboard readers', async () => {
   render(<SourcesView />);
   await screen.findByText(source.rightsStatement);
+  expect(screen.getByText('Obra Histórica')).toBeInTheDocument();
+  expect(screen.getByText(source.author).closest('p')).toHaveTextContent(`Autor: ${source.author}`);
+  expect(screen.getByText(`SHA-256: ${source.snapshotSha256.substring(0, 16)}...`)).toBeInTheDocument();
+  expect(await screen.findByText(`SHA: ${excerpts[0].textSha256.substring(0, 10)}...`)).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Fonte Original' })).toHaveAttribute('href', source.originUrl);
   const button = await screen.findByRole('button', { name: `Ler trecho ${excerpts[0].locator}` });
   fireEvent.click(button); const dialog = await screen.findByRole('dialog');
@@ -34,9 +38,40 @@ it('shows authentic provenance and opens the excerpt for keyboard readers', asyn
 it('lets the reader select another admitted source instead of always showing the first', async () => {
   render(<SourcesView />); const selector = await screen.findByRole('combobox', { name: 'Fonte histórica' });
   expect(selector).toHaveValue(source.id);
+  const filter = screen.getByPlaceholderText('Filtrar trechos...');
+  fireEvent.change(filter, { target: { value: 'Sabbath' } });
   fireEvent.change(selector, { target: { value: aiSource.id } });
+  expect(filter).toHaveValue('');
   await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([url]) => new URL(String(url)).pathname === `/api/sources/${aiSource.id}/excerpts`)).toBe(true));
   expect(screen.getByText(aiSource.rightsStatement)).toBeInTheDocument();
+});
+it('does not claim an empty catalogue or request an absent source while the catalogue is pending', async () => {
+  let finish!: (response: Response) => void;
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation((url, options) => new URL(String(url)).pathname === '/api/sources' ? new Promise<Response>(resolve => { finish = resolve; }) : original(url, options));
+  render(<SourcesView />); await waitFor(() => expect(finish).toBeDefined());
+  expect(screen.queryByText('Nenhuma fonte histórica cadastrada no banco.')).not.toBeInTheDocument();
+  expect(vi.mocked(fetch).mock.calls).toHaveLength(1);
+  await act(async () => finish(Response.json({ sources: [source] })));
+  await screen.findByRole('combobox', { name: 'Fonte histórica' });
+});
+it.each(['success', 'failure'])('keeps the current filter results after a late obsolete %s', async late => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let finish!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation((url, options) => {
+    const parsed = new URL(String(url));
+    if (parsed.pathname.endsWith('/excerpts')) return parsed.searchParams.has('q') ? Promise.resolve(Response.json({ excerpts: [excerpts[0]] })) : new Promise<Response>(resolve => { finish = resolve; });
+    return original(url, options);
+  });
+  render(<SourcesView />); const filter = await screen.findByPlaceholderText('Filtrar trechos...');
+  await waitFor(() => expect(finish).toBeDefined());
+  expect(screen.queryByText('Nenhum trecho encontrado para a busca especificada.')).not.toBeInTheDocument();
+  fireEvent.change(filter, { target: { value: 'Sabbath' } });
+  await screen.findByRole('button', { name: `Ler trecho ${excerpts[0].locator}` });
+  await act(async () => finish(late === 'success' ? Response.json({ excerpts }) : Response.json({ error: { code: 'UNAVAILABLE', message: 'Pedido antigo indisponível.' } }, { status: 503 })));
+  expect(screen.getAllByRole('button', { name: /^Ler trecho / })).toHaveLength(1);
+  expect(screen.queryByText('Não foi possível carregar os trechos.')).not.toBeInTheDocument();
+  expect(filter).toHaveValue('Sabbath');
 });
 it('filters using the server query, with an explicit empty result', async () => {
   render(<SourcesView />); const search = await screen.findByPlaceholderText('Filtrar trechos...');

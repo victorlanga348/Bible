@@ -46,6 +46,7 @@ function mount() {
 }
 async function openConversation() {
   mount(); const open = await screen.findByRole('button', { name: /Abrir conversa 1/i });
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   expect(open).toHaveAttribute('aria-pressed', 'false'); fireEvent.click(open);
   await screen.findByText('Pergunta técnica guardada');
   expect(open).toHaveAttribute('aria-pressed', 'true');
@@ -54,7 +55,7 @@ async function openConversation() {
   expect(screen.queryByText('Ainda não há conversas guardadas.')).not.toBeInTheDocument();
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Nova conversa' })).toBeEnabled();
-  if (detail.revision < 20) expect(screen.getByLabelText('Pergunta na conversa')).toBeEnabled();
+  if (detail.revision < 20) { expect(screen.getByLabelText('Pergunta na conversa')).toBeEnabled(); expect(screen.getByLabelText('Pergunta na conversa')).toHaveValue(''); }
 }
 async function send() {
   fireEvent.change(screen.getByLabelText('Pergunta na conversa'), { target: { value: 'Próxima pergunta técnica' } });

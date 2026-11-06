@@ -56,6 +56,7 @@ it('creates a new version with the saved version as CAS precondition and updates
   fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
   fireEvent.click(await screen.findByRole('button', { name: 'Criar nova versão' }));
   await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:4`));
+  await screen.findByText('Versão 4 criada para GEN 1:1');
   const request = calls().find(call => call.path.endsWith('/versions'));
   expect(request?.options?.method).toBe('POST'); expect(JSON.parse(String(request?.options?.body))).toEqual({ expectedVersion: 3 });
 });
@@ -86,6 +87,13 @@ it('does not treat a favorite of an older version as a favorite of the latest on
   const original = vi.mocked(fetch).getMockImplementation()!;
   vi.mocked(fetch).mockImplementation(async (url, options) => new URL(String(url)).pathname === '/api/workspace/favorites'
     ? Response.json({ items: [{ id: '30000000-0000-4000-8000-000000000001', studyId, studyVersion: 1, createdAt, reference }], nextCursor: null }) : original(url, options));
+  mount(<HistoryView />);
+  expect(await screen.findByRole('button', { name: 'Marcar favorito' })).toBeInTheDocument();
+});
+it('does not treat a favorite of another study at the same version as this study', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => new URL(String(url)).pathname === '/api/workspace/favorites'
+    ? Response.json({ items: [{ id: '30000000-0000-4000-8000-000000000001', studyId: secondStudyId, studyVersion: 3, createdAt, reference }], nextCursor: null }) : original(url, options));
   mount(<HistoryView />);
   expect(await screen.findByRole('button', { name: 'Marcar favorito' })).toBeInTheDocument();
 });
@@ -134,4 +142,5 @@ it('disconnects the old assistant while another study is being created', async (
   await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
   await act(async () => { complete(Response.json(studyFixture({ id: secondStudyId, version: 1 }))); });
   await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${secondStudyId}:1`));
+  await screen.findByText('Estudo criado para GEN 1:1');
 });

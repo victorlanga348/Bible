@@ -52,19 +52,25 @@ it('retains the question on technical failure and allows a successful retry', as
 });
 it('rejects over-limit UTF8 input locally and guides unauthenticated users', async () => {
   mount(); send('á'.repeat(251)); await screen.findByText('Pergunta muito longa');
+  expect(screen.getByText('O limite máximo é de 500 bytes UTF-8. A pergunta atual possui 502 bytes.')).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith('/ai-analyses'))).toBe(false);
   cleanup(); authenticated = false; mount(); send(); await screen.findByText('Autenticação necessária');
+  expect(screen.getByText('Configure seu token de operador na barra lateral.')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('tab', { name: 'Anotações' }));
   expect(screen.getByText(/Entre na conta e abra um estudo/)).toBeInTheDocument();
 });
 it('requires a study and supports tab keyboard navigation', async () => {
   mount(''); send(); await screen.findByText('Nenhum estudo ativo');
+  expect(screen.getByText('Selecione ou gere um estudo primeiro para vincular a pergunta da IA.')).toBeInTheDocument();
   const assistant = screen.getByRole('tab', { name: 'Assistente IA' }); assistant.focus();
   fireEvent.keyDown(assistant, { key: 'ArrowRight' }); expect(screen.getByRole('tab', { name: 'Anotações' })).toHaveAttribute('aria-selected', 'true');
+  expect(screen.getByRole('tab', { name: 'Anotações' })).toHaveFocus();
   fireEvent.keyDown(document.activeElement!, { key: 'End' }); expect(screen.getByRole('tab', { name: 'Referências' })).toHaveAttribute('aria-selected', 'true');
+  expect(screen.getByRole('tab', { name: 'Referências' })).toHaveFocus();
   fireEvent.keyDown(document.activeElement!, { key: 'Home' }); expect(assistant).toHaveFocus();
   fireEvent.keyDown(assistant, { key: 'ArrowLeft' }); expect(screen.getByRole('tab', { name: 'Referências' })).toHaveFocus();
-  fireEvent.keyDown(document.activeElement!, { key: 'Tab' });
+  const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', cancelable: true, bubbles: true });
+  fireEvent(document.activeElement!, tabEvent); expect(tabEvent.defaultPrevented).toBe(false);
   expect(screen.getByRole('tab', { name: 'Referências' })).toHaveFocus();
   fireEvent.click(assistant);
   expect(screen.getByRole('tabpanel')).toHaveAttribute('id', 'panel-assistant');

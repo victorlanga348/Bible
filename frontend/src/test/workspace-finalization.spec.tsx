@@ -212,6 +212,7 @@ it('elimina estudo somente após diálogo de confirmação e chamada DELETE ao b
 
   const confirmButton = await screen.findByRole('button', { name: 'Excluir definitivamente' });
   fireEvent.click(confirmButton);
+  await screen.findByText('Estudo e dados associados eliminados.');
 
   await waitFor(() => {
     expect(
@@ -319,13 +320,16 @@ it('edits a note using its actual revision and deletes only after confirmation',
   mount(); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
   await screen.findByRole('option', { name: 'GEN 1:1 (v3)' }); fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
   fireEvent.click(await screen.findByTitle('Editar Nota (CAS)'));
-  fireEvent.change(screen.getByLabelText('Rascunho da anotação'), { target: { value: 'Nota técnica revista.' } });
+  fireEvent.change(screen.getByLabelText('Rascunho da anotação'), { target: { value: '  Nota técnica revista.  ' } });
   fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' })); await screen.findByText('Nota técnica revista.');
+  await screen.findByText('Revisão da anotação salva com garantia CAS.');
   const patch = calls().find(call => call.options?.method === 'PATCH');
   expect(JSON.parse(String(patch?.options?.body))).toEqual({ expectedRevision: 1, content: 'Nota técnica revista.' });
   fireEvent.click(screen.getByTitle('Eliminar Nota')); expect(deleted).toBe(false);
   fireEvent.click(await screen.findByRole('button', { name: 'Excluir Definitivamente' }));
   await screen.findByText('Nenhuma anotação associada a este estudo ainda.'); expect(deleted).toBe(true);
+  await screen.findByText('Anotação eliminada com sucesso.');
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
 it('toggles a version-specific favorite using idempotent DELETE and PUT', async () => {
@@ -337,7 +341,9 @@ it('toggles a version-specific favorite using idempotent DELETE and PUT', async 
     return original(url, options);
   });
   mount(); fireEvent.click(await screen.findByTitle('Remover favorito'));
+  await screen.findByText('Removido dos favoritos.');
   fireEvent.click(await screen.findByTitle('Marcar favorito')); await screen.findByTitle('Remover favorito');
+  await screen.findByText('Adicionado aos favoritos.');
   expect(calls().filter(call => call.path.endsWith('/favorites/3')).map(call => call.options?.method)).toEqual(['DELETE', 'PUT']);
 });
 
@@ -444,6 +450,23 @@ it('removes the selected version from the favorites view and returns to the stud
   });
   mount(); fireEvent.click(screen.getByRole('button', { name: /Favoritos/i }));
   fireEvent.click(await screen.findByRole('button', { name: 'Remover' }));
+  await screen.findByText('Removido dos favoritos.');
   await waitFor(() => expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeInTheDocument()); expect(removed).toBe(true);
   fireEvent.click(screen.getByRole('button', { name: /Estudos Recentes/i })); await screen.findByRole('button', { name: 'Excluir estudo' });
+});
+it('keeps ordinary note write failures separate from CAS conflicts and permits an explicit retry', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    if (options?.method === 'PATCH') return Response.json({ error: { code: 'UNAVAILABLE', message: 'Servidor de anotações indisponível.' } }, { status: 503 });
+    if (new URL(String(url)).pathname.endsWith('/notes')) return Response.json({ items: [noteFixture()], nextCursor: null });
+    return original(url, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  await screen.findByRole('option', { name: 'GEN 1:1 (v3)' });
+  fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
+  fireEvent.click(await screen.findByTitle('Editar Nota (CAS)'));
+  fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
+  await screen.findByText('Servidor de anotações indisponível.');
+  expect(screen.queryByRole('button', { name: 'Carregar revisão atual' })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Salvar Revisão' })).toBeEnabled();
 });

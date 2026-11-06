@@ -227,6 +227,7 @@ it('cria nota para o estudo selecionado na versao atual, apara espacos e limpa i
   await waitFor(() => {
     expect(input).toHaveValue('');
   });
+  await screen.findByText('Anotação adicionada ao estudo.');
 
   const postCall = calls().find(
     (c) => c.options?.method === 'POST' && c.path === `/api/workspace/studies/${studyId}/notes`

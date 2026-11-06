@@ -1,3 +1,5 @@
+# Root tooling may create local Vitest/Vite caches; no root dependencies are needed.
+node_modules/
 backend/node_modules/
 backend/dist/
 backend/reports/

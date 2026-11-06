@@ -2,9 +2,9 @@ name: Frontend global quality
 on:
   push:
     branches: ['feat/biblia-integracao']
-    paths: ['frontend/**', '.github/workflows/frontend.yml']
+    paths: ['frontend/**', 'scripts/**', 'package.json', '.github/workflows/frontend.yml']
   pull_request:
-    paths: ['frontend/**', '.github/workflows/frontend.yml']
+    paths: ['frontend/**', 'scripts/**', 'package.json', '.github/workflows/frontend.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,6 +29,7 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:tooling
+      - run: node --test ../scripts/dev.test.cjs
       - run: npm run test:coverage -- --maxWorkers=1
         env:
           BIBLE_STYLE_REPORT: '1'
@@ -37,15 +38,14 @@ jobs:
         continue-on-error: true # Missing/expired optimization falls back to full analysis.
         with:
           name: frontend-global-quality
-          run-id: 42212247108
+          run-id: 42224340418
           github-token: ${{ github.token }}
           path: frontend/reports/global-seed
       - name: Verify the complete global seed and unchanged toolchain
         if: steps.global-seed.outcome == 'success'
         run: |
           node --input-type=commonjs <<'NODE'
-          const fs = require('node:fs'), assert = require('node:assert/strict'), crypto = require('node:crypto');
-          const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+          const { restoreGlobalSeed } = require('./scripts/restore-global-seed.cjs');
           const identities = {
             'package-lock.json': '0d204cf5a64ffe5f99ad523d89f3090bcd9d7600775b640c4352568521b9c868',
             'src/test/evidence-fixtures.ts': 'd4698188974576041667fe04e03abdc5c561f84ebdeb8797274541cea346e994',
@@ -63,17 +63,13 @@ jobs:
             'vitest.session.config.ts': '8c0e697b281caec63f50c293464924c0e503db1636306d57f0c78bf9478b8093',
             'vitest.transport.config.ts': 'aae5b70daba20f5fdbdbf55149489da0844a07a5a970ccf903ada9c6d93f4ff3',
           };
-          for (const [file, expected] of Object.entries(identities)) assert.equal(sha(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')), expected, 'Toolchain/helper identity differs');
-          const bytes = fs.readFileSync('reports/global-seed/mutation/global/mutation.json');
-          assert.equal(sha(bytes), 'c564cc8c1a95b131a4b7f3b470d7158a40ad510c9389a312aa421e11a9601cf1', 'Global seed identity differs');
-          const report = JSON.parse(bytes);
-          assert.equal(Object.keys(report.files).length, 34);
-          assert.equal(Object.values(report.files).reduce((sum, row) => sum + row.mutants.length, 0), 3037);
-          fs.mkdirSync('reports/mutation/global', { recursive: true });
-          fs.writeFileSync('reports/mutation/global/incremental.json', bytes);
-          console.log('Verified full seed, original gate FAIL. Current global analysis and independent audit remain mandatory.');
+          const restored = restoreGlobalSeed({ identities,
+            reportSha256: '5a25792d3c0ca607d8752342920d85f473ca17c3eddca59a05daf91ac09197c0',
+            environmentSha256: '7ae83ffe19f5971f94586f516b8e2ffadc92b83d313ffede1640be124da17c38',
+            mutableFiles: 34, mutants: 3037 });
+          console.log(restored ? 'Verified full seed and unchanged native environment; original gate FAIL. Current global gate remains mandatory.' : 'Native environment changed: fresh complete analysis required.');
           NODE
-      - run: npm run test:mutation:ci:force
+      - run: npm run test:mutation:ci
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

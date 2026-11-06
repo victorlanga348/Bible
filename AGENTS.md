@@ -2,6 +2,10 @@
 
 ## Retoma autorizada — 2026-11-06
 
+Estado mais recente: CI42224340418/cebc1d6 terminou FAIL82,87640449438203% (zeroNoCoverage/RuntimeError), inventário35fontes/3037mutantes íntegro. Reforços afetados posteriores PASS; próximo checkpoint deve validar globalmente. Pedido adicional do utilizador: `npm run dev` na raiz inicia tudo; launcher pronto/prova real Chrome/API/PG/IAartefactos+índice/watch PASS, sem inferência nem alteração do backend. [Arranque](docs/operations/DEV_STARTUP.md). Seed completo e compatibilidade visual preparados para incremental normal; fechar só após score>85 e revisão. Não repetir backend/modelos inalterados, não pedir outra permissão. Parágrafos de execução abaixo são históricos.
+
+Retoma imediata: códigocebc1d6/CI42224340418 em mutação global force após cobertura/build/lint/tooling PASS. Runtimefeaa5b2; a falha anterior de foco era do harness e foi corrigida, sem alterar produto. [Contexto atualizado](docs/megabrain/agent-context/project-state.md). Terminar essa análise/revisão e restaurar cache incremental com ambiente CSS/Chrome/harness verificado; não reiniciar nem repetir backend/modelos.
+
 Atualização: f33758e/CI42212247108 terminou FAIL77,3932584269663%/1NoCoverage; nova revisão visual tem28testes afetados e8browser/API/PG PASS. Próxima CI revalida mutação global com force por novo harness Chrome/CSS e estáticos. Backend/modelos inalterados, não repetir. Estado IN_PROGRESS; guia humano já entregue em docs, sem novo pedido de permissão.
 
 Último código publicado: f33758e, CI42212247108 em mutação global após estática/tooling/cobertura/seed PASS. [Contexto imediato](docs/megabrain/agent-context/project-state.md). Não reiniciar a implementação nem repetir backend/modelos inalterados; terminar a análise corrente e os gates.

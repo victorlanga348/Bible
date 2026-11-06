@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ReaderView } from '../features/canon/reader-view';
@@ -18,7 +18,8 @@ beforeEach(() => {
   Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: vi.fn().mockResolvedValue(undefined) } });
   vi.stubGlobal('fetch', vi.fn(async (url: string) => {
     const path = new URL(url).pathname;
-    if (path.endsWith('/books')) return Response.json({ books: [{ code: 'GEN', name: 'Gênesis', chapterCount: 50, order: 1 }, { code: 'JHN', name: 'João', chapterCount: 21, order: 43 }] });
+    // Catalogue metadata copied from admitted backend/data/biblical-canon/porbr2018/inventory.json.
+    if (path.endsWith('/books')) return Response.json({ books: [{ code: 'GEN', name: 'Gênesis', chapterCount: 50, order: 1 }, { code: 'EXO', name: 'Êxodo', chapterCount: 40, order: 2 }, { code: 'MAL', name: 'Malaquias', chapterCount: 4, order: 39 }, { code: 'MAT', name: 'Mateus', chapterCount: 28, order: 40 }, { code: 'JHN', name: 'João', chapterCount: 21, order: 43 }] });
     if (path.endsWith('/resolve')) return failSearch ? Response.json({ error: { code: 'INVALID_REFERENCE', message: 'Referência não reconhecida.' } }, { status: 400 }) : Response.json({ ...reference, bookCode: 'JHN', chapter: 3, fromVerse: 16, toVerse: 17, normalized: 'JHN 3:16-17' });
     if (failPassage) return Response.json({ error: { code: 'NOT_FOUND', message: 'Leitura indisponível.' } }, { status: 404 });
     const chapter = Number(path.match(/chapters\/(\d+)/)?.[1] ?? 1);
@@ -45,6 +46,53 @@ it('changes books, chapters, next and previous using actual navigation metadata'
   fireEvent.change(screen.getByLabelText('Capítulo'), { target: { value: '3' } });
   await screen.findByRole('heading', { name: 'João 3' });
   expect(screen.getByText(john[0].text.trim())).toBeInTheDocument();
+});
+it('keeps the last Old Testament book and the first New Testament book in their own groups', async () => {
+  mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
+  const values = (name: string) => within(screen.getByRole('group', { name })).getAllByRole('option').map(option => (option as HTMLOptionElement).value);
+  expect(values('Antigo Testamento')).toEqual(['GEN', 'EXO', 'MAL']);
+  expect(values('Novo Testamento')).toEqual(['MAT', 'JHN']);
+});
+it('resets the chapter after changing books and offers the real inclusive chapter range', async () => {
+  mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
+  fireEvent.change(screen.getByLabelText('Livro'), { target: { value: 'JHN' } });
+  fireEvent.change(await screen.findByLabelText('Capítulo'), { target: { value: '3' } });
+  await screen.findByRole('heading', { name: 'João 3' });
+  fireEvent.change(screen.getByLabelText('Livro'), { target: { value: 'GEN' } });
+  await screen.findByRole('heading', { name: 'Gênesis 1' });
+  const chapters = within(screen.getByLabelText('Capítulo')).getAllByRole('option');
+  expect(chapters).toHaveLength(50); expect(chapters[0]).toHaveValue('1'); expect(chapters[49]).toHaveValue('50');
+});
+it('follows server navigation across book boundaries in both directions', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    const path = new URL(String(url)).pathname;
+    if (path.includes('/GEN/chapters/50/')) return Response.json({ ...studyFixture().passage, verses: [], bookCode: 'GEN', chapter: 50, previousChapter: { bookCode: 'GEN', chapter: 49 }, nextChapter: { bookCode: 'EXO', chapter: 1 } });
+    if (path.includes('/EXO/chapters/1/')) return Response.json({ ...studyFixture().passage, verses: [], bookCode: 'EXO', chapter: 1, previousChapter: { bookCode: 'GEN', chapter: 50 }, nextChapter: { bookCode: 'EXO', chapter: 2 } });
+    return original(url, options);
+  });
+  mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
+  fireEvent.change(screen.getByLabelText('Capítulo'), { target: { value: '50' } });
+  await screen.findByRole('heading', { name: 'Gênesis 50' });
+  fireEvent.click(screen.getByTitle('Próximo Capítulo')); await screen.findByRole('heading', { name: 'Êxodo 1' });
+  fireEvent.click(screen.getByTitle('Capítulo Anterior')); await screen.findByRole('heading', { name: 'Gênesis 50' });
+});
+it('shows pending external resolution and selects every verse of the resulting range', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let resolve!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation((url, options) => String(url).endsWith('/references/resolve') ? new Promise<Response>(done => { resolve = done; }) : original(url, options));
+  mount('JHN 3:16-17'); expect(screen.getByRole('status')).toHaveTextContent('A abrir a passagem…');
+  await waitFor(() => expect(resolve).toBeDefined());
+  await act(async () => resolve(Response.json({ ...reference, bookCode: 'JHN', chapter: 3, fromVerse: 16, toVerse: 17, normalized: 'JHN 3:16-17' })));
+  await screen.findByRole('heading', { name: 'João 3' });
+  expect(screen.getByRole('button', { name: /Versículo 16/ })).toHaveAttribute('aria-pressed', 'true');
+  const second = screen.getByRole('button', { name: /Versículo 17/ });
+  expect(second).toHaveAttribute('aria-pressed', 'true');
+  const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+  fireEvent(second, event); expect(event.defaultPrevented).toBe(true);
+  expect(second).toHaveAttribute('aria-pressed', 'false');
+  fireEvent.click(screen.getByRole('button', { name: 'Copiar' }));
+  await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith(`João 3:16\n16. ${john[0].text}\n(Bíblia Livre — porbr2018)`));
 });
 it('resolves a range, copies its authentic text with attribution, and studies the chosen verses', async () => {
   const { study } = mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });

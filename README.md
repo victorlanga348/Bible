@@ -1,5 +1,7 @@
 # Bíblia App
 
+Para arrancar a aplicação completa neste PC: executar **`npm.cmd run dev` na raiz deste repositório** e abrir **http://127.0.0.1:5173** quando aparecer `Bíblia App pronta`. API, frontend, verificação da IA e serviços locais existentes são coordenados pelo comando. [Passos e limites](docs/operations/DEV_STARTUP.md); [a tua parte](docs/operations/USER_ACTIONS.md).
+
 Atualização2026-11-06: revisão [S10-T006](docs/sprints/S10/T006_REVIEW_PLAN.md) em execução, com Codex a coordenar agy. [Tudo o que o utilizador tem de fazer, passo a passo](docs/operations/USER_ACTIONS.md). [Resultados reais e pendências](docs/sprints/S10/T006_TEST_REPORT.md). As declarações antigas de conclusão não aprovam esta revisão nem a cobertura/mutação global do frontend; Google pessoal continua adiado.
 
 Trabalho atual2026-10-30: [S10 — integração da aplicação](docs/sprints/S10/README.md), branch nova `feat/biblia-integracao` criada por pedido do utilizador. Frontend/backend/main preservadas. Leitura pela interface e API real já comprovada; sessão Google integrada, percursos privados e ampliação de IA seguem tarefas próprias. O estado/gates atuais estão em [S10](docs/sprints/S10/TEST_REPORT.md); restante texto guarda a release anterior e não comprova os incrementos novos.

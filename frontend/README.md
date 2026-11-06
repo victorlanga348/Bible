@@ -2,7 +2,7 @@
 
 S10-T006 em execução na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. [Guia específico do utilizador](../docs/operations/USER_ACTIONS.md), [evidências atuais](../docs/sprints/S10/T006_TEST_REPORT.md). Google está integrado tecnicamente; teste com conta pessoal continua adiado. Métricas anteriores limitadas à sessão não aprovam o frontend global.
 
-Arranque integrado: backend disponível em127.0.0.1:3000 e `npm run dev` nesta pasta, abrindo127.0.0.1:5173. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE.
+Arranque completo: **`npm run dev` na raiz do repositório**, abrindo127.0.0.1:5173 após a mensagem de prontidão; [serviços, watch e diagnóstico](../docs/operations/DEV_STARTUP.md). `npm run dev` nesta pasta continua a iniciar apenas o frontend, exigindo backend já disponível em127.0.0.1:3000. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE.
 
 Frontend de alta fidelidade para a plataforma de estudo e investigação bíblica assistida por inteligência artificial.
 
@@ -79,7 +79,7 @@ npm test
 ```
 O build atual e o Chrome instalado são pré-requisitos da suite global: `native-styles.spec.tsx` mede CSS real sobre o HTML produzido pelos componentes React sob teste, incluindo quando instrumentados pelo Stryker. Rede do browser bloqueada; isto não chama IA nem substitui e2e/API/PostgreSQL. Alterações em estilos exigem novo build antes dessa suite. Em CI, Chrome vem da imagem oficial ubuntu24.04; não há download de browser ou dependência nova nesta revisão. Testes afetados que não incluem esta suite visual mantêm o fluxo normal de Vitest.
 
-Qualidade global: `npm run test:coverage`, `npm run test:tooling` e `npm run test:mutation:ci`. O epoch visual S10-T006 usa temporariamente `npm run test:mutation:ci:force` no workflow, com inventário/limiares iguais, para revalidar resultados estáticos. [Plano e limites](../docs/sprints/S10/QUALITY_PLAN.md); nenhum recorte de sessão substitui o gate global.
+Qualidade global: `npm run test:coverage`, `npm run test:tooling` e `npm run test:mutation:ci`. O epoch visual S10-T006 já revalidou todos os estáticos por `npm run test:mutation:ci:force`. O workflow normal usa agora seed integral auditado, hashes de toolchain/fixtures e comparação de Chrome/CSS/fonte/harness; mudança visual exige análise completa, corrupção falha e o gate global atual continua obrigatório. [Plano e limites](../docs/sprints/S10/QUALITY_PLAN.md); nenhum recorte de sessão substitui o gate global.
 
 Executar suíte de testes ponta a ponta (Playwright E2E):
 ```bash
