@@ -1,6 +1,6 @@
 # Operações
 
-Estado2026-11-06: frontend local e integração S10 em revisão S10-T006. [Guia de uso e ações humanas](USER_ACTIONS.md), com comandos reais, Google, arranque do índice e divisão de responsabilidades; [evidências atuais](../sprints/S10/T006_TEST_REPORT.md). A release backend abaixo é histórica e não certifica o frontend atual.
+Estado2026-11-06: execução técnica frontend/integração S10 concluída; sete gates aplicáveis e auditoria documental PASS. [Guia de uso e ações humanas](USER_ACTIONS.md), com comando único, Google e divisão de responsabilidades; [provas atuais/CI42265985431 PASS](../sprints/S10/T006_TEST_REPORT.md). A release backend abaixo é histórica; o frontend tem agora gates globais próprios auditados.
 
 [Arranque completo por `npm run dev` na raiz](DEV_STARTUP.md), verificado com os serviços existentes, Chrome/HMR e recompilação real. Um terminal inicia a aplicação e verifica IA/índice; não cria bases nem instala dependências.
 

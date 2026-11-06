@@ -1,8 +1,26 @@
 # S10-T006 — Evidências da retoma
 
-Data: 2026-11-06. Estado: IN_PROGRESS. Branch: feat/biblia-integracao, base 855de77. Fontes herdadas preservadas; os resultados de outubro são históricos e não aprovam o código atual. Ambiente Windows/PowerShell; RTK preferido, terminal nativo usado para execução acompanhada e logs quando RTK retém saída. Sem instalação de dependências nesta retoma.
+Data: 2026-11-06. Estado: DONE técnico; sete gates aplicáveis e auditoria documental PASS. Branch: feat/biblia-integracao; revisão executável **d3e44386ca7a63d73d705c9f2be81ec2a56ed64d**. [CI42268953701 PASS](https://github.com/victorlanga348/Bible/actions/runs/42268953701), [manifesto de qualidade](evidence/T006-global-quality.json), [revisão/limites](T006_MUTATION_REVIEW.md), [guia humano](../../operations/USER_ACTIONS.md), [arranque completo](../../operations/DEV_STARTUP.md). Histórico da retoma preservado abaixo; não confundir falhas/checkpoints antigos com pendências atuais. Windows/PowerShell; RTK preferido com fallback nativo documentado. Nenhuma dependência instalada.
 
-## Execuções
+## Resultado final da revisão executável
+
+**351testes/47ficheiros PASS**, tooling frontend13/root launcher9 PASS, build/typecheck/lint zero erros (quatro avisos existentes). Cobertura935/936linhas=99,89%;860/899branches=95,66%;371/372funções=99,73%. Mutações3037/35fontes/34mutáveis:1912Killed/2Timeout/311Survived/812CompileError, zeroNoCoverage/RuntimeError; raw1914/2225=**86,02247191011236%**. CI46s/reutilização3037/3037. ZIP13529185657 SHA256 `323a119f4cc69bdb49c76b82c96f76280b4404f665b0aaf1473f16c64ba7b6ba`; JSON `22a41ff2ab31b2856efd878aece4dda76e9cce35c54935f03e564391fabad493`. Reinstrumentação de todas as fontes/assinaturas PASS; brutos intactos.
+
+| Gate | Resultado e prova |
+|---|---|
+| 1 Spec/plano/dependências | PASS: contratos T002/T003/adenda e decisões de estilos/arranque documentados antes de implementação; autorização integral vigente, sem dependências/endpoints/modelos novos. |
+| 2 TDD | PASS: RED/GREEN de notas/percursos e defeitos visuais reais preservados; testes novos de comportamento existente separados de RED. Hipótese incorreta de retorno falso Google foi descartada, sem mudança runtime nem RED fictício. |
+| 3 Estática/build/cobertura/arquitetura | PASS: CI global acima; backend idêntico à revisão8e748b9/CI41126297344, conservando gates arquiteturais e estáticos auditados. |
+| 4 Integração/migrações reais | PASS no escopo técnico: PostgreSQL de teste independente, API/Nest e8casos Chrome desktop/mobile/tablet da fonte atual, migrações reais anteriores inalteradas; arranque real por comando único/API/proxy/PG/índice/HMR/watch confirmado. SDK Google técnico declarado; consentimento pessoal não incluído nessa prova. |
+| 5 Mutação/revisão | PASS:86,02247191011236%>85, inventário integral e311sobreviventes revistos sem retirar itens do score. Backend inalterado conserva90,71%global/90,13%IA auditados. |
+| 6 IA | PASS no perfil local extrativo admitido: percurso de estudo/conversa usa modelo/índice reais, citação Sabbath conferida literalmente e relevância delimitada; rawSHA5bc1942484fe2529e2afff5e4976bb137b69e89d47217fa65d7dfbfadafefc13. Sem inferência repetida por testes/docs; não certifica geração geral portuguesa. [Manifesto nativo](evidence/T006-native-summary.json). |
+| 7 Documentação/governança | PASS: auditoria documental real, zero links em falta/segredos/whitespace/ficheiros proibidos. Guias, estados e evidências sincronizados; falhas históricas preservadas. |
+
+Google pessoal continua **NOT_RUN/BLOCKED por adiamento explícito do utilizador**, fora do fecho técnico delegado. Não requer novo pedido. IA geral em português, novo corpus, API paga e deploy público permanecem fora do escopo; ações opcionais estão no guia. Main/branches anteriores, segredos, bancos/modelos e serviços alheios preservados. Não atribuir ao utilizador testes/correções/coordenação agy.
+
+Existe alguma alteração no projeto que não esteja refletida em /docs ou no README? Não. Confrontação com diff e auditoria documental PASS. Fonte/testes/scripts/lockfiles idênticos à CI d3e4438; publicação final só documental, TDD de comportamento não aplicável a esse commit. Encerramento delegado pela autorização vigente, sem merge.
+
+## Execuções históricas da retoma
 
 | Execução | Resultado | Prova e limite |
 |---|---|---|
@@ -45,7 +63,7 @@ Após essa configuração, build/preview atualCNblqAgh e `npm.cmd run test:e2e -
 
 `git diff --stat 8e748b9 HEAD -- backend .github/workflows/backend.yml` sem diferenças confirmou identidade integral com a fonte da CI backend41126297344; reutilizar os seus gates auditados90,71%global/90,13%IA, sem chamar os números reduzidos de suites históricas da S10 uma nova regressão completa.
 
-## Gates atuais
+## Histórico dos gates e checkpoints
 
 **CI42260812862/21ee138 PASS**, incluindo root launcher9testes, tooling13 e frontend**346PASS/46ficheiros**. Cobertura99,89%linhas/95,66%branches/99,73%funções. Auditoria independente confirmou35fontes/34mutáveis/3037mutantes,1909Killed/2Timeout/314Survived/812CompileError, zeroNoCoverage/RuntimeError; score1911/2225=**85,88764044943821%**. ZIP13527131595 SHA256 `b8c27b6a684ee65e9d2ed789b035e7322803514909347e6b73c131cc1e950c16`; JSON `3d624e57ebc9c111c407490154397d0cdb3b6b403f5cabc30cddfb2b1e48b6ca`. Artefactos locais `s10-global-quality-21ee138`, auditoria/ledger `s10-t006-global-dev-audit{,-ledger}.json`. Reutilização2083/3037,29min29s. Ambiente visual idêntico, hashes preservados; estados brutos intactos. Revisão dos314sobreviventes e CI dos cinco testes posteriores ainda pendentes, sem fecho antecipado.
 

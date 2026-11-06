@@ -1,5 +1,7 @@
 # S10 — Relatório de testes
 
+Estado corrente2026-11-06: execução técnica concluída emS10-T006; [relatório final/gates](T006_TEST_REPORT.md), [CI42268953701 PASS](https://github.com/victorlanga348/Bible/actions/runs/42268953701),351testes/cobertura99,89%/95,66%/mutação86,02247191011236%. O conteúdo abaixo preserva os incrementos históricos, não pendências atuais. Auditoria documental de fecho PASS; S10-T006 DONE.
+
 IN_PROGRESS2026-10-30. Baseline de diagnóstico anterior: frontend5173/API3000 sem proxy/CORS; OPTIONS /translations com origem5173 retornou404 e nenhum Access-Control-Allow-Origin. Leitura direta da API200/corpus real. Isto demonstra a fronteira quebrada, não RED de um teste ainda não escrito.
 
 Branch feat/biblia-integracao criada de5210a54, frontend/backend/main preservadas e árvore inicialmente limpa. Nenhum comportamento novo implementado antes do contrato T001. Skill impeccable consultada: contexto ausente, PRODUCT.md consolidado somente das specs existentes; contexto imprimiu instruções e terminou com assertion libuv, não declarar execução limpa. Atualização da skill perguntada de forma opcional/assíncrona; não aguardar nem instalar sem resposta. Sem agentes/dependências novas.

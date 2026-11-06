@@ -1,0 +1,5919 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "d3e44386ca7a63d73d705c9f2be81ec2a56ed64d",
+  "rawReportSha256": "22a41ff2ab31b2856efd878aece4dda76e9cce35c54935f03e564391fabad493",
+  "purpose": "Review inventory only; raw full report independently determines the score",
+  "count": 311,
+  "review": "../T006_MUTATION_REVIEW.md",
+  "survivors": [
+    {
+      "file": "src/App.tsx",
+      "id": "13",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 28
+        },
+        "start": {
+          "column": 6,
+          "line": 28
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "30",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 41
+        },
+        "start": {
+          "column": 6,
+          "line": 41
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "41",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 47
+        },
+        "start": {
+          "column": 9,
+          "line": 47
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "s.reference?.normalized",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "43",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 47
+        },
+        "start": {
+          "column": 9,
+          "line": 47
+        }
+      },
+      "mutator": "OptionalChaining",
+      "replacement": "s.reference.normalized",
+      "original": "s.reference?.normalized",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "46",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 50
+        },
+        "start": {
+          "column": 6,
+          "line": 50
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "56",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 56
+        },
+        "start": {
+          "column": 6,
+          "line": 56
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "61",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 60
+        },
+        "start": {
+          "column": 6,
+          "line": 60
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "78",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 57,
+          "line": 89
+        },
+        "start": {
+          "column": 16,
+          "line": 89
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "selectedStudy?.id && activeStudyReference",
+      "original": "selectedStudy?.id ?? activeStudyReference",
+      "static": false
+    },
+    {
+      "file": "src/App.tsx",
+      "id": "107",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 83,
+          "line": 108
+        },
+        "start": {
+          "column": 75,
+          "line": 108
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "[client]",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "112",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 39
+        },
+        "start": {
+          "column": 21,
+          "line": 39
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'GEN 1:1-3'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "122",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 104,
+          "line": 49
+        },
+        "start": {
+          "column": 102,
+          "line": 49
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "134",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 35,
+          "line": 58
+        },
+        "start": {
+          "column": 9,
+          "line": 58
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!isAuthenticated && !token",
+      "original": "!isAuthenticated || !token",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "168",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 96
+        },
+        "start": {
+          "column": 11,
+          "line": 96
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "controller.signal.aborted && abortControllerRef.current !== controller",
+      "original": "controller.signal.aborted || abortControllerRef.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "169",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 96
+        },
+        "start": {
+          "column": 40,
+          "line": 96
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "abortControllerRef.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "178",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 60,
+          "line": 99
+        },
+        "start": {
+          "column": 41,
+          "line": 99
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "182",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 101
+        },
+        "start": {
+          "column": 11,
+          "line": 101
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "controller.signal.aborted || abortControllerRef.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "183",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 101
+        },
+        "start": {
+          "column": 11,
+          "line": 101
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "controller.signal.aborted && abortControllerRef.current !== controller",
+      "original": "controller.signal.aborted || abortControllerRef.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "184",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 101
+        },
+        "start": {
+          "column": 40,
+          "line": 101
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "abortControllerRef.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "186",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 103
+        },
+        "start": {
+          "column": 83,
+          "line": 101
+        }
+      },
+      "mutator": "BlockStatement",
+      "replacement": "{}",
+      "original": "{\n        return;\n      }",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "193",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 52,
+          "line": 107
+        },
+        "start": {
+          "column": 11,
+          "line": 107
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "abortControllerRef.current === controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "207",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 119
+        },
+        "start": {
+          "column": 13,
+          "line": 119
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Inferência cancelada pelo operador.'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "208",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 119
+        },
+        "start": {
+          "column": 52,
+          "line": 119
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'info' }",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "258",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 142
+        },
+        "start": {
+          "column": 28,
+          "line": 142
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "event.preventDefault();",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "259",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 142
+        },
+        "start": {
+          "column": 52,
+          "line": 142
+        }
+      },
+      "mutator": "OptionalChaining",
+      "replacement": "tabs[next].focus",
+      "original": "tabs[next]?.focus",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "260",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 90,
+          "line": 142
+        },
+        "start": {
+          "column": 73,
+          "line": 142
+        }
+      },
+      "mutator": "OptionalChaining",
+      "replacement": "tabs[next].click",
+      "original": "tabs[next]?.click",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "309",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 28,
+          "line": 186
+        },
+        "start": {
+          "column": 13,
+          "line": 186
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "tab === 'links'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "314",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 80,
+          "line": 188
+        },
+        "start": {
+          "column": 17,
+          "line": 188
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "359",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 77,
+          "line": 303
+        },
+        "start": {
+          "column": 53,
+          "line": 303
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "item.evidence.length > 0",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "360",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 77,
+          "line": 303
+        },
+        "start": {
+          "column": 53,
+          "line": 303
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "item.evidence.length >= 0",
+      "original": "item.evidence.length > 0",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/context-panel.tsx",
+      "id": "363",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 113,
+          "line": 305
+        },
+        "start": {
+          "column": 66,
+          "line": 305
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`${evidence.excerptId}:${evidence.startOffset}`",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "395",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 18
+        },
+        "start": {
+          "column": 38,
+          "line": 18
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "404",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 82,
+          "line": 25
+        },
+        "start": {
+          "column": 80,
+          "line": 25
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "411",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 14,
+          "line": 32
+        },
+        "start": {
+          "column": 5,
+          "line": 32
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "cancel();",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "414",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 32
+        },
+        "start": {
+          "column": 41,
+          "line": 32
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "441",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 130,
+          "line": 35
+        },
+        "start": {
+          "column": 104,
+          "line": 35
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "detail.data.revision >= 20",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "442",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 130,
+          "line": 35
+        },
+        "start": {
+          "column": 104,
+          "line": 35
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "detail.data.revision > 20",
+      "original": "detail.data.revision >= 20",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "447",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 36
+        },
+        "start": {
+          "column": 101,
+          "line": 36
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "458",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 41
+        },
+        "start": {
+          "column": 11,
+          "line": 41
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "controller.signal.aborted && pending.current !== controller",
+      "original": "controller.signal.aborted || pending.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "459",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 41
+        },
+        "start": {
+          "column": 40,
+          "line": 41
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "pending.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "473",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 92,
+          "line": 43
+        },
+        "start": {
+          "column": 73,
+          "line": 43
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "477",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 45
+        },
+        "start": {
+          "column": 11,
+          "line": 45
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "controller.signal.aborted || pending.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "478",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 45
+        },
+        "start": {
+          "column": 11,
+          "line": 45
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "controller.signal.aborted && pending.current !== controller",
+      "original": "controller.signal.aborted || pending.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "479",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 45
+        },
+        "start": {
+          "column": 40,
+          "line": 45
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "pending.current !== controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "491",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 49
+        },
+        "start": {
+          "column": 11,
+          "line": 49
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "pending.current === controller",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "499",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 24,
+          "line": 54
+        },
+        "start": {
+          "column": 9,
+          "line": 54
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!result.isError",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "505",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 54
+        },
+        "start": {
+          "column": 57,
+          "line": 54
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "516",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 59
+        },
+        "start": {
+          "column": 101,
+          "line": 59
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "519",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 60
+        },
+        "start": {
+          "column": 36,
+          "line": 60
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "529",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 67
+        },
+        "start": {
+          "column": 6,
+          "line": 67
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "list.isLoading && <p role=\"status\">A carregar conversas…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "530",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 67
+        },
+        "start": {
+          "column": 6,
+          "line": 67
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "list.isLoading && <p role=\"status\">A carregar conversas…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "551",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 111,
+          "line": 71
+        },
+        "start": {
+          "column": 76,
+          "line": 71
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "list.isFetching || remove.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "552",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 111,
+          "line": 71
+        },
+        "start": {
+          "column": 76,
+          "line": 71
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "list.isFetching && remove.isPending",
+      "original": "list.isFetching || remove.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "556",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 73
+        },
+        "start": {
+          "column": 8,
+          "line": 73
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "detail.isLoading && <p role=\"status\">A carregar a conversa…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "557",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 73
+        },
+        "start": {
+          "column": 8,
+          "line": 73
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "detail.isLoading && <p role=\"status\">A carregar a conversa…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "570",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 49,
+          "line": 79
+        },
+        "start": {
+          "column": 12,
+          "line": 79
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "turn.responseStatus === 'unavailable'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "586",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 110,
+          "line": 81
+        },
+        "start": {
+          "column": 63,
+          "line": 81
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`${evidence.excerptId}:${evidence.startOffset}`",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "623",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 163,
+          "line": 94
+        },
+        "start": {
+          "column": 83,
+          "line": 94
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Pedido cancelado. Recarregue as conversas para consultar o que ficou guardado.'",
+      "static": false
+    },
+    {
+      "file": "src/features/assistant/conversation-panel.tsx",
+      "id": "624",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 181,
+          "line": 94
+        },
+        "start": {
+          "column": 165,
+          "line": 94
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'info' }",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "648",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 22
+        },
+        "start": {
+          "column": 30,
+          "line": 22
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "resolved.data?.normalized && 'reader'",
+      "original": "resolved.data?.normalized ?? 'reader'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "650",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 22
+        },
+        "start": {
+          "column": 59,
+          "line": 22
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'reader'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "665",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 54,
+          "line": 34
+        },
+        "start": {
+          "column": 49,
+          "line": 34
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "707",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 66
+        },
+        "start": {
+          "column": 21,
+          "line": 66
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "selectedVerses.length === 0",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "720",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 21,
+          "line": 73
+        },
+        "start": {
+          "column": 17,
+          "line": 73
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "false",
+      "original": "true",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "724",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 75
+        },
+        "start": {
+          "column": 18,
+          "line": 75
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => setCopied(false)",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "725",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 75
+        },
+        "start": {
+          "column": 34,
+          "line": 75
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "749",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 93,
+          "line": 94
+        },
+        "start": {
+          "column": 9,
+          "line": 94
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[clamp(1.05rem,0.95rem+0.45vw,1.35rem)] leading-[clamp(1.65,1.55+0.25vw,1.9)]'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reader-view.tsx",
+      "id": "825",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 14,
+          "line": 258
+        },
+        "start": {
+          "column": 44,
+          "line": 256
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "(_, idx) => (\n              <VerseSkeleton key={idx} />\n            )",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reading-preferences.tsx",
+      "id": "874",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 82,
+          "line": 43
+        },
+        "start": {
+          "column": 19,
+          "line": 43
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reading-preferences.tsx",
+      "id": "883",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 82,
+          "line": 60
+        },
+        "start": {
+          "column": 19,
+          "line": 60
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--foreground-muted)] hover:text-[var(--foreground)]'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reference-search.tsx",
+      "id": "886",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 13
+        },
+        "start": {
+          "column": 70,
+          "line": 13
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'porbr2018'",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reference-search.tsx",
+      "id": "893",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 20
+        },
+        "start": {
+          "column": 21,
+          "line": 20
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "query",
+      "original": "query.trim()",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reference-search.tsx",
+      "id": "901",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 36
+        },
+        "start": {
+          "column": 13,
+          "line": 36
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`Navegado para ${resolved.normalized}`",
+      "static": false
+    },
+    {
+      "file": "src/features/canon/reference-search.tsx",
+      "id": "902",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 36
+        },
+        "start": {
+          "column": 53,
+          "line": 36
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "915",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 74,
+          "line": 12
+        },
+        "start": {
+          "column": 63,
+          "line": 12
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'porbr2018'",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "923",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 18
+        },
+        "start": {
+          "column": 17,
+          "line": 18
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Alusão Textual'",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "924",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 46,
+          "line": 19
+        },
+        "start": {
+          "column": 27,
+          "line": 19
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Relação Profética'",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "925",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 45,
+          "line": 20
+        },
+        "start": {
+          "column": 26,
+          "line": 20
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Paralelo Temático'",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "926",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 32
+        },
+        "start": {
+          "column": 31,
+          "line": 32
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "relations.length === 1",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "927",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 32
+        },
+        "start": {
+          "column": 31,
+          "line": 32
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "relations.length === 1",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "928",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 32
+        },
+        "start": {
+          "column": 31,
+          "line": 32
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "relations.length !== 1",
+      "original": "relations.length === 1",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "929",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 65,
+          "line": 32
+        },
+        "start": {
+          "column": 56,
+          "line": 32
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'conexão'",
+      "static": false
+    },
+    {
+      "file": "src/features/cross-ref/cross-ref-panel.tsx",
+      "id": "930",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 78,
+          "line": 32
+        },
+        "start": {
+          "column": 68,
+          "line": 32
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'conexões'",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "947",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 23
+        },
+        "start": {
+          "column": 67,
+          "line": 23
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "948",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 57,
+          "line": 26
+        },
+        "start": {
+          "column": 52,
+          "line": 26
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "954",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 35
+        },
+        "start": {
+          "column": 13,
+          "line": 35
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "active",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "970",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 42
+        },
+        "start": {
+          "column": 13,
+          "line": 42
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "active",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "980",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 6,
+          "line": 49
+        },
+        "start": {
+          "column": 18,
+          "line": 47
+        }
+      },
+      "mutator": "BlockStatement",
+      "replacement": "{}",
+      "original": "{\n      active = false;\n    }",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "981",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 21,
+          "line": 48
+        },
+        "start": {
+          "column": 16,
+          "line": 48
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "982",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 50
+        },
+        "start": {
+          "column": 6,
+          "line": 50
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "1036",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 121,
+          "line": 128
+        },
+        "start": {
+          "column": 118,
+          "line": 128
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "' '",
+      "static": false
+    },
+    {
+      "file": "src/features/sources/sources-view.tsx",
+      "id": "1050",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 172,
+          "line": 199
+        },
+        "start": {
+          "column": 163,
+          "line": 199
+        }
+      },
+      "mutator": "ArithmeticOperator",
+      "replacement": "value - 1",
+      "original": "value + 1",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1068",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 37
+        },
+        "start": {
+          "column": 48,
+          "line": 37
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'GEN 1:1-3'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1082",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 62
+        },
+        "start": {
+          "column": 13,
+          "line": 62
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => () => { generation.current++; }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1083",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 62
+        },
+        "start": {
+          "column": 25,
+          "line": 62
+        }
+      },
+      "mutator": "BlockStatement",
+      "replacement": "{}",
+      "original": "{ generation.current++; }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1084",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 47,
+          "line": 62
+        },
+        "start": {
+          "column": 27,
+          "line": 62
+        }
+      },
+      "mutator": "UpdateOperator",
+      "replacement": "generation.current--",
+      "original": "generation.current++",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1085",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 54,
+          "line": 62
+        },
+        "start": {
+          "column": 52,
+          "line": 62
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1092",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 67
+        },
+        "start": {
+          "column": 11,
+          "line": 67
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "lastReported.current !== key",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1100",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 45,
+          "line": 76
+        },
+        "start": {
+          "column": 22,
+          "line": 76
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'2. Argumento do Livro'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1102",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 75,
+          "line": 78
+        },
+        "start": {
+          "column": 36,
+          "line": 78
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'4. Autoria, Destinatários e Propósito'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1104",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 54,
+          "line": 80
+        },
+        "start": {
+          "column": 24,
+          "line": 80
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'6. Interpretações Comparadas'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1108",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 35,
+          "line": 84
+        },
+        "start": {
+          "column": 9,
+          "line": 84
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!isAuthenticated && !token",
+      "original": "!isAuthenticated || !token",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1114",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 88
+        },
+        "start": {
+          "column": 40,
+          "line": 85
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{\n        description: 'Configure o token JWT local do operador na barra lateral.',\n        type: 'warning',\n      }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1115",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 81,
+          "line": 86
+        },
+        "start": {
+          "column": 22,
+          "line": 86
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Configure o token JWT local do operador na barra lateral.'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1117",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 92
+        },
+        "start": {
+          "column": 21,
+          "line": 92
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "refStr",
+      "original": "refStr.trim()",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1119",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 83,
+          "line": 93
+        },
+        "start": {
+          "column": 9,
+          "line": 93
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "!trimmed || createStudyMutation.isPending || reviseStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1120",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 83,
+          "line": 93
+        },
+        "start": {
+          "column": 9,
+          "line": 93
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "(!trimmed || createStudyMutation.isPending) && reviseStudyMutation.isPending",
+      "original": "!trimmed || createStudyMutation.isPending || reviseStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1121",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 93
+        },
+        "start": {
+          "column": 9,
+          "line": 93
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "!trimmed || createStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1122",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 93
+        },
+        "start": {
+          "column": 9,
+          "line": 93
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!trimmed && createStudyMutation.isPending",
+      "original": "!trimmed || createStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1124",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 94
+        },
+        "start": {
+          "column": 31,
+          "line": 94
+        }
+      },
+      "mutator": "UpdateOperator",
+      "replacement": "--generation.current",
+      "original": "++generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1128",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 35,
+          "line": 99
+        },
+        "start": {
+          "column": 24,
+          "line": 99
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'porbr2018'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1130",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 102
+        },
+        "start": {
+          "column": 11,
+          "line": 102
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "requestGeneration !== generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1136",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 85,
+          "line": 105
+        },
+        "start": {
+          "column": 66,
+          "line": 105
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1140",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 107
+        },
+        "start": {
+          "column": 11,
+          "line": 107
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "requestGeneration !== generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1152",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 115
+        },
+        "start": {
+          "column": 31,
+          "line": 115
+        }
+      },
+      "mutator": "UpdateOperator",
+      "replacement": "--generation.current",
+      "original": "++generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1157",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 122
+        },
+        "start": {
+          "column": 11,
+          "line": 122
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "requestGeneration !== generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1159",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 123
+        },
+        "start": {
+          "column": 7,
+          "line": 123
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "setActiveStudy(nextStudy);",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1161",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 31,
+          "line": 124
+        },
+        "start": {
+          "column": 26,
+          "line": 124
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1165",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 109,
+          "line": 126
+        },
+        "start": {
+          "column": 90,
+          "line": 126
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1169",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 128
+        },
+        "start": {
+          "column": 11,
+          "line": 128
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "requestGeneration !== generation.current",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1174",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 56,
+          "line": 129
+        },
+        "start": {
+          "column": 38,
+          "line": 129
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "err.status === 409",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1180",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 35,
+          "line": 131
+        },
+        "start": {
+          "column": 13,
+          "line": 131
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Erro ao criar versão'",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1198",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 77,
+          "line": 141
+        },
+        "start": {
+          "column": 58,
+          "line": 141
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'warning' }",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1206",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 207,
+          "line": 183
+        },
+        "start": {
+          "column": 186,
+          "line": 183
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "setActiveStudy(null);",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1210",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 253,
+          "line": 183
+        },
+        "start": {
+          "column": 248,
+          "line": 183
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1212",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 184
+        },
+        "start": {
+          "column": 10,
+          "line": 184
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "createStudyMutation.isPending || loadingStudyDetail",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1213",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 184
+        },
+        "start": {
+          "column": 10,
+          "line": 184
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "createStudyMutation.isPending && loadingStudyDetail",
+      "original": "createStudyMutation.isPending || loadingStudyDetail",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1215",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 190
+        },
+        "start": {
+          "column": 13,
+          "line": 190
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "studyError && !activeStudy",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1217",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 190
+        },
+        "start": {
+          "column": 27,
+          "line": 190
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "activeStudy",
+      "original": "!activeStudy",
+      "static": false
+    },
+    {
+      "file": "src/features/studies/study-view.tsx",
+      "id": "1218",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 112,
+          "line": 191
+        },
+        "start": {
+          "column": 88,
+          "line": 191
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => void reloadStudy()",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1278",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 58,
+          "line": 56
+        },
+        "start": {
+          "column": 56,
+          "line": 56
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1279",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 52,
+          "line": 58
+        },
+        "start": {
+          "column": 50,
+          "line": 58
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1280",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 57,
+          "line": 61
+        },
+        "start": {
+          "column": 52,
+          "line": 61
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1281",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 62
+        },
+        "start": {
+          "column": 54,
+          "line": 62
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1303",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 24,
+          "line": 86
+        },
+        "start": {
+          "column": 5,
+          "line": 86
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "e.preventDefault();",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1309",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 87
+        },
+        "start": {
+          "column": 30,
+          "line": 87
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "newNoteContent",
+      "original": "newNoteContent.trim()",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1320",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 100
+        },
+        "start": {
+          "column": 47,
+          "line": 100
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1334",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 44,
+          "line": 110
+        },
+        "start": {
+          "column": 26,
+          "line": 110
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "editContent",
+      "original": "editContent.trim()",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1340",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 28,
+          "line": 119
+        },
+        "start": {
+          "column": 23,
+          "line": 119
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1343",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 79,
+          "line": 120
+        },
+        "start": {
+          "column": 60,
+          "line": 120
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1357",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 123
+        },
+        "start": {
+          "column": 13,
+          "line": 123
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Conflito de revisão'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1364",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 79,
+          "line": 132
+        },
+        "start": {
+          "column": 52,
+          "line": 132
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "note.id === editingNote?.id",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1376",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 137,
+          "line": 134
+        },
+        "start": {
+          "column": 118,
+          "line": 134
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'warning' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1390",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 143
+        },
+        "start": {
+          "column": 31,
+          "line": 143
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "studyPages.reset();",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1391",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 73,
+          "line": 143
+        },
+        "start": {
+          "column": 51,
+          "line": 143
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "favoritePages.reset();",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1394",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 73,
+          "line": 144
+        },
+        "start": {
+          "column": 54,
+          "line": 144
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1410",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 64,
+          "line": 154
+        },
+        "start": {
+          "column": 48,
+          "line": 154
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'info' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1424",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 97,
+          "line": 170
+        },
+        "start": {
+          "column": 78,
+          "line": 170
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1428",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 172
+        },
+        "start": {
+          "column": 13,
+          "line": 172
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Erro ao atualizar favorito'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1479",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 98,
+          "line": 278
+        },
+        "start": {
+          "column": 95,
+          "line": 278
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "' '",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1481",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 119,
+          "line": 279
+        },
+        "start": {
+          "column": 81,
+          "line": 279
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ hour: '2-digit', minute: '2-digit' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1488",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 141,
+          "line": 291
+        },
+        "start": {
+          "column": 44,
+          "line": 291
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`w-[1rem] h-[1rem] ${isFav ? 'fill-amber-400 text-amber-400' : 'text-[var(--foreground-muted)]'}`",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1489",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 104,
+          "line": 291
+        },
+        "start": {
+          "column": 73,
+          "line": 291
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'fill-amber-400 text-amber-400'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1490",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 139,
+          "line": 291
+        },
+        "start": {
+          "column": 107,
+          "line": 291
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--foreground-muted)]'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1502",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 45,
+          "line": 320
+        },
+        "start": {
+          "column": 43,
+          "line": 320
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1514",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 194,
+          "line": 331
+        },
+        "start": {
+          "column": 16,
+          "line": 331
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "(studyPages.hasPrevious || studiesPage?.nextCursor) && <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} label=\" de estudos\" />",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1515",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 194,
+          "line": 331
+        },
+        "start": {
+          "column": 16,
+          "line": 331
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "(studyPages.hasPrevious || studiesPage?.nextCursor) && <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} label=\" de estudos\" />",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1516",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 194,
+          "line": 331
+        },
+        "start": {
+          "column": 16,
+          "line": 331
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "studyPages.hasPrevious || studiesPage?.nextCursor || <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} label=\" de estudos\" />",
+      "original": "(studyPages.hasPrevious || studiesPage?.nextCursor) && <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} label=\" de estudos\" />",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1517",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 331
+        },
+        "start": {
+          "column": 17,
+          "line": 331
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "studyPages.hasPrevious || studiesPage?.nextCursor",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1518",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 331
+        },
+        "start": {
+          "column": 17,
+          "line": 331
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "studyPages.hasPrevious && studiesPage?.nextCursor",
+      "original": "studyPages.hasPrevious || studiesPage?.nextCursor",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1523",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 348
+        },
+        "start": {
+          "column": 34,
+          "line": 348
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "newNoteContent",
+      "original": "newNoteContent.trim()",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1534",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 79,
+          "line": 385
+        },
+        "start": {
+          "column": 74,
+          "line": 385
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1566",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 460
+        },
+        "start": {
+          "column": 8,
+          "line": 460
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "isAuthenticated && workspaceTab === 'notes' || selectedStudyId",
+      "original": "isAuthenticated && workspaceTab === 'notes' && selectedStudyId",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1567",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 460
+        },
+        "start": {
+          "column": 8,
+          "line": 460
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "isAuthenticated && workspaceTab === 'notes'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1568",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 460
+        },
+        "start": {
+          "column": 8,
+          "line": 460
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "isAuthenticated || workspaceTab === 'notes'",
+      "original": "isAuthenticated && workspaceTab === 'notes'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1569",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 460
+        },
+        "start": {
+          "column": 27,
+          "line": 460
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "workspaceTab === 'notes'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1589",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 462
+        },
+        "start": {
+          "column": 10,
+          "line": 462
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "workspaceTab === 'notes'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1594",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 88,
+          "line": 462
+        },
+        "start": {
+          "column": 60,
+          "line": 462
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "workspaceTab === 'favorites'",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1605",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 105,
+          "line": 464
+        },
+        "start": {
+          "column": 66,
+          "line": 464
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!open && !deleteStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1607",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 105,
+          "line": 464
+        },
+        "start": {
+          "column": 66,
+          "line": 464
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!open || !deleteStudyMutation.isPending",
+      "original": "!open && !deleteStudyMutation.isPending",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1616",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 89,
+          "line": 471
+        },
+        "start": {
+          "column": 50,
+          "line": 471
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "(open) => !open && setEditingNote(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1617",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 89,
+          "line": 471
+        },
+        "start": {
+          "column": 60,
+          "line": 471
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!open && setEditingNote(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1618",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 89,
+          "line": 471
+        },
+        "start": {
+          "column": 60,
+          "line": 471
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "!open && setEditingNote(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1619",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 89,
+          "line": 471
+        },
+        "start": {
+          "column": 60,
+          "line": 471
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!open || setEditingNote(null)",
+      "original": "!open && setEditingNote(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1620",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 65,
+          "line": 471
+        },
+        "start": {
+          "column": 60,
+          "line": 471
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "open",
+      "original": "!open",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1639",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 91,
+          "line": 507
+        },
+        "start": {
+          "column": 51,
+          "line": 507
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "(open) => !open && setNoteToDelete(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1640",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 91,
+          "line": 507
+        },
+        "start": {
+          "column": 61,
+          "line": 507
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!open && setNoteToDelete(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1641",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 91,
+          "line": 507
+        },
+        "start": {
+          "column": 61,
+          "line": 507
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "!open && setNoteToDelete(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1642",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 91,
+          "line": 507
+        },
+        "start": {
+          "column": 61,
+          "line": 507
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!open || setNoteToDelete(null)",
+      "original": "!open && setNoteToDelete(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1643",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 507
+        },
+        "start": {
+          "column": 61,
+          "line": 507
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "open",
+      "original": "!open",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/history-view.tsx",
+      "id": "1644",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 73,
+          "line": 520
+        },
+        "start": {
+          "column": 46,
+          "line": 520
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => setNoteToDelete(null)",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1666",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 54,
+          "line": 18
+        },
+        "start": {
+          "column": 35,
+          "line": 18
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ type: 'success' }",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1674",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 76,
+          "line": 23
+        },
+        "start": {
+          "column": 31,
+          "line": 23
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`Anotações do estudo, versão ${studyVersion}`",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1675",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 25
+        },
+        "start": {
+          "column": 6,
+          "line": 25
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "notes.isLoading && <p role=\"status\">A carregar anotações…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1676",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 25
+        },
+        "start": {
+          "column": 6,
+          "line": 25
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "notes.isLoading && <p role=\"status\">A carregar anotações…</p>",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1682",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 28,
+          "line": 27
+        },
+        "start": {
+          "column": 6,
+          "line": 27
+        }
+      },
+      "mutator": "OptionalChaining",
+      "replacement": "notes.data?.items.map",
+      "original": "notes.data?.items?.map",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1690",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 38,
+          "line": 28
+        },
+        "start": {
+          "column": 6,
+          "line": 28
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!notes.isLoading && !notes.error",
+      "static": false
+    },
+    {
+      "file": "src/features/workspace/study-notes.tsx",
+      "id": "1696",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 28
+        },
+        "start": {
+          "column": 42,
+          "line": 28
+        }
+      },
+      "mutator": "OptionalChaining",
+      "replacement": "notes.data?.items.length",
+      "original": "notes.data?.items?.length",
+      "static": false
+    },
+    {
+      "file": "src/server/api-proxy.ts",
+      "id": "1753",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 63,
+          "line": 15
+        },
+        "start": {
+          "column": 47,
+          "line": 15
+        }
+      },
+      "mutator": "Regex",
+      "replacement": "/\\/api(?=\\/|$)/",
+      "original": "/^\\/api(?=\\/|$)/",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/client.ts",
+      "id": "1814",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 54,
+          "line": 57
+        },
+        "start": {
+          "column": 44,
+          "line": 57
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => ({})",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/client.ts",
+      "id": "1833",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 62
+        },
+        "start": {
+          "column": 16,
+          "line": 62
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Ocorreu um erro na requisição.'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "1880",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 51,
+          "line": 81
+        },
+        "start": {
+          "column": 40,
+          "line": 81
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'porbr2018'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "1882",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 81
+        },
+        "start": {
+          "column": 66,
+          "line": 81
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "1910",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 53,
+          "line": 111
+        },
+        "start": {
+          "column": 51,
+          "line": 111
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "2048",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 302
+        },
+        "start": {
+          "column": 28,
+          "line": 302
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ queryKey: ['workspace', 'favorites'] }",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "2049",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 66,
+          "line": 302
+        },
+        "start": {
+          "column": 40,
+          "line": 302
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "['workspace', 'favorites']",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "2074",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 62,
+          "line": 333
+        },
+        "start": {
+          "column": 28,
+          "line": 333
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ queryKey: ['cross-references'] }",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "2075",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 60,
+          "line": 333
+        },
+        "start": {
+          "column": 40,
+          "line": 333
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "['cross-references']",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/hooks.ts",
+      "id": "2089",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 68,
+          "line": 366
+        },
+        "start": {
+          "column": 66,
+          "line": 366
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2219",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 14,
+          "line": 83
+        },
+        "start": {
+          "column": 9,
+          "line": 83
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "timer",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2226",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 56,
+          "line": 89
+        },
+        "start": {
+          "column": 46,
+          "line": 89
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "() => ({})",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2261",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 107
+        },
+        "start": {
+          "column": 18,
+          "line": 107
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Ocorreu um erro no processamento da requisição.'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2267",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 111
+        },
+        "start": {
+          "column": 38,
+          "line": 111
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "typeof window !== 'undefined'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2276",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 14,
+          "line": 120
+        },
+        "start": {
+          "column": 9,
+          "line": 120
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "timer",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2297",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 132
+        },
+        "start": {
+          "column": 11,
+          "line": 132
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'A requisição excedeu o tempo limite de resposta.'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/http-client.ts",
+      "id": "2298",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 90,
+          "line": 133
+        },
+        "start": {
+          "column": 11,
+          "line": 133
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Falha de comunicação com o servidor. Verifique se o backend está em execução.'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/query-client.ts",
+      "id": "2312",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 47,
+          "line": 11
+        },
+        "start": {
+          "column": 13,
+          "line": 11
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "error && typeof error === 'object'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/query-client.ts",
+      "id": "2314",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 47,
+          "line": 11
+        },
+        "start": {
+          "column": 22,
+          "line": 11
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "typeof error === 'object'",
+      "static": false
+    },
+    {
+      "file": "src/shared/api/query-client.ts",
+      "id": "2333",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 6,
+          "line": 20
+        },
+        "start": {
+          "column": 16,
+          "line": 18
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{\n      retry: false, // Mutações (criação de estudo, novo turno de IA, anotações CAS) nunca repetem automaticamente\n    }",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-identity.ts",
+      "id": "2406",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 58,
+          "line": 21
+        },
+        "start": {
+          "column": 44,
+          "line": 21
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ once: true }",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-identity.ts",
+      "id": "2407",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 56,
+          "line": 21
+        },
+        "start": {
+          "column": 52,
+          "line": 21
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "false",
+      "original": "true",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-identity.ts",
+      "id": "2420",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 22,
+          "line": 26
+        },
+        "start": {
+          "column": 8,
+          "line": 26
+        }
+      },
+      "mutator": "ObjectLiteral",
+      "replacement": "{}",
+      "original": "{ once: true }",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-identity.ts",
+      "id": "2421",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 20,
+          "line": 26
+        },
+        "start": {
+          "column": 16,
+          "line": 26
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "false",
+      "original": "true",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-identity.ts",
+      "id": "2424",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 30
+        },
+        "start": {
+          "column": 31,
+          "line": 30
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "loading === promise",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2458",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 95,
+          "line": 23
+        },
+        "start": {
+          "column": 76,
+          "line": 23
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Invalid bootstrap'",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2492",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 37
+        },
+        "start": {
+          "column": 21,
+          "line": 37
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "typeof access.accessToken !== 'string'",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2501",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 157,
+          "line": 37
+        },
+        "start": {
+          "column": 139,
+          "line": 37
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Invalid exchange'",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2507",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 35,
+          "line": 39
+        },
+        "start": {
+          "column": 29,
+          "line": 39
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "active",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2511",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 46,
+          "line": 40
+        },
+        "start": {
+          "column": 23,
+          "line": 40
+        }
+      },
+      "mutator": "BlockStatement",
+      "replacement": "{}",
+      "original": "{ exchanging = false; }",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2512",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 40
+        },
+        "start": {
+          "column": 38,
+          "line": 40
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2522",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 27,
+          "line": 46
+        },
+        "start": {
+          "column": 21,
+          "line": 46
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "active",
+      "static": false
+    },
+    {
+      "file": "src/shared/auth/google-sign-in.tsx",
+      "id": "2563",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 102,
+          "line": 59
+        },
+        "start": {
+          "column": 93,
+          "line": 59
+        }
+      },
+      "mutator": "ArithmeticOperator",
+      "replacement": "value - 1",
+      "original": "value + 1",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2619",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 93,
+          "line": 21
+        },
+        "start": {
+          "column": 38,
+          "line": 21
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Não foi possível confirmar a sessão. Tenta novamente.'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2624",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 104,
+          "line": 31
+        },
+        "start": {
+          "column": 102,
+          "line": 31
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2627",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 32,
+          "line": 34
+        },
+        "start": {
+          "column": 12,
+          "line": 34
+        }
+      },
+      "mutator": "UpdateOperator",
+      "replacement": "--generation.current",
+      "original": "++generation.current",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2628",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 35
+        },
+        "start": {
+          "column": 6,
+          "line": 35
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2631",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 114,
+          "line": 36
+        },
+        "start": {
+          "column": 87,
+          "line": 36
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "[invalidatePending, update]",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2643",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 48,
+          "line": 46
+        },
+        "start": {
+          "column": 35,
+          "line": 46
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Empty token'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2667",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 60
+        },
+        "start": {
+          "column": 11,
+          "line": 60
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "pending.current === controller",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2669",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 33,
+          "line": 62
+        },
+        "start": {
+          "column": 6,
+          "line": 62
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "[invalidatePending, update]",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2677",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 52,
+          "line": 69
+        },
+        "start": {
+          "column": 42,
+          "line": 69
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'/auth/me'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-session.tsx",
+      "id": "2709",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 39,
+          "line": 81
+        },
+        "start": {
+          "column": 6,
+          "line": 81
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[]",
+      "original": "[clearSession, invalidatePending]",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-theme.tsx",
+      "id": "2723",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 49,
+          "line": 16
+        },
+        "start": {
+          "column": 20,
+          "line": 16
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "typeof window !== 'undefined'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-theme.tsx",
+      "id": "2731",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 27,
+          "line": 17
+        },
+        "start": {
+          "column": 9,
+          "line": 17
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "stored === 'light'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-theme.tsx",
+      "id": "2738",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 18
+        },
+        "start": {
+          "column": 12,
+          "line": 18
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: light)').matches",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-theme.tsx",
+      "id": "2740",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 41,
+          "line": 18
+        },
+        "start": {
+          "column": 12,
+          "line": 18
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "typeof window !== 'undefined'",
+      "static": false
+    },
+    {
+      "file": "src/shared/hooks/use-theme.tsx",
+      "id": "2743",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 94,
+          "line": 18
+        },
+        "start": {
+          "column": 63,
+          "line": 18
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'(prefers-color-scheme: light)'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/badge.tsx",
+      "id": "2792",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 44
+        },
+        "start": {
+          "column": 18,
+          "line": 44
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Inferência Hermenêutica'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/badge.tsx",
+      "id": "2793",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 38,
+          "line": 45
+        },
+        "start": {
+          "column": 18,
+          "line": 45
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Tradição Histórica'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/badge.tsx",
+      "id": "2794",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 38,
+          "line": 46
+        },
+        "start": {
+          "column": 19,
+          "line": 46
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Hipótese Debatida'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/badge.tsx",
+      "id": "2796",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 23,
+          "line": 48
+        },
+        "start": {
+          "column": 16,
+          "line": 48
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Geral'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/button.tsx",
+      "id": "2819",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 44
+        },
+        "start": {
+          "column": 22,
+          "line": 44
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Button'",
+      "static": true
+    },
+    {
+      "file": "src/shared/ui/cursor-controls.tsx",
+      "id": "2823",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 46,
+          "line": 7
+        },
+        "start": {
+          "column": 27,
+          "line": 7
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`Paginação${label}`",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/cursor-controls.tsx",
+      "id": "2829",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 9
+        },
+        "start": {
+          "column": 51,
+          "line": 9
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "busy || !nextCursor",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/cursor-controls.tsx",
+      "id": "2830",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 70,
+          "line": 9
+        },
+        "start": {
+          "column": 51,
+          "line": 9
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "busy && !nextCursor",
+      "original": "busy || !nextCursor",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/dialog.tsx",
+      "id": "2842",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 59
+        },
+        "start": {
+          "column": 28,
+          "line": 59
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'DialogHeader'",
+      "static": true
+    },
+    {
+      "file": "src/shared/ui/dialog.tsx",
+      "id": "2845",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 70
+        },
+        "start": {
+          "column": 28,
+          "line": 70
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'DialogFooter'",
+      "static": true
+    },
+    {
+      "file": "src/shared/ui/input.tsx",
+      "id": "2850",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 11
+        },
+        "start": {
+          "column": 24,
+          "line": 11
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/input.tsx",
+      "id": "2862",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 101,
+          "line": 24
+        },
+        "start": {
+          "column": 13,
+          "line": 24
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "error || 'border-[var(--danger-border)] focus-visible:border-[var(--danger-foreground)]'",
+      "original": "error && 'border-[var(--danger-border)] focus-visible:border-[var(--danger-foreground)]'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/input.tsx",
+      "id": "2866",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 10,
+          "line": 34
+        },
+        "start": {
+          "column": 10,
+          "line": 30
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "error || <p className=\"mt-[0.35rem] text-[0.75rem] text-[var(--danger-foreground)] font-ui transition-all animate-in fade-in-50\">\n            {error}\n          </p>",
+      "original": "error && (\n          <p className=\"mt-[0.35rem] text-[0.75rem] text-[var(--danger-foreground)] font-ui transition-all animate-in fade-in-50\">\n            {error}\n          </p>\n        )",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/input.tsx",
+      "id": "2867",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 28,
+          "line": 39
+        },
+        "start": {
+          "column": 21,
+          "line": 39
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Input'",
+      "static": true
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2876",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 50,
+          "line": 44
+        },
+        "start": {
+          "column": 48,
+          "line": 44
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2881",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 47,
+          "line": 47
+        },
+        "start": {
+          "column": 45,
+          "line": 47
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2882",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 69,
+          "line": 47
+        },
+        "start": {
+          "column": 50,
+          "line": 47
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "setAuthError(null);",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2883",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 48
+        },
+        "start": {
+          "column": 6,
+          "line": 48
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2886",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 21,
+          "line": 50
+        },
+        "start": {
+          "column": 19,
+          "line": 50
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"Stryker was here!\"",
+      "original": "''",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2887",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 43,
+          "line": 50
+        },
+        "start": {
+          "column": 24,
+          "line": 50
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "setAuthError(null);",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2890",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 51
+        },
+        "start": {
+          "column": 6,
+          "line": 51
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2892",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 24,
+          "line": 53
+        },
+        "start": {
+          "column": 5,
+          "line": 53
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "setAuthError(null);",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2902",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 67,
+          "line": 60
+        },
+        "start": {
+          "column": 63,
+          "line": 60
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "open",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2909",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 106,
+          "line": 72
+        },
+        "start": {
+          "column": 83,
+          "line": 72
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "event.preventDefault();",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2910",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 98,
+          "line": 74
+        },
+        "start": {
+          "column": 93,
+          "line": 74
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2919",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 65,
+          "line": 77
+        },
+        "start": {
+          "column": 48,
+          "line": 77
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "tokenInput",
+      "original": "tokenInput.trim()",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2928",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 80,
+          "line": 82
+        },
+        "start": {
+          "column": 68,
+          "line": 82
+        }
+      },
+      "mutator": "CallExpression",
+      "replacement": ";",
+      "original": "closeAuth();",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2944",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 120
+        },
+        "start": {
+          "column": 6,
+          "line": 120
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2953",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 29,
+          "line": 126
+        },
+        "start": {
+          "column": 11,
+          "line": 126
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "e.key === 'Escape'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "2963",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 130
+        },
+        "start": {
+          "column": 12,
+          "line": 130
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "e.ctrlKey || e.metaKey",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3007",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 71,
+          "line": 196
+        },
+        "start": {
+          "column": 49,
+          "line": 196
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--accent)]'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3008",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 88,
+          "line": 196
+        },
+        "start": {
+          "column": 74,
+          "line": 196
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-current'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3009",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 199
+        },
+        "start": {
+          "column": 22,
+          "line": 199
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "active && <ChevronRight className=\"w-[0.9rem] h-[0.9rem] text-[var(--accent)]\" />",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3010",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 199
+        },
+        "start": {
+          "column": 22,
+          "line": 199
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "active && <ChevronRight className=\"w-[0.9rem] h-[0.9rem] text-[var(--accent)]\" />",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3011",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 103,
+          "line": 199
+        },
+        "start": {
+          "column": 22,
+          "line": 199
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "active || <ChevronRight className=\"w-[0.9rem] h-[0.9rem] text-[var(--accent)]\" />",
+      "original": "active && <ChevronRight className=\"w-[0.9rem] h-[0.9rem] text-[var(--accent)]\" />",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3012",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 21,
+          "line": 214
+        },
+        "start": {
+          "column": 30,
+          "line": 212
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`w-[0.5rem] h-[0.5rem] rounded-full ${\n                    isAuthenticated ? 'bg-emerald-400' : 'bg-amber-400'\n                  }`",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3013",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 213
+        },
+        "start": {
+          "column": 39,
+          "line": 213
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'bg-emerald-400'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3014",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 72,
+          "line": 213
+        },
+        "start": {
+          "column": 58,
+          "line": 213
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'bg-amber-400'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3022",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 60,
+          "line": 222
+        },
+        "start": {
+          "column": 47,
+          "line": 222
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Gerir conta'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3023",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 80,
+          "line": 222
+        },
+        "start": {
+          "column": 63,
+          "line": 222
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Entrar na conta'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3024",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 223
+        },
+        "start": {
+          "column": 42,
+          "line": 223
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Gerir conta'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3025",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 75,
+          "line": 223
+        },
+        "start": {
+          "column": 58,
+          "line": 223
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'Entrar na conta'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3038",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 240
+        },
+        "start": {
+          "column": 18,
+          "line": 240
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3039",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 240
+        },
+        "start": {
+          "column": 18,
+          "line": 240
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3040",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 240
+        },
+        "start": {
+          "column": 18,
+          "line": 240
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "theme !== 'dark'",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3046",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 252
+        },
+        "start": {
+          "column": 8,
+          "line": 252
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "isFocusMode || onToggleFocusMode",
+      "original": "isFocusMode && onToggleFocusMode",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3069",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 19,
+          "line": 309
+        },
+        "start": {
+          "column": 28,
+          "line": 305
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "``",
+      "original": "`w-full flex items-center gap-[0.75rem] px-[0.75rem] py-[0.5rem] rounded-[var(--radius-md)] text-[0.875rem] font-ui ${\n                  activeTab === item.id\n                    ? 'bg-[var(--surface-muted)] text-[var(--foreground)] font-semibold'\n                    : 'text-[var(--foreground-muted)]'\n                }`",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3070",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 306
+        },
+        "start": {
+          "column": 19,
+          "line": 306
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "activeTab === item.id",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3071",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 306
+        },
+        "start": {
+          "column": 19,
+          "line": 306
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "activeTab === item.id",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3072",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 306
+        },
+        "start": {
+          "column": 19,
+          "line": 306
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "activeTab !== item.id",
+      "original": "activeTab === item.id",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3073",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 89,
+          "line": 307
+        },
+        "start": {
+          "column": 23,
+          "line": 307
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'bg-[var(--surface-muted)] text-[var(--foreground)] font-semibold'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3074",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 308
+        },
+        "start": {
+          "column": 23,
+          "line": 308
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'text-[var(--foreground-muted)]'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3077",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 320
+        },
+        "start": {
+          "column": 37,
+          "line": 320
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "true",
+      "original": "false",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3079",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 331
+        },
+        "start": {
+          "column": 18,
+          "line": 331
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3080",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 331
+        },
+        "start": {
+          "column": 18,
+          "line": 331
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3081",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 34,
+          "line": 331
+        },
+        "start": {
+          "column": 18,
+          "line": 331
+        }
+      },
+      "mutator": "EqualityOperator",
+      "replacement": "theme !== 'dark'",
+      "original": "theme === 'dark'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/shell.tsx",
+      "id": "3107",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 112,
+          "line": 357
+        },
+        "start": {
+          "column": 107,
+          "line": 357
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!open",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/skeleton.tsx",
+      "id": "3111",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 92,
+          "line": 10
+        },
+        "start": {
+          "column": 21,
+          "line": 10
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'animate-pulse rounded-[var(--radius-sm)] bg-[var(--surface-muted)]/80'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3124",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 60,
+          "line": 34
+        },
+        "start": {
+          "column": 18,
+          "line": 34
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "Math.random().toString(36)",
+      "original": "Math.random().toString(36).substring(2, 9)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3132",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 114,
+          "line": 35
+        },
+        "start": {
+          "column": 91,
+          "line": 35
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "options?.type && 'info'",
+      "original": "options?.type || 'info'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3135",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 7,
+          "line": 37
+        },
+        "start": {
+          "column": 5,
+          "line": 37
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3136",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 4,
+          "line": 42
+        },
+        "start": {
+          "column": 57,
+          "line": 40
+        }
+      },
+      "mutator": "BlockStatement",
+      "replacement": "{}",
+      "original": "{\n    setToasts((prev) => prev.filter((t) => t.id !== id));\n  }",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3139",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 56,
+          "line": 41
+        },
+        "start": {
+          "column": 25,
+          "line": 41
+        }
+      },
+      "mutator": "MethodExpression",
+      "replacement": "prev",
+      "original": "prev.filter((t) => t.id !== id)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3141",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 55,
+          "line": 41
+        },
+        "start": {
+          "column": 44,
+          "line": 41
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "t.id !== id",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3144",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 8,
+          "line": 42
+        },
+        "start": {
+          "column": 6,
+          "line": 42
+        }
+      },
+      "mutator": "ArrayDeclaration",
+      "replacement": "[\"Stryker was here\"]",
+      "original": "[]",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3149",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 58
+        },
+        "start": {
+          "column": 27,
+          "line": 58
+        }
+      },
+      "mutator": "ArrowFunction",
+      "replacement": "() => undefined",
+      "original": "(open) => !open && removeToast(id)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3150",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 58
+        },
+        "start": {
+          "column": 37,
+          "line": 58
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "true",
+      "original": "!open && removeToast(id)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3151",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 58
+        },
+        "start": {
+          "column": 37,
+          "line": 58
+        }
+      },
+      "mutator": "ConditionalExpression",
+      "replacement": "false",
+      "original": "!open && removeToast(id)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3152",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 61,
+          "line": 58
+        },
+        "start": {
+          "column": 37,
+          "line": 58
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "!open || removeToast(id)",
+      "original": "!open && removeToast(id)",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3153",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 42,
+          "line": 58
+        },
+        "start": {
+          "column": 37,
+          "line": 58
+        }
+      },
+      "mutator": "BooleanLiteral",
+      "replacement": "open",
+      "original": "!open",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3154",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 341,
+          "line": 60
+        },
+        "start": {
+          "column": 15,
+          "line": 60
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'z-50 flex items-start gap-[0.75rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] p-[1rem] shadow-lg transition-all data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full'",
+      "static": false
+    },
+    {
+      "file": "src/shared/ui/toast.tsx",
+      "id": "3157",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 16,
+          "line": 72
+        },
+        "start": {
+          "column": 16,
+          "line": 68
+        }
+      },
+      "mutator": "LogicalOperator",
+      "replacement": "description || <ToastPrimitive.Description className=\"text-[0.8rem] text-[var(--foreground-muted)]\">\n                  {description}\n                </ToastPrimitive.Description>",
+      "original": "description && (\n                <ToastPrimitive.Description className=\"text-[0.8rem] text-[var(--foreground-muted)]\">\n                  {description}\n                </ToastPrimitive.Description>\n              )",
+      "static": false
+    },
+    {
+      "file": "vite.config.ts",
+      "id": "3159",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 59,
+          "line": 8
+        },
+        "start": {
+          "column": 51,
+          "line": 8
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'BIBLE_'",
+      "static": false
+    },
+    {
+      "file": "vite.config.ts",
+      "id": "3163",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 40,
+          "line": 13
+        },
+        "start": {
+          "column": 31,
+          "line": 13
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'nosniff'",
+      "static": false
+    },
+    {
+      "file": "vite.config.ts",
+      "id": "3164",
+      "status": "Survived",
+      "location": {
+        "end": {
+          "column": 30,
+          "line": 14
+        },
+        "start": {
+          "column": 24,
+          "line": 14
+        }
+      },
+      "mutator": "StringLiteral",
+      "replacement": "\"\"",
+      "original": "'DENY'",
+      "static": false
+    }
+  ]
+}

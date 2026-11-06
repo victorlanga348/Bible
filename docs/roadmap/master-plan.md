@@ -1,6 +1,6 @@
 # Plano mestre — Backend S00–S08
 
-Âmbito deste documento: ciclo backend original. Estado global2026-11-06: frontend S09 entregue e integração [S10-T006](../sprints/S10/T006_TEST_REPORT.md) IN_PROGRESS; consultar o [índice de sprints](../sprints/README.md). As referências a frontend adiado abaixo pertencem ao plano original, sem reabrir tarefas já concluídas.
+Âmbito deste documento: ciclo backend original. Estado global2026-11-06: frontend S09 entregue e integração [S10-T006](../sprints/S10/T006_TEST_REPORT.md) DONE técnico/CI42268953701 e auditoria documental PASS; consultar o [índice de sprints](../sprints/README.md). Referências a frontend adiado abaixo pertencem ao plano original, sem reabrir tarefas concluídas.
 
 Estado2026-10-29: S00–S07 DONE; S08 DONE técnico/[fecho S08](../sprints/S08/T007_COMPLETION_REPORT.md), sem release pública presumida. Notas anteriores históricas.
 

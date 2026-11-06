@@ -1,0 +1,11 @@
+# LESSON-0001 — Contratos fiéis e mutação global verificável
+
+Estado: validada em2026-11-06 por Codex, na [S10-T006](../../sprints/S10/T006_TEST_REPORT.md). Fonte executável921ca7c/CI42265985431. Orientação de trabalho, sem criar nova regra normativa.
+
+O ledger deve preservar os intervalos exatos da mutação: a linha inteira pode conter várias condições. A proposta agy sobre2267 confundiu `typeof window` com o teste401, e2686 altera a geração, não a comparação de owner. Conferir colunas base1 no JSON antes de classificar. Distinguir ainda o contrato completo do provider: `setSession` rejeita Promise nas falhas de identidade e retornafalse na invalidação. Um double que resolvefalse como falha comum motivou um diagnóstico incorreto; a hipótese foi retirada e o runtime preservado. Regressões reais de rejeição, desmontagem e rechecks503/504/stale owner passaram; os novos testes detetaram2504/2686/2699.
+
+JSDOM não aplicava as utilities CSS do build. Medição no Chrome sobre HTML dos componentes instrumentados encontrou contraste insuficiente, fonte cujo tamanho não mudava por precedência de layer e painel inacessível em900px. Correções tiveram RED/GREEN e provas nativas. Novos testes não revalidam necessariamente sobreviventes estáticos no modo incremental: o epoch visual exigiu force completo, sem diminuir inventário/operadores/limiares.
+
+Depois de auditar integralmente35fontes/3037mutantes, verificar os bytes do relatório e a identidade da toolchain/fixtures; comparar também Chrome/CSS/fonte/harness. Mudança visual exige análise completa. No ambiente idêntico, a CI42265985431 reutilizou2915resultados e concluiu mutação em4min57s; a CI42268953701 reutilizou3037/3037em46s. Mantiveram score bruto86,02247191011236%, zeroNoCoverage/RuntimeError e todos311sobreviventes no denominador. Não há medição de tokens que permita quantificar poupança de tokens.
+
+Aplicabilidade: StrykerJS10.1.1/Vitest5/Chrome156 desta revisão; outras configurações precisam de verificação própria. Não extrapolar testes técnicos para conta Google pessoal nem um caso semântico para geração histórica geral. [Revisão/limites](../../sprints/S10/T006_MUTATION_REVIEW.md), [manifesto](../../sprints/S10/evidence/T006-global-quality.json), [contrato de sessão](../../sprints/S10/T002_SESSION_SPEC.md).

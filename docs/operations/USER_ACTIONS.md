@@ -2,7 +2,7 @@
 
 Este documento define as instruções operacionais para o utilizador no ambiente local Windows, distinguindo rigorosamente as tarefas do operador das responsabilidades do sistema de desenvolvimento (Codex).
 
-Atualizado em 2026-11-06. Rascunho inicial escrito pela agy sob coordenação do Codex, depois conferido contra scripts/contratos e documentação oficial Google. Estado técnico e falhas reais: [S10-T006](../sprints/S10/T006_TEST_REPORT.md). Este guia não declara os gates concluídos.
+Atualizado em 2026-11-06. Rascunho inicial escrito pela agy sob coordenação do Codex, depois conferido contra scripts/contratos e documentação oficial Google. Arranque completo provado e CI técnica final aprovada; resultados, falhas históricas e limites em [S10-T006](../sprints/S10/T006_TEST_REPORT.md). O consentimento da tua conta é uma ação pessoal separada.
 
 **O que tens de fazer pessoalmente:** quando quiseres testar a conta real, executar G01–G04 abaixo. Não precisas de voltar a dar permissão, contratar IA, fornecer segredos, executar testes automáticos, corrigir código ou coordenar a agy. Codex trata dessas tarefas. O consentimento Google continua adiado até decidires realizá-lo.
 

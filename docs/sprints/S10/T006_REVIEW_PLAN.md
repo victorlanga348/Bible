@@ -1,6 +1,6 @@
 # S10-T006 — Vistoria conjunta e conclusão verificável
 
-Estado: IN_PROGRESS. Pedido do utilizador em 2026-10-31: revisão com as skills de Codex e agy, repartir trabalho, corrigir lacunas e terminar com menor sobrecarga. Autoriza colaboração nesta tarefa; preserva main, branches anteriores, segredos, dados e ausência de publicação/serviços pagos.
+Estado: DONE técnico; implementação/validação concluídas em2026-11-06. Pedido do utilizador em 2026-10-31: revisão com as skills de Codex e agy, repartir trabalho, corrigir lacunas e terminar com menor sobrecarga. Autoriza colaboração nesta tarefa; preserva main, branches anteriores, segredos, dados e ausência de publicação/serviços pagos. Pedido adicional de arranque único satisfeito e provado em [DEV_STARTUP](../../operations/DEV_STARTUP.md); [resultados finais](T006_TEST_REPORT.md).
 
 ## Plano antes de código
 

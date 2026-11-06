@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "task": "S10-T006",
+  "sourceRevision": "d3e44386ca7a63d73d705c9f2be81ec2a56ed64d",
+  "ci": {
+    "runId": 42268953701,
+    "jobId": 128068188864,
+    "conclusion": "success",
+    "url": "https://github.com/victorlanga348/Bible/actions/runs/42268953701"
+  },
+  "artifact": {
+    "id": 13529185657,
+    "zipSha256": "323a119f4cc69bdb49c76b82c96f76280b4404f665b0aaf1473f16c64ba7b6ba",
+    "rawReportSha256": "22a41ff2ab31b2856efd878aece4dda76e9cce35c54935f03e564391fabad493"
+  },
+  "inventory": {
+    "inspectedRuntimeSources": 35,
+    "mutableFiles": 34,
+    "mutants": 3037,
+    "independentlyReinstrumented": true,
+    "integrity": "PASS",
+    "rawStatusesChanged": false
+  },
+  "mutation": {
+    "counts": {
+      "Killed": 1912,
+      "Timeout": 2,
+      "Survived": 311,
+      "NoCoverage": 0,
+      "RuntimeError": 0,
+      "CompileError": 812
+    },
+    "detected": 1914,
+    "valid": 2225,
+    "rawScore": 86.02247191011236,
+    "requiredStrictlyGreaterThan": 85,
+    "result": "PASS",
+    "reused": 3037,
+    "duration": "46s",
+    "timeouts": [
+      {
+        "file": "src/shared/api/query-client.ts",
+        "id": "2328",
+        "status": "Timeout",
+        "location": {
+          "end": {
+            "column": 58,
+            "line": 13
+          },
+          "start": {
+            "column": 53,
+            "line": 13
+          }
+        },
+        "mutator": "BooleanLiteral",
+        "replacement": "true",
+        "original": "false",
+        "static": false,
+        "statusReason": "Hit limit reached (803/800)"
+      },
+      {
+        "file": "src/shared/api/query-client.ts",
+        "id": "2329",
+        "status": "Timeout",
+        "location": {
+          "end": {
+            "column": 32,
+            "line": 15
+          },
+          "start": {
+            "column": 16,
+            "line": 15
+          }
+        },
+        "mutator": "ConditionalExpression",
+        "replacement": "true",
+        "original": "failureCount < 1",
+        "static": false,
+        "statusReason": "Hit limit reached (801/800)"
+      }
+    ]
+  },
+  "coverage": {
+    "lines": {
+      "total": 936,
+      "covered": 935,
+      "skipped": 0,
+      "pct": 99.89
+    },
+    "statements": {
+      "total": 1119,
+      "covered": 1104,
+      "skipped": 0,
+      "pct": 98.65
+    },
+    "functions": {
+      "total": 372,
+      "covered": 371,
+      "skipped": 0,
+      "pct": 99.73
+    },
+    "branches": {
+      "total": 899,
+      "covered": 860,
+      "skipped": 0,
+      "pct": 95.66
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "tests": {
+    "frontendGlobal": 351,
+    "files": 47,
+    "frontendTooling": 13,
+    "rootLauncher": 9,
+    "build": "PASS",
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 4
+    }
+  },
+  "nativeStyleEnvironment": {
+    "browserVersion": "156.0.8078.79",
+    "cssSha256": "1fda4a6ba735fbc8359f246904af7f7bb59bc033ad6522a5a859b0d1a3ecf2f6",
+    "cssSourceSha256": "cf7bcf3470d7be7aec6c619c12a2a4f381dd6a049b396c148b782a1be2f9fc16",
+    "harnessSha256": "5d54d1e6839d5dbd0a35e4d014714a5ba49b0c716f750f03a1a724c1563935fb"
+  },
+  "nativeStyleEnvironmentSha256": "7ae83ffe19f5971f94586f516b8e2ffadc92b83d313ffede1640be124da17c38",
+  "survivorLedger": "T006-survivors.json",
+  "review": "../T006_MUTATION_REVIEW.md",
+  "limitations": [
+    "Local personal release only; no public deployment or paid API",
+    "Personal Google consent remains deferred, not certified by technical RSA/SDK tests",
+    "AI remains the admitted local extractive English sentence profile; semantic proof is bounded",
+    "Survivors remain in the raw denominator; review does not claim all are equivalent"
+  ]
+}

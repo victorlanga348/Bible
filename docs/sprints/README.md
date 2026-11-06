@@ -1,6 +1,6 @@
 # Sprints — Backend Bíblia App
 
-Atualização2026-11-06: S10-T006 IN_PROGRESS na `feat/biblia-integracao`, com autorização expressa para colaboração agy coordenada, testes, correções e commit/push normal. [Evidências atuais](S10/T006_TEST_REPORT.md), [ações humanas](../operations/USER_ACTIONS.md). As referências anteriores à branch backend/sem agentes são históricas para esta retoma; não dispensam os gates.
+Atualização2026-11-06: S10-T006 DONE, sete gates/auditoria documental PASS na `feat/biblia-integracao`. CI42268953701 PASS/gates auditados, arranque completo `npm run dev` na raiz e guia humano verificados; autorização vigente permite encerramento/commit/push normal. [Evidências atuais](S10/T006_TEST_REPORT.md), [ações humanas](../operations/USER_ACTIONS.md). Referências anteriores à branch backend/sem agentes são históricas para esta retoma; agy foi expressamente autorizada e coordenada.
 
 Estado2026-10-29: S00–S07 DONE técnico sob autorização integral; [fecho S07](S07/T007_COMPLETION_REPORT.md), CI40900841329 oito SUCCESS/provas nativas/revisões PASS. S08 DONE técnico/T004–T007 DONE/gates/recuperação/auditoria PASS, uma tarefa por vez/sem agentes. [Retoma breve](../megabrain/agent-context/project-state.md).
 
@@ -16,7 +16,7 @@ Estado2026-10-29: S00–S07 DONE técnico sob autorização integral; [fecho S07
 | [S07](S07/README.md) | Referências cruzadas e workspace | DONE | S06 concluída |
 | [S08](S08/README.md) | Hardening e release | DONE | Gates/recuperação reais/auditoria final PASS; release pessoal local |
 | [S09](S09/README.md) | Frontend da Plataforma de Investigação Bíblica | DONE | S08 e autorização formal do frontend |
-| [S10](S10/README.md) | Integração da aplicação e validação real | IN_PROGRESS | Pedido atual, branch feat/biblia-integracao; lacunas de integração da entrega S09 em correção |
+| [S10](S10/README.md) | Integração da aplicação e validação real | DONE | Fonted3e4438/CI42268953701 PASS351testes/86,02247191011236%; provas reais e guia/arranque único; sete gates e auditoria documental PASS |
 
 Cada sprint mantém PLAN, TASKS, ACCEPTANCE_CRITERIA, TEST_REPORT e REVIEW. README da sprint é fonte do estado da sprint; TASKS dos estados das tarefas. Fontes normativas em /docs, ADRs aceites e autorização vigente do AGENTS; histórico não substitui normas/estado atual.
 
