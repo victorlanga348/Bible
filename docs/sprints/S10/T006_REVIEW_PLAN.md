@@ -13,6 +13,8 @@ Fonte funcional: SPEC S10, T003_WORKFLOWS_SPEC (incluindo adenda), contratos HTT
 
 ## Decisões, alternativas e riscos
 
+Adenda2026-11-06: reforçar testes da rejeição real de confirmação Google (Promise rejeitada) e da confirmação tardia após desmontagem. O contrato `setSession=false` representa invalidação/cancelamento; não é a forma de sinalizar falha de identidade. Uma primeira hipótese de fase presa confundiu esses casos e foi descartada ao conferir o provider; nenhuma mudança de produto é necessária ou autorizada por essa hipótese. Preservar validação estrita, erro recuperável existente e ausência de onAccess tardio, sem endpoint, segredo ou consentimento pessoal novo.
+
 Reutilizar componentes, hooks e contratos evita dependências e migrações; exige coordenar identidade/versão no App. Manter cópias de estudo/contexto independentes foi rejeitado pelas respostas tardias e versões erradas. Listas usam cursores do servidor, sem carregar todo o acervo. O rascunho de nota fica preservado em conflito; nenhuma repetição automática de escrita. Cancelamento invalida a publicação cliente e chega ao transporte, sem prometer rollback de persistência.
 
 Os testes de componentes podem usar doubles técnicos identificados; não substituem prova nativa. Teste novo não versionado `context-panel-notes.spec.tsx` pertence ao trabalho herdado e é preservado. O utilizador confirmou outra sessão e decidiu deixar apenas esta coordenação ativa.

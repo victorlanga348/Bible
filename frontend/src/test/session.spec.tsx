@@ -189,3 +189,21 @@ it('preserves a newer session when an old successful recheck returns a different
   await act(async () => { await result.current.setSession('token-b'); old.resolve(identity('owner-a')); });
   expect(result.current.ownerId).toBe('owner-b'); expect(result.current.isAuthenticated).toBe(true);
 });
+it.each([503, 504])('does not expire a verified session when its recheck returns HTTP %s', async status => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(identity('current-owner')).mockResolvedValueOnce(new Response('{}', { status })));
+  const { result } = setup();
+  await act(async () => { await result.current.setSession('technical-token'); });
+  await act(async () => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
+  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(result.current.isAuthenticated).toBe(true); expect(result.current.ownerId).toBe('current-owner');
+});
+it('does not let an obsolete mismatched identity clear the newer verified owner', async () => {
+  // Valid response schema with an inconsistent old identity: the explicit defensive contract in T002.
+  const old = deferred();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(identity('owner-a')).mockReturnValueOnce(old.promise).mockResolvedValueOnce(identity('owner-b')));
+  const { result } = setup();
+  await act(async () => { await result.current.setSession('token-a'); });
+  act(() => { window.dispatchEvent(new CustomEvent('biblia:unauthorized')); });
+  await act(async () => { await result.current.setSession('token-b'); old.resolve(identity('inconsistent-old-owner')); });
+  expect(result.current.ownerId).toBe('owner-b'); expect(result.current.isAuthenticated).toBe(true);
+});

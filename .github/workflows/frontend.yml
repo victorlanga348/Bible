@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true # Missing/expired optimization falls back to full analysis.
         with:
           name: frontend-global-quality
-          run-id: 42224340418
+          run-id: 42260812862
           github-token: ${{ github.token }}
           path: frontend/reports/global-seed
       - name: Verify the complete global seed and unchanged toolchain
@@ -64,10 +64,10 @@ jobs:
             'vitest.transport.config.ts': 'aae5b70daba20f5fdbdbf55149489da0844a07a5a970ccf903ada9c6d93f4ff3',
           };
           const restored = restoreGlobalSeed({ identities,
-            reportSha256: '5a25792d3c0ca607d8752342920d85f473ca17c3eddca59a05daf91ac09197c0',
+            reportSha256: '3d624e57ebc9c111c407490154397d0cdb3b6b403f5cabc30cddfb2b1e48b6ca',
             environmentSha256: '7ae83ffe19f5971f94586f516b8e2ffadc92b83d313ffede1640be124da17c38',
             mutableFiles: 34, mutants: 3037 });
-          console.log(restored ? 'Verified full seed and unchanged native environment; original gate FAIL. Current global gate remains mandatory.' : 'Native environment changed: fresh complete analysis required.');
+          console.log(restored ? 'Verified audited full seed and unchanged native environment; original gate PASS. Current global gate remains mandatory.' : 'Native environment changed: fresh complete analysis required.');
           NODE
       - run: npm run test:mutation:ci
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

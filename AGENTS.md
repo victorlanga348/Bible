@@ -2,6 +2,10 @@
 
 ## Retoma autorizada — 2026-11-06
 
+CI42260812862/21ee138 agora PASS85,88764044943821%, zeroNoCoverage/RuntimeError; auditoria35fontes/3037mutantes íntegra. Acrescentados cinco testes de sessão sem mudar runtime; validar próximo checkpoint com seed atual e finalizar revisão314sobreviventes/docs. Arranque único continua PASS. Estados pendentes abaixo são históricos; não reiniciar nem repetir backend/modelos.
+
+Checkpoint publicado21ee138; CI42260812862 em execução com global coverage/mutation e cache visual verificado. Arranque completo `npm.cmd run dev` na raiz PASS neste PC. Aguardar/auditar a CI atual; não repetir backend/modelos nem iniciar outra implementação. [Estado imediato](docs/megabrain/agent-context/project-state.md).
+
 Estado mais recente: CI42224340418/cebc1d6 terminou FAIL82,87640449438203% (zeroNoCoverage/RuntimeError), inventário35fontes/3037mutantes íntegro. Reforços afetados posteriores PASS; próximo checkpoint deve validar globalmente. Pedido adicional do utilizador: `npm run dev` na raiz inicia tudo; launcher pronto/prova real Chrome/API/PG/IAartefactos+índice/watch PASS, sem inferência nem alteração do backend. [Arranque](docs/operations/DEV_STARTUP.md). Seed completo e compatibilidade visual preparados para incremental normal; fechar só após score>85 e revisão. Não repetir backend/modelos inalterados, não pedir outra permissão. Parágrafos de execução abaixo são históricos.
 
 Retoma imediata: códigocebc1d6/CI42224340418 em mutação global force após cobertura/build/lint/tooling PASS. Runtimefeaa5b2; a falha anterior de foco era do harness e foi corrigida, sem alterar produto. [Contexto atualizado](docs/megabrain/agent-context/project-state.md). Terminar essa análise/revisão e restaurar cache incremental com ambiente CSS/Chrome/harness verificado; não reiniciar nem repetir backend/modelos.

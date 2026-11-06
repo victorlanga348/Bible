@@ -32,4 +32,6 @@ Se ocorrer `Arranque interrompido na etapa …`, comunicar apenas etapa, hora e 
 
 Ambos os encerramentos por Ctrl+C libertaram3000/5173; PostgreSQL Windows e o container IA continuaram ativos, sem parar serviços alheios. O wrapper de terminal devolve1 ao ser interrompido; não é uma falha de teste nem um exit0 de execução terminada normalmente. Logs/JSON locais: `backend/reports/s10-t006-dev-native.*`; sem inferência, consentimento Google pessoal ou escrita de dados da aplicação nesta prova.
 
-Arranque: PASS neste PC. Estado global da revisão continua em [T006_TEST_REPORT](../sprints/S10/T006_TEST_REPORT.md); o score frontend82,88% anterior ainda falha o gate>85%. Instruções pessoais: [USER_ACTIONS](USER_ACTIONS.md).
+Arranque: PASS neste PC. A CI42260812862/21ee138 aprovou o score global85,88764044943821%, com auditoria independente; revisão final e testes posteriores continuam em [T006_TEST_REPORT](../sprints/S10/T006_TEST_REPORT.md). Instruções pessoais: [USER_ACTIONS](USER_ACTIONS.md).
+
+Revisão independente agy somente de leitura, exit0, não encontrou problema concreto no escopo launcher/guia: comando raiz, limpeza dos próprios filhos e alternativas manuais coerentes. Log `backend/reports/s10-t006-agy-dev-review.log`. Isto é revisão documental/de código; as execuções reais acima foram feitas pelo Codex e a revisão agy não certifica gates globais.
