@@ -124,7 +124,9 @@ it.each(['light', 'dark'])('keeps input errors readable, icons clear of text, an
   expect(error.borderColor).not.toEqual(plain.borderColor);
   const caption = await measure('p'); expect(caption.font).toBeLessThan(error.font); expect(caption.contrast).toBeGreaterThanOrEqual(4.5);
   const symbol = await page.locator('svg').boundingBox(); expect(symbol!.y + symbol!.height / 2).toBeGreaterThan(icon.y); expect(symbol!.y + symbol!.height / 2).toBeLessThan(icon.y + icon.height);
-  await page.locator('[data-testid=plain]').focus(); expect((await measure('[data-testid=plain]')).borderColor).not.toEqual(plain.borderColor);
+  await page.locator('[data-testid=plain]').focus();
+  await page.waitForFunction(before => getComputedStyle(document.querySelector('[data-testid=plain]')!).borderTopColor !== before, plain.borderColor);
+  expect((await measure('[data-testid=plain]')).borderColor).not.toEqual(plain.borderColor);
 });
 
 it.each(['light', 'dark'])('preserves distinct readable epistemic categories including a non-colour insufficiency cue in %s theme', async theme => {

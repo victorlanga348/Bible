@@ -47,6 +47,10 @@ Após essa configuração, build/preview atualCNblqAgh e `npm.cmd run test:e2e -
 
 ## Gates atuais
 
+Checkpoint **feaa5b2602cfe27d0a0200319def3d6516aab113** publicado; [CI42223661806](https://github.com/victorlanga348/Bible/actions/runs/42223661806) FAIL na suite global329PASS/2FAIL/331, antes de iniciar mutação. Os dois casos são foco do input claro/escuro: o browser Linux entregou o foco antes do primeiro frame da transição e o harness lia a cor original imediatamente. Acrescentada espera pela alteração real de `borderTopColor`, mantendo a mesma asserção; sem timeout de produto maior, skip ou alteração do componente para satisfazer o teste. A execução anterior nunca é PASS e o artefacto parcial não é seed de mutação. Build/lint/tooling da revisão passaram; nova CI ainda necessária.
+
+Validação afetada após a correção: `npm.cmd run test -- --maxWorkers=1 src/test/native-styles.spec.tsx -t 'keeps input errors'` **2PASS/exit0**, restantes20casos não selecionados pelo filtro do comando (nenhum skip no código). Log `s10-t006-native-focus-green.log`. Manifesto de fonte/evidência atual voltou a PASS com o novo hash do harness. Nenhum ficheiro runtime ou prova de modelo/API precisou de repetição por esta espera de frame.
+
 ### Revisão seguinte — testes de estilos reais e correções causais
 
 CI42212247108/f33758e terminou **FAIL** em mutação, apesar de **303PASS/43ficheiros**, cobertura99,89%linhas/94,66%branches/99,73%funções. Relatório global3037mutantes/35fontes/34mutáveis:1720Killed/2Timeout/502Survived/1NoCoverage/812CompileError/zeroRuntimeError, score1722/2225=77,3932584269663%. ZIP13501562063/SHA256 `2e813e0156d2febd0f8197bab642026b34ff9659784e9b10aaf07dbace709bf6`, JSON `c564cc8c1a95b131a4b7f3b470d7158a40ad510c9389a312aa421e11a9601cf1`. Todas as fontes/assinaturas conferidas por reinstrumentação de f33758e; estados intactos. Reutilização real1519/3037. O único NoCoverage é o fallback de referência opcional do favorito; nova regressão agy exercita esse caso sem inventar passagem.

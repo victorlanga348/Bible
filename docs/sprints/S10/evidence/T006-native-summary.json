@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "task": "S10-T006",
-  "at": "2026-11-06T13:11:31.571Z",
+  "at": "2026-11-06T13:17:01.963Z",
   "scope": "Native local UI/API/PostgreSQL and one bounded extractive semantic case; not personal Google consent or global quality certification",
   "nativeWorkflows": [
     {
@@ -64,7 +64,7 @@
       "browserVersion": "156.0.8078.81",
       "cssSha256": "1fda4a6ba735fbc8359f246904af7f7bb59bc033ad6522a5a859b0d1a3ecf2f6",
       "cssSourceSha256": "cf7bcf3470d7be7aec6c619c12a2a4f381dd6a049b396c148b782a1be2f9fc16",
-      "harnessSha256": "a7b83b62e610a7d16bacf7917e9b78a52808a807039979d9f472ecb6a411d89b"
+      "harnessSha256": "5d54d1e6839d5dbd0a35e4d014714a5ba49b0c716f750f03a1a724c1563935fb"
     },
     "nativeStyleLog": "backend/reports/s10-t006-native-styles-green-final.log"
   },
