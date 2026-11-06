@@ -1,5 +1,7 @@
 # Dependências do backend
 
+Estado2026-11-06: as dependências S00–S08 estão satisfeitas no recorte pessoal local documentado; as entradas abaixo preservam o planeamento histórico. Trabalho ativo: integração S10-T006 após S09, com [plano](../sprints/S10/T006_REVIEW_PLAN.md) e [gates atuais](../sprints/S10/T006_TEST_REPORT.md). A revisão global de mutação frontend ainda não está aprovada.
+
 Atualização2026-10-26: S04-T006/T007 concluídas, sprint encerrada com revisão/CI40338249693/907 testes/mutação fonte corrigida conferidas. A dependência S04→S05 está satisfeita; S05-T004 continua a exigir contratos/rubrica/direitos/destino/modelos e viabilidade real definidos antes de implementação. A autorização integral delega essas decisões, não prova inferência/qualidade futura. Uma tarefa de cada vez, sem nova aprovação ou subagentes.
 
 Atualização2026-10-22: autorização integral delega as decisões/execução/commit/push sem novas permissões; uma tarefa de cada vez. O complemento S02-T006/T007 foi efetivamente concluído e verificado, com551 testes e mutação local/CI válidas; as arestas de existência/importação/API bíblica estão satisfeitas por prova real, não inferência. S03 permanece concluída; S04 pode iniciar depois do commit de encerramento S02. As disposições de adiamento abaixo são históricas e não representam o backlog corrente.

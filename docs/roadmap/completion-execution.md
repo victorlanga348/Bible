@@ -1,5 +1,7 @@
 # Execução integral autorizada — 2026-10-22
 
+Retoma2026-11-06: autorização reafirmada para Codex coordenar `agy`, concluir a integração na `feat/biblia-integracao`, validar e fazer commit/push normal sem repetir permissões. [S10-T006](../sprints/S10/T006_TEST_REPORT.md) está IN_PROGRESS, com mutação global pendente; main preservada, sem serviço público/API paga. [Guia humano](../operations/USER_ACTIONS.md). A sequência backend abaixo permanece histórica.
+
 Checkpoint2026-10-29: S00–S07 DONE, S08 DONE técnico/[fecho](../sprints/S08/T007_COMPLETION_REPORT.md); uma tarefa/sem agentes/sem nova permissão.
 
 Origem: pedido posterior do utilizador para executar tudo o que for necessário, terminar todas as sprints e fazer push sem autorização prévia adicional, com registo detalhado. Decisões de implementação delegadas ao agente; não são decisões individuais prévias do utilizador. Esta autorização substitui pausas por aprovação, preservando specs/ADRs históricos e provas reais. Não autoriza declarar PASS sem execução, omitir falhas ou expor segredos.

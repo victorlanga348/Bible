@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { createRequire } from 'node:module';
 import { randomUUID } from 'node:crypto';
+import { writeFileSync } from 'node:fs';
 const dependency = createRequire(import.meta.url);
 const admittedExcerpts = dependency('../../backend/test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1/excerpts.json') as { id: string; text: string }[];
 const { startSessionApi } = dependency('./support/session-api.cjs') as {
@@ -87,7 +88,9 @@ test('persists study versions, note CAS, favorites and real local conversation t
       const source = admittedExcerpts.find(excerpt => excerpt.id === citation.excerptId);
       expect(source).toBeDefined(); expect(Array.from(source!.text).slice(citation.startOffset, citation.endOffset).join('')).toBe(citation.quote);
     }
-    await info.attach('native-analysis.json', { body: Buffer.from(JSON.stringify(analysis, null, 2)), contentType: 'application/json' });
+    const analysisPath = info.outputPath('native-analysis.json');
+    writeFileSync(analysisPath, JSON.stringify(analysis, null, 2));
+    await info.attach('native-analysis.json', { path: analysisPath, contentType: 'application/json' });
     await expect(page.getByText('What does Josephus say about the Sabbath?', { exact: true })).toBeVisible();
     const other = await api.manualToken(`other-${randomUUID()}`);
     expect((await page.request.get(`/api/conversations/${conversation.id}`, { headers: { Authorization: `Bearer ${other}` } })).status()).toBe(404);

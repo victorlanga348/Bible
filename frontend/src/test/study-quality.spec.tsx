@@ -33,10 +33,35 @@ it('opens evidence with its rights and digest, preserves epistemic labels, and r
   mount(); fireEvent.click(await screen.findByRole('button', { name: excerptId }));
   const dialog = screen.getByRole('dialog'); expect(within(dialog).getByRole('link', { name: 'Ver Licença' })).toHaveAttribute('href', evidence.rightsUrl);
   expect(within(dialog).getByText(evidence.rightsStatement)).toBeInTheDocument();
+  expect(within(dialog).getByText(`SHA-256: ${evidence.textSha256.slice(0, 24)}...`)).toBeInTheDocument();
+  expect(within(dialog).getByText(`"${evidence.quote}"`)).toBeInTheDocument();
+  expect(within(dialog).getByText(evidence.locator)).toBeInTheDocument();
+  expect(within(dialog).getByText(`Status: ${evidence.availability}`)).toBeInTheDocument();
   fireEvent.click(within(dialog).getByRole('button', { name: 'Fechar' }));
   await screen.findByText('Hipótese técnica de apresentação, não afirmação histórica.');
+  expect(screen.getByRole('heading', { name: '3. História e Cultura' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: '5. Comparação Textual' })).toBeInTheDocument();
+  const available = screen.getByRole('heading', { name: '3. História e Cultura' }).closest('section')!;
+  const insufficient = screen.getByRole('heading', { name: '5. Comparação Textual' }).closest('section')!;
+  expect(within(available).getByText('Evidência Documentada')).toBeInTheDocument();
+  expect(within(available).queryByText('Evidência Insuficiente')).not.toBeInTheDocument();
+  expect(within(insufficient).getByText('Evidência Insuficiente')).toBeInTheDocument();
+  expect(screen.getByText('Limitações do Estudo')).toBeInTheDocument();
+  expect(screen.getByText('Fixture técnica; não representa consenso histórico.')).toBeInTheDocument();
+  expect(screen.getByText(studyFixture().passage.verses[0].text.trim())).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Carregar versão atual' })).not.toBeInTheDocument();
+  expect(screen.queryByText('Sessão do Operador Necessária')).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'technical-missing-excerpt' }));
   await screen.findByText('Evidência não encontrada no estudo atual.');
+});
+it('omits empty evidence, interpretation and limitation sections rather than implying information exists', async () => {
+  vi.mocked(fetch).mockResolvedValue(Response.json(studyFixture({ sections: [{ kind: 'immediate-context', status: 'insufficient-evidence', text: 'Fixture técnica sem contexto.', evidenceIds: [] }] })));
+  mount(); await screen.findByText('Versão 3');
+  expect(screen.getByRole('heading', { name: '1. Contexto Imediato' })).toBeInTheDocument();
+  expect(screen.queryByText('Fontes documentadas:')).not.toBeInTheDocument();
+  expect(screen.queryByText('Classificação Epistemológica de Interpretações')).not.toBeInTheDocument();
+  expect(screen.queryByText('Limitações do Estudo')).not.toBeInTheDocument();
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 it('keeps the study input after a failed creation and permits an explicit successful retry', async () => {
   mount(false); creationFails = true;

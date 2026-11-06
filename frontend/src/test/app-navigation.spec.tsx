@@ -16,6 +16,13 @@ it('passes the selected cross reference to the reader instead of merely switchin
   render(<App />); fireEvent.click(screen.getByText('Open cross reference'));
   expect(screen.getByTestId('reader-target')).toHaveTextContent('JHN 3:16');
 });
+it('closes the mobile contextual drawer when navigating to a related passage', () => {
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true })));
+  render(<App />); fireEvent.click(screen.getByRole('button', { name: 'Abrir Painel Contextual de IA' }));
+  fireEvent.click(screen.getByText('Open cross reference'));
+  expect(screen.getByTestId('reader-target')).toHaveTextContent('JHN 3:16');
+  expect(screen.queryByText('Assistant panel')).not.toBeInTheDocument();
+});
 it('navigates the real application shell, selected passage, focus and contextual panel', () => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
   render(<App />);

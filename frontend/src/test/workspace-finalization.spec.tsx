@@ -145,6 +145,7 @@ afterEach(() => {
 
 function mount(view: React.ReactNode = <HistoryView />) {
   const client = createQueryClient();
+  client.setDefaultOptions({ ...client.getDefaultOptions(), queries: { ...client.getDefaultOptions().queries, retry: false } });
   clients.push(client);
   return render(
     <QueryClientProvider client={client}>
@@ -367,4 +368,82 @@ it('shows the access requirement without fetching private data for an anonymous 
   authenticated = false; mount();
   expect(screen.getByText('Workspace Protegido')).toBeInTheDocument();
   expect(fetch).not.toHaveBeenCalled();
+});
+
+it('reloads the actual concurrent note revision before an explicit CAS retry, keeping the draft', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let current = noteFixture(), conflicted = false;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    const path = new URL(String(url)).pathname;
+    if (path.endsWith(`/${studyId}/notes`)) return Response.json({ items: [current], nextCursor: null });
+    if (options?.method === 'PATCH') {
+      if (!conflicted) { conflicted = true; current = { ...current, revision: 2, content: 'Revisão técnica concorrente.' }; return Response.json({ error: { code: 'WORKSPACE_CONFLICT', message: 'Revisão alterada.' } }, { status: 409 }); }
+      const body = JSON.parse(String(options.body)); current = { ...current, revision: 3, content: body.content }; return Response.json(current);
+    }
+    return original(url, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  await screen.findByRole('option', { name: 'GEN 1:1 (v3)' }); fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
+  fireEvent.click(await screen.findByTitle('Editar Nota (CAS)')); fireEvent.change(screen.getByLabelText('Rascunho da anotação'), { target: { value: 'Rascunho técnico a conservar.' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
+  await screen.findByRole('button', { name: 'Carregar revisão atual' });
+  expect(screen.getByRole('button', { name: 'Salvar Revisão' })).toBeDisabled();
+  expect(screen.queryByText(/Revisão atual r/)).not.toBeInTheDocument();
+  fireEvent.click(await screen.findByRole('button', { name: 'Carregar revisão atual' }));
+  await screen.findByText('Revisão atual r2: Revisão técnica concorrente.');
+  expect(screen.getByLabelText('Rascunho da anotação')).toHaveValue('Rascunho técnico a conservar.');
+  fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  expect(calls().filter(call => call.options?.method === 'PATCH').map(call => JSON.parse(String(call.options?.body)).expectedRevision)).toEqual([1, 2]);
+});
+it('does not enable a CAS retry if the conflicted note disappeared from the current page', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let disappeared = false;
+  vi.mocked(fetch).mockImplementation(async (url, options) => disappeared && String(url).includes(`/${studyId}/notes`)
+    ? Response.json({ items: [], nextCursor: null }) : original(url, options));
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  await screen.findByRole('option', { name: 'GEN 1:1 (v3)' }); fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
+  fireEvent.click(await screen.findByTitle('Editar Nota (CAS)')); fireEvent.click(screen.getByRole('button', { name: 'Salvar Revisão' }));
+  const reload = await screen.findByRole('button', { name: 'Carregar revisão atual' }); disappeared = true; fireEvent.click(reload);
+  await screen.findByText('A anotação não está nesta página ou foi eliminada. Consulte as anotações antes de voltar a editar.');
+  expect(screen.getByRole('button', { name: 'Salvar Revisão' })).toBeDisabled();
+});
+
+it('cancels and dismisses destructive dialogs without sending writes', async () => {
+  mount(); await screen.findByText('GEN 1:1');
+  fireEvent.click(screen.getByRole('button', { name: 'Excluir estudo' })); fireEvent.click(await screen.findByRole('button', { name: 'Cancelar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Excluir estudo' })); fireEvent.click(await screen.findByRole('button', { name: 'Fechar' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  await screen.findByRole('option', { name: 'GEN 1:1 (v3)' }); fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
+  fireEvent.click(await screen.findByTitle('Editar Nota (CAS)')); fireEvent.click(await screen.findByRole('button', { name: 'Cancelar' }));
+  fireEvent.click(screen.getByTitle('Editar Nota (CAS)')); fireEvent.click(await screen.findByRole('button', { name: 'Fechar' }));
+  fireEvent.click(screen.getByTitle('Eliminar Nota')); fireEvent.click(await screen.findByRole('button', { name: 'Cancelar' }));
+  fireEvent.click(screen.getByTitle('Eliminar Nota')); fireEvent.click(await screen.findByRole('button', { name: 'Fechar' }));
+  expect(calls().some(call => ['DELETE', 'PATCH', 'POST'].includes(call.options?.method ?? 'GET'))).toBe(false);
+});
+
+it('offers explicit retries for failed note and favorite lists', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let failedNotes = true, failedFavorites = false;
+  vi.mocked(fetch).mockImplementation(async (url, options) => (String(url).includes('/notes') && failedNotes) || (String(url).includes('/workspace/favorites') && failedFavorites)
+    ? Response.json({ error: { code: 'UNAVAILABLE', message: 'Falha de consulta técnica.' } }, { status: 503 }) : original(url, options));
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
+  await screen.findByRole('option', { name: 'GEN 1:1 (v3)' }); fireEvent.change(screen.getByRole('combobox'), { target: { value: studyId } });
+  const reloadNotes = await screen.findByRole('button', { name: 'Tentar novamente' }); failedNotes = false; fireEvent.click(reloadNotes);
+  await screen.findByText('Nota técnica página 1; fixture controlada.');
+  // A fresh query client is used to observe the independently failing favorites read.
+  cleanup(); clients.forEach(client => client.clear()); failedFavorites = true; mount();
+  fireEvent.click(screen.getByRole('button', { name: /Favoritos/i }));
+  const reloadFavorites = await screen.findByRole('button', { name: 'Tentar novamente' }); failedFavorites = false; fireEvent.click(reloadFavorites);
+  await screen.findByRole('button', { name: 'Remover' });
+});
+
+it('removes the selected version from the favorites view and returns to the studies tab', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let removed = false;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    if (options?.method === 'DELETE' && String(url).includes('/favorites/3')) { removed = true; return new Response(null, { status: 204 }); }
+    if (removed && new URL(String(url)).pathname === '/api/workspace/favorites') return Response.json({ items: [], nextCursor: null });
+    return original(url, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: /Favoritos/i }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Remover' }));
+  await waitFor(() => expect(screen.queryByRole('button', { name: 'Remover' })).not.toBeInTheDocument()); expect(removed).toBe(true);
+  fireEvent.click(screen.getByRole('button', { name: /Estudos Recentes/i })); await screen.findByRole('button', { name: 'Excluir estudo' });
 });

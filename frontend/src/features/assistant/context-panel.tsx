@@ -121,7 +121,7 @@ function ContextPanelContent({
   };
 
   return (
-    <div className="flex flex-col h-full p-[1.25rem] space-y-[1.25rem]">
+    <div className="flex flex-col w-full min-w-0 h-full p-[1.25rem] space-y-[1.25rem]">
       {/* Live Region para Leitores de Tela */}
       <div role="status" aria-label="Estado do assistente" aria-live="polite" className="sr-only">
         {isGenerating
@@ -141,7 +141,7 @@ function ContextPanelContent({
           const next = event.key === 'ArrowRight' ? (index + 1) % tabs.length : event.key === 'ArrowLeft' ? (index + tabs.length - 1) % tabs.length : event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : -1;
           if (next >= 0) { event.preventDefault(); tabs[next]?.focus(); tabs[next]?.click(); }
         }}
-        className="flex border-b border-[var(--border)] pb-[0.5rem] gap-[0.5rem]"
+        className="flex flex-wrap border-b border-[var(--border)] pb-[0.5rem] gap-[0.5rem]"
       >
         <button
           role="tab"
@@ -194,7 +194,7 @@ function ContextPanelContent({
       </div>
 
       {/* Conteúdo Contextual */}
-      <div className="flex-1 overflow-y-auto space-y-[1rem]">
+      <div className="flex-1 min-w-0 overflow-y-auto space-y-[1rem]">
         {tab === 'assistant' && (
           <div
             role="tabpanel"
@@ -228,7 +228,7 @@ function ContextPanelContent({
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Ex: O que Josefo relata sobre este período?"
                   disabled={isGenerating}
-                  className="h-[2.25rem] text-[0.825rem]"
+                  className="min-w-0 flex-1 h-[2.25rem] text-[0.825rem]"
                 />
                 {isGenerating ? (
                   <Button

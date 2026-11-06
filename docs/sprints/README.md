@@ -1,5 +1,7 @@
 # Sprints — Backend Bíblia App
 
+Atualização2026-11-06: S10-T006 IN_PROGRESS na `feat/biblia-integracao`, com autorização expressa para colaboração agy coordenada, testes, correções e commit/push normal. [Evidências atuais](S10/T006_TEST_REPORT.md), [ações humanas](../operations/USER_ACTIONS.md). As referências anteriores à branch backend/sem agentes são históricas para esta retoma; não dispensam os gates.
+
 Estado2026-10-29: S00–S07 DONE técnico sob autorização integral; [fecho S07](S07/T007_COMPLETION_REPORT.md), CI40900841329 oito SUCCESS/provas nativas/revisões PASS. S08 DONE técnico/T004–T007 DONE/gates/recuperação/auditoria PASS, uma tarefa por vez/sem agentes. [Retoma breve](../megabrain/agent-context/project-state.md).
 
 | Sprint | Objetivo | Estado | Dependência/aceite |

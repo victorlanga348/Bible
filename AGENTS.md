@@ -1,5 +1,11 @@
 # Instruções operacionais — Bíblia App
 
+## Retoma autorizada — 2026-11-06
+
+Pedido explícito: Codex deve fazer a sua parte coordenando a CLI `agy`, com permissão integral reafirmada para ambos, e documentar exatamente as ações humanas. A colaboração agy nesta S10-T006 sucede à restrição histórica de não agentes; não autoriza sessões a escrever simultaneamente nos mesmos ficheiros, trocar branch ou publicar serviço público/contratar API paga. Codex coordena atribuições delimitadas, código, TDD, testes/gates, documentação, commits e push normal na `feat/biblia-integracao`; main e commits anteriores preservados, sem merge automático/force push. Não pedir novamente permissões já concedidas.
+
+Estado: S10-T006 IN_PROGRESS; checkpoint f94bb36 publicado, CI42158781599 FAIL63,056179775280896%/75NoCoverage no inventário global3036. Regressões causais e revalidação incremental em preparação, sem resultado futuro presumido. Backend integralmente idêntico a8e748b9/CI41126297344; não repetir os seus gates por alterações só frontend/docs. [Retoma e provas atuais](docs/sprints/S10/T006_TEST_REPORT.md), [guia humano específico](docs/operations/USER_ACTIONS.md). Conta pessoal Google permanece adiada por escolha do utilizador, sem novo pedido de segredo/consentimento. Agy entregou guia/revisões e ficheiro de regressões QueryClient, revisto/executado por Codex; timeouts não contam como certificação. Fechar somente após critérios/gates globais correntes; os DONE históricos não os substituem.
+
 ## Integração autorizada — 2026-10-30
 
 Após «faz a tua parte», o utilizador exigiu uma nova branch para as alterações de integração. Trabalho atual em `feat/biblia-integracao`, criada de frontend5210a54; preservar os commits das branches frontend/backend e main. A indicação anterior de trabalhar apenas na backend fica histórica para esta tarefa. [S10](docs/sprints/S10/README.md) fixa plano/contratos antes de código, uma tarefa de cada vez/sem agentes. Seguem TDD, infraestrutura real, segredos e gates; login pessoal Google continua adiado. Nenhuma aprovação para publicar serviço público ou contratar API paga é inferida. Não fazer merge automático ou reescrever os commits frontend.

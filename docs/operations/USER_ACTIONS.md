@@ -60,6 +60,19 @@ Se as origens já estiverem corretas, não tens de as voltar a alterar. [Instru�
 > [!IMPORTANT]
 > **Preservação de Dados:** Não reinstalar dependências desnecessárias, não recriar volumes e **não executar resets de banco de dados**. O banco relacional principal (`bible_db`) e o índice vetorial (`bible_ai`) já estão provisionados e devem ser preservados.
 
+### 3.0. Pré-requisitos já configurados neste PC
+
+O PostgreSQL principal é um serviço Windows que já está configurado para arranque automático. O seu estado e a identidade `bible_db` foram conferidos pelo Codex; não precisas de criar um banco nem de alterar passwords/URLs.
+
+**Só para usar inferência de IA:** se reiniciaste o PC ou fechaste o Docker Desktop, abre **Docker Desktop** pelo menu Iniciar e espera que o motor termine de arrancar. Depois, num PowerShell, inicia apenas o índice já existente deste projeto:
+
+```powershell
+docker start biblia-ai-index-development
+docker ps --filter "name=^/biblia-ai-index-development$" --format "{{.Names}} {{.Status}} {{.Ports}}"
+```
+
+Resultado esperado: `biblia-ai-index-development` com estado `Up` e porta local `127.0.0.1:55436`. O Codex conferiu o nome, as labels do Bíblia App e o binding antes de o iniciar nesta entrega. O comando não cria bases de dados nem importa conteúdo. Se o container não existir ou não arrancar, comunica esse erro; não executar `docker compose down`, remover volumes ou criar um substituto. Leitura bíblica e gestão de estudos não exigem nova inferência. Não precisas de abrir Ollama, trocar modelos ou instalar serviços de IA.
+
 ### 3.1. Arranque do Backend (Terminal 1)
 Abrir uma janela do PowerShell e executar:
 
@@ -80,13 +93,14 @@ Abrir uma segunda janela do PowerShell e executar:
 
 ```powershell
 Set-Location "C:\Users\victo\OneDrive\Documentos\Github\Bible\frontend"
-npm.cmd run dev
+npm.cmd run build
+npm.cmd run preview
 ```
 
 - A aplicação fica acessível no navegador em: **`http://127.0.0.1:5173`**.
 - O frontend consome a API através do proxy do Vite (`vite.config.ts`), encaminhando requisições sob o prefixo `/api` diretamente para o backend na porta 3000 (`VITE_API_URL=/api`).
 
-Abrir `http://127.0.0.1:5173/api/health/ready`: deve dar o mesmo resultado do backend. Regressar à página principal e verificar que aparece **Gênesis 1** com versículos. Se as portas 3000/5173 estiverem ocupadas, não mudar portas ou matar processos desconhecidos; comunica `EADDRINUSE`/`Port 5173 is already in use` ao Codex. Preview é alternativa ao dev na mesma porta: parar apenas o teu terminal Vite com Ctrl+C, executar `npm.cmd run build`, depois `npm.cmd run preview`.
+Abrir `http://127.0.0.1:5173/api/health/ready`: deve dar o mesmo resultado do backend. Regressar à página principal e verificar que aparece **Gênesis 1** com versículos. Se as portas 3000/5173 estiverem ocupadas, não mudar portas ou matar processos desconhecidos; comunica `EADDRINUSE`/`Port 5173 is already in use` ao Codex. Para uso diário, o build/preview acima serve uma versão estável, sem recarregamento automático durante alterações de código. Para desenvolvimento, podes usar `npm.cmd run dev` em alternativa, após parar apenas o teu servidor frontend com Ctrl+C. Não executar dev e preview simultaneamente na mesma porta.
 
 Para encerrar o uso diário, Ctrl+C nos dois terminais que tu abriste. Não parar PostgreSQL, Docker, Domus ou OneDrive. O principal usa a URL privada já configurada; não trocar `localhost` por IP ou apontar para outro banco. Para leitura/estudos sem inferência, o índice de IA indisponível não exige recriar bases de dados.
 
@@ -156,7 +170,7 @@ Teste humano G03–G04, pela ordem:
 | Sintoma / Erro | Causa Provável | Ação Recomendada |
 |---|---|---|
 | **HTTP 401 Unauthorized** | Token expirado (validade de 1 hora) ou inválido. | Efetuar novo login no botão da conta ou reemitir novo token local. |
-| **HTTP 503 Unavailable** (`GOOGLE_AUTH_UNAVAILABLE`) | `GOOGLE_CLIENT_ID` não definido no `.env` do backend ou serviço Google indisponível. | Verificar existência do parâmetro no ficheiro `.env` do backend e reiniciar o servidor. |
+| **HTTP 503 Unavailable** (`GOOGLE_AUTH_UNAVAILABLE`) | Configuração Google ausente ou serviço Google indisponível. | Confirmar `/api/health/ready` e comunicar o código ao Codex. O diagnóstico de configuração é responsabilidade do Codex. |
 | **Erro de Origem no Google Sign-In** | A origem `http://127.0.0.1:5173` ou `http://localhost:5173` não está autorizada no Console Google. | Adicionar as duas origens em "Authorized JavaScript origins" no Google Cloud Console. |
 | **"Não foi possível confirmar a sessão."** | Token local incorreto ou falha de comunicação com `GET /api/auth/me`. | Conferir se o backend está em execução no Terminal 1 e reintroduzir o token. |
 | **Botão Google ausente / janela bloqueada** | Biblioteca Google inacessível, bloqueador ou popup recusado. | Permitir o popup para a origem local, confirmar acesso à Internet e repetir uma vez; se persistir, comunicar ao Codex. |
@@ -183,6 +197,18 @@ Teste humano G03–G04, pela ordem:
   3. Autorização explícita e prévia para quaisquer custos financeiros ou alterações de infraestrutura.
 
 **Nada desta expansão é obrigatório para concluir o uso local atual.** Se a quiseres mais tarde, a tua parte é indicar: (a) se precisas de respostas desenvolvidas em português ou só pesquisa/citação; (b) obras/edições que queres incluir, com ficheiros ou links de origem e direitos conhecidos; (c) se aceitas envio a fornecedor externo e qual o orçamento máximo, podendo ser zero. Codex avalia viabilidade, formaliza contratos/licenças, implementa e valida; não tens de escolher embeddings, escrever adapters ou executar gates.
+
+### 6.3. Uso opcional de uma conversa guardada
+
+Depois de iniciar o índice, abrir a aplicação e entrar na conta:
+
+1. Em **Estudo Estruturado**, criar um estudo de `GEN 1:1` ou abrir o teu estudo existente em **Histórico & Workspace**.
+2. Abrir o painel contextual; no telemóvel, usar **Abrir Painel Contextual de IA**. Selecionar **Assistente IA**.
+3. Em **Conversas guardadas**, clicar **Nova conversa**. No campo **Pergunta na conversa**, escrever `What does Josephus say about the Sabbath?` e clicar **Enviar na conversa**.
+4. Esperar pelo resultado. Esta pergunta retornou **Evidência documentada** na prova nativa, com frase inglesa, atribuição e localização; continua a ser um caso verificado, sem promessa para qualquer pergunta. Ler a fonte e as limitações apresentadas. **Evidência insuficiente**, **Fonte restrita** ou indisponibilidade têm significados distintos e aparecem explicitamente na interface.
+5. Para retomar depois, reabrir o mesmo estudo e clicar **Abrir conversa …**. A conversa conserva a versão de estudo em que foi criada. O limite é de20turnos e500bytesUTF-8 por pergunta, mostrado na interface.
+
+**Cancelar resposta da conversa** interrompe a espera no cliente; o servidor pode já ter guardado trabalho. Reabrir/recarregar a conversa para conferir o estado antes de repetir. Este uso é opcional e não é uma tarefa de validação técnica tua.
 
 ## 7. O que comunicar depois do teu teste
 

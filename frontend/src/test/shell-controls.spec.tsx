@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ThemeProvider } from '../shared/hooks/use-theme';
 import { SessionProvider } from '../shared/hooks/use-session';
@@ -83,4 +83,20 @@ it('prevents the browser default only for the complete focus shortcut', () => {
   expect(window.dispatchEvent(shortcut)).toBe(false); expect(focus).toHaveBeenCalledTimes(1);
   expect(window.dispatchEvent(new KeyboardEvent('keydown', { key: 'f', ctrlKey: true, cancelable: true }))).toBe(true);
   expect(focus).toHaveBeenCalledTimes(1);
+});
+
+it('moves contextual tools between desktop and mobile after a real media change and releases its subscription', () => {
+  const media = Object.assign(new EventTarget(), { matches: false });
+  const remove = vi.spyOn(media, 'removeEventListener');
+  vi.stubGlobal('matchMedia', vi.fn((query: string) => query === '(max-width: 1023px)' ? media : { matches: false }));
+  const view = render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} isContextOpen contextPanel={<p>Contextual resize tools</p>}>Reader</AppShell>));
+  expect(within(screen.getByRole('complementary')).getByText('Contextual resize tools')).toBeInTheDocument();
+  const change = (matches: boolean) => {
+    media.matches = matches; const event = new Event('change'); Object.defineProperty(event, 'matches', { value: matches });
+    act(() => { media.dispatchEvent(event); });
+  };
+  change(true); expect(within(screen.getByRole('dialog')).getByText('Contextual resize tools')).toBeInTheDocument();
+  change(false); expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(within(screen.getByRole('complementary')).getByText('Contextual resize tools')).toBeInTheDocument();
+  view.unmount(); expect(remove).toHaveBeenCalledWith('change', expect.any(Function));
 });

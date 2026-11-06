@@ -16,7 +16,7 @@ import { request } from '../../shared/api/http-client';
 
 export function SourcesView() {
   const [sources, setSources] = useState<HistoricalSource[]>([]);
-  const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
+  const [selectedSourceId, setSelectedSourceId] = useState('');
   const [excerpts, setExcerpts] = useState<SourceExcerptDto[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +34,7 @@ export function SourcesView() {
       .then((res) => {
         if (active) {
           setSources(res.sources);
-          if (res.sources.length > 0) setSelectedSourceId(previous => previous ?? res.sources[0].id);
+          if (res.sources.length > 0) setSelectedSourceId(previous => previous || res.sources[0].id);
           setLoading(false);
         }
       })
@@ -112,7 +112,7 @@ export function SourcesView() {
           <div className="space-y-[2rem]">
             <div className="space-y-[0.5rem] font-ui text-[0.85rem]">
               <label htmlFor="historical-source">Fonte histórica</label>
-              <select id="historical-source" className="w-full border border-[var(--border)] bg-[var(--surface)] rounded-[var(--radius-sm)] p-[0.5rem]" value={selectedSourceId ?? ''} onChange={event => { setSelectedSourceId(event.target.value); setSearchQuery(''); }}>
+              <select id="historical-source" className="w-full border border-[var(--border)] bg-[var(--surface)] rounded-[var(--radius-sm)] p-[0.5rem]" value={selectedSourceId} onChange={event => { setSelectedSourceId(event.target.value); setSearchQuery(''); }}>
                 {sources.map(source => <option key={source.id} value={source.id}>{source.title} · {source.id}</option>)}
               </select>
             </div>

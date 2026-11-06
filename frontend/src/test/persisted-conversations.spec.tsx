@@ -45,8 +45,16 @@ function mount() {
   return render(<QueryClientProvider client={client}><ToastProvider><ContextPanel activeStudyId={studyId} activeStudyVersion={3} /></ToastProvider></QueryClientProvider>);
 }
 async function openConversation() {
-  mount(); fireEvent.click(await screen.findByRole('button', { name: /Abrir conversa 1/i }));
+  mount(); const open = await screen.findByRole('button', { name: /Abrir conversa 1/i });
+  expect(open).toHaveAttribute('aria-pressed', 'false'); fireEvent.click(open);
   await screen.findByText('Pergunta técnica guardada');
+  expect(open).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.queryByText('A carregar conversas…')).not.toBeInTheDocument();
+  expect(screen.queryByText('A carregar a conversa…')).not.toBeInTheDocument();
+  expect(screen.queryByText('Ainda não há conversas guardadas.')).not.toBeInTheDocument();
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Nova conversa' })).toBeEnabled();
+  if (detail.revision < 20) expect(screen.getByLabelText('Pergunta na conversa')).toBeEnabled();
 }
 async function send() {
   fireEvent.change(screen.getByLabelText('Pergunta na conversa'), { target: { value: 'Próxima pergunta técnica' } });
@@ -66,6 +74,8 @@ it('creates on explicit action with the selected study version and appends using
   const append = calls().find(call => call.path.endsWith('/turns'));
   expect(JSON.parse(String(append?.options?.body))).toEqual({ expectedRevision: 0, question: 'Próxima pergunta técnica' });
   expect(append?.options?.signal).toBeInstanceOf(AbortSignal);
+  await screen.findByText('Turno guardado.');
+  expect(screen.getByText('Conversa criada.')).toBeInTheDocument();
 });
 it('pages conversation summaries using the server cursor and allows returning', async () => {
   mount(); await screen.findByRole('button', { name: /Abrir conversa 1/i });
@@ -105,15 +115,66 @@ it('does not append beyond twenty turns and deletes only after confirmation', as
   expect(calls().filter(call => call.options?.method === 'DELETE')).toHaveLength(0);
   fireEvent.click(screen.getByRole('button', { name: 'Confirmar eliminação da conversa' }));
   await waitFor(() => expect(calls().some(call => call.options?.method === 'DELETE' && call.path === `/api/conversations/${conversationId}`)).toBe(true));
+  await screen.findByText('Conversa eliminada.');
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(screen.queryByText(/Limite de 20 turnos/)).not.toBeInTheDocument();
 });
 
 it.each(['supported', 'insufficient-evidence', 'restricted'] as const)('reopens persisted %s responses with their actual limitations', async status => {
   detail = { ...detail, turns: [{ ...unavailableTurn, responseStatus: 'available', analysis: analysisFixture({ status, evidence: status === 'supported' ? analysisFixture().evidence : [] }) }] };
   await openConversation(); expect(screen.getByText('Apenas corpus admitido de teste.')).toBeInTheDocument();
   if (status === 'supported') {
+    expect(screen.getByText('Evidência documentada')).toBeInTheDocument();
     expect(screen.getByText(quote)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: evidence.rightsStatement })).toHaveAttribute('href', evidence.rightsUrl);
   } else expect(screen.getByText(status === 'restricted' ? 'Fonte restrita' : 'Evidência insuficiente')).toBeInTheDocument();
+});
+it('cancels and dismisses conversation deletion without writing, including Escape', async () => {
+  await openConversation();
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar conversa' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar conversa' }));
+  fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  expect(calls().filter(call => call.options?.method === 'DELETE')).toHaveLength(0);
+});
+it('blocks duplicate pending turns and submits exactly the trimmed UTF8 boundary', async () => {
+  deferAppend = true; await openConversation();
+  const input = screen.getByLabelText('Pergunta na conversa'), form = input.closest('form')!;
+  fireEvent.change(input, { target: { value: '   ' } }); fireEvent.submit(form);
+  fireEvent.change(input, { target: { value: 'á'.repeat(251) } }); fireEvent.submit(form);
+  expect(calls().filter(call => call.path.endsWith('/turns'))).toHaveLength(0);
+  fireEvent.change(input, { target: { value: ` ${'á'.repeat(250)} ` } });
+  const event = new Event('submit', { cancelable: true, bubbles: true }); fireEvent(form, event); expect(event.defaultPrevented).toBe(true);
+  await waitFor(() => expect(appendDeferred).toBeDefined());
+  expect(input).toBeDisabled(); expect(screen.getByRole('button', { name: 'Nova conversa' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Eliminar conversa' })).toBeDisabled();
+  fireEvent.submit(form); expect(calls().filter(call => call.path.endsWith('/turns'))).toHaveLength(1);
+  expect(JSON.parse(String(calls().find(call => call.path.endsWith('/turns'))?.options?.body))).toEqual({ expectedRevision: 1, question: 'á'.repeat(250) });
+  await act(async () => appendDeferred?.(Response.json({ ...detail, revision: 2 })));
+  await screen.findByText('Turno guardado.'); expect(input).toHaveValue(''); expect(input).toBeEnabled();
+});
+it('shows an empty conversation list explicitly without displaying an idle loading message', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => String(url).includes('/workspace/') ? Response.json({ items: [], nextCursor: null }) : original(url, options));
+  mount(); await screen.findByText('Ainda não há conversas guardadas.');
+  expect(screen.queryByText('A carregar conversas…')).not.toBeInTheDocument();
+  expect(screen.queryByText('A carregar a conversa…')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Pergunta na conversa')).not.toBeInTheDocument();
+});
+it('keeps deletion confirmation open while the server is still deleting', async () => {
+  await openConversation(); const original = vi.mocked(fetch).getMockImplementation()!;
+  let complete!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation((url, options) => options?.method === 'DELETE' ? new Promise<Response>(resolve => { complete = resolve; }) : original(url, options));
+  fireEvent.click(screen.getByRole('button', { name: 'Eliminar conversa' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Confirmar eliminação da conversa' }));
+  await waitFor(() => expect(complete).toBeDefined());
+  fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Cancelar' })).toBeDisabled();
+  await act(async () => complete(new Response(null, { status: 204 })));
+  await screen.findByText('Conversa eliminada.'); expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 it('recovers from list and detail failures through explicit reload controls', async () => {
   listStatus = 503; mount(); const reload = await screen.findByRole('button', { name: 'Recarregar conversas' });

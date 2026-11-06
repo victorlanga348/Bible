@@ -4,6 +4,7 @@ import { SourcesView } from '../features/sources/sources-view';
 import { source } from './fixtures/josephus-pg2848/manifest.json';
 import { source as aiSource } from './fixtures/josephus-pg2848/ai-manifest.json';
 import excerpts from './fixtures/josephus-pg2848/excerpts.json';
+import { api } from '../shared/api/services';
 
 // Transport doubles, authentic versioned copies of backend Josephus test fixtures.
 let failCatalogue = false, failExcerpts = false, empty = false;
@@ -18,7 +19,7 @@ beforeEach(() => {
       : Response.json({ excerpts: parsed.searchParams.get('q') ? [] : excerpts });
   }));
 });
-afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 it('shows authentic provenance and opens the excerpt for keyboard readers', async () => {
   render(<SourcesView />);
   await screen.findByText(source.rightsStatement);
@@ -55,4 +56,17 @@ it('shows catalogue errors and genuinely empty catalogues honestly', async () =>
   failCatalogue = true; const view = render(<SourcesView />); await screen.findByText('Catálogo indisponível.');
   view.unmount(); failCatalogue = false; empty = true; render(<SourcesView />);
   await screen.findByText('Nenhuma fonte histórica cadastrada no banco.');
+});
+it('uses the catalogue error fallback when the dependency provides no message', async () => {
+  vi.spyOn(api, 'sources').mockRejectedValue(new Error(''));
+  render(<SourcesView />); await screen.findByText('Erro ao carregar o catálogo de fontes.');
+  expect(screen.queryByRole('combobox', { name: 'Fonte histórica' })).not.toBeInTheDocument();
+});
+it('handles missing translator metadata without changing admitted quotation or rights', async () => {
+  // A deliberately absent optional transport field, not an admission of another edition.
+  const incomplete = { ...source, translator: undefined };
+  vi.spyOn(api, 'sources').mockResolvedValue({ sources: [incomplete] });
+  render(<SourcesView />); await screen.findByText('Original');
+  expect(screen.getByText(source.rightsStatement)).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: `Ler trecho ${excerpts[0].locator}` })).toBeInTheDocument();
 });

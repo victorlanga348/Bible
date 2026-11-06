@@ -1,9 +1,10 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ReaderView } from '../features/canon/reader-view';
 import { ToastProvider } from '../shared/ui/toast';
 import { reference, studyFixture } from './workflow-fixtures';
+import { ReadingPreferences } from '../features/canon/reading-preferences';
 
 // HTTP double with authentic verse excerpts copied from admitted porbr2018 test fixtures.
 const john = [
@@ -28,10 +29,10 @@ beforeEach(() => {
   }));
 });
 afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); });
-function mount() {
+function mount(targetReference?: string) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } }); clients.push(client);
   const study = vi.fn(), focus = vi.fn();
-  render(<QueryClientProvider client={client}><ToastProvider><ReaderView onSelectPassageForStudy={study} onToggleFocusMode={focus} /></ToastProvider></QueryClientProvider>);
+  render(<QueryClientProvider client={client}><ToastProvider><ReaderView targetReference={targetReference} onSelectPassageForStudy={study} onToggleFocusMode={focus} /></ToastProvider></QueryClientProvider>);
   return { study, focus };
 }
 it('changes books, chapters, next and previous using actual navigation metadata', async () => {
@@ -54,10 +55,34 @@ it('resolves a range, copies its authentic text with attribution, and studies th
   fireEvent.click(screen.getByRole('button', { name: 'Copiar' }));
   await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expect.stringContaining(john[0].text)));
   expect(vi.mocked(navigator.clipboard.writeText).mock.calls[0][0]).toContain('Bíblia Livre');
+  expect(vi.mocked(navigator.clipboard.writeText).mock.calls[0][0]).toBe(`João 3:16,17\n16. ${john[0].text}\n17. ${john[1].text}\n(Bíblia Livre — porbr2018)`);
+  await screen.findByText('Versículos copiados com atribuição canônica.');
+  await act(async () => { await new Promise(resolve => setTimeout(resolve, 2050)); });
+  expect(screen.getByRole('button', { name: 'Copiar' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Estudar Passagem' })); expect(study).toHaveBeenCalledWith('JHN 3:16-17');
   fireEvent.keyDown(screen.getByRole('button', { name: /Versículo 16/ }), { key: ' ' });
   fireEvent.click(screen.getByRole('button', { name: 'Estudar Passagem' })); expect(study).toHaveBeenLastCalledWith('JHN 3:17');
   expect(search).toHaveValue('');
+});
+it('supports a single resolved verse, chapter-only searches and stable sorted selections', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!; let bounds: { fromVerse?: number; toVerse?: number } = { fromVerse: 17 };
+  vi.mocked(fetch).mockImplementation(async (url, options) => String(url).endsWith('/references/resolve')
+    ? Response.json({ translationId: 'porbr2018', bookCode: 'JHN', chapter: 3, normalized: 'JHN 3:17', ...bounds }) : original(url, options));
+  const { study } = mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
+  const search = screen.getByPlaceholderText(/Ir para passagem/);
+  const resolve = () => { fireEvent.change(search, { target: { value: 'Jo 3:17' } }); fireEvent.submit(search.closest('form')!); };
+  resolve(); await screen.findByText('1 versículo selecionado');
+  fireEvent.click(await screen.findByRole('button', { name: /Versículo 16/ }));
+  fireEvent.click(screen.getByRole('button', { name: 'Estudar Passagem' })); expect(study).toHaveBeenLastCalledWith('JHN 3:16-17');
+  bounds = {}; resolve(); await waitFor(() => expect(screen.queryByText(/versículos? selecionad/)).not.toBeInTheDocument());
+  expect(screen.queryByRole('button', { name: 'Copiar' })).not.toBeInTheDocument();
+  const first = screen.getByRole('button', { name: /Versículo 16/ });
+  fireEvent.keyDown(first, { key: 'a' }); expect(first).toHaveAttribute('aria-pressed', 'false');
+});
+it('offers restoring the reader when focus mode is already enabled', () => {
+  const toggle = vi.fn(); render(<ReadingPreferences fontSize="md" readerWidth="normal" isFocusMode onToggleFocusMode={toggle} onFontSizeChange={vi.fn()} onReaderWidthChange={vi.fn()} />);
+  fireEvent.click(screen.getByTitle('Sair do Modo Foco (Esc)')); expect(toggle).toHaveBeenCalledOnce();
+  expect(screen.getByText('Restaurar')).toBeInTheDocument(); expect(screen.queryByText('Modo Foco')).not.toBeInTheDocument();
 });
 it('ignores blank search and recovers from invalid references without changing passage', async () => {
   mount(); await screen.findByRole('heading', { name: 'Gênesis 1' });
@@ -81,4 +106,11 @@ it('reports API read errors instead of rendering invented scripture', async () =
   failPassage = true; mount(); await screen.findByText('Erro ao Carregar o Texto Bíblico');
   expect(screen.getByText('Leitura indisponível.')).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /Versículo 1/ })).not.toBeInTheDocument();
+});
+
+it('lets a cross-reference navigation recover after reference resolution fails', async () => {
+  failSearch = true; mount('JHN 3:16-17'); const retry = await screen.findByRole('button', { name: 'Tentar novamente' });
+  expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+  failSearch = false; fireEvent.click(retry); await screen.findByRole('heading', { name: 'João 3' });
+  expect(screen.getByText('2 versículos selecionados')).toBeInTheDocument();
 });

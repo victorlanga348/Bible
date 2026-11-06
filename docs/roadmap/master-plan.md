@@ -1,5 +1,7 @@
 # Plano mestre — Backend S00–S08
 
+Âmbito deste documento: ciclo backend original. Estado global2026-11-06: frontend S09 entregue e integração [S10-T006](../sprints/S10/T006_TEST_REPORT.md) IN_PROGRESS; consultar o [índice de sprints](../sprints/README.md). As referências a frontend adiado abaixo pertencem ao plano original, sem reabrir tarefas já concluídas.
+
 Estado2026-10-29: S00–S07 DONE; S08 DONE técnico/[fecho S08](../sprints/S08/T007_COMPLETION_REPORT.md), sem release pública presumida. Notas anteriores históricas.
 
 Atualização2026-10-26: S04 encerrada sob autorização integral, T004–T007 DONE; provas reais e CI40338249693/fontes atuais conferidas,907 testes e mutação global90,69%/própria87,71%. S05–S08 permanecem pendentes e autorizadas, sem IA já instalada por preparação. [Revisão S04](../sprints/S04/REVIEW.md). Notas anteriores de aprovação/execução abaixo são históricas.

@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ContextPanel } from '../features/assistant/context-panel';
@@ -31,12 +31,18 @@ it('shows the authentic quotation, rights, limits and provenance for a supported
   expect(screen.getByRole('link', { name: evidence.rightsStatement })).toHaveAttribute('href', evidence.rightsUrl);
   expect(screen.getByText('Apenas corpus admitido de teste.')).toBeInTheDocument();
   expect(screen.getByText('5 tokens')).toBeInTheDocument();
+  expect(screen.getByRole('status', { name: 'Estado do assistente' })).toHaveTextContent('Última análise: Evidência documentada.');
+  expect(screen.queryByText(/Executando busca vetorial e inferência CPU local\.\.\./)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Nenhuma pergunta realizada/)).not.toBeInTheDocument();
+  expect(screen.getByText(new Date(response.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }))).toBeInTheDocument();
 });
 it('distinguishes a restricted source from insufficient evidence without showing a quotation', async () => {
   response = analysisFixture({ status: 'restricted', evidence: [] }); mount(); send();
   await screen.findByText('Análise de IA concluída.');
   expect(screen.getByText('Fonte restrita')).toBeInTheDocument();
   expect(screen.queryByText(`"${quote}"`)).not.toBeInTheDocument();
+  expect(screen.getByText('O acesso à fonte está restrito; o conteúdo não é apresentado.')).toBeInTheDocument();
+  expect(screen.getByRole('status', { name: 'Estado do assistente' })).toHaveTextContent('Última análise: Fonte restrita.');
 });
 it('retains the question on technical failure and allows a successful retry', async () => {
   failing = true; mount(); send(); await screen.findByText('Erro no assistente de IA');
@@ -58,4 +64,43 @@ it('requires a study and supports tab keyboard navigation', async () => {
   fireEvent.keyDown(document.activeElement!, { key: 'End' }); expect(screen.getByRole('tab', { name: 'Referências' })).toHaveAttribute('aria-selected', 'true');
   fireEvent.keyDown(document.activeElement!, { key: 'Home' }); expect(assistant).toHaveFocus();
   fireEvent.keyDown(assistant, { key: 'ArrowLeft' }); expect(screen.getByRole('tab', { name: 'Referências' })).toHaveFocus();
+  fireEvent.keyDown(document.activeElement!, { key: 'Tab' });
+  expect(screen.getByRole('tab', { name: 'Referências' })).toHaveFocus();
+  fireEvent.click(assistant);
+  expect(screen.getByRole('tabpanel')).toHaveAttribute('id', 'panel-assistant');
+  for (const tab of screen.getAllByRole('tab')) expect(tab).toHaveAttribute('tabindex', tab === assistant ? '0' : '-1');
+  fireEvent.click(screen.getByRole('tab', { name: 'Anotações' }));
+  for (const tab of screen.getAllByRole('tab')) expect(tab).toHaveAttribute('tabindex', tab.textContent === 'Anotações' ? '0' : '-1');
+  fireEvent.click(screen.getByRole('tab', { name: 'Referências' }));
+  for (const tab of screen.getAllByRole('tab')) expect(tab).toHaveAttribute('tabindex', tab.textContent === 'Referências' ? '0' : '-1');
+});
+it('reports insufficient evidence honestly even if an unavailable quote accompanies the response', async () => {
+  response = analysisFixture({ status: 'insufficient-evidence' }); mount(); send();
+  await screen.findByText('Análise de IA concluída.');
+  expect(screen.getByRole('status', { name: 'Estado do assistente' })).toHaveTextContent('Última análise: Evidência insuficiente.');
+  expect(screen.getByText('Evidência Insuficiente')).toBeInTheDocument();
+  expect(screen.getByText(/Não foi encontrada evidência documental/)).toBeInTheDocument();
+  expect(screen.queryByText(`"${quote}"`)).not.toBeInTheDocument();
+  expect(screen.queryByText('Fonte restrita')).not.toBeInTheDocument();
+});
+it('accepts exactly 500 trimmed UTF8 bytes and exposes pending state without duplicate writes', async () => {
+  let finish!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation(async (url: RequestInfo | URL) => String(url).endsWith('/ai-analyses') ? new Promise<Response>(resolve => { finish = resolve; }) : Response.json({ items: [], nextCursor: null }));
+  mount(); const input = screen.getByLabelText('Pergunta investigativa');
+  expect(screen.getByRole('status', { name: 'Estado do assistente' })).toHaveTextContent('');
+  expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+  send('   '); expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();
+  send(` ${'á'.repeat(250)} `);
+  await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith('/ai-analyses'))).toBe(true));
+  expect(input).toBeDisabled();
+  expect(screen.getByRole('status', { name: 'Estado do assistente' })).toHaveTextContent('Executando busca vetorial e inferência CPU local.');
+  expect(screen.getByText('Executando busca vetorial e inferência CPU local...')).toBeInTheDocument();
+  fireEvent.submit(input.closest('form')!);
+  expect(vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/ai-analyses'))).toHaveLength(1);
+  const request = vi.mocked(fetch).mock.calls.find(([url]) => String(url).endsWith('/ai-analyses'));
+  expect(JSON.parse(String(request?.[1]?.body))).toEqual({ studyVersion: 3, question: 'á'.repeat(250) });
+  await act(async () => finish(Response.json(response)));
+  await screen.findByText('Análise de IA concluída.');
+  expect(input).toHaveValue(''); expect(input).toBeEnabled();
+  expect(screen.queryByRole('button', { name: 'Cancelar inferência' })).not.toBeInTheDocument();
 });
