@@ -1,6 +1,6 @@
 # S10 — Revisão
 
-Estado: DONE 2026-10-31. Tarefas T001 a T005 encerradas em [TASKS](TASKS.md).
+Estado atual: IN_PROGRESS 2026-11-06, S10-T006. [Plano](T006_REVIEW_PLAN.md), [evidências correntes](T006_TEST_REPORT.md), [guia do utilizador](../../operations/USER_ACTIONS.md). A revisão abaixo é histórica; as suas afirmações de sete gates globais e IA não se transferem para o código atual. CI publicada41212501938 falhou em mutação; primeira cobertura global desta retoma78,58%/74,28% FAIL. Fecho depende dos gates globais e integrações reais atuais.
 
 ### 1. Revisão por Tarefa
 - **T001 (Comunicação & Leitura)**: Implementado `/api` same-origin via proxy Vite local. 97 testes PASS, cobertura de transporte 100% linhas / 99.04% branches, mutação 93.33% com 13 sobreviventes revistos em [T001_MUTATION_REVIEW](T001_MUTATION_REVIEW.md).

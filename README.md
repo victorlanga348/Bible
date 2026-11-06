@@ -1,5 +1,7 @@
 # Bíblia App
 
+Atualização2026-11-06: revisão [S10-T006](docs/sprints/S10/T006_REVIEW_PLAN.md) em execução, com Codex a coordenar agy. [Tudo o que o utilizador tem de fazer, passo a passo](docs/operations/USER_ACTIONS.md). [Resultados reais e pendências](docs/sprints/S10/T006_TEST_REPORT.md). As declarações antigas de conclusão não aprovam esta revisão nem a cobertura/mutação global do frontend; Google pessoal continua adiado.
+
 Trabalho atual2026-10-30: [S10 — integração da aplicação](docs/sprints/S10/README.md), branch nova `feat/biblia-integracao` criada por pedido do utilizador. Frontend/backend/main preservadas. Leitura pela interface e API real já comprovada; sessão Google integrada, percursos privados e ampliação de IA seguem tarefas próprias. O estado/gates atuais estão em [S10](docs/sprints/S10/TEST_REPORT.md); restante texto guarda a release anterior e não comprova os incrementos novos.
 
 Atualização2026-10-30: incremento [S08-T008 Google Sign-In](docs/sprints/S08/tasks/S08-T008-google-login.md) em validação, solicitado após o fecho local. Client ID existente agora é consumido; confirmação real com a conta Google fica pendente porque o utilizador optou por testar depois. Release anterior e suas métricas abaixo permanecem históricas.

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { useBooks, usePassage } from '../../shared/api/hooks';
+import { useBooks, usePassage, useResolvedReference } from '../../shared/api/hooks';
+import type { ResolvedReferenceDto } from '../../shared/api/contracts';
 import { VerseSkeleton } from '../../shared/ui/skeleton';
 import { Button } from '../../shared/ui/button';
 import { ChevronLeft, ChevronRight, BookOpen, Sparkles, Copy, Check, Info } from 'lucide-react';
@@ -8,19 +9,28 @@ import { ReferenceSearch } from './reference-search';
 import { ReadingPreferences, type FontSizeOption, type ReaderWidthOption } from './reading-preferences';
 
 interface ReaderViewProps {
+  targetReference?: string;
   onSelectPassageForStudy?: (reference: string) => void;
   isFocusMode?: boolean;
   onToggleFocusMode?: () => void;
 }
 
-export function ReaderView({
+export function ReaderView(props: ReaderViewProps) {
+  const resolved = useResolvedReference(props.targetReference);
+  if (props.targetReference && resolved.isPending) return <p role="status" className="p-[1.5rem]">A abrir a passagem…</p>;
+  if (resolved.error) return <p role="alert" className="p-[1.5rem]">Não foi possível abrir a passagem. <button onClick={() => void resolved.refetch()}>Tentar novamente</button></p>;
+  return <ReaderContent key={resolved.data?.normalized ?? 'reader'} {...props} initialSelection={resolved.data} />;
+}
+
+function ReaderContent({
   onSelectPassageForStudy,
   isFocusMode = false,
   onToggleFocusMode,
-}: ReaderViewProps) {
-  const [selectedBook, setSelectedBook] = useState<string>('GEN');
-  const [selectedChapter, setSelectedChapter] = useState<number>(1);
-  const [selectedVerses, setSelectedVerses] = useState<number[]>([]);
+  initialSelection,
+}: ReaderViewProps & { initialSelection?: ResolvedReferenceDto }) {
+  const [selectedBook, setSelectedBook] = useState<string>(initialSelection?.bookCode ?? 'GEN');
+  const [selectedChapter, setSelectedChapter] = useState<number>(initialSelection?.chapter ?? 1);
+  const [selectedVerses, setSelectedVerses] = useState<number[]>(() => initialSelection ? Array.from({ length: initialSelection.toVerse - initialSelection.fromVerse + 1 }, (_, index) => initialSelection.fromVerse + index) : []);
   const [copied, setCopied] = useState<boolean>(false);
   const [fontSize, setFontSize] = useState<FontSizeOption>('md');
   const [readerWidth, setReaderWidth] = useState<ReaderWidthOption>('normal');
@@ -99,6 +109,7 @@ export function ReaderView({
         {/* Seletor Canônico com Agrupamento por Testamento */}
         <div className="flex items-center gap-[0.5rem] flex-wrap">
           <select
+            aria-label="Livro"
             value={selectedBook}
             onChange={(e) => {
               setSelectedBook(e.target.value);
@@ -132,6 +143,7 @@ export function ReaderView({
 
           {currentBookObj && (
             <select
+              aria-label="Capítulo"
               value={selectedChapter}
               onChange={(e) => {
                 setSelectedChapter(Number(e.target.value));
@@ -274,10 +286,15 @@ export function ReaderView({
                 return (
                   <p
                     key={v.number}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Versículo ${v.number}. ${v.text}`}
+                    aria-pressed={isSelected}
+                    onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleVerseSelection(v.number); } }}
                     onClick={() => toggleVerseSelection(v.number)}
                     className={`group relative rounded-[var(--radius-sm)] p-[0.35rem] transition-colors cursor-pointer select-text ${
                       isSelected
-                        ? 'bg-[var(--highlight)] text-[#141B1A] font-medium shadow-xs'
+                        ? 'bg-[var(--highlight)] text-[var(--foreground)] font-medium shadow-xs'
                         : 'hover:bg-[var(--surface-muted)]/50'
                     }`}
                   >

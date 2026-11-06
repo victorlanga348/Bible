@@ -25,19 +25,23 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import type { StudyEvidenceDto, StudyViewDto } from '../../shared/api/contracts';
+import { ApiError } from '../../shared/api/http-client';
 
 interface StudyViewProps {
   initialReference?: string;
   activeStudyId?: string;
-  onStudyChange?: (study: StudyViewDto) => void;
+  activeStudyVersion?: number;
+  onStudyChange?: (study: StudyViewDto | null) => void;
 }
 
-export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStudyChange }: StudyViewProps) {
+export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, activeStudyVersion, onStudyChange }: StudyViewProps) {
   const { token, isAuthenticated } = useSession();
   const { toast } = useToast();
   const [referenceInput, setReferenceInput] = useState<string>(initialReference);
   const [activeStudy, setActiveStudy] = useState<StudyViewDto | null>(null);
   const [selectedEvidence, setSelectedEvidence] = useState<StudyEvidenceDto | null>(null);
+  const [versionConflict, setVersionConflict] = useState(false);
+  const [readLatest, setReadLatest] = useState(false);
 
   const createStudyMutation = useCreateStudy();
   const reviseStudyMutation = useReviseStudy();
@@ -48,10 +52,14 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStu
   const {
     data: fetchedStudy,
     isLoading: loadingStudyDetail,
-  } = useStudy(studyIdToFetch, activeStudy?.version);
+    error: studyError,
+    refetch: reloadStudy,
+  } = useStudy(studyIdToFetch, readLatest ? undefined : activeStudy?.version ?? activeStudyVersion);
 
   const study = activeStudy || fetchedStudy;
   const lastReported = useRef<string | null>(null);
+  const generation = useRef(0);
+  useEffect(() => () => { generation.current++; }, []);
 
   useEffect(() => {
     if (study) {
@@ -82,33 +90,43 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStu
     }
 
     const trimmed = refStr.trim();
-    if (!trimmed) return;
+    if (!trimmed || createStudyMutation.isPending || reviseStudyMutation.isPending) return;
+    const requestGeneration = ++generation.current;
+    onStudyChange?.(null);
 
     try {
       const result = await createStudyMutation.mutateAsync({
         translationId: 'porbr2018',
         reference: trimmed,
       });
+      if (requestGeneration !== generation.current) return;
       setActiveStudy(result);
       onStudyChange?.(result);
       toast(`Estudo criado para ${result.reference.normalized}`, { type: 'success' });
     } catch (err: unknown) {
+      if (requestGeneration !== generation.current) return;
       const msg = err instanceof Error ? err.message : 'Falha ao processar o estudo.';
       toast('Erro ao gerar estudo', { description: msg, type: 'error' });
     }
   };
 
   const handleCreateNewVersion = async () => {
-    if (!study) return;
+    if (!study || reviseStudyMutation.isPending) return;
+    const requestGeneration = ++generation.current;
+    onStudyChange?.(null);
     try {
       const nextStudy = await reviseStudyMutation.mutateAsync({
         studyId: study.id,
         expectedVersion: study.version,
       });
+      if (requestGeneration !== generation.current) return;
       setActiveStudy(nextStudy);
+      setVersionConflict(false);
       onStudyChange?.(nextStudy);
       toast(`Versão ${nextStudy.version} criada para ${nextStudy.reference.normalized}`, { type: 'success' });
     } catch (err: unknown) {
+      if (requestGeneration !== generation.current) return;
+      if (err instanceof ApiError && err.status === 409) setVersionConflict(true);
       const msg = err instanceof Error ? err.message : 'Falha ao criar nova versão.';
       toast('Erro ao criar versão', { description: msg, type: 'error' });
     }
@@ -141,6 +159,8 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStu
           <div className="flex items-center gap-[0.5rem]">
             <Input
               value={referenceInput}
+              aria-label="Referência do estudo"
+              disabled={createStudyMutation.isPending}
               onChange={(e) => setReferenceInput(e.target.value)}
               placeholder="Ex: GEN 1:1-3, ROM 8:28"
               className="w-[12rem] h-[2.25rem] text-[0.825rem]"
@@ -160,12 +180,15 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, onStu
 
       {/* Conteúdo do Estudo */}
       <div className="flex-1 py-[1.5rem]">
+        {versionConflict && <div role="alert" className="pb-[1rem]"><p>O estudo foi alterado. Consulte a versão atual antes de criar outra versão.</p><Button size="sm" onClick={() => { setActiveStudy(null); setReadLatest(true); setVersionConflict(false); }}>Carregar versão atual</Button></div>}
         {createStudyMutation.isPending || loadingStudyDetail ? (
           <div className="space-y-[1.25rem]">
             <StudyCardSkeleton />
             <StudyCardSkeleton />
             <StudyCardSkeleton />
           </div>
+        ) : studyError && !activeStudy ? (
+          <div role="alert"><p>Não foi possível carregar o estudo.</p><Button onClick={() => void reloadStudy()}>Tentar carregar estudo</Button></div>
         ) : !isAuthenticated ? (
           <div className="p-[2rem] text-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] space-y-[1rem] my-[2rem]">
             <Compass className="w-[3rem] h-[3rem] mx-auto text-[var(--accent)] opacity-80" />

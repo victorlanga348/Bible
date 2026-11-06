@@ -7,5 +7,6 @@
 | S10-T003 | Estudos/workspace/assistente e percursos reais | DONE | T002 DONE; T003_WORKFLOWS_SPEC; T003_TEST_REPORT; cancelamento AbortSignal; propagação estudo ativo; CAS workspace; 184 testes frontend PASS; 1453 testes backend PASS |
 | S10-T004 | Ampliação local viável de geração e fontes | DONE | T003 DONE; T004_AI_SPEC; T004_TEST_REPORT; perfil local-extractive-v1; proveniência Josefo autêntica; abstenção estrita comprovada |
 | S10-T005 | Gates, revisão e publicação da branch | DONE | T001–T004 DONE; sete quality gates conferidos; auditoria check-completion-docs PASS; revisão final em REVIEW.md |
+| S10-T006 | Vistoria conjunta e conclusão verificável | IN_PROGRESS | Pedido 2026-10-31; [plano e diagnóstico](T006_REVIEW_PLAN.md); corrigir lacunas da adenda T003 e comprovar gates globais atuais |
 
 Uma tarefa de cada vez. Priorizar integração existente antes de alterar IA. Falha de infraestrutura não é RED e nenhuma ausência de prova se torna PASS.

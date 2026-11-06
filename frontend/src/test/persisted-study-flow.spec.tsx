@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { AppContent } from '../App';
@@ -59,6 +59,19 @@ it('creates a new version with the saved version as CAS precondition and updates
   const request = calls().find(call => call.path.endsWith('/versions'));
   expect(request?.options?.method).toBe('POST'); expect(JSON.parse(String(request?.options?.body))).toEqual({ expectedVersion: 3 });
 });
+it('requests the saved version explicitly even when the server has a newer version', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => {
+    const parsed = new URL(String(url));
+    if (parsed.pathname === `/api/studies/${studyId}`) return Response.json(studyFixture({ version: parsed.searchParams.get('version') === '3' ? 3 : 4 }));
+    return original(url, options);
+  });
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`));
+  expect(await screen.findByText('Versão 3')).toBeInTheDocument();
+  expect(vi.mocked(fetch).mock.calls.some(([url]) => new URL(String(url)).searchParams.get('version') === '3')).toBe(true);
+});
 it('writes a note against the selected version instead of silently using version one', async () => {
   mount(<HistoryView />); fireEvent.click(screen.getByRole('button', { name: 'Anotações Pessoais' }));
   await screen.findByRole('option', { name: 'GEN 1:1 (v3)' });
@@ -85,4 +98,40 @@ it('clears active study when a new passage is started from the reader and update
   fireEvent.click(screen.getByText('Start selected passage'));
   await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
   expect(await screen.findByDisplayValue('GEN 1:1')).toBeInTheDocument();
+});
+
+it('clears the assistant when the active study is deleted from the workspace', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => options?.method === 'DELETE' ? new Response(null, { status: 204 }) : original(url, options));
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`));
+  fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Excluir estudo' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Excluir definitivamente' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
+});
+
+it('does not connect a saved selection whose actual GET fails', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation(async (url, options) => new URL(String(url)).pathname === `/api/studies/${studyId}`
+    ? Response.json({ error: { code: 'STUDY_NOT_FOUND', message: 'Estudo indisponível.' } }, { status: 404 }) : original(url, options));
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await screen.findByRole('button', { name: /Gerar Estudo/i });
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
+});
+
+it('disconnects the old assistant while another study is being created', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let complete: (response: Response) => void = () => {};
+  vi.mocked(fetch).mockImplementation(async (url, options) => new URL(String(url)).pathname === '/api/studies' && options?.method === 'POST'
+    ? new Promise<Response>(resolve => { complete = resolve; }) : original(url, options));
+  mount(); fireEvent.click(screen.getByRole('button', { name: 'Histórico & Workspace' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Abrir' }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${studyId}:3`));
+  fireEvent.click(screen.getByRole('button', { name: /Gerar Estudo/i }));
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent('none'));
+  await act(async () => { complete(Response.json(studyFixture({ id: secondStudyId, version: 1 }))); });
+  await waitFor(() => expect(screen.getByTestId('active-context')).toHaveTextContent(`${secondStudyId}:1`));
 });

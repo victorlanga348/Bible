@@ -15,12 +15,15 @@ export function AppContent() {
   const [activeTab, setActiveTab] = useState<NavTab>('reader');
   const [activeStudyReference, setActiveStudyReference] = useState<string>('GEN 1:1-3');
   const [activeStudy, setActiveStudy] = useState<{ id: string; version: number } | null>(null);
-  const [isContextOpen, setIsContextOpen] = useState<boolean>(true);
+  const [selectedStudy, setSelectedStudy] = useState<{ id: string; version: number } | null>(null);
+  const [readerTarget, setReaderTarget] = useState<string>();
+  const [isContextOpen, setIsContextOpen] = useState(() => !window.matchMedia('(max-width: 1023px)').matches);
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
 
   const handleStudyPassage = useCallback((refStr: string) => {
     setActiveStudyReference(refStr);
     setActiveStudy(null);
+    setSelectedStudy(null);
     setActiveTab('study');
   }, []);
 
@@ -28,22 +31,27 @@ export function AppContent() {
     if (typeof studyItem === 'string') {
       setActiveStudyReference(studyItem);
       setActiveStudy(null);
+      setSelectedStudy(null);
     } else {
       setActiveStudyReference(studyItem.reference.normalized);
-      setActiveStudy({ id: studyItem.id, version: studyItem.version });
+      setSelectedStudy({ id: studyItem.id, version: studyItem.version });
+      setActiveStudy(null);
     }
     setActiveTab('study');
   }, []);
 
-  const handleStudyChange = useCallback((s: import('./shared/api/contracts').StudyViewDto) => {
+  const handleStudyChange = useCallback((s: import('./shared/api/contracts').StudyViewDto | null) => {
+    if (!s) { setActiveStudy(null); return; }
     setActiveStudy({ id: s.id, version: s.version });
+    setSelectedStudy({ id: s.id, version: s.version });
     if (s.reference?.normalized) {
       setActiveStudyReference(s.reference.normalized);
     }
   }, []);
 
   const handleNavigatePassage = useCallback((refStr: string) => {
-    setActiveStudyReference(refStr);
+    setReaderTarget(refStr);
+    if (window.matchMedia('(max-width: 1023px)').matches) setIsContextOpen(false);
     setActiveTab('reader');
   }, []);
 
@@ -70,6 +78,7 @@ export function AppContent() {
     >
       {activeTab === 'reader' && (
         <ReaderView
+          targetReference={readerTarget}
           onSelectPassageForStudy={handleStudyPassage}
           isFocusMode={isFocusMode}
           onToggleFocusMode={toggleFocusMode}
@@ -77,14 +86,18 @@ export function AppContent() {
       )}
       {activeTab === 'study' && (
         <StudyView
+          key={selectedStudy?.id ?? activeStudyReference}
           initialReference={activeStudyReference}
-          activeStudyId={activeStudy?.id}
+          activeStudyId={selectedStudy?.id}
+          activeStudyVersion={selectedStudy?.version}
           onStudyChange={handleStudyChange}
         />
       )}
       {activeTab === 'sources' && <SourcesView />}
       {activeTab === 'history' && (
-        <HistoryView onOpenStudy={handleOpenStudy} />
+        <HistoryView onOpenStudy={handleOpenStudy} onStudyDeleted={id => {
+          if (selectedStudy?.id === id) { setActiveStudy(null); setSelectedStudy(null); }
+        }} />
       )}
     </AppShell>
   );

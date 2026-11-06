@@ -23,6 +23,8 @@ export function SourcesView() {
   const [loadingExcerpts, setLoadingExcerpts] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [activeExcerpt, setActiveExcerpt] = useState<SourceExcerptDto | null>(null);
+  const [excerptError, setExcerptError] = useState(false);
+  const [excerptRetry, setExcerptRetry] = useState(0);
 
   // Carrega catálogo de fontes
   useEffect(() => {
@@ -32,9 +34,7 @@ export function SourcesView() {
       .then((res) => {
         if (active) {
           setSources(res.sources);
-          if (res.sources.length > 0 && !selectedSourceId) {
-            setSelectedSourceId(res.sources[0].id);
-          }
+          if (res.sources.length > 0) setSelectedSourceId(previous => previous ?? res.sources[0].id);
           setLoading(false);
         }
       })
@@ -54,6 +54,7 @@ export function SourcesView() {
     if (!selectedSourceId) return;
     let active = true;
     setLoadingExcerpts(true);
+    setExcerptError(false);
 
     request<{ excerpts: SourceExcerptDto[] }>(`/sources/${selectedSourceId}/excerpts`, {
       params: { q: searchQuery.trim() || undefined, limit: 20 },
@@ -67,6 +68,7 @@ export function SourcesView() {
       .catch(() => {
         if (active) {
           setExcerpts([]);
+          setExcerptError(true);
           setLoadingExcerpts(false);
         }
       });
@@ -74,7 +76,7 @@ export function SourcesView() {
     return () => {
       active = false;
     };
-  }, [selectedSourceId, searchQuery]);
+  }, [selectedSourceId, searchQuery, excerptRetry]);
 
   const activeSource = sources.find((s) => s.id === selectedSourceId);
 
@@ -108,6 +110,12 @@ export function SourcesView() {
           </div>
         ) : (
           <div className="space-y-[2rem]">
+            <div className="space-y-[0.5rem] font-ui text-[0.85rem]">
+              <label htmlFor="historical-source">Fonte histórica</label>
+              <select id="historical-source" className="w-full border border-[var(--border)] bg-[var(--surface)] rounded-[var(--radius-sm)] p-[0.5rem]" value={selectedSourceId ?? ''} onChange={event => { setSelectedSourceId(event.target.value); setSearchQuery(''); }}>
+                {sources.map(source => <option key={source.id} value={source.id}>{source.title} · {source.id}</option>)}
+              </select>
+            </div>
             {/* Cartão de Detalhe da Obra */}
             {activeSource && (
               <article className="p-[1.5rem] rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] space-y-[1rem] shadow-xs">
@@ -187,6 +195,8 @@ export function SourcesView() {
                   <Skeleton className="w-full h-[4rem]" />
                   <Skeleton className="w-full h-[4rem]" />
                 </div>
+              ) : excerptError ? (
+                <div role="alert"><p>Não foi possível carregar os trechos.</p><button type="button" className="underline" onClick={() => setExcerptRetry(value => value + 1)}>Tentar carregar trechos</button></div>
               ) : excerpts.length === 0 ? (
                 <div className="p-[2rem] text-center border border-[var(--border)] rounded-[var(--radius-md)] bg-[var(--surface)] text-[var(--foreground-muted)] font-ui text-[0.85rem]">
                   Nenhum trecho encontrado para a busca especificada.
@@ -194,10 +204,12 @@ export function SourcesView() {
               ) : (
                 <div className="grid gap-[0.75rem]">
                   {excerpts.map((ex) => (
-                    <div
+                    <button
                       key={ex.id}
+                      type="button"
+                      aria-label={`Ler trecho ${ex.locator}`}
                       onClick={() => setActiveExcerpt(ex)}
-                      className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)]/60 transition-all cursor-pointer space-y-[0.35rem]"
+                      className="w-full text-left p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)]/60 transition-all cursor-pointer space-y-[0.35rem]"
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-ui font-medium text-[0.85rem] text-[var(--foreground)]">
@@ -210,7 +222,7 @@ export function SourcesView() {
                       <p className="text-[0.825rem] font-serif text-[var(--foreground-muted)] line-clamp-2 italic">
                         "{ex.text}"
                       </p>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}

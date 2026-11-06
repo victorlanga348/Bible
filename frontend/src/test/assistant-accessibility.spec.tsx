@@ -56,7 +56,7 @@ describe('ContextPanel — Acessibilidade WCAG 2.2 AA (Passo 2)', () => {
     expect(screen.getByRole('tabpanel')).toHaveAttribute('id', 'panel-notes');
 
     // 4. Live region (role="status" com aria-live="polite")
-    const liveRegion = screen.getByRole('status');
+    const liveRegion = screen.getByRole('status', { name: 'Estado do assistente' });
     expect(liveRegion).toHaveAttribute('aria-live', 'polite');
   });
 });

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Sparkles,
   FileText,
@@ -19,6 +19,8 @@ import { useToast } from '../../shared/ui/toast';
 import { useCreateAiAnalysis } from '../../shared/api/hooks';
 import { CrossRefPanel } from '../cross-ref/cross-ref-panel';
 import type { AiAnalysisDto } from '../../shared/api/contracts';
+import { StudyNotes } from '../workspace/study-notes';
+import { ConversationPanel } from './conversation-panel';
 
 interface ContextPanelProps {
   activeStudyId?: string;
@@ -27,7 +29,11 @@ interface ContextPanelProps {
   onNavigateToPassage?: (reference: string) => void;
 }
 
-export function ContextPanel({
+export function ContextPanel(props: ContextPanelProps) {
+  return <ContextPanelContent key={`${props.activeStudyId}:${props.activeStudyVersion}`} {...props} />;
+}
+
+function ContextPanelContent({
   activeStudyId,
   activeStudyVersion = 1,
   activeReference = 'GEN 1:1-3',
@@ -39,13 +45,15 @@ export function ContextPanel({
   const { isAuthenticated, token } = useSession();
   const { toast } = useToast();
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  useEffect(() => () => { abortControllerRef.current?.abort(); abortControllerRef.current = null; }, []);
 
   const createAnalysisMutation = useCreateAiAnalysis();
 
   const handleSendQuestion = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const trimmed = question.trim();
-    if (!trimmed) return;
+    if (!trimmed || abortControllerRef.current) return;
 
     if (!isAuthenticated || !token) {
       toast('Autenticação necessária', {
@@ -75,6 +83,7 @@ export function ContextPanel({
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
+    setIsGenerating(true);
 
     try {
       const analysis = await createAnalysisMutation.mutateAsync({
@@ -84,11 +93,12 @@ export function ContextPanel({
         signal: controller.signal,
       });
 
+      if (controller.signal.aborted || abortControllerRef.current !== controller) return;
       setAnalyses((prev) => [analysis, ...prev]);
       setQuestion('');
       toast('Análise de IA concluída.', { type: 'success' });
     } catch (err: unknown) {
-      if (controller.signal.aborted || (err instanceof Error && (err.name === 'AbortError' || err.message === 'TIMEOUT'))) {
+      if (controller.signal.aborted || abortControllerRef.current !== controller) {
         return;
       }
       const msg = err instanceof Error ? err.message : 'Falha na inferência da IA.';
@@ -96,6 +106,7 @@ export function ContextPanel({
     } finally {
       if (abortControllerRef.current === controller) {
         abortControllerRef.current = null;
+        setIsGenerating(false);
       }
     }
   };
@@ -104,6 +115,7 @@ export function ContextPanel({
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
+      setIsGenerating(false);
       toast('Inferência cancelada pelo operador.', { type: 'info' });
     }
   };
@@ -111,11 +123,11 @@ export function ContextPanel({
   return (
     <div className="flex flex-col h-full p-[1.25rem] space-y-[1.25rem]">
       {/* Live Region para Leitores de Tela */}
-      <div role="status" aria-live="polite" className="sr-only">
-        {createAnalysisMutation.isPending
+      <div role="status" aria-label="Estado do assistente" aria-live="polite" className="sr-only">
+        {isGenerating
           ? 'Executando busca vetorial e inferência CPU local.'
           : analyses.length > 0
-          ? `Última análise: ${analyses[0].status === 'supported' ? 'Evidência documentada' : 'Evidência insuficiente'}.`
+          ? `Última análise: ${analyses[0].status === 'supported' ? 'Evidência documentada' : analyses[0].status === 'restricted' ? 'Fonte restrita' : 'Evidência insuficiente'}.`
           : ''}
       </div>
 
@@ -123,6 +135,12 @@ export function ContextPanel({
       <div
         role="tablist"
         aria-label="Painel Contextual"
+        onKeyDown={(event) => {
+          const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role=tab]'));
+          const index = tabs.indexOf(document.activeElement as HTMLButtonElement);
+          const next = event.key === 'ArrowRight' ? (index + 1) % tabs.length : event.key === 'ArrowLeft' ? (index + tabs.length - 1) % tabs.length : event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : -1;
+          if (next >= 0) { event.preventDefault(); tabs[next]?.focus(); tabs[next]?.click(); }
+        }}
         className="flex border-b border-[var(--border)] pb-[0.5rem] gap-[0.5rem]"
       >
         <button
@@ -130,6 +148,7 @@ export function ContextPanel({
           id="tab-assistant"
           aria-controls="panel-assistant"
           aria-selected={tab === 'assistant'}
+          tabIndex={tab === 'assistant' ? 0 : -1}
           onClick={() => setTab('assistant')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'assistant'
@@ -145,6 +164,7 @@ export function ContextPanel({
           id="tab-notes"
           aria-controls="panel-notes"
           aria-selected={tab === 'notes'}
+          tabIndex={tab === 'notes' ? 0 : -1}
           onClick={() => setTab('notes')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'notes'
@@ -160,6 +180,7 @@ export function ContextPanel({
           id="tab-links"
           aria-controls="panel-links"
           aria-selected={tab === 'links'}
+          tabIndex={tab === 'links' ? 0 : -1}
           onClick={() => setTab('links')}
           className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] text-[0.8rem] font-ui font-medium rounded-[var(--radius-sm)] cursor-pointer ${
             tab === 'links'
@@ -195,25 +216,27 @@ export function ContextPanel({
             {/* Input de Pergunta com Validação de Bytes */}
             <form onSubmit={handleSendQuestion} className="space-y-[0.5rem]">
               <div className="flex justify-between items-center text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
-                <span>Pergunta Investigativa:</span>
+                <label htmlFor="assistant-question">Pergunta investigativa</label>
                 <span className="text-[0.7rem] text-[var(--foreground-muted)] font-mono">
                   {new TextEncoder().encode(question).byteLength}/500B
                 </span>
               </div>
               <div className="flex gap-[0.5rem]">
                 <Input
+                  id="assistant-question"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Ex: O que Josefo relata sobre este período?"
-                  disabled={createAnalysisMutation.isPending}
+                  disabled={isGenerating}
                   className="h-[2.25rem] text-[0.825rem]"
                 />
-                {createAnalysisMutation.isPending ? (
+                {isGenerating ? (
                   <Button
                     type="button"
                     variant="destructive"
                     size="sm"
                     onClick={handleCancelGeneration}
+                    aria-label="Cancelar inferência"
                     className="h-[2.25rem] px-[0.75rem]"
                   >
                     <StopCircle className="w-[0.9rem] h-[0.9rem]" />
@@ -221,6 +244,7 @@ export function ContextPanel({
                 ) : (
                   <Button
                     type="submit"
+                    aria-label="Enviar pergunta"
                     size="sm"
                     disabled={!question.trim()}
                     className="h-[2.25rem] px-[0.75rem]"
@@ -232,7 +256,7 @@ export function ContextPanel({
             </form>
 
             {/* Loading Indicator com Feedback */}
-            {createAnalysisMutation.isPending && (
+            {isGenerating && (
               <div className="p-[1rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-center space-y-[0.5rem]">
                 <Loader2 className="w-[1.25rem] h-[1.25rem] animate-spin text-[var(--accent)] mx-auto" />
                 <p className="text-[0.8rem] text-[var(--foreground-muted)] font-ui">
@@ -265,7 +289,7 @@ export function ContextPanel({
                       >
                         {item.status === 'supported'
                           ? 'Evidência Documentada'
-                          : 'Evidência Insuficiente'}
+                          : item.status === 'restricted' ? 'Fonte restrita' : 'Evidência Insuficiente'}
                       </Badge>
                       <span className="text-[0.7rem] text-[var(--foreground-muted)] font-ui">
                         {new Date(item.createdAt).toLocaleTimeString('pt-BR', {
@@ -278,20 +302,21 @@ export function ContextPanel({
                     {/* Trecho Citado */}
                     {item.status === 'supported' && item.evidence.length > 0 ? (
                       <div className="space-y-[0.5rem]">
-                        <blockquote className="border-l-2 border-[var(--accent)] pl-[0.75rem] italic text-[0.85rem] font-serif text-[var(--foreground)] leading-relaxed">
-                          "{item.evidence[0].quote}"
-                        </blockquote>
-                        <div className="text-[0.725rem] text-[var(--foreground-muted)] font-ui space-y-[0.15rem]">
-                          <p>
-                            <strong>Fonte:</strong> {item.evidence[0].attribution} ({item.evidence[0].locator})
-                          </p>
-                        </div>
+                        {item.evidence.map(evidence => <div key={`${evidence.excerptId}:${evidence.startOffset}`}>
+                          <blockquote className="border-l border-[var(--accent)] pl-[0.75rem] italic text-[0.85rem] font-serif text-[var(--foreground)] leading-relaxed">"{evidence.quote}"</blockquote>
+                          <div className="text-[0.725rem] text-[var(--foreground-muted)] font-ui space-y-[0.15rem]">
+                            <p><strong>Fonte:</strong> {evidence.attribution} ({evidence.locator})</p>
+                            <a className="underline" href={evidence.rightsUrl} target="_blank" rel="noreferrer">{evidence.rightsStatement}</a>
+                          </div>
+                        </div>)}
                       </div>
                     ) : (
                       <div className="p-[0.65rem] rounded bg-[var(--surface-muted)] text-[0.8rem] text-[var(--foreground-muted)] font-ui leading-relaxed">
-                        Não foi encontrada evidência documental nos trechos autorizados de Flávio Josefo para fundamentar a questão formulada.
+                        {item.status === 'restricted' ? 'O acesso à fonte está restrito; o conteúdo não é apresentado.' : 'Não foi encontrada evidência documental nos trechos autorizados de Flávio Josefo para fundamentar a questão formulada.'}
                       </div>
                     )}
+
+                    {item.limitations.map((limitation, index) => <p key={index} className="text-[0.75rem] text-[var(--foreground-muted)]">{limitation}</p>)}
 
                     {/* Metadados de Proveniência Auditáveis */}
                     <div className="pt-[0.5rem] border-t border-[var(--border)]/60 text-[0.7rem] text-[var(--foreground-muted)] font-ui flex items-center justify-between">
@@ -312,6 +337,7 @@ export function ContextPanel({
                 <p className="text-[0.8rem]">Nenhuma pergunta realizada para este estudo.</p>
               </div>
             )}
+            {isAuthenticated && activeStudyId && <ConversationPanel studyId={activeStudyId} studyVersion={activeStudyVersion} />}
           </div>
         )}
 
@@ -322,12 +348,9 @@ export function ContextPanel({
             aria-labelledby="tab-notes"
             className="space-y-[0.75rem]"
           >
-            <p className="text-[0.8rem] text-[var(--foreground-muted)] font-ui">
-              Anotações associadas ao estudo corrente com garantia de revisão CAS:
-            </p>
-            <div className="p-[1rem] rounded-[var(--radius-md)] border border-dashed border-[var(--border)] text-center text-[0.8rem] text-[var(--foreground-muted)] font-ui">
-              {isAuthenticated ? 'Consulte ou adicione notas no painel de Workspace.' : 'Configure o token de sessão para gerenciar anotações.'}
-            </div>
+            {isAuthenticated && activeStudyId
+              ? <StudyNotes studyId={activeStudyId} studyVersion={activeStudyVersion} />
+              : <p className="text-[0.8rem] text-[var(--foreground-muted)]">Entre na conta e abra um estudo para consultar as anotações.</p>}
           </div>
         )}
 

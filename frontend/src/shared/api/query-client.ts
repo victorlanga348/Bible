@@ -40,7 +40,7 @@ export const queryKeys = {
   },
   workspace: {
     studies: (cursor?: string | null) => ['workspace', 'studies', { cursor }] as const,
-    notes: (studyId: string, version?: number) => ['workspace', 'notes', studyId, { version }] as const,
+    notes: (studyId: string, version?: number, cursor?: string | null) => ['workspace', 'notes', studyId, { version, cursor }] as const,
     favorites: (cursor?: string | null) => ['workspace', 'favorites', { cursor }] as const,
   },
   crossReferences: {
@@ -48,6 +48,7 @@ export const queryKeys = {
       ['cross-references', translationId, reference] as const,
   },
   assistant: {
+    conversations: (studyId: string, cursor?: string | null) => ['assistant', 'conversations', studyId, { cursor }] as const,
     conversation: (conversationId: string) => ['assistant', 'conversation', conversationId] as const,
     analyses: (studyId: string) => ['assistant', 'analyses', studyId] as const,
   },

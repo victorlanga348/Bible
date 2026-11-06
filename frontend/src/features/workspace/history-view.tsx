@@ -7,6 +7,7 @@ import {
   useDeleteNote,
   useWorkspaceFavorites,
   useToggleFavorite,
+  useDeleteStudy,
 } from '../../shared/api/hooks';
 import { useSession } from '../../shared/hooks/use-session';
 import { Button } from '../../shared/ui/button';
@@ -35,32 +36,47 @@ import {
 } from 'lucide-react';
 import { useToast } from '../../shared/ui/toast';
 import type { WorkspaceNoteDto, WorkspaceStudyItemDto } from '../../shared/api/contracts';
+import { ApiError } from '../../shared/api/http-client';
+import { useCursorPages } from '../../shared/hooks/use-cursor-pages';
+import { CursorControls } from '../../shared/ui/cursor-controls';
 
 interface HistoryViewProps {
   onOpenStudy?: (study: WorkspaceStudyItemDto | string) => void;
+  onStudyDeleted?: (studyId: string) => void;
 }
 
-export function HistoryView({ onOpenStudy }: HistoryViewProps) {
+export function HistoryView({ onOpenStudy, onStudyDeleted }: HistoryViewProps) {
   const { isAuthenticated } = useSession();
   const { toast } = useToast();
   const [workspaceTab, setWorkspaceTab] = useState<'studies' | 'notes' | 'favorites'>('studies');
 
   // Seleção de estudo para exibição de notas
-  const [selectedStudyId, setSelectedStudyId] = useState<string | null>(null);
+  const [selectedStudy, setSelectedStudy] = useState<WorkspaceStudyItemDto | null>(null);
+  const selectedStudyId = selectedStudy?.id ?? null;
   const [newNoteContent, setNewNoteContent] = useState('');
   const [editingNote, setEditingNote] = useState<WorkspaceNoteDto | null>(null);
   const [editContent, setEditContent] = useState('');
   const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
+  const [studyToDelete, setStudyToDelete] = useState<WorkspaceStudyItemDto | null>(null);
+  const [noteConflict, setNoteConflict] = useState(false);
+  const [conflictReady, setConflictReady] = useState(false);
+  const studyPages = useCursorPages();
+  const notePages = useCursorPages();
+  const favoritePages = useCursorPages();
 
   // Queries e Mutações
-  const { data: studiesPage, isLoading: loadingStudies, error: studiesError } = useWorkspaceStudies();
-  const { data: favoritesPage, isLoading: loadingFavorites } = useWorkspaceFavorites();
-  const { data: notesPage, isLoading: loadingNotes } = useWorkspaceNotes(selectedStudyId || '');
+  const studyQuery = useWorkspaceStudies(studyPages.cursor);
+  const { data: studiesPage, isLoading: loadingStudies, error: studiesError } = studyQuery;
+  const favoritesQuery = useWorkspaceFavorites(favoritePages.cursor);
+  const { data: favoritesPage, isLoading: loadingFavorites } = favoritesQuery;
+  const notesQuery = useWorkspaceNotes(selectedStudyId || '', selectedStudy?.version, notePages.cursor);
+  const { data: notesPage, isLoading: loadingNotes } = notesQuery;
 
   const createNoteMutation = useCreateNote();
   const reviseNoteMutation = useReviseNote();
   const deleteNoteMutation = useDeleteNote();
   const toggleFavoriteMutation = useToggleFavorite();
+  const deleteStudyMutation = useDeleteStudy();
 
   const studies = studiesPage?.items || [];
   const favorites = favoritesPage?.items || [];
@@ -70,8 +86,8 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
     e.preventDefault();
     if (!selectedStudyId || !newNoteContent.trim()) return;
 
-    const selectedStudy = studies.find((s) => s.id === selectedStudyId);
-    const studyVersion = selectedStudy?.version ?? 1;
+    if (!selectedStudy) return;
+    const studyVersion = selectedStudy.version;
 
     try {
       await createNoteMutation.mutateAsync({
@@ -80,6 +96,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
         content: newNoteContent.trim(),
       });
       setNewNoteContent('');
+      await notesQuery.refetch();
       toast('Anotação adicionada ao estudo.', { type: 'success' });
     } catch (err: unknown) {
       toast('Erro ao criar anotação', {
@@ -99,13 +116,33 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
         content: editContent.trim(),
       });
       setEditingNote(null);
+      setNoteConflict(false);
       toast('Revisão da anotação salva com garantia CAS.', { type: 'success' });
     } catch (err: unknown) {
+      if (err instanceof ApiError && err.status === 409) { setNoteConflict(true); setConflictReady(false); }
       toast('Conflito de revisão', {
         description: err instanceof Error ? err.message : 'Não foi possível salvar esta revisão da nota.',
         type: 'error',
       });
     }
+  };
+
+  const reloadNoteRevision = async () => {
+    const fresh = await notesQuery.refetch();
+    const current = fresh.data?.items.find(note => note.id === editingNote?.id);
+    if (current) { setEditingNote(current); setConflictReady(true); }
+    else toast('A anotação não está nesta página ou foi eliminada. Consulte as anotações antes de voltar a editar.', { type: 'warning' });
+  };
+
+  const confirmDeleteStudy = async () => {
+    if (!studyToDelete || deleteStudyMutation.isPending) return;
+    try {
+      await deleteStudyMutation.mutateAsync(studyToDelete.id);
+      onStudyDeleted?.(studyToDelete.id);
+      if (selectedStudyId === studyToDelete.id) setSelectedStudy(null);
+      setStudyToDelete(null); studyPages.reset(); favoritePages.reset();
+      toast('Estudo e dados associados eliminados.', { type: 'success' });
+    } catch (error) { toast('Não foi possível eliminar o estudo. Pode voltar a tentar.', { type: 'error', description: error instanceof Error ? error.message : 'Falha de comunicação.' }); }
   };
 
   const handleConfirmDeleteNote = async () => {
@@ -153,7 +190,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
         </div>
 
         {/* Abas do Workspace */}
-        <div className="flex gap-[0.5rem] pt-[0.5rem]">
+        <div className="flex flex-wrap gap-[0.5rem] pt-[0.5rem]">
           <button
             onClick={() => setWorkspaceTab('studies')}
             className={`flex items-center gap-[0.35rem] px-[0.75rem] py-[0.35rem] rounded-[var(--radius-md)] text-[0.825rem] font-ui font-medium cursor-pointer transition-colors ${
@@ -227,7 +264,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                   return (
                     <article
                       key={item.id}
-                      className="p-[1.25rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] flex items-center justify-between gap-[1rem] transition-colors hover:border-[var(--accent)]/60"
+                      className="p-[1.25rem] rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] flex flex-wrap items-center justify-between gap-[1rem] transition-colors hover:border-[var(--accent)]/60"
                     >
                       <div className="space-y-[0.35rem]">
                         <div className="flex items-center gap-[0.5rem]">
@@ -244,6 +281,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                       </div>
 
                       <div className="flex items-center gap-[0.5rem]">
+                        <Button variant="ghost" size="icon" aria-label="Excluir estudo" onClick={() => setStudyToDelete(item)}><Trash2 className="w-[1rem] h-[1rem]" /></Button>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -274,12 +312,13 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
           <div className="space-y-[1.5rem]">
             {/* Seletor do Estudo Ativo para Vincular Notas */}
             <div className="space-y-[0.5rem]">
-              <label className="text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
+              <label htmlFor="workspace-study" className="text-[0.8rem] font-medium text-[var(--foreground)] font-ui">
                 Selecione o Estudo para Consultar ou Criar Notas:
               </label>
               <select
+                id="workspace-study"
                 value={selectedStudyId || ''}
-                onChange={(e) => setSelectedStudyId(e.target.value || null)}
+                onChange={(e) => { setSelectedStudy(studies.find(study => study.id === e.target.value) ?? null); notePages.reset(); setNewNoteContent(''); }}
                 className="w-full rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-[0.75rem] py-[0.5rem] text-[0.85rem] font-ui text-[var(--foreground)] cursor-pointer"
               >
                 <option value="">Selecione um estudo persistido...</option>
@@ -289,6 +328,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                   </option>
                 ))}
               </select>
+              {(studyPages.hasPrevious || studiesPage?.nextCursor) && <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} label=" de estudos" />}
             </div>
 
             {selectedStudyId ? (
@@ -342,6 +382,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                               onClick={() => {
                                 setEditingNote(note);
                                 setEditContent(note.content);
+                                setNoteConflict(false); setConflictReady(false);
                               }}
                               title="Editar Nota (CAS)"
                             >
@@ -394,9 +435,11 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                     <div className="flex items-center gap-[0.5rem]">
                       <Star className="w-[1rem] h-[1rem] fill-amber-400 text-amber-400" />
                       <span className="font-ui font-medium text-[0.9rem] text-[var(--foreground)]">
-                        Estudo ID {fav.studyId.substring(0, 8)}... (v{fav.studyVersion})
+                        {fav.reference?.normalized ?? 'Referência indisponível'} <span>(v{fav.studyVersion})</span>
                       </span>
                     </div>
+                    <div className="flex flex-wrap gap-[0.5rem]">
+                    {onOpenStudy && fav.reference && <Button size="sm" variant="outline" onClick={() => onOpenStudy({ id: fav.studyId, version: fav.studyVersion, createdAt: fav.createdAt, reference: fav.reference })}>Abrir</Button>}
                     <Button
                       variant="ghost"
                       size="sm"
@@ -404,6 +447,7 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
                     >
                       Remover
                     </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -411,6 +455,17 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
           </div>
         )}
       </div>
+
+      {isAuthenticated && workspaceTab === 'studies' && <CursorControls pages={studyPages} nextCursor={studiesPage?.nextCursor} busy={studyQuery.isFetching} />}
+      {isAuthenticated && workspaceTab === 'notes' && selectedStudyId && <CursorControls pages={notePages} nextCursor={notesPage?.nextCursor} busy={notesQuery.isFetching} />}
+      {isAuthenticated && workspaceTab === 'favorites' && <CursorControls pages={favoritePages} nextCursor={favoritesPage?.nextCursor} busy={favoritesQuery.isFetching} />}
+      {((workspaceTab === 'notes' && notesQuery.error) || (workspaceTab === 'favorites' && favoritesQuery.error)) && <p role="alert">Não foi possível carregar esta página. <Button size="sm" onClick={() => void (workspaceTab === 'notes' ? notesQuery.refetch() : favoritesQuery.refetch())}>Tentar novamente</Button></p>}
+
+      <Dialog open={!!studyToDelete} onOpenChange={open => { if (!open && !deleteStudyMutation.isPending) setStudyToDelete(null); }}>
+        <DialogContent><DialogHeader><DialogTitle>Excluir estudo</DialogTitle><DialogDescription>Eliminar {studyToDelete?.reference.normalized}, todas as suas versões, notas, favoritos, análises e conversas? Esta ação é definitiva.</DialogDescription></DialogHeader>
+          <DialogFooter><Button variant="ghost" onClick={() => setStudyToDelete(null)} disabled={deleteStudyMutation.isPending}>Cancelar</Button><Button variant="destructive" loading={deleteStudyMutation.isPending} onClick={() => void confirmDeleteStudy()}>Excluir definitivamente</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de Edição de Nota com CAS */}
       <Dialog open={!!editingNote} onOpenChange={(open) => !open && setEditingNote(null)}>
@@ -425,18 +480,21 @@ export function HistoryView({ onOpenStudy }: HistoryViewProps) {
               </DialogHeader>
 
               <div className="py-[0.5rem]">
+                <label htmlFor="workspace-note-draft">Rascunho da anotação</label>
                 <Input
+                  id="workspace-note-draft"
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   placeholder="Conteúdo revisado da anotação..."
                 />
               </div>
+              {noteConflict && <div role="alert"><p>A nota foi alterada noutro local. O seu rascunho foi preservado. Carregue a revisão atual e compare antes de guardar.</p><Button size="sm" variant="outline" onClick={() => void reloadNoteRevision()}>Carregar revisão atual</Button>{conflictReady && <p>Revisão atual r{editingNote.revision}: {editingNote.content}</p>}</div>}
 
               <DialogFooter>
                 <Button variant="ghost" onClick={() => setEditingNote(null)}>
                   Cancelar
                 </Button>
-                <Button loading={reviseNoteMutation.isPending} onClick={handleSaveRevision}>
+                <Button disabled={noteConflict && !conflictReady} loading={reviseNoteMutation.isPending} onClick={handleSaveRevision}>
                   Salvar Revisão
                 </Button>
               </DialogFooter>

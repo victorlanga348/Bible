@@ -180,6 +180,7 @@ export interface WorkspaceFavoriteDto {
   studyId: string;
   studyVersion: number;
   createdAt: string;
+  reference: ResolvedReferenceDto;
 }
 
 export interface WorkspaceFavoritesPageDto {
@@ -258,14 +259,19 @@ export interface ConversationDto {
   turns: ConversationTurnDto[];
 }
 
+export interface ConversationsPageDto {
+  items: Omit<ConversationDto, 'turns'>[];
+  nextCursor: string | null;
+}
+
 export interface CrossReferenceRelationDto {
   id: string;
   from: ResolvedReferenceDto;
   to: ResolvedReferenceDto;
-  type: 'direct-citation' | 'allusion' | 'prophetic-fulfillment' | 'thematic-parallel';
-  reading: string;
+  type: 'citation' | 'allusion' | 'prophetic-relation' | 'thematic-parallel';
+  reading: 'textual' | 'historical' | 'messianic' | 'eschatological';
   rationale: string;
-  assessment: 'high' | 'moderate' | 'traditional' | 'disputed';
+  assessment: 'user-interpretation';
   createdAt: string;
   limitations: string[];
   evidence: Array<{

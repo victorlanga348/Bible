@@ -71,7 +71,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 </ToastPrimitive.Description>
               )}
             </div>
-            <ToastPrimitive.Close className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] p-[0.2rem] rounded-[var(--radius-sm)] cursor-pointer">
+            <ToastPrimitive.Close aria-label="Fechar notificação" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] p-[0.2rem] rounded-[var(--radius-sm)] cursor-pointer">
               <X className="w-[0.95rem] h-[0.95rem]" />
             </ToastPrimitive.Close>
           </ToastPrimitive.Root>

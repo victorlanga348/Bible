@@ -16,7 +16,7 @@ vi.mock('../shared/api/http-client', () => ({
             from: { normalized: 'ROM 8:28' },
             to: { normalized: 'EPH 1:11' },
             type: 'thematic-parallel',
-            assessment: 'high',
+            assessment: 'user-interpretation',
             rationale: 'Paralelo temático sobre a soberania e propósito divino.',
             evidence: [],
           },

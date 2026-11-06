@@ -8,6 +8,13 @@ beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 503 })));
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+it('opens the contextual tools in an accessible dialog on a narrow viewport', () => {
+  vi.stubGlobal('matchMedia', vi.fn((query: string) => ({ matches: query === '(max-width: 1023px)', addEventListener: vi.fn(), removeEventListener: vi.fn() })));
+  const close = vi.fn();
+  render(wrap(<AppShell activeTab="reader" onTabChange={() => {}} isContextOpen onToggleContext={close} contextPanel={<p>Technical contextual tools</p>}>Technical reader</AppShell>));
+  expect(screen.getByRole('dialog', { name: 'Painel de investigação' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Fechar' })); expect(close).toHaveBeenCalled();
+});
 const wrap = (view: React.ReactNode) => <ThemeProvider><SessionProvider><AccountAccessProvider>{view}</AccountAccessProvider></SessionProvider></ThemeProvider>;
 it('requires account controls to live outside the private application generation', () => {
   expect(() => render(<ThemeProvider><SessionProvider><AppShell activeTab="reader" onTabChange={() => {}}>Public</AppShell></SessionProvider></ThemeProvider>))

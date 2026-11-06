@@ -16,6 +16,7 @@ import type {
   WorkspaceFavoriteDto,
   WorkspaceFavoritesPageDto,
   ConversationDto,
+  ConversationsPageDto,
   CrossReferencePageDto,
   CrossReferenceRelationDto,
   AiAnalysisDto,
@@ -72,6 +73,14 @@ export function useResolveReference() {
         method: 'POST',
         body: { translationId, reference },
       }),
+  });
+}
+
+export function useResolvedReference(reference?: string) {
+  return useQuery({
+    queryKey: queryKeys.canon.resolved('porbr2018', reference ?? ''),
+    queryFn: () => request<ResolvedReferenceDto>('/references/resolve', { method: 'POST', body: { translationId: 'porbr2018', reference } }),
+    enabled: !!reference,
   });
 }
 
@@ -158,16 +167,29 @@ export function useWorkspaceStudies(cursor?: string | null) {
   });
 }
 
-export function useWorkspaceNotes(studyId: string, studyVersion?: number) {
+export function useWorkspaceNotes(studyId: string, studyVersion?: number, cursor?: string | null) {
   const { token } = useSession();
   return useQuery({
-    queryKey: queryKeys.workspace.notes(studyId, studyVersion),
+    queryKey: queryKeys.workspace.notes(studyId, studyVersion, cursor),
     queryFn: () =>
       request<WorkspaceNotesPageDto>(`/workspace/studies/${studyId}/notes`, {
         token,
-        params: { studyVersion },
+        params: { studyVersion, cursor },
       }),
     enabled: !!studyId && !!token,
+  });
+}
+
+export function useDeleteStudy() {
+  const { token } = useSession();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (studyId: string) => request<void>(`/workspace/studies/${studyId}`, { method: 'DELETE', token }),
+    onSuccess: (_data, studyId) => {
+      qc.removeQueries({ queryKey: ['studies', 'detail', studyId] });
+      qc.removeQueries({ queryKey: ['workspace', 'notes', studyId] });
+      void qc.invalidateQueries({ queryKey: ['workspace'] });
+    },
   });
 }
 
@@ -342,9 +364,10 @@ export function useConversation(conversationId?: string) {
   const { token } = useSession();
   return useQuery({
     queryKey: queryKeys.assistant.conversation(conversationId || ''),
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       request<ConversationDto>(`/conversations/${conversationId}`, {
         token,
+        signal,
       }),
     enabled: !!conversationId && !!token,
   });
@@ -352,14 +375,21 @@ export function useConversation(conversationId?: string) {
 
 export function useCreateConversation() {
   const { token } = useSession();
+  const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ studyId, studyVersion }: { studyId: string; studyVersion: number }) =>
+    mutationFn: ({ studyId, studyVersion, signal }: { studyId: string; studyVersion: number; signal?: AbortSignal }) =>
       request<ConversationDto>(`/studies/${studyId}/conversations`, {
         method: 'POST',
         token,
         body: { studyVersion },
+        signal,
       }),
+    onSuccess: (data, variables) => {
+      if (variables.signal?.aborted) return;
+      qc.setQueryData(queryKeys.assistant.conversation(data.id), data);
+      void qc.invalidateQueries({ queryKey: ['assistant', 'conversations', data.studyId] });
+    },
   });
 }
 
@@ -373,19 +403,45 @@ export function useAppendConversationTurn() {
       expectedRevision,
       question,
       revisesTurn,
+      signal,
     }: {
       conversationId: string;
       expectedRevision: number;
       question: string;
       revisesTurn?: number;
+      signal?: AbortSignal;
     }) =>
       request<ConversationDto>(`/conversations/${conversationId}/turns`, {
         method: 'POST',
         token,
         body: { expectedRevision, question, revisesTurn },
+        signal,
       }),
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      if (variables.signal?.aborted) return;
       qc.setQueryData(queryKeys.assistant.conversation(data.id), data);
+      void qc.invalidateQueries({ queryKey: ['assistant', 'conversations', data.studyId] });
+    },
+  });
+}
+
+export function useStudyConversations(studyId: string, cursor?: string | null) {
+  const { token } = useSession();
+  return useQuery({
+    queryKey: queryKeys.assistant.conversations(studyId, cursor),
+    queryFn: ({ signal }) => request<ConversationsPageDto>(`/workspace/studies/${studyId}/conversations`, { token, params: { cursor }, signal }),
+    enabled: !!token,
+  });
+}
+
+export function useDeleteConversation() {
+  const { token } = useSession();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (conversationId: string) => request<void>(`/conversations/${conversationId}`, { method: 'DELETE', token }),
+    onSuccess: (_data, conversationId) => {
+      qc.removeQueries({ queryKey: queryKeys.assistant.conversation(conversationId) });
+      void qc.invalidateQueries({ queryKey: ['assistant', 'conversations'] });
     },
   });
 }

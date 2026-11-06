@@ -1,0 +1,63 @@
+{
+  "source": {
+    "id": "josephus-antiquities-pg2848-en",
+    "title": "Antiquities of the Jews",
+    "author": "Flavius Josephus",
+    "translator": "William Whiston",
+    "language": "en",
+    "edition": "William Whiston translation; Project Gutenberg eBook 2848; HTML snapshot identified by SHA-256",
+    "kind": "historical-work",
+    "originUrl": "https://www.gutenberg.org/ebooks/2848",
+    "snapshotSha256": "098d837010fea0f38b104d2c9397696ae5db9e5cbd15a8e8f400f36811fbcf99",
+    "retrievedAt": "2026-10-21T17:05:40.441948Z",
+    "rightsStatement": "Original work and Whiston translation: supplier declares public domain in USA. Local approved use and versioned test excerpts reviewed against Mozambique Law 9/2022 art.47(1), expiry of economic rights 70 years after death; author/translator dates in official catalogue, Whiston died 1752. This is a scope-limited inference, not a worldwide permission. Moral attribution/integrity and Project Gutenberg notice retained. No AI use admitted.",
+    "rightsUrl": "https://www.gutenberg.org/policy/license.html",
+    "attribution": "Flavius Josephus, Antiquities of the Jews, translated by William Whiston. Source acknowledgement: Project Gutenberg eBook 2848, produced by David Reed and David Widger. Text-only excerpt extraction; formatting and note-marker omissions documented in manifest.",
+    "permissions": {
+      "ingest": "allowed",
+      "store": "allowed",
+      "index": "allowed",
+      "display": "allowed",
+      "quote": "allowed",
+      "sendToAi": "pending"
+    },
+    "limitations": "Book I, chapter 1 only: four numbered paragraphs in an English historical translation. A claim made by this work is not independent verification, modern scholarly consensus or a validated association with a biblical passage."
+  },
+  "sourceFileUrl": "https://www.gutenberg.org/files/2848/2848-h/2848-h.htm",
+  "sourceBytes": 3561835,
+  "sourceEncoding": "UTF-8 bytes; XML declaration says iso-8859-1, UTF-8 decoding checked strictly",
+  "noticeFileUrl": "https://www.gutenberg.org/cache/epub/2848/pg2848.txt",
+  "noticeContainerSha256": "bb2e32da8ba3adc109b7694e6a8f2f11570462af2bedd55798da70b754c6e440",
+  "noticeSha256": "18bc5c6f86b23ade32c4d711e765328b0c642c383a993c8d7f11c7ee21da4bf1",
+  "legalEvidence": {
+    "url": "https://inicc.gov.mz/download/legislacao/69bfd67d3f6f7/lei42001.pdf",
+    "sha256": "7a631ce26da371f69eb96f316d650c458542dcd8200797499f7e066182429900",
+    "actualTitle": "Lei 9/2022, 29 June 2022; file name is historical, PDF content verified",
+    "reviewedProvision": "Article 47(1) economic term; 47(2) continuing non-economic protection",
+    "catalogueUrl": "https://www.gutenberg.org/ebooks/2848",
+    "translatorDeathAsCatalogued": 1752,
+    "scope": "Approved local operations and versioned authentic test excerpts; no AI/public service/commercial exploitation"
+  },
+  "coverage": {
+    "book": 1,
+    "chapter": 1,
+    "paragraphs": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "excerptCount": 4
+  },
+  "purpose": "Versioned real test fixture only; not a production seed",
+  "transformations": [
+    "Parse only HTML between verified chapter anchors link2HCH0001 and link2HCH0002 with stdlib HTMLParser, without running scripts or loading external entities",
+    "Use numbered main paragraphs, remove their ordinal prefix into locator/order",
+    "Omit footnote anchor labels and all footnote text, images, headings and other chapters",
+    "Decode HTML character references and collapse HTML layout whitespace to one space; retain all remaining wording, punctuation, square brackets and Unicode",
+    "Extract full licence notice verbatim from official plain-text sibling; HTML export lacks embedded full licence; do not conflate sibling text with canonical HTML",
+    "Do not change translation, generate historical content or infer biblical associations"
+  ],
+  "omittedFootnoteMarkers": 5,
+  "excerptsSha256": "2171bd34f61e74b22d61e58e6c71caa336716b8ad15e2c60f8210ce2e35d7f63"
+}

@@ -3,14 +3,19 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { App } from '../App';
 
 // View probes verify application navigation/props, not underlying business integration.
-vi.mock('../features/canon/reader-view', () => ({ ReaderView: ({ onSelectPassageForStudy, isFocusMode, onToggleFocusMode }: {
-  onSelectPassageForStudy: (reference: string) => void; isFocusMode: boolean; onToggleFocusMode: () => void;
-}) => <div><button onClick={() => onSelectPassageForStudy('JHN 3:16')}>Study selection</button><button onClick={onToggleFocusMode}>Focus reader</button><span>{isFocusMode ? 'Reader focused' : 'Reader normal'}</span></div> }));
+vi.mock('../features/canon/reader-view', () => ({ ReaderView: ({ onSelectPassageForStudy, isFocusMode, onToggleFocusMode, targetReference }: {
+  onSelectPassageForStudy: (reference: string) => void; isFocusMode: boolean; onToggleFocusMode: () => void; targetReference?: string;
+}) => <div><p data-testid="reader-target">{targetReference}</p><button onClick={() => onSelectPassageForStudy('JHN 3:16')}>Study selection</button><button onClick={onToggleFocusMode}>Focus reader</button><span>{isFocusMode ? 'Reader focused' : 'Reader normal'}</span></div> }));
 vi.mock('../features/studies/study-view', () => ({ StudyView: ({ initialReference }: { initialReference: string }) => <div>Study screen: {initialReference}</div> }));
 vi.mock('../features/sources/sources-view', () => ({ SourcesView: () => <div>Sources screen</div> }));
 vi.mock('../features/workspace/history-view', () => ({ HistoryView: ({ onOpenStudy }: { onOpenStudy: (reference: string) => void }) => <div>Workspace screen<button onClick={() => onOpenStudy('ROM 8:28')}>Open saved study</button></div> }));
-vi.mock('../features/assistant/context-panel', () => ({ ContextPanel: () => <div>Assistant panel</div> }));
+vi.mock('../features/assistant/context-panel', () => ({ ContextPanel: ({ onNavigateToPassage }: { onNavigateToPassage: (reference: string) => void }) => <div>Assistant panel<button onClick={() => onNavigateToPassage('JHN 3:16')}>Open cross reference</button></div> }));
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+it('passes the selected cross reference to the reader instead of merely switching tabs', () => {
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
+  render(<App />); fireEvent.click(screen.getByText('Open cross reference'));
+  expect(screen.getByTestId('reader-target')).toHaveTextContent('JHN 3:16');
+});
 it('navigates the real application shell, selected passage, focus and contextual panel', () => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
   render(<App />);

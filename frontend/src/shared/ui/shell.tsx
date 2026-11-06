@@ -111,6 +111,13 @@ export function AppShell({
   const { isAuthenticated, status } = useSession();
   const openAccount = useAccountAccess();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 1023px)').matches);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1023px)');
+    const changed = (event: MediaQueryListEvent) => setNarrow(event.matches);
+    media.addEventListener?.('change', changed);
+    return () => media.removeEventListener?.('change', changed);
+  }, []);
 
   // Atalhos de teclado para acessibilidade e navegação fluida
   useEffect(() => {
@@ -341,11 +348,18 @@ export function AppShell({
               aria-label="Painel de Investigação e IA"
               className="hidden lg:flex flex-col w-[min(38vw,26rem)] shrink-0 border-l border-[var(--border)] bg-[var(--surface)] h-full overflow-y-auto z-10 transition-all duration-200"
             >
-              {contextPanel}
+              {!narrow && contextPanel}
             </aside>
           )}
         </div>
       </div>
+
+      {narrow && contextPanel && <Dialog open={isContextOpen && !isFocusMode} onOpenChange={open => { if (!open) onToggleContext?.(); }}>
+        <DialogContent className="w-[min(96vw,32rem)] max-h-[90dvh] overflow-y-auto p-[1rem]">
+          <DialogHeader><DialogTitle>Painel de investigação</DialogTitle><DialogDescription>Assistente, anotações e referências do estudo ativo.</DialogDescription></DialogHeader>
+          {contextPanel}
+        </DialogContent>
+      </Dialog>}
 
     </div>
   );

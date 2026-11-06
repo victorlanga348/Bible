@@ -14,18 +14,12 @@ export function CrossRefPanel({ reference, onNavigateToPassage }: CrossRefPanelP
   const relations = page?.items || [];
 
   const typeLabels: Record<string, string> = {
-    'direct-citation': 'Citação Direta',
+    'citation': 'Citação Direta',
     'allusion': 'Alusão Textual',
-    'prophetic-fulfillment': 'Cumprimento Profético',
+    'prophetic-relation': 'Relação Profética',
     'thematic-parallel': 'Paralelo Temático',
   };
 
-  const assessmentLabels: Record<string, string> = {
-    high: 'Conexão Alta',
-    moderate: 'Conexão Moderada',
-    traditional: 'Interpretação Tradicional',
-    disputed: 'Debatida',
-  };
 
   return (
     <div className="space-y-[1rem] font-ui">
@@ -78,7 +72,7 @@ export function CrossRefPanel({ reference, onNavigateToPassage }: CrossRefPanelP
               </p>
 
               <div className="flex justify-between items-center text-[0.7rem] text-[var(--foreground-muted)] pt-[0.25rem] border-t border-[var(--border)]/60">
-                <span>Avaliação: {assessmentLabels[rel.assessment] || rel.assessment}</span>
+                <span>Avaliação: Interpretação do utilizador</span>
                 <span>{rel.evidence.length} evidência(s)</span>
               </div>
             </article>

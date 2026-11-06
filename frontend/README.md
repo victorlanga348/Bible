@@ -1,8 +1,8 @@
 # Bíblia App — Frontend Client
 
-Incremento S10 em execução na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. Comunicação local agora por `/api`, proxy dev/preview para NestJS loopback e TypeScript6.0.3/strict conforme [ADR](../docs/architecture/adr/ADR-0010-frontend-toolchain-compatibility.md). Leitura real por Chrome/API/PostgreSQL comprovada, sem escrita. [Plano/limites atuais](../docs/sprints/S10/README.md), [gates em curso](../docs/sprints/S10/TEST_REPORT.md). Não inferir aplicação integrada/Google/IA completa pelas métricas históricas S09 abaixo.
+S10-T006 em execução na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. [Guia específico do utilizador](../docs/operations/USER_ACTIONS.md), [evidências atuais](../docs/sprints/S10/T006_TEST_REPORT.md). Google está integrado tecnicamente; teste com conta pessoal continua adiado. Métricas anteriores limitadas à sessão não aprovam o frontend global.
 
-Arranque integrado: backend disponível em127.0.0.1:3000 e `npm run dev` nesta pasta, abrindo127.0.0.1:5173. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE. Sessão Google na interface é a tarefa seguinte; login de conta real continua adiado.
+Arranque integrado: backend disponível em127.0.0.1:3000 e `npm run dev` nesta pasta, abrindo127.0.0.1:5173. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE.
 
 Frontend de alta fidelidade para a plataforma de estudo e investigação bíblica assistida por inteligência artificial.
 
@@ -49,11 +49,11 @@ src/
 
 ## 3. Requisitos e Variáveis de Ambiente
 
-Crie um arquivo `.env` baseado em `.env.example`:
+O padrão `/api` funciona sem criar um `.env` do frontend. Preservar a configuração já existente; se for necessário definir explicitamente a base:
 
 ```env
-# URL do backend NestJS (padrão: http://127.0.0.1:3000)
-VITE_API_URL=http://127.0.0.1:3000
+# Mesma origem do navegador, encaminhada pelo Vite
+VITE_API_URL=/api
 
 ```
 
@@ -70,7 +70,7 @@ Iniciar servidor de desenvolvimento Vite (HMR):
 ```bash
 npm run dev
 ```
-A aplicação estará disponível em `http://localhost:5173`.
+A aplicação estará disponível em `http://127.0.0.1:5173`. Para o botão Google, a origem usada deve constar no cliente Web existente, conforme o guia do utilizador.
 
 Executar testes automatizados (Vitest):
 ```bash

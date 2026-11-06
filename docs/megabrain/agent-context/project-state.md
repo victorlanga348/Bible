@@ -1,5 +1,7 @@
 # Estado operacional — Bíblia App
 
+Retoma2026-11-06: S10-T006 IN_PROGRESS, feat/biblia-integracao/base855de77. Utilizador autoriza trabalho integral/coordenação agy e exige instruções humanas específicas. [Plano](../../sprints/S10/T006_REVIEW_PLAN.md), [provas](../../sprints/S10/T006_TEST_REPORT.md), [guia humano](../../operations/USER_ACTIONS.md). Conversas/UI, isolamento de estudo, fontes acessíveis/erros e consulta após conflito em correção via RED/GREEN. Cobertura global inicial78,58%/74,28% FAIL, CI41212501938 anterior FAIL mutação; não herdar DONE/PASS do texto histórico abaixo. Agy entregou auditoria documental e rascunho do guia; outras chamadas tiveram timeout e não contam como revisão/testes concluídos. Main/segredos/modelos/corpus operacional preservados; Google humano adiado.
+
 Estado atual 2026-10-31 / S10: feat/biblia-integracao concluída integralmente (T001–T005 DONE). Pedido vigente: finalizar integração/projeto com testes/commit/push; uma tarefa por vez/sem agentes/main preservada/sem contratação/deploy público/conta Google pessoal adiada. [Revisão S10](../../sprints/S10/REVIEW.md), [Critérios S10](../../sprints/S10/ACCEPTANCE_CRITERIA.md).
 
 - S10-T001: Comunicação same-origin `/api` via proxy Vite, leitor canônico e 97 testes PASS, mutação 93.33%.

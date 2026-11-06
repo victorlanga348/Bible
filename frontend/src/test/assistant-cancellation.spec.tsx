@@ -37,7 +37,8 @@ describe('S10-T003: Assistente de IA — Cancelamento e Sinal de Abort', () => {
   it('encaminha o AbortSignal para a requisição de inferência e trata o cancelamento limpo pelo operador', async () => {
     let capturedSignal: AbortSignal | undefined;
 
-    vi.mocked(httpClient.request).mockImplementation((_url, options) => {
+    vi.mocked(httpClient.request).mockImplementation((url, options) => {
+      if (!url.endsWith('/ai-analyses')) return Promise.resolve({ items: [], nextCursor: null });
       capturedSignal = options?.signal ?? undefined;
       return new Promise((_resolve, reject) => {
         if (capturedSignal) {
@@ -63,12 +64,12 @@ describe('S10-T003: Assistente de IA — Cancelamento e Sinal de Abort', () => {
     const input = screen.getByPlaceholderText(/O que Josefo relata/i);
     fireEvent.change(input, { target: { value: 'Qual a evidência histórica para este relato?' } });
 
-    const submitBtn = screen.getByRole('button', { name: '' });
+    const submitBtn = screen.getByRole('button', { name: 'Enviar pergunta' });
     fireEvent.click(submitBtn);
 
     // Deve estar em progresso e exibir o botão de interrupção (Stop)
     await waitFor(() => {
-      expect(httpClient.request).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(httpClient.request).mock.calls.filter(([url]) => url.endsWith('/ai-analyses'))).toHaveLength(1);
     });
 
     // O sinal deve ter sido capturado e estar ativo (não abortado ainda)
@@ -76,7 +77,7 @@ describe('S10-T003: Assistente de IA — Cancelamento e Sinal de Abort', () => {
     expect(capturedSignal?.aborted).toBe(false);
 
     // Clicar no botão de parada
-    const stopButton = screen.getByRole('button', { name: '' });
+    const stopButton = screen.getByRole('button', { name: 'Cancelar inferência' });
     fireEvent.click(stopButton);
 
     expect(capturedSignal?.aborted).toBe(true);
