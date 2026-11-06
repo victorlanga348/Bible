@@ -1,6 +1,6 @@
 # Bíblia App — Frontend Client
 
-S10-T006 em execução na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. [Guia específico do utilizador](../docs/operations/USER_ACTIONS.md), [evidências atuais](../docs/sprints/S10/T006_TEST_REPORT.md). Google está integrado tecnicamente; teste com conta pessoal continua adiado. Métricas anteriores limitadas à sessão não aprovam o frontend global.
+Execução técnica S10-T006 concluída na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. CI42265985431/921ca7c PASS351testes/47ficheiros, cobertura99,89%/95,66%, mutação global86,02247191011236%, zeroNoCoverage/RuntimeError. [Guia específico do utilizador](../docs/operations/USER_ACTIONS.md), [evidências atuais](../docs/sprints/S10/T006_TEST_REPORT.md). Google integrado tecnicamente; conta pessoal continua adiada. Métricas antigas limitadas à sessão permanecem históricas.
 
 Arranque completo: **`npm run dev` na raiz do repositório**, abrindo127.0.0.1:5173 após a mensagem de prontidão; [serviços, watch e diagnóstico](../docs/operations/DEV_STARTUP.md). `npm run dev` nesta pasta continua a iniciar apenas o frontend, exigindo backend já disponível em127.0.0.1:3000. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE.
 

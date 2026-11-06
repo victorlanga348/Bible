@@ -18,9 +18,9 @@ test('frontend CI measures global source coverage and mutation instead of the ol
   assert.match(scripts['test:mutation:ci:force'], /^stryker run --concurrency 2 --force --incremental --incrementalFile reports\/mutation\/global\/incremental\.json && node scripts\/check-mutation\.cjs global$/);
   assert.equal((workflow.match(/continue-on-error: true/g) ?? []).length, 1, 'Only the optional seed download may fail without failing the job');
   assert.match(workflow, /id: global-seed\s+continue-on-error: true/);
-  assert.match(workflow, /run-id: 42260812862/);
+  assert.match(workflow, /run-id: 42265985431/);
   assert.match(workflow, /if: steps\.global-seed\.outcome == 'success'/);
-  assert.match(workflow, /3d624e57ebc9c111c407490154397d0cdb3b6b403f5cabc30cddfb2b1e48b6ca/);
+  assert.match(workflow, /2d29a31e0f7adf0e2414966116e5acc84ec666f9a5e6faf9cf14de3ef9b3f330/);
   assert.match(workflow, /7ae83ffe19f5971f94586f516b8e2ffadc92b83d313ffede1640be124da17c38/);
   assert.match(workflow, /mutableFiles: 34, mutants: 3037/);
   assert.match(workflow, /require\('\.\/scripts\/restore-global-seed\.cjs'\)/);
