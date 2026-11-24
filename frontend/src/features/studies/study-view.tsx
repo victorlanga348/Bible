@@ -83,7 +83,7 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, activ
   const handleGenerateStudy = async (refStr: string) => {
     if (!isAuthenticated || !token) {
       toast('Autenticação necessária', {
-        description: 'Configure o token JWT local do operador na barra lateral.',
+        description: 'Escolhe Entrar na conta para criar uma conta ou iniciar sessão com email e palavra-passe.',
         type: 'warning',
       });
       return;
@@ -194,15 +194,12 @@ export function StudyView({ initialReference = 'GEN 1:1-3', activeStudyId, activ
             <Compass className="w-[3rem] h-[3rem] mx-auto text-[var(--accent)] opacity-80" />
             <div className="space-y-[0.35rem]">
               <h3 className="font-editorial-heading text-[1.25rem] font-semibold text-[var(--foreground)]">
-                Sessão do Operador Necessária
+                Entra para guardar os teus estudos
               </h3>
               <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui max-w-[42ch] mx-auto leading-relaxed">
-                Para consultar ou criar estudos estruturados com versionamento CAS, insira seu Bearer Token gerado via CLI no terminal.
+                Cria uma conta com email e palavra-passe ou entra na tua conta para criar e consultar estudos estruturados. Usa a opção Entrar na conta no menu da aplicação.
               </p>
             </div>
-            <code className="inline-block p-[0.4rem] rounded bg-[var(--surface-muted)] text-[0.75rem] font-mono select-all">
-              npm --prefix backend run auth:token -- local-owner
-            </code>
           </div>
         ) : study ? (
           <div className="space-y-[2.5rem]">

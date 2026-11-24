@@ -1,5 +1,11 @@
 # Autenticação e autorização
 
+## Conta própria da aplicação — S10-T007
+
+O pedido do utilizador de cadastro no próprio app amplia os recortes locais anteriores: existem agora `POST /auth/register` e `POST /auth/login`, com email e palavra-passe, além de Google e acesso técnico existentes. [Contrato e limites](../sprints/S10/T007_ACCOUNT_SPEC.md). As proibições de tabelas/rotas de conta no histórico abaixo referem-se à preparação anterior e foram substituídas para este incremento.
+
+Cadastro cria uma identidade `account-<uuid>` persistida com email único normalizado e hash scrypt com sal; nunca guarda a palavra-passe em texto simples. A resposta fornece a sessão Bearer de uma hora que o frontend confirma em `/auth/me`. Conta Google e conta própria são espaços separados; não há união automática por email. A sessão continua em memória no navegador. Este recorte pessoal local não inclui envio/verificação de email ou recuperação de palavra-passe.
+
 Atualização operacional S04-T0062026-10-22: JWT/guard ligados às três rotas privadas e comprovados em Nest/Supertest/PostgreSQL e HTTP real contra bible_db do PC. Chave jwtSecret existente foi efetivamente usada para emitir/verificar token local, sem exposição/alteração. CLI real npm run auth:token -- subject em backend carrega .env explicitamente e imprime o token só à saída solicitada pelo operador; usar npm run --silent auth:token -- subject para saída limpa. Falha de emissão é sanitizada. Sem chave, rotas privadas401 e leitura pública preservada; assinatura errada/expiração/owner alheio verificados. O estudo operacional inicial pertence a local-owner e retém versões1/2. Nenhum login Google ou fornecedor IA é inferido. Gates finais S04 pendentes; cronologia seguinte histórica.
 
 Atualização2026-10-22: DEC-04 resolvida para acesso pessoal local na [SPEC S04](../sprints/S04/SPEC.md) e [ADR-0005](../architecture/adr/ADR-0005-estudos-privados-e-versoes.md), por decisão do agente sob autorização integral. JWT HS256/JOSE6.2.13 usa jwtSecret existente, mínimo32 bytes UTF-8, issuer biblia-local, audience biblia-backend, sub ASCII estrito, iat/exp inteiros e validade máxima1h. Assinatura/claims são verificados no servidor; ausência de chave falha fechado. T005 tem RED/GREEN criptográfico real e guard técnico; ligação a HTTP privado/persistência permanece T006, sem prova inferida de unitários.

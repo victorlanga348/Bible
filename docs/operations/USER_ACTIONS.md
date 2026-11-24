@@ -1,5 +1,14 @@
 # Guia de Operação e Ações do Utilizador — Bíblia App
 
+## Criar conta no próprio app
+
+1. Abre **Entrar na conta** (no telemóvel, abre o menu e escolhe **Conta e acesso**).
+2. Escolhe **Criar conta**, preenche o email, uma palavra-passe entre 15 e 128 caracteres e a confirmação.
+3. Seleciona **Criar conta e entrar** e aguarda **Sessão Ativa**. Já podes abrir **Estudo Estruturado** e guardar estudos.
+4. Para voltar ao teu espaço, usa o mesmo email e palavra-passe em **Entrar com email**. Google é opcional e corresponde a um espaço separado.
+
+A conta fica guardada na base de dados local; a sessão expira após uma hora e termina ao recarregar/fechar a página. Ainda não existe recuperação de palavra-passe por email neste recorte local. Nunca envies palavras-passe ou tokens ao chat.
+
 Este documento define as instruções operacionais para o utilizador no ambiente local Windows, distinguindo rigorosamente as tarefas do operador das responsabilidades do sistema de desenvolvimento (Codex).
 
 Atualizado em 2026-11-06. Rascunho inicial escrito pela agy sob coordenação do Codex, depois conferido contra scripts/contratos e documentação oficial Google. Arranque completo provado e CI técnica final aprovada; resultados, falhas históricas e limites em [S10-T006](../sprints/S10/T006_TEST_REPORT.md). O consentimento da tua conta é uma ação pessoal separada.

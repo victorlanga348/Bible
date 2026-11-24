@@ -50,7 +50,7 @@ it('opens evidence with its rights and digest, preserves epistemic labels, and r
   expect(screen.getByText('Fixture técnica; não representa consenso histórico.')).toBeInTheDocument();
   expect(screen.getByText(studyFixture().passage.verses[0].text.trim())).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Carregar versão atual' })).not.toBeInTheDocument();
-  expect(screen.queryByText('Sessão do Operador Necessária')).not.toBeInTheDocument();
+  expect(screen.queryByText('Entra para guardar os teus estudos')).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'technical-missing-excerpt' }));
   await screen.findByText('Evidência não encontrada no estudo atual.');
 });
@@ -79,7 +79,7 @@ it('does not retry a version conflict and offers reading the actual latest versi
   await waitFor(() => expect(change).toHaveBeenCalledWith(expect.objectContaining({ version: 4 })));
 });
 it('explains access requirements and refuses an unauthenticated write', async () => {
-  authenticated = false; mount(false); await screen.findByText('Sessão do Operador Necessária');
+  authenticated = false; mount(false); await screen.findByText('Entra para guardar os teus estudos');
   fireEvent.click(screen.getByRole('button', { name: 'Gerar Estudo' })); await screen.findByText('Autenticação necessária');
   expect(fetch).not.toHaveBeenCalled();
 });

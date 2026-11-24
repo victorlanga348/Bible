@@ -1,5 +1,7 @@
 # Backend Bíblia App
 
+S10-T007: cadastro/entrada da conta própria por `POST /auth/register` e `POST /auth/login`, com email/palavra-passe, Prisma/PostgreSQL, hash scrypt com sal e JWT existente de uma hora. Não exige Google nem dependências novas. [Contrato/limites](../docs/sprints/S10/T007_ACCOUNT_SPEC.md). Migração aditiva `202611200001_password_account`; aplicar por `npm run db:migrate:dev` antes de usar esta versão numa instalação existente. Sem recuperação/verificação de email no recorte pessoal local.
+
 Incremento2026-10-30: Google Sign-In implementado em S08-T008, em validação dos gates atuais; consentimento real do utilizador pendente por sua decisão de testar depois. [Contrato](../docs/sprints/S08/GOOGLE_AUTH_SPEC.md)/[retoma](../docs/sprints/S08/tasks/S08-T008-google-login.md). As métricas da release anterior abaixo não substituem validação do incremento.
 
 Release pessoal local S00–S08 concluída tecnicamente2026-10-29. [Fecho](../docs/sprints/S08/T007_COMPLETION_REPORT.md), [provas](../docs/sprints/S08/TEST_REPORT.md), [inventário](../docs/operations/environments.md) e [recuperação](../docs/operations/runbooks.md). Histórico anterior conservado no Git f71a735; esta entrada substitui instruções de sprints antigas.

@@ -55,7 +55,7 @@ it('rejects over-limit UTF8 input locally and guides unauthenticated users', asy
   expect(screen.getByText('O limite máximo é de 500 bytes UTF-8. A pergunta atual possui 502 bytes.')).toBeInTheDocument();
   expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith('/ai-analyses'))).toBe(false);
   cleanup(); authenticated = false; mount(); send(); await screen.findByText('Autenticação necessária');
-  expect(screen.getByText('Configure seu token de operador na barra lateral.')).toBeInTheDocument();
+  expect(screen.getByText('Entra na tua conta para usar o assistente com os teus estudos.')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('tab', { name: 'Anotações' }));
   expect(screen.getByText(/Entre na conta e abra um estudo/)).toBeInTheDocument();
 });

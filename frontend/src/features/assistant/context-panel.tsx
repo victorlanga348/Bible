@@ -57,7 +57,7 @@ function ContextPanelContent({
 
     if (!isAuthenticated || !token) {
       toast('Autenticação necessária', {
-        description: 'Configure seu token de operador na barra lateral.',
+        description: 'Entra na tua conta para usar o assistente com os teus estudos.',
         type: 'warning',
       });
       return;

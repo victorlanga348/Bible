@@ -64,7 +64,8 @@ beforeAll(async () => {
 }, 30000);
 beforeEach(() => { vi.mocked(request).mockImplementation(baseRequest); vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false, addEventListener() {}, removeEventListener() {} }))); });
 afterEach(() => { cleanup(); clients.forEach(client => client.clear()); clients.length = 0; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-afterAll(async () => { await browser?.close(); });
+// Windows Chrome can take longer to release its temporary profile than a test hook.
+afterAll(async () => { await page?.context().close(); await browser?.close(); }, 60000);
 function mount(child: ReactNode) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } }); clients.push(client);
   return render(<QueryClientProvider client={client}><ToastProvider>{child}</ToastProvider></QueryClientProvider>);

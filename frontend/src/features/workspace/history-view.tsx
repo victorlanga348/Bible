@@ -237,7 +237,7 @@ export function HistoryView({ onOpenStudy, onStudyDeleted }: HistoryViewProps) {
                 Workspace Protegido
               </h3>
               <p className="text-[0.85rem] text-[var(--foreground-muted)] font-ui max-w-[42ch] mx-auto leading-relaxed">
-                Insira o token JWT de operador na barra lateral para carregar os estudos e anotações gravados no banco de dados.
+                Entra na tua conta para consultar os teus estudos e anotações. Se ainda não tens conta, escolhe Criar conta na janela de acesso.
               </p>
             </div>
           </div>

@@ -26,6 +26,7 @@ import {
 } from './dialog';
 import { Input } from './input';
 import { GoogleSignIn } from '../auth/google-sign-in';
+import { PasswordSignIn } from '../auth/password-sign-in';
 
 export type NavTab = 'reader' | 'study' | 'sources' | 'history';
 
@@ -62,10 +63,12 @@ export function AccountAccessProvider({ children }: { children: React.ReactNode 
         <DialogHeader>
           <DialogTitle>Entra no teu espaço de estudo.</DialogTitle>
           <DialogDescription>
-            Acede aos teus estudos, notas e favoritos com a tua conta Google. A sessão fica apenas neste navegador enquanto a página estiver aberta.
+            Entra com email e palavra-passe ou cria uma conta para guardar os teus estudos, notas e favoritos. A sessão fica neste navegador enquanto a página estiver aberta.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-[1rem] py-[0.5rem]">
+          {authDialogOpen && !isAuthenticated && <PasswordSignIn onAccess={closeAuth} />}
+          <p className="border-t border-[var(--border)] pt-[1rem] text-[0.8rem] text-[var(--foreground-muted)]">Ou continua com a tua conta Google</p>
           {authDialogOpen && <GoogleSignIn onAccess={closeAuth} />}
           <details className="border-t border-[var(--border)] pt-[1rem]">
             <summary className="text-[0.8rem] text-[var(--foreground-muted)] cursor-pointer">Usar um token local</summary>

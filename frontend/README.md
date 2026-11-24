@@ -1,5 +1,7 @@
 # Bíblia App — Frontend Client
 
+S10-T007: na janela **Entrar na conta**, usar email/palavra-passe ou escolher **Criar conta**, preencher email, palavra-passe (15–128 caracteres) e confirmação, depois **Criar conta e entrar**. A conta própria guarda estudos no PostgreSQL e permite voltar a entrar sem Google. [Contrato](../docs/sprints/S10/T007_ACCOUNT_SPEC.md). Google continua opcional e cada método mantém o seu espaço de estudos.
+
 Execução técnica S10-T006 concluída na branch `feat/biblia-integracao`, preservando `feat/biblia-frontend`. CI42265985431/921ca7c PASS351testes/47ficheiros, cobertura99,89%/95,66%, mutação global86,02247191011236%, zeroNoCoverage/RuntimeError. [Guia específico do utilizador](../docs/operations/USER_ACTIONS.md), [evidências atuais](../docs/sprints/S10/T006_TEST_REPORT.md). Google integrado tecnicamente; conta pessoal continua adiada. Métricas antigas limitadas à sessão permanecem históricas.
 
 Arranque completo: **`npm run dev` na raiz do repositório**, abrindo127.0.0.1:5173 após a mensagem de prontidão; [serviços, watch e diagnóstico](../docs/operations/DEV_STARTUP.md). `npm run dev` nesta pasta continua a iniciar apenas o frontend, exigindo backend já disponível em127.0.0.1:3000. Preview: `npm run build`, depois `npm run preview`, alternativamente ao dev na mesma porta. `VITE_API_URL=/api`; `BIBLE_API_PROXY_TARGET` é configuração somente do servidor Vite e deve continuar HTTP de loopback. Build estático isolado precisa de proxy equivalente, não publica o backend. Nenhum segredo deve ser introduzido em variáveis VITE.
@@ -22,7 +24,7 @@ Construído em **React 19**, **TypeScript strict**, **Vite**, **Tailwind CSS v4*
    - Integração de IA com RAG local com exibição de proveniência (trechos extraídos, fonte Josefo e auditoria de tokens).
 4. **Segurança e Gestão de Sessão**:
    - JWT mantido apenas em memória; qualquer acesso precisa de confirmação `/auth/me`, sem owner inventado ou ligação automática entre contas.
-   - Google pelo botão oficial e token local como alternativa secundária. `VITE_LOCAL_AUTH_TOKEN` foi removido na S10; nunca introduzir tokens no bundle.
+   - Conta própria por email/palavra-passe com cadastro e entrada; Google pelo botão oficial e token local como alternativa técnica. `VITE_LOCAL_AUTH_TOKEN` foi removido na S10; nunca introduzir tokens no bundle.
    - Tratamento contratual de erros de rede e códigos HTTP (`400`, `401`, `404`, `409 Conflict/CAS`, `422`, `503`, `504`).
 
 ---

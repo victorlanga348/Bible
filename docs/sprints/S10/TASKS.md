@@ -9,4 +9,6 @@
 | S10-T005 | Gates, revisão e publicação da branch | DONE | T001–T004 DONE; sete quality gates conferidos; auditoria check-completion-docs PASS; revisão final em REVIEW.md |
 | S10-T006 | Vistoria conjunta e conclusão verificável | DONE | CI42268953701/d3e4438 PASS351testes/86,02247191011236%; inventário35fontes, integrações reais e arranque único conferidos; sete gates e auditoria documental PASS; encerramento delegado |
 
+| S10-T007 | Cadastro e entrada por conta própria | IN_PROGRESS | Pedido explícito do utilizador; T007_ACCOUNT_SPEC; contas persistidas, sessão existente e validação em curso |
+
 Uma tarefa de cada vez. Priorizar integração existente antes de alterar IA. Falha de infraestrutura não é RED e nenhuma ausência de prova se torna PASS.

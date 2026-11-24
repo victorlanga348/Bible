@@ -1,5 +1,7 @@
 # Roadmap
 
+2026-11-24: pedido de criação de conta própria na aplicação em [S10-T007](../sprints/S10/T007_ACCOUNT_SPEC.md), IN_PROGRESS. Cadastro e entrada com email/palavra-passe, sem recuperação/verificação de email nem ampliação de IA; gates próprios em execução.
+
 Estado2026-11-06: S00–S09 mantêm os seus fechos históricos; [S10](../sprints/S10/README.md) está IN_PROGRESS na revisão T006 da integração. [Provas atuais](../sprints/S10/T006_TEST_REPORT.md) e [ações humanas específicas](../operations/USER_ACTIONS.md). O ciclo backend abaixo não substitui este incremento; a autorização atual inclui agy coordenada e commit/push na branch de integração.
 
 Estado2026-10-29: S00–S07 DONE; S08 DONE técnico, [fecho](../sprints/S08/T007_COMPLETION_REPORT.md); uma tarefa por vez/sem agentes/sem repetir permissões. Registos históricos abaixo não revogam essa autorização.

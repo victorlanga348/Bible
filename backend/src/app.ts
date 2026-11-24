@@ -12,6 +12,7 @@ import { StudyModule } from './modules/study/module';
 import { CrossReferencesModule } from './modules/cross-references/module';
 import { WorkspaceModule } from './modules/study-workspace/module';
 import { GoogleAuthModule } from './infrastructure/google-auth.module';
+import { PasswordAuthModule } from './infrastructure/password-auth.module';
 
 export function configureTransport(app: INestApplication): void {
   app.useGlobalFilters(new ErrorFilter());
@@ -21,7 +22,7 @@ export function configureTransport(app: INestApplication): void {
 export async function createApplication(config: RuntimeConfig): Promise<INestApplication> {
   @Module({
     controllers: [HealthController],
-    imports: [DatabaseModule.register(config.databaseUrl), AccessModule.register(config.jwtSecret), GoogleAuthModule.register(config), SourceLibraryModule, BiblicalCanonModule, StudyModule, WorkspaceModule.register(config), CrossReferencesModule],
+    imports: [DatabaseModule.register(config.databaseUrl), AccessModule.register(config.jwtSecret), GoogleAuthModule.register(config), PasswordAuthModule.register(config), SourceLibraryModule, BiblicalCanonModule, StudyModule, WorkspaceModule.register(config), CrossReferencesModule],
   })
   class ApplicationModule {}
   const app = await NestFactory.create(ApplicationModule, { logger: false, abortOnError: false });

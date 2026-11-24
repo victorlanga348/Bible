@@ -10,11 +10,11 @@ const dependency = createRequire(path.join(backend, 'package.json'));
 const own = name => dependency(path.join(backend, 'dist', name));
 dependency('reflect-metadata');
 
-exports.startSessionApi = async function startSessionApi({ workflows = false } = {}) {
+exports.startSessionApi = async function startSessionApi({ workflows = false, accounts = false, originPort = 32123 } = {}) {
   const previousDirectory = process.cwd();
   process.chdir(backend); // Production admissions are resolved from the backend working directory.
   const { parseRuntimeConfig, assertTestTarget } = own('config/runtime-config.js');
-  const env = { ...process.env, ...parseEnv(fs.readFileSync(path.join(backend, '.env.test'), 'utf8')), NODE_ENV: 'test', PORT: '32123',
+  const env = { ...process.env, ...parseEnv(fs.readFileSync(path.join(backend, '.env.test'), 'utf8')), NODE_ENV: 'test', PORT: String(originPort),
     GOOGLE_CLIENT_ID: '123456789012-protocoltest.apps.googleusercontent.com', jwtSecret: randomBytes(40).toString('base64url') };
   if (workflows) {
     const privateConfig = parseEnv(fs.readFileSync(path.join(backend, '.env'), 'utf8'));
@@ -41,6 +41,7 @@ exports.startSessionApi = async function startSessionApi({ workflows = false } =
         own('infrastructure/database.module.js').DatabaseModule.register(config.databaseUrl),
         own('infrastructure/access.module.js').AccessModule.register(config.jwtSecret),
         own('infrastructure/google-auth.module.js').GoogleAuthModule.register(config),
+        ...(accounts ? [own('infrastructure/password-auth.module.js').PasswordAuthModule.register(config)] : []),
         own('modules/biblical-canon/module.js').BiblicalCanonModule,
         own('modules/source-library/module.js').SourceLibraryModule,
         own('modules/study/module.js').StudyModule,
@@ -66,6 +67,18 @@ exports.startSessionApi = async function startSessionApi({ workflows = false } =
       }
     };
     await app.init(); await app.listen(32123, '127.0.0.1');
+    if (accounts) {
+      const directory = 'test/fixtures/biblical-canon/porbr2018/';
+      const manifest = JSON.parse(fs.readFileSync(directory + 'manifest.json', 'utf8'));
+      const verses = JSON.parse(fs.readFileSync(directory + 'verses.json', 'utf8'));
+      const id = manifest.translation.id;
+      const library = app.get(own('modules/biblical-canon/application/canon-library.js').CanonLibrary);
+      await library.importSnapshot({ translation: manifest.translation,
+        books: manifest.catalog.filter(book => verses.some(verse => verse.bookCode === book.code)).map(({ code, name, order }) => ({ code, name, order, translationId: id })),
+        chapters: [...new Map(verses.map(verse => [`${verse.bookCode}:${verse.chapter}`, { translationId: id, bookCode: verse.bookCode, number: verse.chapter }])).values()],
+        verses,
+      });
+    }
     if (workflows) {
       const sourceLibrary = app.get(own('modules/source-library/application/source-library.js').SourceLibrary);
       const directory = 'test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1';
