@@ -130,17 +130,11 @@ Abrir `http://127.0.0.1:5173/api/health/ready`: deve dar o mesmo resultado do ba
 
 Para encerrar o uso diário, Ctrl+C nos dois terminais que tu abriste. Não parar PostgreSQL, Docker, Domus ou OneDrive. O principal usa a URL privada já configurada; não trocar `localhost` por IP ou apontar para outro banco. Para leitura/estudos sem inferência, o índice de IA indisponível não exige recriar bases de dados.
 
-### 3.3. Emissão de Token Local Opcional (Uso Operacional)
-Se for necessário aceder a recursos privados sem utilizar a conta Google, o operador pode emitir um token local num terminal:
+### 3.3. Criar uma conta na aplicação
 
-```powershell
-Set-Location "C:\Users\victo\OneDrive\Documentos\Github\Bible\backend"
-npm.cmd run auth:token -- local-owner
-```
+Abrir **Entrar na conta → Criar conta**, preencher email, palavra-passe de15–128caracteres e confirmação, e clicar **Criar conta e entrar**. O cadastro entra automaticamente; nas próximas visitas usar **Entrar com email** com as mesmas credenciais. Google continua opcional. A opção de introduzir token local foi retirada da interface.
 
-- Este token JWT manual possui validade de 1 hora para o subject `local-owner`.
-- **Isolamento de Dados:** Os estudos, notas e dados de `local-owner` são completamente isolados e **não se misturam** com os dados gerados via login da Google (que utilizam subject com namespace e hash exclusivos).
-- No diálogo de acesso, expandir **Usar um token local**, colar a saída somente em **Token de acesso local** e clicar **Confirmar acesso local**. Não enviar esse token ao Codex nem guardá-lo num ficheiro versionado. Esta alternativa é opcional e não comprova o login Google humano.
+Cada conta tem os seus estudos e notas. Dados antigos de uma identidade técnica ou Google não são unidos automaticamente à nova conta por email.
 
 ---
 
@@ -160,10 +154,9 @@ Na interface web (`http://127.0.0.1:5173`), os elementos de interação são:
   - No menu mobile: botão `Conta e acesso`.
   - Indicador de estado: ponto âmbar com texto `Sem sessão` ou `A confirmar acesso…`; ponto verde com texto `Sessão Ativa`.
 - **Janela de Acesso ("Entra no teu espaço de estudo."):**
+  - Campos `Email` e `Palavra-passe`, botão `Entrar com email` e ação `Criar conta`.
+  - No cadastro: `Confirmar palavra-passe`, `Criar conta e entrar` e ação `Entrar` para voltar.
   - Botão oficial do **Google Sign-In**.
-  - Detalhe expansível: `Usar um token local`.
-  - Campo de texto: `Token de acesso local`.
-  - Botão de envio: `Confirmar acesso local`.
   - Botão de encerramento (quando autenticado): `Sair da conta`.
 - **Controles Auxiliares:**
   - Alternador de tema: `Ativar Modo Claro` / `Ativar Modo Escuro`.
@@ -184,7 +177,7 @@ Teste humano G03–G04, pela ordem:
 8. Recarregar a página com F5. É esperado voltar a **Sem sessão**; os dados guardados no banco mantêm-se e reaparecem após nova entrada com a mesma conta. A sessão tem validade máxima de uma hora e não se renova automaticamente.
 
 - **Sessão Estritamente em Memória:** Por decisão de segurança e arquitetura, a sessão ativa reside unicamente no estado React da aba do navegador. Não há gravação em `localStorage`, `sessionStorage` nem cookies de sessão persistentes.
-- **Login Bem-Sucedido:** Ao selecionar a conta Google ou submeter o token local, a aplicação valida a credencial via `GET /auth/me`. Confirmada a identidade, o indicador muda para `Sessão Ativa` (verde) e os dados privados do respetivo owner são carregados.
+- **Login Bem-Sucedido:** Ao criar conta, entrar com email/palavra-passe ou selecionar a conta Google, a aplicação confirma a sessão via `GET /auth/me`. Confirmada a identidade, o indicador muda para `Sessão Ativa` (verde) e os dados privados do respetivo owner são carregados.
 - **Recarregar a Página (F5) ou Fechar Aba:** A sessão em memória é imediatamente descartada, retornando ao estado `Sem sessão`.
 - **Logout:** Ao clicar no botão `Sair da conta`, o token é limpo da memória, os caches do React Query são descartados e a interface volta ao estado anónimo.
 - **Reentrada:** Para retomar o acesso, o utilizador clica em `Entrar na conta` e reautentica-se.
@@ -195,12 +188,12 @@ Teste humano G03–G04, pela ordem:
 
 | Sintoma / Erro | Causa Provável | Ação Recomendada |
 |---|---|---|
-| **HTTP 401 Unauthorized** | Token expirado (validade de 1 hora) ou inválido. | Efetuar novo login no botão da conta ou reemitir novo token local. |
+| **HTTP 401 Unauthorized** | Sessão expirada (validade de 1 hora) ou credenciais inválidas. | Efetuar novo login no botão da conta e conferir email/palavra-passe. |
 | **HTTP 503 Unavailable** (`GOOGLE_AUTH_UNAVAILABLE`) | Configuração Google ausente ou serviço Google indisponível. | Confirmar `/api/health/ready` e comunicar o código ao Codex. O diagnóstico de configuração é responsabilidade do Codex. |
 | **Erro de Origem no Google Sign-In** | A origem `http://127.0.0.1:5173` ou `http://localhost:5173` não está autorizada no Console Google. | Adicionar as duas origens em "Authorized JavaScript origins" no Google Cloud Console. |
-| **"Não foi possível confirmar a sessão."** | Token local incorreto ou falha de comunicação com `GET /api/auth/me`. | Conferir se o backend está em execução no Terminal 1 e reintroduzir o token. |
+| **"Não foi possível confirmar a sessão."** | Falha de comunicação com `GET /api/auth/me`. | Conferir se o backend está em execução no Terminal 1 e tentar entrar novamente. |
 | **Botão Google ausente / janela bloqueada** | Biblioteca Google inacessível, bloqueador ou popup recusado. | Permitir o popup para a origem local, confirmar acesso à Internet e repetir uma vez; se persistir, comunicar ao Codex. |
-| **Dados antigos não aparecem após Google** | Os dados antigos podem pertencer a `local-owner`. | Usar a alternativa local apenas para consultar esse espaço. Não há migração automática por email. |
+| **Dados antigos não aparecem na nova conta** | Os dados pertencem a outra identidade Google ou técnica. | Entrar na conta original quando disponível; não há migração automática por email. |
 | **`AI_UNAVAILABLE` / HTTP 503 ao perguntar à IA** | Índice/runtime/modelos indisponíveis. | Comunicar ao Codex; não comprar uma API, trocar modelos ou recriar o índice por tentativa. |
 
 > [!CAUTION]

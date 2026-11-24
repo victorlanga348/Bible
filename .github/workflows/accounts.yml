@@ -2,13 +2,44 @@ name: Application account quality
 on:
   push:
     branches: ['feat/biblia-integracao']
-    paths: ['backend/**', '.github/workflows/accounts.yml']
+    paths: ['backend/**', 'frontend/**', '.github/workflows/accounts.yml']
   pull_request:
-    paths: ['backend/**', '.github/workflows/accounts.yml']
+    paths: ['backend/**', 'frontend/**', '.github/workflows/accounts.yml']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
+  account-interface:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.16.0'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test:tooling
+      - run: npm run test:coverage -- --maxWorkers=1
+      - run: node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.accounts.config.cjs --force
+      - run: node scripts/check-mutation.cjs accounts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: application-account-interface-quality
+          path: |
+            frontend/reports/accounts/
+            frontend/reports/coverage/global/
+          if-no-files-found: error
+          retention-days: 7
   accounts:
     runs-on: ubuntu-24.04
     timeout-minutes: 90

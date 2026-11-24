@@ -27,6 +27,7 @@ test('registers an app account, saves a structured study and returns to it after
     await page.getByRole('button', { name, exact: true }).click();
   };
   await page.goto('/'); await openAccount();
+  await expect(page.getByText('Usar um token local', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Criar conta', exact: true }).click();
   await expect(page.getByLabel('Palavra-passe', { exact: true })).toHaveAttribute('autocomplete', 'new-password');
   const dialog = page.getByRole('dialog');

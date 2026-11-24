@@ -24,7 +24,7 @@ Construído em **React 19**, **TypeScript strict**, **Vite**, **Tailwind CSS v4*
    - Integração de IA com RAG local com exibição de proveniência (trechos extraídos, fonte Josefo e auditoria de tokens).
 4. **Segurança e Gestão de Sessão**:
    - JWT mantido apenas em memória; qualquer acesso precisa de confirmação `/auth/me`, sem owner inventado ou ligação automática entre contas.
-   - Conta própria por email/palavra-passe com cadastro e entrada; Google pelo botão oficial e token local como alternativa técnica. `VITE_LOCAL_AUTH_TOKEN` foi removido na S10; nunca introduzir tokens no bundle.
+   - Conta própria por email/palavra-passe com cadastro e entrada; Google pelo botão oficial como alternativa. A entrada manual de token local foi retirada. `VITE_LOCAL_AUTH_TOKEN` foi removido na S10; nunca introduzir tokens no bundle.
    - Tratamento contratual de erros de rede e códigos HTTP (`400`, `401`, `404`, `409 Conflict/CAS`, `422`, `503`, `504`).
 
 ---

@@ -5,18 +5,17 @@ import { writeFileSync } from 'node:fs';
 const dependency = createRequire(import.meta.url);
 const admittedExcerpts = dependency('../../backend/test/fixtures/ai-assistant/source-library/josephus-antiquities-pg2848-en-local-ai-v1/excerpts.json') as { id: string; text: string }[];
 const { startSessionApi } = dependency('./support/session-api.cjs') as {
-  startSessionApi: (options: { workflows: boolean }) => Promise<{ manualToken: (subject?: string) => Promise<string>; close: () => Promise<void> }>;
+  startSessionApi: (options: { workflows: boolean; accounts: boolean; originPort: number }) => Promise<{ manualToken: (subject?: string) => Promise<string>; close: () => Promise<void> }>;
 };
 let api: Awaited<ReturnType<typeof startSessionApi>>;
 test.use({ trace: 'off', screenshot: 'off', video: 'off' });
 test.setTimeout(300000); // Real local CPU inference; no provider, HTTP or PG doubles.
-test.beforeAll(async () => { test.setTimeout(300000); api = await startSessionApi({ workflows: true }); });
+test.beforeAll(async () => { test.setTimeout(300000); api = await startSessionApi({ workflows: true, accounts: true, originPort: 5174 }); });
 test.afterAll(async () => { await api?.close(); });
 
 test('persists study versions, note CAS, favorites and real local conversation through the UI', async ({ page }, info) => {
   page.setDefaultTimeout(15000);
-  const owner = `workflow-${randomUUID()}`, token = await api.manualToken(owner);
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = { Authorization: '' };
   const mobile = info.project.name === 'Mobile Chrome';
   const navigate = async (name: string) => {
     if (mobile) await page.getByRole('button', { name: 'Abrir Menu' }).click();
@@ -34,9 +33,15 @@ test('persists study versions, note CAS, favorites and real local conversation t
     await expect(page.getByRole('heading', { name: 'Gênesis 1', exact: true })).toBeVisible();
     if (mobile) { await page.getByRole('button', { name: 'Abrir Menu' }).click(); await page.getByRole('button', { name: 'Conta e acesso' }).click(); }
     else await page.getByRole('button', { name: 'Entrar na conta' }).click();
-    await page.getByText('Usar um token local', { exact: true }).click();
-    await page.getByLabel('Token de acesso local').fill(token);
-    await page.getByRole('button', { name: 'Confirmar acesso local' }).click();
+    await page.getByRole('button', { name: 'Criar conta', exact: true }).click();
+    const password = 'A secure workflow test password';
+    await page.getByLabel('Email', { exact: true }).fill(`workflow-${randomUUID()}@example.test`);
+    await page.getByLabel('Palavra-passe', { exact: true }).fill(password);
+    await page.getByLabel('Confirmar palavra-passe').fill(password);
+    const registered = page.waitForResponse(response => new URL(response.url()).pathname === '/api/auth/register');
+    await page.getByRole('button', { name: 'Criar conta e entrar' }).click();
+    const registration = await registered; expect(registration.status()).toBe(201);
+    headers.Authorization = `Bearer ${(await registration.json()).accessToken}`;
     await expect(page.getByRole('dialog')).not.toBeVisible();
     await navigate('Estudo Estruturado');
     await page.getByLabel('Referência do estudo').fill('GEN 1:1');

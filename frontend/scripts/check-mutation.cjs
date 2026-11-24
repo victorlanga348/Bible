@@ -31,6 +31,7 @@ function verifyFrontendMutationReport(report, expected) {
   return { detected, valid, score: 100 * detected / valid };
 }
 function frontendMutationScope(mode) {
+  if (mode === 'accounts') return ['src/shared/auth/password-sign-in.tsx', 'src/shared/ui/shell.tsx'];
   const transport = ['src/shared/api/api-url.ts', 'src/shared/api/client.ts', 'src/shared/api/http-client.ts', 'src/server/api-proxy.ts', 'vite.config.ts'];
   if (mode === 'transport') return transport;
   if (mode === 'session') return [...transport, 'src/App.tsx', 'src/shared/api/query-client.ts', 'src/shared/hooks/use-session.tsx', 'src/shared/auth/google-identity.ts', 'src/shared/auth/google-sign-in.tsx', 'src/shared/ui/shell.tsx'];
@@ -48,7 +49,7 @@ function collect(directory) {
 }
 async function main(mode = 'global') {
   const patterns = frontendMutationScope(mode);
-  const config = JSON.parse(text(mode === 'global' ? 'stryker.config.json' : `stryker.${mode}.config.json`));
+  const config = mode === 'accounts' ? require('../stryker.accounts.config.cjs') : JSON.parse(text(mode === 'global' ? 'stryker.config.json' : `stryker.${mode}.config.json`));
   if (!equal(config.mutate, patterns)
     || config.mutator || config.ignorers || config.thresholds?.break !== 85) fail('Mutation scope configuration differs');
   const names = mode === 'global' ? [...collect('src').filter(name => /\.tsx?$/.test(name) && !name.startsWith('src/test/') && !name.endsWith('.d.ts')), 'vite.config.ts'] : patterns;
@@ -64,7 +65,7 @@ async function main(mode = 'global') {
       location: { start: position(mutant.location.start), end: position(mutant.location.end) },
     });
   }
-  const directory = `reports/mutation/${mode}`;
+  const directory = mode === 'accounts' ? 'reports/accounts' : `reports/mutation/${mode}`;
   const bytes = fs.readFileSync(`${directory}/mutation.json`), report = JSON.parse(bytes);
   const gate = verifyFrontendMutationReport(report, expected);
   const counts = {};

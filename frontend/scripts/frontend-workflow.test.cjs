@@ -5,6 +5,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 
+test('account mutation covers the complete password component and access shell', () => {
+  const { frontendMutationScope } = require('./check-mutation.cjs');
+  assert.deepEqual(frontendMutationScope('accounts'), ['src/shared/auth/password-sign-in.tsx', 'src/shared/ui/shell.tsx']);
+});
+
 test('frontend CI measures global source coverage and mutation instead of the old session slice', () => {
   const root = path.resolve(__dirname, '../..');
   const workflow = fs.readFileSync(path.join(root, '.github/workflows/frontend.yml'), 'utf8');

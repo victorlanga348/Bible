@@ -54,7 +54,7 @@ it('isolates previous owner cache, local state and late callbacks across real ap
   expect(screen.getByTestId('private-local')).toHaveTextContent('empty');
 });
 
-it.each(['manual', 'google'])('keeps %s identity validation and its recoverable failure visible across the application boundary', async method => {
+it.each(['email', 'google'])('keeps %s identity validation and its recoverable failure visible across the application boundary', async method => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
   let callback!: (response: { credential: string }) => void;
   vi.stubGlobal('google', { accounts: { id: {
@@ -68,20 +68,20 @@ it.each(['manual', 'google'])('keeps %s identity validation and its recoverable 
   const identity = new Promise<Response>(resolve => { finish = resolve; });
   vi.stubGlobal('fetch', vi.fn(async (url: string) => {
     if (url.endsWith('/bootstrap')) return Response.json({ clientId: '123456789012-protocoltest.apps.googleusercontent.com', nonce: 'n'.repeat(43) });
-    if (url.endsWith('/auth/google')) return Response.json({ accessToken: 'technical-local-token', tokenType: 'Bearer', expiresIn: 3600 });
+    if (url.endsWith('/auth/google') || url.endsWith('/auth/login')) return Response.json({ accessToken: 'technical-local-token', tokenType: 'Bearer', expiresIn: 3600 });
     return identity;
   }));
   render(<App />);
   fireEvent.click(screen.getByRole('button', { name: 'Entrar na conta' }));
-  if (method === 'manual') {
-    fireEvent.click(screen.getByText('Usar um token local'));
-    fireEvent.change(screen.getByLabelText('Token de acesso local'), { target: { value: 'technical-rejected-token' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Confirmar acesso local' }));
+  if (method === 'email') {
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'reader@example.test' } });
+    fireEvent.change(screen.getByLabelText('Palavra-passe'), { target: { value: 'A secure technical password' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar com email' }));
   } else fireEvent.click(await screen.findByRole('button', { name: 'Technical Google access' }));
   await waitFor(() => expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).endsWith('/auth/me'))).toBe(true));
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(screen.getByText('A confirmar acesso…')).toBeInTheDocument();
-  if (method === 'manual') expect(screen.getByRole('button', { name: 'Confirmar acesso local' })).toBeDisabled();
+  if (method === 'email') expect(screen.getByRole('button', { name: 'Entrar com email' })).toBeDisabled();
   expect(screen.queryByText('Sessão Ativa')).not.toBeInTheDocument();
   await act(async () => { finish(new Response('{}', { status: 401 })); });
   expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível');
@@ -90,7 +90,7 @@ it.each(['manual', 'google'])('keeps %s identity validation and its recoverable 
   const original = vi.mocked(fetch).getMockImplementation()!;
   vi.mocked(fetch).mockImplementation(async (url, options) => String(url).endsWith('/auth/me')
     ? Response.json({ ownerId: 'recovered-owner' }) : original(url, options));
-  if (method === 'manual') fireEvent.click(screen.getByRole('button', { name: 'Confirmar acesso local' }));
+  if (method === 'email') fireEvent.click(screen.getByRole('button', { name: 'Entrar com email' }));
   else {
     fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Technical Google access' }));

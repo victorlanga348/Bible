@@ -68,16 +68,18 @@ exports.startSessionApi = async function startSessionApi({ workflows = false, ac
     };
     await app.init(); await app.listen(32123, '127.0.0.1');
     if (accounts) {
-      const directory = 'test/fixtures/biblical-canon/porbr2018/';
-      const manifest = JSON.parse(fs.readFileSync(directory + 'manifest.json', 'utf8'));
-      const verses = JSON.parse(fs.readFileSync(directory + 'verses.json', 'utf8'));
-      const id = manifest.translation.id;
+      // Both account and source workflows need the same admitted Genesis fixture.
+      // The database/role identity above is checked before this deterministic test reset.
+      const snapshot = JSON.parse(fs.readFileSync('test/fixtures/ai-assistant/biblical-canon/porbr2018/snapshot.json', 'utf8'));
+      const id = snapshot.translation.id;
+      await database.client.$transaction([
+        database.client.canonVerse.deleteMany({ where: { translationId: id } }),
+        database.client.canonChapter.deleteMany({ where: { translationId: id } }),
+        database.client.canonBook.deleteMany({ where: { translationId: id } }),
+        database.client.canonTranslation.deleteMany({ where: { id } }),
+      ]);
       const library = app.get(own('modules/biblical-canon/application/canon-library.js').CanonLibrary);
-      await library.importSnapshot({ translation: manifest.translation,
-        books: manifest.catalog.filter(book => verses.some(verse => verse.bookCode === book.code)).map(({ code, name, order }) => ({ code, name, order, translationId: id })),
-        chapters: [...new Map(verses.map(verse => [`${verse.bookCode}:${verse.chapter}`, { translationId: id, bookCode: verse.bookCode, number: verse.chapter }])).values()],
-        verses,
-      });
+      await library.importSnapshot(snapshot);
     }
     if (workflows) {
       const sourceLibrary = app.get(own('modules/source-library/application/source-library.js').SourceLibrary);

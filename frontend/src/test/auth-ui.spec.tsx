@@ -39,18 +39,13 @@ describe('application sign-in interface', () => {
     expect(exchange?.[1]?.credentials).toBe('same-origin');
     expect(screen.queryByText(/HS256|Como gerar o token/)).not.toBeInTheDocument();
   });
-  it('keeps a rejected manual token anonymous and displays a recoverable error', async () => {
-    vi.stubGlobal('fetch', vi.fn(async (url: string) => String(url).endsWith('/bootstrap')
-      ? Response.json({ clientId: '123456789012-protocoltest.apps.googleusercontent.com', nonce: 'n'.repeat(43) })
-      : new Response('{}', { status: 401 })));
+  it('offers email and Google access without manual token controls', async () => {
     shell();
-    fireEvent.click(screen.getByText('Usar um token local'));
-    const field = screen.getByLabelText('Token de acesso local');
-    expect(field).toHaveAttribute('type', 'password');
-    fireEvent.change(field, { target: { value: 'rejected-technical-token' } });
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Confirmar acesso local' })); });
-    expect(screen.getByRole('alert')).toHaveTextContent('Não foi possível confirmar a sessão');
-    expect(screen.queryByText('Sessão Ativa')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Criar conta' })).toBeEnabled();
+    expect(await screen.findByRole('button', { name: 'Continuar com Google' })).toBeEnabled();
+    expect(screen.queryByText('Usar um token local')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Token de acesso local')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirmar acesso local' })).not.toBeInTheDocument();
   });
   it('offers a retry when Google bootstrap is temporarily unavailable', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(new Response('{}', { status: 503 }));
