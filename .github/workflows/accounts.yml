@@ -1,0 +1,65 @@
+name: Application account quality
+on:
+  push:
+    branches: ['feat/biblia-integracao']
+    paths: ['backend/**', '.github/workflows/accounts.yml']
+  pull_request:
+    paths: ['backend/**', '.github/workflows/accounts.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  accounts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.7-pg17-bookworm@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+        env:
+          POSTGRES_DB: biblia_test
+          POSTGRES_USER: biblia_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ['5432/tcp']
+        options: >-
+          --health-cmd "pg_isready -U biblia_test -d biblia_test"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.16.0'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Configure the isolated account test database
+        run: printf '%s\n' "TEST_DATABASE_URL=postgresql://biblia_test@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/biblia_test?schema=app" >> "$GITHUB_ENV"
+      - run: npm ci --ignore-scripts --no-audit --no-fund --strict-peer-deps
+      - run: npm run prisma:generate
+      - run: npm run db:migrate:test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:architecture
+      - run: npm run test -- --config jest.accounts.config.cjs --coverage
+      - run: node node_modules/@stryker-mutator/core/bin/stryker.js run stryker.accounts.config.cjs --force
+      - name: Check the strict raw mutation score and complete outcomes
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('reports/accounts/mutation.json', 'utf8'));
+          const mutants = Object.values(report.files).flatMap(file => file.mutants);
+          if (mutants.some(mutant => ['NoCoverage', 'RuntimeError'].includes(mutant.status))) throw new Error('Incomplete account mutation evidence');
+          console.log(JSON.stringify(require('./scripts/check-mutation.cjs').verifyMutationReport(report)));
+          NODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: application-account-quality
+          path: backend/reports/accounts/
+          if-no-files-found: error
+          retention-days: 7

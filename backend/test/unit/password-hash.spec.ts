@@ -2,7 +2,16 @@ import { scryptSync } from 'node:crypto';
 import { dummyPasswordHash, hashPassword, verifyPassword } from '../../src/infrastructure/password-hash';
 
 describe('real scrypt password protection', () => {
+  afterEach(() => { jest.restoreAllMocks(); });
   const password = '  Uma frase segura: Bíblia!  ';
+  it('performs real scrypt work for a missing account instead of rejecting its dummy hash early', async () => {
+    const cryptography = jest.requireActual<typeof import('node:crypto')>('node:crypto');
+    const provider = jest.spyOn(cryptography, 'scrypt');
+    try {
+      await expect(verifyPassword(password, dummyPasswordHash)).resolves.toBe(false);
+      expect(provider).toHaveBeenCalledTimes(1);
+    } finally { provider.mockRestore(); }
+  });
   it('rejects a cryptographic provider failure instead of accepting an incomplete key', async () => {
     // Explicit provider failure double; other cases exercise real scrypt.
     const cryptography = jest.requireActual<typeof import('node:crypto')>('node:crypto');

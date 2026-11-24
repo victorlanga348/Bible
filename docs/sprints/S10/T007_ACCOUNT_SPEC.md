@@ -22,4 +22,6 @@ Dependências: NestJS, Zod, Prisma/PostgreSQL, `node:crypto`, JWT/guard e sessã
 
 ## Referências
 
+Validação de contas independente em `.github/workflows/accounts.yml`: PostgreSQL real, migrações, testes HTTP/criptográficos e mutação das quatro fontes novas mais `app.ts`, sem descarregar o corpus histórico não alterado. Os workflows globais permanecem ativos e os seus resultados são registados separadamente. O perfil Jest partilha os limites existentes e usa globs portáveis para não omitir testes no sandbox Windows; reciclagem do runner a cada25mutantes limita o crescimento de memória sem reduzir o escopo ou alterar outcomes.
+
 Este pedido amplia explicitamente os recortes anteriores de autenticação, sem os reescrever retroativamente: [auth](../../integrations/auth.md), [sessão](T002_SESSION_SPEC.md), [gates](../../quality/quality-gates.md). Parâmetros scrypt: [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html); API criptográfica: [Node.js](https://nodejs.org/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback).
